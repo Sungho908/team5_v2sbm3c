@@ -1,8 +1,1 @@
-pluginManagement {
-	repositories {
-		maven { url 'https://repo.spring.io/milestone' }
-		maven { url 'https://repo.spring.io/snapshot' }
-		gradlePluginPortal()
-	}
-}
-rootProject.name = 'team5_v2sbm3c'
+rootProject.name = 'gittest1'
