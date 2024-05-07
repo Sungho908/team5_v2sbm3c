@@ -1,0 +1,36 @@
+<div th:fragment="navbarFragment">
+  <div class="top_menu_img">
+    <div class="top_menu_label">동계 극한 체험, 생존 오지 오버랜딩 ver 2.0</div>
+  </div>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="/">HOME</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <!-- 메뉴 시작 -->
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item dropdown" th:each="cateVOMenu:${menu}">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" 
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${cateVOMenu.name}">                                                            
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                          <li th:each="cateVO:${cateVOMenu.list_namesub}"><a class="dropdown-item" 
+                          href="#" th:text="${cateVO.namesub}"></a></li>
+                      </ul>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="/cate/list_search">카테고리 전체 목록</a>
+                  </li>
+              </ul>
+          </div>
+          <!-- 메뉴 종료 -->
+            
+      </div>
+  </nav>
+
+</div>
+
