@@ -1,4 +1,4 @@
-package dev.mvc.team5_v2sbm3c;
+package dev.mvc.team5;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
