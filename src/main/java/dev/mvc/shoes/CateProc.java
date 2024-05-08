@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 //@Component("dev.mvc.cate.CateProc")
-@Service("dev.mvc.cate.CateProc")
+@Service("dev.mvc.shoes.CateProc")
 public class CateProc implements CateProcInter {
   @Autowired
   private CateDAOInter cateDAO;

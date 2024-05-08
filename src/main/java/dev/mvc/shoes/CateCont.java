@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.validation.Valid;
 
-@RequestMapping("/cate")
+@RequestMapping("/shoes")
 @Controller
 public class CateCont {
   @Autowired
-  @Qualifier("dev.mvc.cate.CateProc")
+  @Qualifier("dev.mvc.shoes.CateProc")
   private CateProcInter cateProc;
   
   public CateCont() {
