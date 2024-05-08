@@ -9,19 +9,10 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-//CREATE TABLE CATE(
-//    CATENO                            NUMBER(10)     NOT NULL    PRIMARY KEY,
-//    NAME                              VARCHAR2(30)     NOT NULL,
-//    CNT                               NUMBER(7)    DEFAULT 0     NOT NULL,
-//    RDATE                             DATE     NOT NULL,
-//    SEQNO                             NUMBER(5)    DEFAULT 0     NOT NULL,
-//    VISIBLE                           CHAR(1)    DEFAULT 'N'     NOT NULL
-//);
-
 @Setter @Getter
-public class CateVO {
+public class ShoesVO {
   /** 오버렌딩 카테고리 번호 */
-  private Integer cateno=0;
+  private Integer shoesno=0;
   
   /** 중분류명 */
   @NotEmpty(message="중분류명은 필수 입력 항목입니다.")

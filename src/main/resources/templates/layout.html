@@ -11,11 +11,17 @@
 <link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
 
 </head>
+<div class="top_bnn">
+        <p><b>발걸음을 찾아주셔서 감사합니다.</b></p>
+        <div class="btn_close"><i class="xi-close"></i></div>
+    </div>
 <body>
+
 <div class='container_main'>
+  
 
   <div th:replace="~{navbar::navbarFragment}"></div> <!-- navbar.html navbarFragment import -->
-  
+
   <div class='content_body'>
     <th:block layout:fragment="content"></th:block> <!-- 각 파일의 내용 출력 -->
   </div> <!-- content_body 종료 --> 

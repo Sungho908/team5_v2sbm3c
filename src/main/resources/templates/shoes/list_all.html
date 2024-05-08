@@ -24,18 +24,18 @@
       </tr>
     </thead>
     <tbody>
-      <tr th:each="cateVO:${list}">
-        <td class="td_bs" th:text="${cateVO.cateno}"></td>
-        <td class="td_bs"><a th:href="@{|./read/${cateVO.cateno}|}" style="display: block;" th:text="${cateVO.name}"></a></td>
-        <td class="td_bs"><a th:href="@{|./read/${cateVO.cateno}|}" style="display: block;" th:text="${cateVO.namesub}"></a></td>
-        <td class="td_bs" th:text="${cateVO.cnt}"></td>
-        <td class="td_bs" th:text="${cateVO.rdate.substring(0, 10)}"></td>
+      <tr th:each="shoesVO:${list}">
+        <td class="td_bs" th:text="${shoesVO.shoesno}"></td>
+        <td class="td_bs"><a th:href="@{|./read/${shoesVO.shoesno}|}" style="display: block;" th:text="${shoesVO.name}"></a></td>
+        <td class="td_bs"><a th:href="@{|./read/${shoesVO.shoesno}|}" style="display: block;" th:text="${shoesVO.namesub}"></a></td>
+        <td class="td_bs" th:text="${shoesVO.cnt}"></td>
+        <td class="td_bs" th:text="${shoesVO.rdate.substring(0, 10)}"></td>
         <td class="td_bs">
-          <img src="/cate/images/show.png" class="icon"> <!-- /static/cate/images/show.png -->
-          <img src="/cate/images/decrease.png" class="icon">
-          <img src="/cate/images/increase.png" class="icon">
-          <a th:href="@{|/cate/update/${cateVO.cateno}|}"><img src="/cate/images/update.png" class="icon"></a>
-          <a th:href="@{|/cate/delete/${cateVO.cateno}|}"><img src="/cate/images/delete.png" class="icon"></a>
+          <img src="/shoes/images/show.png" class="icon"> <!-- /static/shoes/images/show.png -->
+          <img src="/shoes/images/decrease.png" class="icon">
+          <img src="/shoes/images/increase.png" class="icon">
+          <a th:href="@{|/shoes/update/${shoesVO.shoesno}|}"><img src="/shoes/images/update.png" class="icon"></a>
+          <a th:href="@{|/shoes/delete/${shoesVO.shoesno}|}"><img src="/shoes/images/delete.png" class="icon"></a>
         </td>
       </tr>
     </tbody>

@@ -3,7 +3,7 @@
 <html layout:decorate="~{layout}"> <!-- layout.html 상속-->
 <div layout:fragment="content">
   <div class="title_line">카테고리 등록</div>
-  <form name="frm" th:object="${cateVO}" method="post" action="/cate/create">
+  <form name="frm" th:object="${shoesVO}" method="post" action="/shoes/create">
   
     <div th:replace="~{errors::errorsFragment}"></div>
   
