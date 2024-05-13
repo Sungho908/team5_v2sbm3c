@@ -45,9 +45,8 @@ public class DatabaseConfiguration {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
         // "/src/main/resources/mybatis" 폴더의 파일명이 "xml"로 끝나는 파일 매핑
-        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:/mybatis/**/*.xml"));
-        
-        sqlSessionFactoryBean.setConfigLocation(new ClassPathResource("mybatis-config.xml"));
+        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:/mybatis/mapper/*.xml"));
+        sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:/mybatis/mybatis-config.xml"));
         
         return sqlSessionFactoryBean.getObject();
     }
