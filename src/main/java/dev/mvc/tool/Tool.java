@@ -5,13 +5,23 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.ToString;
 
@@ -445,15 +455,16 @@ public class Tool {
   public static synchronized String encode(String str) {
     return URLEncoder.encode(str, StandardCharsets.UTF_8);
   }
-  
-  /** 
+
+  /**
    * 클라이언트의 Ip주소를 가져옴
+   * 
    * @param HttpServletRequest 객체
    * @return ip주소
-   * */
+   */
   public static String getClientIP(HttpServletRequest request) {
     String ip = request.getHeader("X-Forwarded-For");
-    
+
     System.out.println("> X-FORWARDED-FOR : " + ip);
 
     if (ip == null) {
@@ -479,6 +490,108 @@ public class Tool {
     System.out.println("> Result : IP Address : " + ip);
 
     return ip;
+  }
+
+  public static synchronized String getUploadDir() {
+    String path = "";
+    if (File.separator.equals("\\")) { // windows, 개발 환경의 파일 업로드 폴더
+      // path = "C:/kd/deploy/resort_v2sbm3c/contents/storage/";
+      path = "D:\\kd\\deploy\\team5_v2sbm3c\\contents\\storage\\";
+      // System.out.println("Windows 10: " + path);
+
+    } else { // Linux, AWS, 서비스용 배치 폴더
+      // System.out.println("Linux");
+      path = "/home/ubuntu/deploy/team5_v2sbm3c/contents/storage/";
+    }
+
+    return path;
+  }
+
+  public static void saveFileWithChecksum(String filename, byte[] fileBytes, String checksum) {
+    try {
+      Path filePath = Paths.get("uploads/" + filename);
+      Path checksumPath = Paths.get("uploads/" + filename + ".md5");
+      Files.write(filePath, fileBytes);
+      Files.write(checksumPath, checksum.getBytes());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static String saveFileSpring(MultipartFile multipartFile, String absPath) {
+    String fileName = "";
+    String originalFileName = multipartFile.getOriginalFilename();
+    long fileSize = multipartFile.getSize();
+
+    if (originalFileName == null || fileSize == 0) {
+      return fileName; // 파일이 없거나 사이즈가 0이면 저장하지 않음
+    }
+
+    int extIndex = originalFileName.lastIndexOf(".");
+    String onlyFilename = originalFileName.substring(0, extIndex);
+    String extFilename = originalFileName.substring(extIndex);
+
+    try {
+      byte[] fileBytes = multipartFile.getBytes();
+      String checksum = calculateChecksum(fileBytes);
+
+      // Check for existing files with the same checksum
+      File existingFile = findFileByChecksum(absPath, checksum);
+      if (existingFile != null) {
+        System.out.println("-> 같은 체크섬을 가진 파일이 이미 존재합니다: " + existingFile.getName());
+        return existingFile.getName();
+      }
+
+      String extension = extFilename.substring(1); // Remove the dot from the extension
+
+      // Create directory based on the file extension
+      File directory = new File(absPath, extension);
+      if (!directory.exists()) {
+        directory.mkdirs();
+      }
+
+      File newFile = new File(directory, checksum + extFilename);
+
+      fileName = newFile.getName();
+      String serverFullPath = directory.getPath() + "/" + fileName;
+
+      try (FileOutputStream outputStream = new FileOutputStream(serverFullPath)) {
+        outputStream.write(fileBytes);
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return fileName; // 서버에 저장된 파일명
+  }
+
+  private static String calculateChecksum(byte[] fileBytes) {
+    try {
+      MessageDigest md = MessageDigest.getInstance("MD5");
+      byte[] digest = md.digest(fileBytes);
+      StringBuilder sb = new StringBuilder();
+      for (byte b : digest) {
+        sb.append(String.format("%02x", b));
+      }
+      return sb.toString();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private static File findFileByChecksum(String directory, String checksum) {
+    File dir = new File(directory);
+    if (!dir.exists() || !dir.isDirectory()) {
+      return null;
+    }
+
+    File[] files = dir.listFiles((dir1, name) -> name.startsWith(checksum) && (name.length() == checksum.length() + 4));
+    if (files != null && files.length > 0) {
+      return files[0];
+    }
+
+    return null;
   }
 
 }

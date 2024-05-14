@@ -226,36 +226,6 @@ COMMENT ON COLUMN REVIEW.LIKE_NO is '좋아요 번호';
 
 
 /**********************************/
-/* Table Name: 김현기 */
-/**********************************/
-CREATE TABLE (
-
-);
-
-COMMENT ON TABLE  is '김현기';
-
-
-/**********************************/
-/* Table Name: Table11 */
-/**********************************/
-CREATE TABLE TABLE_11(
-
-);
-
-COMMENT ON TABLE TABLE_11 is 'Table11';
-
-
-/**********************************/
-/* Table Name: 박성호 */
-/**********************************/
-CREATE TABLE TABLE_14(
-
-);
-
-COMMENT ON TABLE TABLE_14 is '박성호';
-
-
-/**********************************/
 /* Table Name: 공지사항 */
 /**********************************/
 CREATE TABLE NOTICE(
@@ -388,21 +358,21 @@ COMMENT ON COLUMN OTHER_INQUIRY.M_NO is '멤버 번호';
 /* Table Name: 신발 첨부파일 */
 /**********************************/
 CREATE TABLE SHOES_FILE(
-		PILE_NO                       		NUMBER(9)		 NOT NULL		 PRIMARY KEY,
-		PILE_NAME                     		VARCHAR2(100)		 NOT NULL,
-		PILE_SIZE                     		NUMBER		 NOT NULL,
-		PILE_EX                       		VARCHAR2(100)		 NOT NULL,
-		PILE_SRC                      		VARCHAR2(100)		 NOT NULL,
+		FILE_NO                       		NUMBER(9)		 NOT NULL		 PRIMARY KEY,
+		FILE_NAME                     		VARCHAR2(100)		 NOT NULL,
+		FILE_SIZE                     		NUMBER		 NOT NULL,
+		FILE_EX                       		VARCHAR2(100)		 NOT NULL,
+		FILE_SRC                      		VARCHAR2(100)		 NOT NULL,
 		S_NO                          		NUMBER(9)		 NULL ,
   FOREIGN KEY (S_NO) REFERENCES SHOSE (S_NO)
 );
 
 COMMENT ON TABLE SHOES_FILE is '신발 첨부파일';
-COMMENT ON COLUMN SHOES_FILE.PILE_NO is '파일 번호';
-COMMENT ON COLUMN SHOES_FILE.PILE_NAME is '첨부파일명';
-COMMENT ON COLUMN SHOES_FILE.PILE_SIZE is '첨부파일 크기';
-COMMENT ON COLUMN SHOES_FILE.PILE_EX is '확장자명';
-COMMENT ON COLUMN SHOES_FILE.PILE_SRC is '첨부파일 주소';
+COMMENT ON COLUMN SHOES_FILE.FILE_NO is '파일 번호';
+COMMENT ON COLUMN SHOES_FILE.FILE_NAME is '첨부파일명';
+COMMENT ON COLUMN SHOES_FILE.FILE_SIZE is '첨부파일 크기';
+COMMENT ON COLUMN SHOES_FILE.FILE_EX is '확장자명';
+COMMENT ON COLUMN SHOES_FILE.FILE_SRC is '첨부파일 주소';
 COMMENT ON COLUMN SHOES_FILE.S_NO is '신발 번호';
 
 
@@ -410,21 +380,21 @@ COMMENT ON COLUMN SHOES_FILE.S_NO is '신발 번호';
 /* Table Name: 후기 첨부파일 */
 /**********************************/
 CREATE TABLE REVIEW_FILE(
-		PILE_NO                       		NUMBER(9)		 NOT NULL		 PRIMARY KEY,
-		PILE_NAME                     		VARCHAR2(100)		 NOT NULL,
-		PILE_SIZE                     		NUMBER		 NOT NULL,
-		PILE_EX                       		VARCHAR2(100)		 NOT NULL,
-		PILE_SRC                      		VARCHAR2(100)		 NOT NULL,
+		FILE_NO                       		NUMBER(9)		 NOT NULL		 PRIMARY KEY,
+		FILE_NAME                     		VARCHAR2(100)		 NOT NULL,
+		FILE_SIZE                     		NUMBER		 NOT NULL,
+		FILE_EX                       		VARCHAR2(100)		 NOT NULL,
+		FILE_SRC                      		VARCHAR2(100)		 NOT NULL,
 		R_NO                          		VARCHAR2(255)		 NULL ,
   FOREIGN KEY (R_NO) REFERENCES REVIEW (R_NO)
 );
 
 COMMENT ON TABLE REVIEW_FILE is '후기 첨부파일';
-COMMENT ON COLUMN REVIEW_FILE.PILE_NO is '파일 번호';
-COMMENT ON COLUMN REVIEW_FILE.PILE_NAME is '첨부파일명';
-COMMENT ON COLUMN REVIEW_FILE.PILE_SIZE is '첨부파일 크기';
-COMMENT ON COLUMN REVIEW_FILE.PILE_EX is '확장자명';
-COMMENT ON COLUMN REVIEW_FILE.PILE_SRC is '첨부파일 주소';
+COMMENT ON COLUMN REVIEW_FILE.FILE_NO is '파일 번호';
+COMMENT ON COLUMN REVIEW_FILE.FILE_NAME is '첨부파일명';
+COMMENT ON COLUMN REVIEW_FILE.FILE_SIZE is '첨부파일 크기';
+COMMENT ON COLUMN REVIEW_FILE.FILE_EX is '확장자명';
+COMMENT ON COLUMN REVIEW_FILE.FILE_SRC is '첨부파일 주소';
 COMMENT ON COLUMN REVIEW_FILE.R_NO is '후기 번호';
 
 
@@ -432,22 +402,22 @@ COMMENT ON COLUMN REVIEW_FILE.R_NO is '후기 번호';
 /* Table Name: 공지 첨부파일 */
 /**********************************/
 CREATE TABLE NOTICE_FILE(
-		PILE_NO                       		NUMBER(9)		 NOT NULL		 PRIMARY KEY,
-		PILE_NAME                     		VARCHAR2(100)		 NOT NULL,
-		PILE_SIZE                     		NUMBER		 NOT NULL,
-		PILE_EX                       		VARCHAR2(100)		 NOT NULL,
-		PILE_SRC                      		VARCHAR2(100)		 NOT NULL,
+		FILE_NO                       		NUMBER(9)		 NOT NULL		 PRIMARY KEY,
+		FILE_NAME                     		VARCHAR2(100)		 NOT NULL,
+		FILE_SIZE                     		NUMBER		 NOT NULL,
+		FILE_EX                       		VARCHAR2(100)		 NOT NULL,
+		FILE_SRC                      		VARCHAR2(100)		 NOT NULL,
 		R_NO                          		VARCHAR2(255)		 NULL ,
 		N_NO                          		NUMBER(9)		 NULL ,
   FOREIGN KEY (N_NO) REFERENCES NOTICE (N_NO)
 );
 
 COMMENT ON TABLE NOTICE_FILE is '공지 첨부파일';
-COMMENT ON COLUMN NOTICE_FILE.PILE_NO is '파일 번호';
-COMMENT ON COLUMN NOTICE_FILE.PILE_NAME is '첨부파일명';
-COMMENT ON COLUMN NOTICE_FILE.PILE_SIZE is '첨부파일 크기';
-COMMENT ON COLUMN NOTICE_FILE.PILE_EX is '확장자명';
-COMMENT ON COLUMN NOTICE_FILE.PILE_SRC is '첨부파일 주소';
+COMMENT ON COLUMN NOTICE_FILE.FILE_NO is '파일 번호';
+COMMENT ON COLUMN NOTICE_FILE.FILE_NAME is '첨부파일명';
+COMMENT ON COLUMN NOTICE_FILE.FILE_SIZE is '첨부파일 크기';
+COMMENT ON COLUMN NOTICE_FILE.FILE_EX is '확장자명';
+COMMENT ON COLUMN NOTICE_FILE.FILE_SRC is '첨부파일 주소';
 COMMENT ON COLUMN NOTICE_FILE.R_NO is '후기 번호';
 COMMENT ON COLUMN NOTICE_FILE.N_NO is '공지사항 번호';
 

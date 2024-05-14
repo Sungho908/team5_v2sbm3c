@@ -2,6 +2,9 @@ package dev.mvc.member;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -58,23 +61,24 @@ public class MemberVO {
   
   
   /** 멤버 섬네일 */
-  private String mThumb;
+  private String mThumb = "";
   
   
   /** 멤버주소 */
-  private String mAddr1;
+  private String mAddr1 = "";
   
   
   /** 멤버 상세주소 */
-  private String mAddr2;
+  private String mAddr2 = "";
   
   
   /** 멤버 우편번호 */
-  private Integer mZipcode;
+  private Integer mZipcode = null;
   
   
   /** 멤버 생년월일 */
-  private Date mDate;
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private Date mDate = null;
   
   
   /** 멤버 가입일 */
@@ -95,4 +99,8 @@ public class MemberVO {
   
   /** 멤버 권한 */
   private MemberRole mRole;
+  
+  
+  /** 썸네일파일 업로드를 위한 MultipartFile*/
+  private MultipartFile mf;
 }

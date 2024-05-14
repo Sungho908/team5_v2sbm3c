@@ -22,7 +22,7 @@ import jakarta.annotation.Resource;
 @Configuration
 //@mapperScan(basePackages= {}) // DAO interface를 찾는 위치
 @PropertySource("classpath:/application.properties")  // 설정 관련 파일 위치
-@MapperScan(basePackages= {"dev.mvc.shoes"}) // 개발 package(테이블)
+@MapperScan(basePackages= {"dev.mvc.shoes","dev.mvc.member"}) // 개발 package(테이블)
 public class DatabaseConfiguration {
     @Autowired
     private ApplicationContext applicationContext;
