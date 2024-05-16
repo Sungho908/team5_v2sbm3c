@@ -16,13 +16,13 @@ import org.springframework.context.annotation.PropertySource;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import jakarta.annotation.Resource;
-
-@Configuration
-//@mapperScan(basePackages= {}) // DAO interface를 찾는 위치
+@Configuration // Spring Boot 환경 설정 파일임으로 읽어들여 설정 할 것
 @PropertySource("classpath:/application.properties")  // 설정 관련 파일 위치
-@MapperScan(basePackages= {"dev.mvc.shoes"}) // 개발 package(테이블)
+@MapperScan(basePackages= {"dev.mvc.shoes",
+                                              "dev.mvc.member",
+                                              "dev.mvc.contents"}) // 개발 package(테이블)
 public class DatabaseConfiguration {
+    
     @Autowired
     private ApplicationContext applicationContext;
     

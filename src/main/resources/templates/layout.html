@@ -13,7 +13,6 @@
   <script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
   <link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
-  <link href="/fotorama/fotorama.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
   <link rel="shortcut icon" href="/images/star.png" />
 
 </head>
@@ -22,38 +21,47 @@
   <script src="/fotorama/fotorama.js"></script>
 
 
-  <div class='top_bnn' style="background-color: #e3f2fd;">
-
-    <p><b>오늘도 발걸음을 찾아주셔서 감사합니다.</b></p>
-    <div class="btn_close"><i class="xi-close"></i></div>
-    <ul class="mymenu">
-      <li class="xans-element- xans-layout xans-layout-statelogoff "><a href="/member/login.html">LOGIN</a>
-      </li>
-      <!-- <li module="Layout_statelogoff"><a href="/member/join.html">JOIN</a></li> -->
-      <li><a href="/myshop/order/list.html">ORDER</a></li>
-      <li><a class="cart_num" href="/order/basket.html">CART<span style="display:none"
-            class="xans-element- xans-myshop xans-myshop-main "><span
-              class="xans_myshop_main_basket_cnt">0</span></span>
-        </a></li>
-      <li><a href="/myshop/index.html">MY PAGE</a></li>
-    </ul>
-  </div>
-
 
   <div class='container_main'>
-    <script src="/fotorama/fotorama.js"></script>
-    <div th:replace="~{navbar::navbarFragment}"></div> <!-- navbar.html navbarFragment import -->
 
-    <div class='content_body'>
-      <!--포토라마 -->
-      <div class="fotorama-div">
-        <div class="fotorama">
-          <div><img src="/fotorama/images/winter01.jpg" alt="Image 1" class="fotorama__img"></div>
-          <div><img src="/fotorama/images/winter02.jpg" alt="Image 2" class="fotorama__img"></div>
-          <div><img src="/fotorama/images/winter03.jpg" alt="Image 3" class="fotorama__img"></div>
-          <!-- Add more images here -->
-        </div>
+
+    <div class='top_bnn' style="background-color: #e3f2fd;">
+
+      <p><b>오늘도 발걸음을 찾아주셔서 감사합니다.</b></p>
+      <div class="btn_close"><i class="xi-close"></i></div>
+
+      <div class="main_inner">
+
+        <ul class="mymenu">
+          <li class="xans-element- xans-layout xans-layout-statelogoff "><a href="/member/login.html">HOME</a>
+          </li>
+          <!-- <li module="Layout_statelogoff"><a href="/member/join.html">JOIN</a></li> -->
+          <li><a href="/myshop/order/list.html">STYLE</a></li>
+          <li><a class="cart_num" href="/order/basket.html">SHOP<span style="display:none"
+                class="xans-element- xans-myshop xans-myshop-main "><span
+                  class="xans_myshop_main_basket_cnt">0</span></span>
+            </a></li>
+        <a href="/"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-search"
+          viewBox="0 0 16 16">
+          <path
+            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+        </svg></a>
+        </ul>
+        
+        <ul class="mymenu">
+          <li class="xans-element- xans-layout xans-layout-statelogoff "><a href="/member/login.html">LOGIN</a>
+          </li>
+          <!-- <li module="Layout_statelogoff"><a href="/member/join.html">JOIN</a></li> -->
+          <li><a href="/myshop/order/list.html">ORDER</a></li>
+          <li><a class="cart_num" href="/order/basket.html">CART<span style="display:none"
+                class="xans-element- xans-myshop xans-myshop-main "><span
+                  class="xans_myshop_main_basket_cnt">0</span></span>
+            </a></li>
+          <li><a href="/myshop/index.html">MY PAGE</a></li>
+        </ul>
       </div>
+
+      <div th:replace="~{navbar::navbarFragment}"></div> <!-- navbar.html navbarFragment import -->
 
 
 
@@ -63,7 +71,7 @@
           <p>스니커즈</p>
         </div>
         <div class="content_category ">
-           <a href="/"><img src="/images/sandals.jpg" class="rounded-image" style="width:100px;  height: 100px"></a>
+          <a href="/"><img src="/images/sandals.jpg" class="rounded-image" style="width:100px;  height: 100px"></a>
           <p> 샌들</p>
         </div>
         <div class="content_category ">
@@ -75,7 +83,7 @@
           <p> 운동화</p>
         </div>
         <div class="content_category ">
-           <a href="/"><img src="/images/adidas.jpg" class="rounded-image" style="width:100px;  height: 100px"></a>
+          <a href="/"><img src="/images/adidas.jpg" class="rounded-image" style="width:100px;  height: 100px"></a>
           <p> 러닝화</p>
         </div>
         <div class="content_category ">

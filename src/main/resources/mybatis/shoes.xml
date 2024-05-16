@@ -4,7 +4,7 @@
 <mapper namespace="dev.mvc.shoes.ShoesDAOInter"> <!-- SB가 자동으로 구현하여 연동하는 interface -->
   <insert id="create" parameterType="dev.mvc.shoes.ShoesVO"> <!-- public int create(ShoesVO shoesVO) {...-->
     INSERT INTO shoes(shoesno, name, namesub, cnt, rdate, seqno, visible)
-    VALUES(CATE_SEQ.nextval, #{name}, #{namesub}, 0, sysdate, 1, 'Y')
+    VALUES(SHOES_SEQ.nextval, #{name}, #{namesub}, 0, sysdate, 1, 'Y')
   </insert>
   
   <!-- SQL -> ShoesVO -> ArrayList<ShoesVO> return -->
