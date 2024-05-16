@@ -21,10 +21,12 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-jdbc'
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+  implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
   implementation 'org.springframework.boot:spring-boot-starter-security'
   implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
   implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
-  
+  implementation 'org.springframework.boot:spring-boot-starter-security'
+  implementation 'org.springframework.boot:spring-boot-starter-validation'
   
 
   compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
@@ -34,7 +36,6 @@ dependencies {
   annotationProcessor 'org.projectlombok:lombok'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
-  
   
   providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
