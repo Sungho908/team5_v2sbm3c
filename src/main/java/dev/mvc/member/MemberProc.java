@@ -10,7 +10,18 @@ public class MemberProc implements MemberProcInter {
 
   @Override
   public int create(MemberVO memberVO) {
+    System.out.println(memberVO.toString());
     return this.memberDAO.create(memberVO);
+  }
+
+  @Override
+  public int checkId(String id) {
+    return this.memberDAO.checkId(id);
+  }
+
+  @Override
+  public MemberVO readById(String id) {
+    return this.memberDAO.readById(id);
   }
 
 }

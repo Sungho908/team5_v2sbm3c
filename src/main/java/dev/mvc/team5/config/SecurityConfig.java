@@ -1,4 +1,4 @@
-package dev.mvc.team5;
+package dev.mvc.team5.config;
 
 import java.io.IOException;
 

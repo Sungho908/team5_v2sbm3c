@@ -1,6 +1,7 @@
 package dev.mvc.member;
 
 import java.util.Date;
+import java.util.function.Supplier;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
@@ -73,11 +74,11 @@ public class MemberVO {
   
   
   /** 멤버 우편번호 */
-  private Integer mZipcode = null;
+  private Integer mZipcode = 0;
   
   
   /** 멤버 생년월일 */
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @DateTimeFormat(pattern = "yyyy-M-d")
   private Date mDate = null;
   
   
@@ -103,4 +104,13 @@ public class MemberVO {
   
   /** 썸네일파일 업로드를 위한 MultipartFile*/
   private MultipartFile mf;
+
+
+  public MemberVO orElseThrow(Supplier<? extends Throwable> exceptionSupplier) throws Throwable {
+    if (this == null) {
+        throw exceptionSupplier.get();
+    } else {
+        return this;
+    }
+}
 }

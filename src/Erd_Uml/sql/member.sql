@@ -1,6 +1,10 @@
 /**********************************/
 /* Table Name: 멤버 */
 /**********************************/
+DROP TABLE member;
+
+DROP TABLE member CASCADE CONSTRAINTS;
+
 CREATE TABLE MEMBER(
 		M_NO                          		NUMBER(9)		 NOT NULL		 PRIMARY KEY,
 		M_ID                          		VARCHAR2(100)		 NOT NULL,
@@ -39,4 +43,20 @@ COMMENT ON COLUMN MEMBER.M_POINT is '멤버 포인트';
 COMMENT ON COLUMN MEMBER.M_GENDER is '멤버 성별';
 COMMENT ON COLUMN MEMBER.M_GRADE is '멤버 등급';
 COMMENT ON COLUMN MEMBER.M_ROLE is '멤버 권한';
+
+DROP SEQUENCE member_seq;
+
+CREATE SEQUENCE member_seq
+  START WITH 1              -- 시작 번호
+  INCREMENT BY 1          -- 증가값
+  MAXVALUE 9999999999 -- 최대값: 9999999 --> NUMBER(7) 대응
+  CACHE 2                       -- 2번은 메모리에서만 계산
+  NOCYCLE;                     -- 다시 1부터 생성되는 것을 방지
+
+INSERT INTO member(m_no, m_id, m_pw, m_name, m_nickname, m_phone, m_email, m_thumb, m_addr1, m_addr2, m_zipcode, m_date, m_rdate, m_point, m_gender, m_grade, m_role)
+VALUES (member_seq.nextval, #{mId}, #{mPw}, #{mName}, #{mNickname}, #{mPhone}, #{mEmail}, #{mThumb}, #{mAddr1}, #{mAddr2}, #{mZipcode}, #{mDate}, sysdate, 0, #{mGender}, 1, 'USER')
+
+select count(m_id) as cnt
+from member
+where m_id='9';
 

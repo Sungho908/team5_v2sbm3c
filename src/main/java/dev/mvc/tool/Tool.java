@@ -491,80 +491,87 @@ public class Tool {
 
     return ip;
   }
-
+  /**
+   * 파일 저장위치 설정 가져오기
+   * @return 저장경로
+   * */
   public static synchronized String getUploadDir() {
     String path = "";
     if (File.separator.equals("\\")) { // windows, 개발 환경의 파일 업로드 폴더
       // path = "C:/kd/deploy/resort_v2sbm3c/contents/storage/";
-      path = "D:\\kd\\deploy\\team5_v2sbm3c\\contents\\storage\\";
+      path = "D:\\kd\\deploy\\team5_v2sbm3c\\file\\storage\\";
       // System.out.println("Windows 10: " + path);
 
     } else { // Linux, AWS, 서비스용 배치 폴더
       // System.out.println("Linux");
-      path = "/home/ubuntu/deploy/team5_v2sbm3c/contents/storage/";
+      path = "/home/ubuntu/deploy/team5_v2sbm3c/file/storage/";
     }
 
     return path;
   }
-
-  public static void saveFileWithChecksum(String filename, byte[] fileBytes, String checksum) {
-    try {
-      Path filePath = Paths.get("uploads/" + filename);
-      Path checksumPath = Paths.get("uploads/" + filename + ".md5");
-      Files.write(filePath, fileBytes);
-      Files.write(checksumPath, checksum.getBytes());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
+  
 
   public static String saveFileSpring(MultipartFile multipartFile, String absPath) {
-    String fileName = "";
+    String relativePath = "";
     String originalFileName = multipartFile.getOriginalFilename();
     long fileSize = multipartFile.getSize();
 
     if (originalFileName == null || fileSize == 0) {
-      return fileName; // 파일이 없거나 사이즈가 0이면 저장하지 않음
+        return relativePath; // 파일이 없거나 사이즈가 0이면 저장하지 않음
     }
 
     int extIndex = originalFileName.lastIndexOf(".");
-    String onlyFilename = originalFileName.substring(0, extIndex);
-    String extFilename = originalFileName.substring(extIndex);
+    String extFilename = originalFileName.substring(extIndex).toLowerCase(); // 확장자를 소문자로 변환
 
     try {
-      byte[] fileBytes = multipartFile.getBytes();
-      String checksum = calculateChecksum(fileBytes);
+        byte[] fileBytes = multipartFile.getBytes();
+        String checksum = calculateChecksum(fileBytes);
+        System.out.println(checksum);
 
-      // Check for existing files with the same checksum
-      File existingFile = findFileByChecksum(absPath, checksum);
-      if (existingFile != null) {
-        System.out.println("-> 같은 체크섬을 가진 파일이 이미 존재합니다: " + existingFile.getName());
-        return existingFile.getName();
-      }
+        // Check for existing files with the same checksum
+        File existingFile = findFileByChecksum(absPath, extFilename, checksum);
+        if (existingFile != null) {
+            System.out.println("-> 같은 체크섬을 가진 파일이 이미 존재합니다: " + existingFile.getName());
+            // 반환 경로를 절대 경로에서 상대 경로로 변환
+            String existingFilePath = existingFile.getAbsolutePath();
+            relativePath = existingFilePath.substring(absPath.length()).replace("\\", "/");
+            if (relativePath.startsWith("/")) {
+                relativePath = relativePath.substring(1);
+            }
+            return relativePath;
+        }
 
-      String extension = extFilename.substring(1); // Remove the dot from the extension
+        String extension = extFilename.substring(1); // Remove the dot from the extension
 
-      // Create directory based on the file extension
-      File directory = new File(absPath, extension);
-      if (!directory.exists()) {
-        directory.mkdirs();
-      }
+        // Create directory based on the file extension
+        File directory = new File(absPath, extension);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
 
-      File newFile = new File(directory, checksum + extFilename);
+        File newFile = new File(directory, checksum + extFilename);
 
-      fileName = newFile.getName();
-      String serverFullPath = directory.getPath() + "/" + fileName;
+        String serverFullPath = newFile.getAbsolutePath();
 
-      try (FileOutputStream outputStream = new FileOutputStream(serverFullPath)) {
-        outputStream.write(fileBytes);
-      }
+        try (FileOutputStream outputStream = new FileOutputStream(serverFullPath)) {
+            outputStream.write(fileBytes);
+        }
+
+        // 반환 경로를 절대 경로에서 상대 경로로 변환
+        relativePath = serverFullPath.substring(absPath.length()).replace("\\", "/");
+        if (relativePath.startsWith("/")) {
+            relativePath = relativePath.substring(1);
+        }
 
     } catch (Exception e) {
-      e.printStackTrace();
+        e.printStackTrace();
     }
 
-    return fileName; // 서버에 저장된 파일명
-  }
+    return relativePath; // 서버에 저장된 파일의 상대 경로 반환
+}
+
+
+
 
   private static String calculateChecksum(byte[] fileBytes) {
     try {
@@ -580,18 +587,33 @@ public class Tool {
     }
   }
 
-  private static File findFileByChecksum(String directory, String checksum) {
-    File dir = new File(directory);
+  private static File findFileByChecksum(String directory, String ext,String checksum) {
+    String path = "";
+    if (File.separator.equals("\\")) {
+      path = directory + "\\" + ext.substring(1);
+    } else {
+      path = directory + "/" + ext.substring(1);
+    }
+    File dir = new File(path);
+
     if (!dir.exists() || !dir.isDirectory()) {
-      return null;
+        return null;
     }
 
-    File[] files = dir.listFiles((dir1, name) -> name.startsWith(checksum) && (name.length() == checksum.length() + 4));
+    File[] files = dir.listFiles((dir1, name) -> {
+        int extIndex = name.lastIndexOf(".");
+        String nameWithoutExt = name.substring(0, extIndex);
+        return nameWithoutExt.startsWith(checksum) && (nameWithoutExt.length() == checksum.length());
+    });
+
+    // 해당 파일이 존재하면 첫 번째 파일을 반환, 그렇지 않으면 null 반환
     if (files != null && files.length > 0) {
-      return files[0];
+        return files[0];
     }
 
     return null;
-  }
+}
+
+
 
 }
