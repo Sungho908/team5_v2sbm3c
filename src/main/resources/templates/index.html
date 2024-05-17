@@ -1,6 +1,118 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout}"> <!-- layout.html 상속 -->
-  <div layout:fragment="content" style="width: 80%; margin: 50px auto; text-align: center;">
-    <img src="/images/main.jpg" style="width: 90%;"> <!-- /static/images/main.jpg -->
+<html layout:decorate="~{layout}">
+<!-- layout.html 상속 -->
+<div layout:fragment="content" style="width: 100%; margin:40px auto; text-align: center;">
+
+  <link href="/fotorama/fotorama.css" rel="stylesheet">
+  <script src="/fotorama/fotorama.js"></script>
+  <!--포토라마 -->
+
+
+  <div >
+    <div class="fotorama" data-width="600" data-ratio="1" data-max-width="100%" >
+      <img src="/fotorama/images/vans.jpg"> <!-- static 폴더 기준 -->
+      <img src="/fotorama/images/vans.jpg">
+      <img src="/fotorama/images/vans.jpg">
+      <img src="/fotorama/images/vans.jpg">
+      <img src="/fotorama/images/vans.jpg">
+      <img src="/fotorama/images/vans.jpg">
+    </div>
+    <div class="content_body">
+    <div class="shoes">
+      <img src="/images/crocs.jpg" alt="프로필 이미지">
+      <p>설명</p>
+      <div class="menu_line"></div>
+      <p>크록스</p>
+      <p>가격</p>
+    </div>
+    <div class="shoes">
+      <img src="/images/vans.jpg" alt="프로필 이미지">
+      <p>설명</p>
+      <div class="menu_line"></div>
+      <p>크록스</p>
+      <p>가격</p>
+    </div>
+    <div class="shoes">
+      <img src="/images/crocs.jpg" alt="프로필 이미지">
+      <p>설명</p>
+      <div class="menu_line"></div>
+      <p>크록스</p>
+      <p>가격</p>
+    </div>
+    <div class="shoes">
+      <img src="/images/nike2.jpg" alt="프로필 이미지">
+      <p>설명</p>
+      <div class="menu_line"></div>
+      <p>크록스</p>
+      <p>가격</p>
+    </div>
   </div>
+
+  <div class="content_body">
+    <div class="shoes">
+      <img src="/images/adidas.jpg" alt="프로필 이미지">
+      <p>설명</p>
+      <div class="menu_line"></div>
+      <p>사용자 이름1</p>
+      <p>가격</p>
+    </div>
+    <div class="shoes">
+      <img src="/images/slipper.jpg" alt="프로필 이미지">
+      <p>설명</p>
+      <div class="menu_line"></div>
+      <p>사용자 이름2</p>
+      <p>가격</p>
+    </div>
+    <div class="shoes">
+      <img src="/images/NB.jpg" alt="프로필 이미지">
+      <p>설명</p>
+      <div class="menu_line"></div>
+      <p>사용자 이름3</p>
+      <p>가격</p>
+    </div>
+    <div class="shoes">
+      <img src="/images/nike.jpg" alt="프로필 이미지">
+      <p>설명</p>
+      <div class="menu_line"></div>
+      <p>사용자 이름4</p>
+      <p>가격</p>
+    </div>
+  </div>
+
+
+  <div class="content_body">
+    <div class="shoes">
+      <img src="/images/VLTN.jpg" alt="프로필 이미지">
+      <p>설명</p>
+      <div class="menu_line"></div>
+      <p>사용자 이름1</p>
+      <p>가격</p>
+    </div>
+    <div class="shoes">
+      <img src="/images/puma.jpg" alt="프로필 이미지">
+      <p>설명</p>
+      <div class="menu_line"></div>
+      <p>사용자 이름2</p>
+      <p>가격</p>
+    </div>
+    <div class="shoes">
+      <img src="/images/roper.jpg" alt="프로필 이미지">
+      <p>설명</p>
+      <div class="menu_line"></div>
+      <p>사용자 이름3</p>
+      <p>가격</p>
+    </div>
+    <div class="shoes">
+      <img src="/images/sandals.jpg" alt="프로필 이미지">
+      <p>설명</p>
+      <div class="menu_line"></div>
+      <p>사용자 이름4</p>
+      <p>가격</p>
+    </div>
+  </div>
+
+
+</div>
+
+
 </html>

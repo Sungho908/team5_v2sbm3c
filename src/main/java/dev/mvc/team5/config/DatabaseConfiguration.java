@@ -12,17 +12,16 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.io.ClassPathResource;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import jakarta.annotation.Resource;
-
 @Configuration
-//@mapperScan(basePackages= {}) // DAO interface를 찾는 위치
-@PropertySource("classpath:/application.properties")  // 설정 관련 파일 위치
-@MapperScan(basePackages= {"dev.mvc.shoes","dev.mvc.member"}) // 개발 package(테이블)
+@PropertySource("classpath:/application.properties")  // 설정 파일 위치
+@MapperScan(basePackages = {"dev.mvc.admin.category", 
+                                             "dev.mvc.admin.notice",
+                                             "dev.mvc.shoes",
+                                             "dev.mvc.member"})  // DAO interface를 찾는 위치
 public class DatabaseConfiguration {
     @Autowired
     private ApplicationContext applicationContext;
@@ -45,8 +44,8 @@ public class DatabaseConfiguration {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
         // "/src/main/resources/mybatis" 폴더의 파일명이 "xml"로 끝나는 파일 매핑
-        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:/mybatis/mapper/*.xml"));
-        sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:/mybatis/mybatis-config.xml"));
+        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:/mybatis/**/*.xml"));
+        //sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:/mybatis/mybatis-config.xml"));
         
         return sqlSessionFactoryBean.getObject();
     }

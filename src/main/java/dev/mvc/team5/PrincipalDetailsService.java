@@ -1,6 +1,7 @@
 package dev.mvc.team5;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,7 +16,7 @@ public class PrincipalDetailsService implements UserDetailsService {
   private final MemberProcInter memberProc;
 
   @Autowired // 또는 @Qualifier를 사용하여 빈을 선택할 수 있습니다.
-  public PrincipalDetailsService(MemberProcInter memberProc) {
+  public PrincipalDetailsService(@Qualifier("memberProc") MemberProcInter memberProc) {
     this.memberProc = memberProc;
   }
 

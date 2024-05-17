@@ -1,4 +1,3 @@
-// version 1.0
 package dev.mvc.tool;
 
 import java.awt.Image;

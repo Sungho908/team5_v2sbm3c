@@ -1,23 +1,141 @@
-<nav th:fragment="navbarFragment" class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">오버랜딩 ver 1.0</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/shoes/create}">카테고리 등록</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/shoes/list_all}">카테고리 전체 목록</a>
-        </li>
-      </ul>
-
-    </div>
-
-
+<div th:fragment="navbarFragment">
+  <div class="top_menu_img">
+    <div class="top_menu_label">발 걸 음</div>
   </div>
 
-</nav>
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 부트스트랩 CDN 링크 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- 부트스트랩 JS 및 jQuery CDN 링크 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
+  </head>
+
+  <body>
+    <script src="/js/dropdown.js"></script>
+
+    <nav class="navbar navbar-expand-lg " style="background-color: #e3f2fd;">
+      <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown mr-3">
+              <a class="nav-link" href="#" id="navbarDropdown1" role="button" aria-haspopup="true"
+                aria-expanded="false">
+                스니커즈/슬립온
+              </a>
+              <div class="dropdown-menu text-center" aria-labelledby="navbarDropdown1">
+                <a class="dropdown-item" href="#">스니커즈</a>
+                <a class="dropdown-item" href="#">슬립온</a>
+              </div>
+            </li>
+            <li class="nav-item dropdown mr-3">
+              <a class="nav-link" href="#" id="navbarDropdown2" role="button" aria-haspopup="true"
+                aria-expanded="false">
+                부츠/워커
+              </a>
+              <div class="dropdown-menu text-center" aria-labelledby="navbarDropdown2">
+                <a class="dropdown-item" href="#">부츠</a>
+                <a class="dropdown-item" href="#">워커</a>
+              </div>
+            </li>
+
+            <li class="nav-item dropdown mr-3">
+              <a class="nav-link" href="#" id="navbarDropdown3" role="button" aria-haspopup="true"
+                aria-expanded="false">
+                샌들/슬리퍼
+              </a>
+              <div class="dropdown-menu text-center" aria-labelledby="navbarDropdown3">
+                <a class="dropdown-item" href="#">샌들</a>
+                <a class="dropdown-item" href="#">슬리퍼</a>
+              </div>
+            </li>
+
+            <li class="nav-item dropdown mr-3">
+              <a class="nav-link" href="#" id="navbarDropdown4" role="button" aria-haspopup="true"
+                aria-expanded="false">
+                운동화/러닝화
+              </a>
+              <div class="dropdown-menu text-center" aria-labelledby="navbarDropdown4">
+                <a class="dropdown-item" href="#">운동화</a>
+                <a class="dropdown-item" href="#">러닝화</a>
+              </div>
+            </li>
+
+            <li class="nav-item dropdown mr-3">
+              <a class="nav-link" href="#" id="navbarDropdown5" role="button" aria-haspopup="true"
+                aria-expanded="false">
+                로퍼/구두
+              </a>
+              <div class="dropdown-menu text-center" aria-labelledby="navbarDropdown5">
+                <a class="dropdown-item" href="#">로퍼</a>
+                <a class="dropdown-item" href="#">구두</a>
+              </div>
+            </li>
+            
+            <li class="nav-item dropdown mr-3">
+              <a class="nav-link" href="#" id="navbarDropdown6" role="button" aria-haspopup="true"
+                aria-expanded="false">
+                SALE
+              </a>
+              <div class="dropdown-menu text-center" aria-labelledby="navbarDropdown6">
+                <a class="dropdown-item" href="#">SALE</a>
+                <a class="dropdown-item" href="#">SALE</a>
+              </div>
+            </li>
+            
+             <li class="nav-item dropdown mr-3">
+              <a class="nav-link" href="#" id="navbarDropdown7" role="button" aria-haspopup="true"
+                aria-expanded="false">
+                SPECIAL
+              </a>
+              <div class="dropdown-menu text-center" aria-labelledby="navbarDropdown7">
+                <a class="dropdown-item" href="#">SPECIAL</a>
+                <a class="dropdown-item" href="#">SPECIAL</a>
+              </div>
+            </li>
+            
+            <li class="nav-item dropdown mr-3">
+              <a class="nav-link" href="#" id="navbarDropdown8" role="button" aria-haspopup="true"
+                aria-expanded="false">
+                ACC
+              </a>
+              <div class="dropdown-menu text-center" aria-labelledby="navbarDropdown8">
+                <a class="dropdown-item" href="#">슈즈악세사리</a>
+              </div>
+            </li>
+
+            <li class="nav-item dropdown mr-3">
+              <a class="nav-link" href="#" id="navbarDropdown9" role="button" aria-haspopup="true"
+                aria-expanded="false">
+                COMMUNITY
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown9">
+                <a class="dropdown-item" href="#">공지사항</a>
+                <a class="dropdown-item" href="#">이용안내 FAQ</a>
+              </div>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+  </body>
+
+  </html>
+
+  </nav>
+
+</div>

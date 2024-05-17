@@ -48,9 +48,9 @@ public class SecurityConfig {
 	                    csrf.disable()
 	                    )
 	        .authorizeHttpRequests(requests -> requests
-	            .requestMatchers("/member/**").authenticated()
-	            .requestMatchers("/admin/**").hasAuthority(MemberRole.ADMIN.name())
-	            .requestMatchers("/business/**").hasAuthority(MemberRole.BUSINESS.name())
+	            //.requestMatchers("/member/**").authenticated()
+	            //.requestMatchers("/admin/**").hasAuthority(MemberRole.ADMIN.name())
+	            //.requestMatchers("/business/**").hasAuthority(MemberRole.BUSINESS.name())
 	            .anyRequest().permitAll()
 	            )
 	            
