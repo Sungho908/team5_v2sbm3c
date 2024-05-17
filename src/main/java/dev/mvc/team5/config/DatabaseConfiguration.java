@@ -1,4 +1,4 @@
-package dev.mvc.team5;
+package dev.mvc.team5.config;
 
 import javax.sql.DataSource;
 
@@ -19,9 +19,10 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 @PropertySource("classpath:/application.properties")  // 설정 파일 위치
 @MapperScan(basePackages = {"dev.mvc.admin.category", 
-                                             "dev.mvc.admin.notice"})  // DAO interface를 찾는 위치
+                                             "dev.mvc.admin.notice",
+                                             "dev.mvc.shoes",
+                                             "dev.mvc.member"})  // DAO interface를 찾는 위치
 public class DatabaseConfiguration {
-    
     @Autowired
     private ApplicationContext applicationContext;
     
@@ -44,6 +45,7 @@ public class DatabaseConfiguration {
         sqlSessionFactoryBean.setDataSource(dataSource);
         // "/src/main/resources/mybatis" 폴더의 파일명이 "xml"로 끝나는 파일 매핑
         sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:/mybatis/**/*.xml"));
+        //sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:/mybatis/mybatis-config.xml"));
         
         return sqlSessionFactoryBean.getObject();
     }

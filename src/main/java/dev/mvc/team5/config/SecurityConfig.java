@@ -1,4 +1,4 @@
-package dev.mvc.team5;
+package dev.mvc.team5.config;
 
 import java.io.IOException;
 
@@ -25,6 +25,7 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+import dev.mvc.member.MemberRole;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebListener;
 import jakarta.servlet.http.Cookie;
@@ -47,8 +48,9 @@ public class SecurityConfig {
 	                    csrf.disable()
 	                    )
 	        .authorizeHttpRequests(requests -> requests
-	            .requestMatchers("/mypage/**").authenticated()
-	            .requestMatchers("/dogfood/list_search").hasAuthority("")
+	            //.requestMatchers("/member/**").authenticated()
+	            //.requestMatchers("/admin/**").hasAuthority(MemberRole.ADMIN.name())
+	            //.requestMatchers("/business/**").hasAuthority(MemberRole.BUSINESS.name())
 	            .anyRequest().permitAll()
 	            )
 	            
