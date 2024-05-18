@@ -27,6 +27,7 @@ dependencies {
   implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
   implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 <<<<<<< HEAD
+<<<<<<< HEAD
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
   implementation 'org.springframework.boot:spring-boot-starter-validation'  
     implementation 'commons-fileupload:commons-fileupload:1.5'
@@ -38,6 +39,9 @@ dependencies {
 =======
   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 >>>>>>> daec155c7e65840f2db5dab7588f3457314619f4
+=======
+  implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+>>>>>>> f70f4cf77208e3c096eb6034dca50f1fcb7273bf
   compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
 //  compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0-M2'
   

@@ -1,16 +1,20 @@
 package dev.mvc.team5;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 =======
 >>>>>>> daec155c7e65840f2db5dab7588f3457314619f4
+=======
+>>>>>>> f70f4cf77208e3c096eb6034dca50f1fcb7273bf
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 import dev.mvc.shoes.ShoesVO;
 import dev.mvc.shoes.ShoesVOMenu;
@@ -50,6 +54,8 @@ public class HomeCont {
 
 
 =======
+=======
+>>>>>>> f70f4cf77208e3c096eb6034dca50f1fcb7273bf
 @Controller
 public class HomeCont {
 
@@ -77,4 +83,7 @@ public class HomeCont {
   }
   
 }
+<<<<<<< HEAD
 >>>>>>> daec155c7e65840f2db5dab7588f3457314619f4
+=======
+>>>>>>> f70f4cf77208e3c096eb6034dca50f1fcb7273bf

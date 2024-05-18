@@ -16,6 +16,7 @@ import org.springframework.context.annotation.PropertySource;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+<<<<<<< HEAD
 <<<<<<< HEAD:src/main/java/dev/mvc/team5/DatabaseConfiguration.java
 @Configuration // Spring Boot 환경 설정 파일임으로 읽어들여 설정 할 것
 @PropertySource("classpath:/application.properties")  // 설정 관련 파일 위치
@@ -23,13 +24,18 @@ import com.zaxxer.hikari.HikariDataSource;
                                               "dev.mvc.member",
                                               "dev.mvc.contents"}) // 개발 package(테이블)
 =======
+=======
+>>>>>>> f70f4cf77208e3c096eb6034dca50f1fcb7273bf
 @Configuration
 @PropertySource("classpath:/application.properties")  // 설정 파일 위치
 @MapperScan(basePackages = {"dev.mvc.admin.category", 
                                              "dev.mvc.admin.notice",
                                              "dev.mvc.shoes",
                                              "dev.mvc.member"})  // DAO interface를 찾는 위치
+<<<<<<< HEAD
 >>>>>>> daec155c7e65840f2db5dab7588f3457314619f4:src/main/java/dev/mvc/team5/config/DatabaseConfiguration.java
+=======
+>>>>>>> f70f4cf77208e3c096eb6034dca50f1fcb7273bf
 public class DatabaseConfiguration {
     
     @Autowired
