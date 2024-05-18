@@ -1,13 +1,17 @@
 package dev.mvc.team5;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+=======
+>>>>>>> daec155c7e65840f2db5dab7588f3457314619f4
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+<<<<<<< HEAD
 import dev.mvc.shoes.ShoesVO;
 import dev.mvc.shoes.ShoesVOMenu;
 import dev.mvc.shoes.ShoesProcInter;
@@ -45,3 +49,32 @@ public class HomeCont {
 
 
 
+=======
+@Controller
+public class HomeCont {
+
+//  @Autowired
+//  private Security security;
+
+  public HomeCont() {
+    System.out.println("-> HomeCont created.");
+  }
+  /*
+   * @GetMapping(value = "/") // http://localhost:9093 public String home(Model
+   * model) { // 파일명 return
+   * 
+   * System.out.println("-> http://localhost:9093");
+   * 
+   * return "/index"; // /templates/login.html }
+   */
+
+  @GetMapping(value = "/admin") // http://localhost:9091/admin
+  public String admin(Model model) { // 파일명 return
+
+    System.out.println("-> http://localhost:9093/admin");
+
+    return "admin/index"; // /templates/index.html
+  }
+  
+}
+>>>>>>> daec155c7e65840f2db5dab7588f3457314619f4

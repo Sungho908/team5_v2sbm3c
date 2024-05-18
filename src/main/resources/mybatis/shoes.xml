@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<<<<<<< HEAD
 <mapper namespace="dev.mvc.shoes.ShoesDAOInter"> <!-- SB가 자동으로 구현하여 연동하는 interface -->
   <insert id="create" parameterType="dev.mvc.shoes.ShoesVO"> <!-- public int create(ShoesVO shoesVO) {...-->
     INSERT INTO shoes(shoesno, name, namesub, cnt, rdate, seqno, visible)
@@ -31,6 +32,9 @@
   <delete id="delete" parameterType="Integer">
     DELETE FROM shoes WHERE shoesno=#{shoesno}
   </delete>
+=======
+<mapper namespace="dev.mvc.shoes.ShoesDAOInter">
+>>>>>>> daec155c7e65840f2db5dab7588f3457314619f4
   
 </mapper>
 

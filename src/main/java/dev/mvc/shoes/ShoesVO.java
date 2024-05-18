@@ -1,50 +1,63 @@
 package dev.mvc.shoes;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
-@Setter @Getter
+@Getter
+@Setter
+@ToString
+//CREATE TABLE SHOES(
+//    S_NO                              NUMBER(9)    NOT NULL    PRIMARY KEY,
+//    C_NO                              NUMBER(9)    NOT NULL,
+//    M_NO                              NUMBER(9)    NOT NULL,
+//    S_TITLE                           VARCHAR2(100)    NOT NULL,
+//    S_BRAND                           VARCHAR2(100)    NOT NULL,
+//    S_RATING                          NUMBER     NOT NULL,
+//    S_PRICE                           NUMBER     NOT NULL,
+//    S_DISCOUNT                        NUMBER     NOT NULL,
+//    S_CONTENTS                        VARCHAR2(1000)     NOT NULL,
+//    S_VISIBLE                         CHAR(1)    NOT NULL,
+//  FOREIGN KEY (M_NO) REFERENCES MEMBER (M_NO),
+//  FOREIGN KEY (C_NO) REFERENCES CATEGORY (C_NO)
+//);
 public class ShoesVO {
-  /** 오버렌딩 카테고리 번호 */
-  private Integer shoesno=0;
+  /** 신발 번호 */
+  private Integer sNo;
   
-  /** 중분류명 */
-  @NotEmpty(message="중분류명은 필수 입력 항목입니다.")
-  @Size(min=2, max=10, message="중분류명의 입력 글자 수는 최소 2자에서 10자 이어야합니다.")
-  private String name;
-
-  /** 소분류명 */
-  @NotEmpty(message="소분류명은 필수 입력 항목입니다.")
-  @Size(min=2, max=10, message="소분류명의 입력 글자 수는 최소 2자에서 10자 이어야합니다.")
-  private String namesub;
   
-  /** 관련 자료수 */
-  @NotNull(message="관련자료수는 필수 입력 항목입니다.")
-  @Min(value = 0)
-  @Max(value = 1000000)
-  private Integer cnt=0;
+  /** 신발명 */
+  private String sTitle;
   
-  /** 등록일 */
-  private String rdate;
   
-  /** 출력 순서 */
-  @NotNull(message="출력 순서는 필수 입력 항목입니다.")
-  @Min(value = 1)
-  @Max(value = 1000000)
-  private Integer seqno=1;
-
-  /** 출력 모드 */
-  @NotEmpty(message="출력 모드는 필수 입력 항목입니다.")
-  @Pattern(regexp="^[YN]$", message="Y 또는 N만 입력 가능합니다.")
-  private String visible = "N";
-
+  /** 신발 브랜드명 */
+  private String sBrand;
+  
+  
+  /** 신발 평점*/
+  private Double sRating;
+  
+  
+  /** 신발 가격*/
+  private Double sPrice;
+  
+  
+  /** 신발 할인율 */
+  private Double sDiscount;
+  
+  
+  /** 신발 설명 */
+  private String sContents;
+  
+  
+  /** 신발 판매 여부 */
+  private char sVisible;
+  
+  
+  /** 유저 번호 */
+  private Integer mNo;
+  
+  
+  /** 카테고리 번호 */
+  private Integer cNo;
 }
-
-
-

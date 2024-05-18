@@ -1,4 +1,4 @@
-package dev.mvc.team5;
+package dev.mvc.team5.config;
 
 import javax.sql.DataSource;
 
@@ -16,11 +16,20 @@ import org.springframework.context.annotation.PropertySource;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+<<<<<<< HEAD:src/main/java/dev/mvc/team5/DatabaseConfiguration.java
 @Configuration // Spring Boot 환경 설정 파일임으로 읽어들여 설정 할 것
 @PropertySource("classpath:/application.properties")  // 설정 관련 파일 위치
 @MapperScan(basePackages= {"dev.mvc.shoes",
                                               "dev.mvc.member",
                                               "dev.mvc.contents"}) // 개발 package(테이블)
+=======
+@Configuration
+@PropertySource("classpath:/application.properties")  // 설정 파일 위치
+@MapperScan(basePackages = {"dev.mvc.admin.category", 
+                                             "dev.mvc.admin.notice",
+                                             "dev.mvc.shoes",
+                                             "dev.mvc.member"})  // DAO interface를 찾는 위치
+>>>>>>> daec155c7e65840f2db5dab7588f3457314619f4:src/main/java/dev/mvc/team5/config/DatabaseConfiguration.java
 public class DatabaseConfiguration {
     
     @Autowired
@@ -45,6 +54,7 @@ public class DatabaseConfiguration {
         sqlSessionFactoryBean.setDataSource(dataSource);
         // "/src/main/resources/mybatis" 폴더의 파일명이 "xml"로 끝나는 파일 매핑
         sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:/mybatis/**/*.xml"));
+        //sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:/mybatis/mybatis-config.xml"));
         
         return sqlSessionFactoryBean.getObject();
     }

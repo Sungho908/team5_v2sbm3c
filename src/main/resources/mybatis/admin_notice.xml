@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dev.mvc.admin.notice.NoticeDAOInter">
+  <insert id="create" parameterType="dev.mvc.admin.notice.NoticeVO">
+    INSERT INTO notice (n_no, n_title, n_comment, n_date, n_file, n_size, m_no)
+    VALUES(NOTICE_SEQ.nextval, #{n_title}, #{n_comment}, sysdate, #{n_file}, #{n_size}, #{m_no})
+  </insert>
+
+  <select id="list_all" resultType="dev.mvc.admin.notice.NoticeVO">
+    SELECT n_no, n_title, n_comment, n_date, n_file, n_size, m_no
+    FROM notice
+    ORDER BY n_date DESC
+  </select>
+
+  <!-- 검색된 레코드 수 -->
+  <select id="list_search_count" resultType="int" parameterType="String">
+    SELECT COUNT(*) as cnt
+    FROM notice
+    
+    <if test="word != null and word != ''">
+      WHERE UPPER(n_title) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(n_comment) LIKE '%' || UPPER(#{word}) || '%'
+    </if>
+        
+    ORDER BY n_date DESC
+  </select>
+                
+  <select id="read" resultType="dev.mvc.admin.notice.NoticeVO" parameterType="Integer">
+    SELECT n_no, n_title, n_comment, n_date, n_file, n_size, m_no
+    FROM notice
+    WHERE n_no = #{n_no}
+  </select>
+
+  <update id="update" parameterType="dev.mvc.admin.notice.NoticeVO">
+    UPDATE notice
+    SET n_title = #{n_title}, n_comment = #{n_comment},
+    n_file = #{n_file}, n_size = #{n_size}
+    WHERE n_no = #{n_no}
+  </update>
+
+  <delete id="delete" parameterType="Integer">
+    DELETE FROM notice WHERE n_no = #{n_no}
+  </delete>
+
+</mapper>
