@@ -32,11 +32,4 @@ public interface LoginHistoryProcInter {
    * */
   public ArrayList<LoginHistoryVO> readBymembernoRdateDesc(int memberno);
   
-  /**
-   * 최근10건뺴고 날짜가 오래된것 삭제
-   * id="deleteOldRdateForMemberno" parameterType="int"
-   * @param memberno
-   * @return 성공한 쿼리 갯수
-   * */
-  public int deleteOldRdateForMemberno(int memberno);
 }

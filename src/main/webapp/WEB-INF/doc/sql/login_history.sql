@@ -44,28 +44,22 @@ FROM login_history
 where memberno = 1
 ORDER BY rdate desc;
 
---d 최근기록 10건만 남기고 나머지 삭제
-DELETE FROM LOGIN_HISTORY
-WHERE LOGINNO IN (
-    SELECT LOGINNO
-    FROM (
-        SELECT LOGINNO,
-               ROW_NUMBER() OVER (PARTITION BY MEMBERNO ORDER BY RDATE DESC) AS rnum
-        FROM LOGIN_HISTORY
-        WHERE MEMBERNO = 1
-    ) subquery
-    WHERE rnum > 10
-);
 
-DELETE FROM LOGIN_HISTORY
-    WHERE LOGINNO IN (
-      SELECT LOGINNO
-      FROM (
-        SELECT LOGINNO, ROW_NUMBER() OVER (ORDER BY RDATE DESC) AS rnum
-        FROM LOGIN_HISTORY
-        WHERE MEMBERNO = 1
-      )
-    WHERE rnum > 10 AND ROWNUM <= 1000
+
+SELECT loginno, ip, rdate, memberno
+FROM (
+    SELECT loginno, ip, rdate, memberno
+    FROM login_history
+    WHERE memberno = 1
+    ORDER BY rdate DESC
+)
+WHERE ROWNUM <= 10
+
+
+
+
+
+
 
 
 

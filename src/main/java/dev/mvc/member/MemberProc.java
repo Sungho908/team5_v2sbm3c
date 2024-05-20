@@ -12,7 +12,6 @@ public class MemberProc implements MemberProcInter {
 
   @Override
   public int create(MemberVO memberVO) {
-    System.out.println(memberVO.toString());
     return this.memberDAO.create(memberVO);
   }
 
@@ -29,6 +28,12 @@ public class MemberProc implements MemberProcInter {
   @Override
   public MemberVO readByMemberno(int id) {
     return this.memberDAO.readByMemberno(id);
+  }
+
+  @Override
+  public int update(MemberVO memberVO) {
+    System.out.println("memberVO: "+memberVO.toString());
+    return this.memberDAO.update(memberVO);
   }
 
 }

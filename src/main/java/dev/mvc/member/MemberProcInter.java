@@ -37,4 +37,13 @@ public interface MemberProcInter {
    * @return MemberVO 객체
    */
   public MemberVO readByMemberno(int id);
+  
+  /**
+   * 회원정보 수정<br>
+   * id="update" parameterType="dev.mvc.member.MemberVO"
+   * 
+   * @param MemberVO 객체
+   * @return 성공한 쿼리 갯수
+   * */
+  public int update(MemberVO memberVO);
 }

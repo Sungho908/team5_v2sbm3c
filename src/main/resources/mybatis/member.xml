@@ -25,4 +25,11 @@
     FROM member
     WHERE memberno=#{memberno}
   </select>
+  
+  <update id="update" parameterType="dev.mvc.member.MemberVO">
+    UPDATE member
+    SET pw=#{pw}, name=#{name}, nickname=#{nickname}, phone=#{phone}, email=#{email}, 
+        thumb=#{thumb}, addr1=#{addr1}, addr2=#{addr2}, zipcode=#{zipcode}, mdate=#{mdate}, gender=#{gender}
+    WHERE memberno=#{memberno}
+  </update>
 </mapper>

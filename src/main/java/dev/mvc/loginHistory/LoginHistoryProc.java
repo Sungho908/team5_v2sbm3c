@@ -45,9 +45,4 @@ public class LoginHistoryProc implements LoginHistoryProcInter {
     return this.loginHistoryDAO.readBymembernoRdateDesc(memberno);
   }
 
-  @Override
-  public int deleteOldRdateForMemberno(int memberno) {
-    return this.loginHistoryDAO.deleteOldRdateForMemberno(memberno);
-  }
-
 }
