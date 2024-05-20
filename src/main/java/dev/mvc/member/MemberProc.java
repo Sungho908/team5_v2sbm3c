@@ -1,5 +1,4 @@
 package dev.mvc.member;
-<<<<<<< HEAD
  
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +31,7 @@ public class MemberProc implements MemberProcInter {
 
   @Override
   public int create(MemberVO memberVO) {
-    String passwd = memberVO.getPasswd();
+    String passwd = memberVO.getMPw();
     // Security security = new Security();
     //String passwd_encoded = this.security.aesEncode(passwd);
     //memberVO.setPasswd(passwd_encoded);
@@ -127,35 +126,3 @@ public class MemberProc implements MemberProcInter {
   
 }
 
-
-
-
-
-=======
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-@Service
-public class MemberProc implements MemberProcInter {
-  @Autowired
-  private MemberDAOInter memberDAO;
-
-  @Override
-  public int create(MemberVO memberVO) {
-    System.out.println(memberVO.toString());
-    return this.memberDAO.create(memberVO);
-  }
-
-  @Override
-  public int checkId(String id) {
-    return this.memberDAO.checkId(id);
-  }
-
-  @Override
-  public MemberVO readById(String id) {
-    return this.memberDAO.readById(id);
-  }
-
-}
->>>>>>> daec155c7e65840f2db5dab7588f3457314619f4

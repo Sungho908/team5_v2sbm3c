@@ -1,6 +1,5 @@
 package dev.mvc.member;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.HashMap;  // class
 import java.util.List;
@@ -91,11 +90,9 @@ public interface MemberDAOInter {
    */
   public int login(HashMap<String, Object> map);
   
-}
  
 
-=======
-   * 중복 아이디 검사<br>
+   /* 중복 아이디 검사<br>
    * id="checkId" parameterType="String" resultType="int"<br>
    * 
    * @param 검색할 Id
@@ -103,14 +100,4 @@ public interface MemberDAOInter {
    */
   public int checkId(String id);
   
-  /**
-   * 아이디로 회원 찾기<br>
-   * id="readById" parameterType="String" resultType="dev.mvc.member.MemberVO"<br>
-   * 
-   * @param 검색할 id명
-   * @return MemberVO 객체
-   * */
-  public MemberVO readById(String id);
-  
 }
->>>>>>> daec155c7e65840f2db5dab7588f3457314619f4
