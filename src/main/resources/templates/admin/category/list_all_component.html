@@ -19,15 +19,15 @@
     <tbody>
       <tr th:each="categoryVO, status:${list}">
         <td class="td_bs" th:text="|${(now_page-1) * 5 + status.index + 1}|"></td>
-        <td class="td_bs"><a th:href="@{|/admin/category/read/${categoryVO.c_no}?word=${word}&now_page=${now_page}|}" style="display: block;" th:text="${categoryVO.c_name}"></a></td>
-        <td class="td_bs"><a th:href="@{|/admin/category/read/${categoryVO.c_no}?word=${word}&now_page=${now_page}|}" style="display: block;" th:text="${categoryVO.c_subname}"></a></td>
-        <td class="td_bs" th:text="${categoryVO.c_cnt}"></td>
+        <td class="td_bs"><a th:href="@{|/admin/category/read/${categoryVO.categoryno}?word=${word}&now_page=${now_page}|}" style="display: block;" th:text="${categoryVO.name}"></a></td>
+        <td class="td_bs"><a th:href="@{|/admin/category/read/${categoryVO.categoryno}?word=${word}&now_page=${now_page}|}" style="display: block;" th:text="${categoryVO.subname}"></a></td>
+        <td class="td_bs" th:text="${categoryVO.cnt}"></td>
         <td class="td_bs">
-          <span th:text="${categoryVO.c_seq}" style="margin-right: 3px;"></span>              
-          <a th:href="@{|/admin/category/update_seqno_forward/${categoryVO.c_no}?word=${word}&now_page=${now_page}|}"><img src="/admin/category/images/decrease.png" class="icon"></a>
-          <a th:href="@{|/admin/category/update_seqno_backward/${categoryVO.c_no}?word=${word}&now_page=${now_page}|}"><img src="/admin/category/images/increase.png" class="icon"></a>
-          <a th:href="@{|/admin/category/update/${categoryVO.c_no}?word=${word}&now_page=${now_page}|}"><img src="/admin/category/images/update.png" class="icon"></a>
-          <a th:href="@{|/admin/category/delete/${categoryVO.c_no}?word=${word}&now_page=${now_page}|}"><img src="/admin/category/images/delete.png" class="icon"></a>
+          <span th:text="${categoryVO.seq}" style="margin-right: 3px;"></span>              
+          <a th:href="@{|/admin/category/update_seqno_forward/${categoryVO.categoryno}?word=${word}&now_page=${now_page}|}"><img src="/admin/category/images/decrease.png" class="icon"></a>
+          <a th:href="@{|/admin/category/update_seqno_backward/${categoryVO.categoryno}?word=${word}&now_page=${now_page}|}"><img src="/admin/category/images/increase.png" class="icon"></a>
+          <a th:href="@{|/admin/category/update/${categoryVO.categoryno}?word=${word}&now_page=${now_page}|}"><img src="/admin/category/images/update.png" class="icon"></a>
+          <a th:href="@{|/admin/category/delete/${categoryVO.categoryno}?word=${word}&now_page=${now_page}|}"><img src="/admin/category/images/delete.png" class="icon"></a>
         </td>
       </tr>
     </tbody>
