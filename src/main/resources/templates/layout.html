@@ -41,23 +41,35 @@
                 class="xans-element- xans-myshop xans-myshop-main "><span
                   class="xans_myshop_main_basket_cnt">0</span></span>
             </a></li>
-        <a href="/"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-search"
-          viewBox="0 0 16 16">
-          <path
-            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-        </svg></a>
+          <a href="/"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+              class="bi bi-search" viewBox="0 0 16 16">
+              <path
+                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+            </svg></a>
         </ul>
-        
+
         <ul class="mymenu">
-          <li class="xans-element- xans-layout xans-layout-statelogoff "><a href="/member/login.html">LOGIN</a>
+    <th:block th:unless="${not #strings.isEmpty(session.login)}">
+          <li class="xans-element- xans-layout xans-layout-statelogoff "><a href="/member/login">LOGIN</a>
           </li>
-          <!-- <li module="Layout_statelogoff"><a href="/member/join.html">JOIN</a></li> -->
+          </th:block>
+          <th:block th:if="${not #strings.isEmpty(session.login)}">
           <li><a href="/myshop/order/list.html">ORDER</a></li>
-          <li><a class="cart_num" href="/order/basket.html">CART<span style="display:none"
-                class="xans-element- xans-myshop xans-myshop-main "><span
-                  class="xans_myshop_main_basket_cnt">0</span></span>
-            </a></li>
-          <li><a href="/myshop/index.html">MY PAGE</a></li>
+          <li><a class="cart_num" href="/order/basket.html">CART
+            <span style="display:none" class="xans-element- xans-myshop xans-myshop-main ">
+                <span class="xans_myshop_main_basket_cnt">0</span></span>
+            </a>
+        </li>
+            <li class="nav-item dropdown" id="disablelink">
+                <a th:text="|[${session.login.nickname}]|" class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"> 중분류메뉴 </a>
+        
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li><a class="nav-link" href="/member/update_passwd">회원정보 변경</a></li>
+                    <li><a class="nav-link" href="/login/history">접속기록 확인</a></li>
+                    <li><a class="nav-link" href="/member/logout">로그아웃</a></li>
+                </ul>
+            </li>   
+        </th:block>
         </ul>
       </div>
 

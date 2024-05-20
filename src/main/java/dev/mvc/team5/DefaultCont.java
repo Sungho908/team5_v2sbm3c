@@ -5,20 +5,39 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import dev.mvc.tool.Alert;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class DefaultCont {
-  @GetMapping({"","/"})
-  public String index() {
-    return "index";
-  }
-  
-  /*
-   * alert창을 띄움
-   * */
+  /** Alert 창 띄우기 */
   public static String showMessageAndRedirect(final Alert params, Model model) {
     model.addAttribute("params", params);
     return "alert";
+  }
+  
+  
+  @GetMapping({"","/"}) // http://localhost:9091/
+  public String index(HttpSession session) {
+    return "index"; // /templates/index.html
+  }
+  
+
+  @GetMapping(value = "/admin") //http://localhost:9091/admin 
+  public String admin(Model model) {  
+    return "admin/index"; // /templates/admin/index.html
+  }
+  
+  
+  @GetMapping("authentication") // http://localhost:9091/authentication
+  public String authentication() {
+    return "authentication"; // /templates/authentication.html
+  }
+  
+  
+  @GetMapping("authorization") // http://localhost:9091/authorization
+  public String authorization() {
+    return "authorization"; // /templates/authorization.html
   }
   
 }

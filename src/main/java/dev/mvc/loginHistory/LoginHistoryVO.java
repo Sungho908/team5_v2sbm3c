@@ -10,25 +10,25 @@ import lombok.ToString;
 @Setter
 @ToString
 //CREATE TABLE LOGIN_HISTORY(
-//    LH_NO                             NUMBER(9)    NOT NULL    PRIMARY KEY,
-//    LH_IP                             VARCHAR2(15)     NOT NULL,
-//    LH_DATE                           DATE     NULL ,
-//    M_NO                              NUMBER(9)    NOT NULL,
-//  FOREIGN KEY (M_NO) REFERENCES MEMBER (M_NO)
+//    LOGINNO                 NUMBER(9)    NOT NULL    PRIMARY KEY,
+//    IP                                VARCHAR2(50)     NOT NULL,
+//    RDATE                             DATE     NULL ,
+//    MEMBERNO                          NUMBER(9)    NOT NULL,
+//  FOREIGN KEY (MEMBERNO) REFERENCES MEMBER (MEMBERNO)
 //);
 public class LoginHistoryVO {
   /** 로그인내역 번호 */
-  private Integer lhNo;
+  private Integer loginno;
   
   
   /** 로그인내역 아이피 */
-  private String lhIp;
+  private String ip;
   
   
   /** 로그인내역 접속일*/
-  private Date lhDate;
+  private Date rdate;
   
   
   /** 멤버 번호 */
-  private Integer mNo;
+  private Integer memberno;
 }

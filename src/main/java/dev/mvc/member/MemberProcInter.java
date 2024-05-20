@@ -27,4 +27,14 @@ public interface MemberProcInter {
    * @return MemberVO 객체
    * */
   public MemberVO readById(String id);
+  
+  /**
+   * Memberno로 회원 찾기<br>
+   * id="readByMemberno" parameterType="int"
+   * resultType="dev.mvc.member.MemberVO"<br>
+   * 
+   * @param 검색할 id명
+   * @return MemberVO 객체
+   */
+  public MemberVO readByMemberno(int id);
 }

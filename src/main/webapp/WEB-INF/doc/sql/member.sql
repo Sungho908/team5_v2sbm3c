@@ -1,9 +1,13 @@
 /**********************************/
 /* Table Name: 멤버 */
 /**********************************/
+DROP TABLE member;
+
+DROP TABLE member CASCADE CONSTRAINTS; 
+
 CREATE TABLE MEMBER(
 		MEMBERNO                      		NUMBER(9)		 NOT NULL		 PRIMARY KEY,
-		ID                            		VARCHAR2(100)		 NOT NULL,
+		ID                            		VARCHAR2(100)		 UNIQUE       NOT NULL,
 		PW                            		VARCHAR2(100)		 NOT NULL,
 		NAME                          		VARCHAR2(100)		 NOT NULL,
 		NICKNAME                      		VARCHAR2(100)		 NOT NULL,
@@ -39,6 +43,8 @@ COMMENT ON COLUMN MEMBER.POINT is '멤버 포인트';
 COMMENT ON COLUMN MEMBER.GENDER is '멤버 성별';
 COMMENT ON COLUMN MEMBER.GRADE is '멤버 등급';
 COMMENT ON COLUMN MEMBER.ROLE is '멤버 권한';
+
+
 DROP SEQUENCE member_seq;
 
 CREATE SEQUENCE member_seq
@@ -49,7 +55,7 @@ CREATE SEQUENCE member_seq
   NOCYCLE;                     -- 다시 1부터 생성되는 것을 방지
 
 INSERT INTO member(memberno, id, pw, name, nickname, phone, email, thumb, addr1, addr2, zipcode, date, rdate, point, gender, grade, role)
-VALUES (member_seq.nextval, #{mId}, #{mPw}, #{mName}, #{mNickname}, #{mPhone}, #{mEmail}, #{mThumb}, #{mAddr1}, #{mAddr2}, #{mZipcode}, #{mDate}, sysdate, 0, #{mGender}, 1, 'USER')
+VALUES (member_seq.nextval, #{mId}, #{mPw}, #{mName}, #{mNickname}, #{mPhone}, #{mEmail}, #{mThumb}, #{mAddr1}, #{mAddr2}, #{mZipcode}, #{mDate}, sysdate, 0, #{mGender}, 1, 'ADMIN')
 
 select count(id) as cnt
 from member
