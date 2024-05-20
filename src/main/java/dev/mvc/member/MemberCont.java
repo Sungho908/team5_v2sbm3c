@@ -1,20 +1,16 @@
 package dev.mvc.member;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-=======
 import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> daec155c7e65840f2db5dab7588f3457314619f4
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-<<<<<<< HEAD
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

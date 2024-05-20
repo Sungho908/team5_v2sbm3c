@@ -256,7 +256,7 @@ public class ShoesCont {
 
       model.addAttribute("cnt", cnt);
       if (cnt == 1) {
-        return "redirect:/shoes/update/" + shoesVO.getShoesno() + "?word=";// + Tool.encode(word) + "&now_page=" + now_page;
+        return "redirect:/shoes/update/" + shoesVO.getSNo() + "?word=";// + Tool.encode(word) + "&now_page=" + now_page;
         
       } else {
         model.addAttribute("code", "update_fail");
