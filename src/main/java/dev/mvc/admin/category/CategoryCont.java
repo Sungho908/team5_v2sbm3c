@@ -40,18 +40,22 @@ public class CategoryCont {
 
   private void table_paging(Model model, String word, int now_page) {
     ArrayList<CategoryVO> list = this.categoryProc.list_search_paging(word, now_page, this.record_per_page);
-    model.addAttribute("list", list);
+    if (list.isEmpty()) {
+    } else {
+      model.addAttribute("list", list);
 
-    int search_count = this.categoryProc.list_search_count(word);
-    String paging = this.categoryProc.pagingBox(now_page, word, "/admin/category/list", search_count,
-        this.record_per_page, this.page_per_block);
+      int search_count = this.categoryProc.list_search_count(word);
+      String paging = this.categoryProc.pagingBox(now_page, word, "/admin/notice/list", search_count,
+          this.record_per_page, this.page_per_block);
 
-    int no = search_count - ((now_page - 1) * this.record_per_page);
+      int no = search_count - ((now_page - 1) * this.record_per_page);
 
-    model.addAttribute("paging", paging);
-    model.addAttribute("now_page", now_page);
-    model.addAttribute("word", word);
-    model.addAttribute("no", no);
+      model.addAttribute("paging", paging);
+      model.addAttribute("now_page", now_page);
+      model.addAttribute("word", word);
+      model.addAttribute("no", no);
+
+    }
   }
 
   /** 카테고리 목록 */
@@ -60,7 +64,7 @@ public class CategoryCont {
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
     word = Tool.checkNull(word).trim();
-
+    
     ArrayList<CategoryVO> menu = this.categoryProc.list_all();
     model.addAttribute("menu", menu);
     

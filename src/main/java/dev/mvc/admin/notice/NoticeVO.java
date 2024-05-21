@@ -31,7 +31,7 @@ public class NoticeVO {
   /** 공지사항 내용 */
   @NotEmpty(message="공지사항 내용은 필수 입력 항목입니다.")
   @Size(min=1, message="최소 1자이상 입력해주세요.")
-  private String comment;
+  private String contents;
   
   /** 공지사항 작성일 */
   private Date rdate;

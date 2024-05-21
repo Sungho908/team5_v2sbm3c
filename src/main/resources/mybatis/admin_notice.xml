@@ -7,7 +7,7 @@
     VALUES(NOTICE_SEQ.nextval, #{title}, #{contents}, sysdate, #{memberno})
   </insert>
 
-  <select id="list_all" resultType="dev.mvc.admin.notice.NoticeVO">
+  <select id="list_all" resultType="dev.mvc.admin.notice.NoticeMemberVO">
     SELECT n.noticeno, n.title, n.contents, n.rdate, n.views, m.nickname
     FROM notice n
     JOIN member m ON n.memberno = m.memberno
@@ -24,23 +24,26 @@
     ORDER BY rdate DESC
   </select>
 
-  <select id="list_search_paging" resultType="dev.mvc.admin.notice.NoticeVO" parameterType="Map">
-    SELECT noticeno, title, contents, rdate, views, memberno, r
+  <select id="list_search_paging" resultType="dev.mvc.admin.notice.NoticeMemberVO" parameterType="Map">
+    SELECT n.noticeno, n.title, n.contents, n.rdate, n.views, m.nickname, r
     FROM (
         SELECT noticeno, title, contents, rdate, views, memberno, rownum as r
-        FROM (
-            SELECT noticeno, title, contents, rdate, views, memberno
-            FROM notice
-    <if test="word != null and word != ''">
-              WHERE UPPER(title) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(contents) LIKE '%' || UPPER(#{word}) || '%'  
-            </if>
-    ORDER BY rdate ASC
-        )
-    )
-    WHERE r &gt; = #{start_num} AND r &lt; = #{end_num}
-    <!-- WHERE r >= 1 AND r <= 3 -->
+        FROM notice
+        ORDER BY noticeno DESC
+    ) n
+    JOIN member m ON n.memberno = m.memberno
+        <if test="word != null and word != ''">
+    WHERE 
+      (
+        UPPER(n.title) LIKE '%' || UPPER(#{word}) || '%' 
+        OR UPPER(n.contents) LIKE '%' || UPPER(#{word}) || '%' 
+        OR UPPER(m.nickname) LIKE '%' || UPPER(#{word}) || '%' 
+      )
+    </if>
+    AND
+        r &gt; = #{start_num} AND r &lt; = #{end_num}
   </select>
-  
+
   <select id="read" resultType="dev.mvc.admin.notice.NoticeVO" parameterType="Integer">
     SELECT noticeno, title, contents, rdate, views, memberno
     FROM notice

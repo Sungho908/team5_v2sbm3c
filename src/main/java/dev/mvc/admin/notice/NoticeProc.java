@@ -57,6 +57,7 @@ public class NoticeProc implements NoticeProcInter{
     map.put("end_num", end_num);
 
     ArrayList<NoticeMemberVO> list = this.noticeDAO.list_search_paging(map);
+    
     return list;
   }
 
