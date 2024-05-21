@@ -1,16 +1,17 @@
 package dev.mvc.member;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
+@Component("dev.mvc.member.MemberProc")
 public class MemberProc implements MemberProcInter {
   @Autowired
   private MemberDAOInter memberDAO;
 
   @Override
   public int create(MemberVO memberVO) {
-    System.out.println(memberVO.toString());
     return this.memberDAO.create(memberVO);
   }
 
@@ -22,6 +23,17 @@ public class MemberProc implements MemberProcInter {
   @Override
   public MemberVO readById(String id) {
     return this.memberDAO.readById(id);
+  }
+
+  @Override
+  public MemberVO readByMemberno(int id) {
+    return this.memberDAO.readByMemberno(id);
+  }
+
+  @Override
+  public int update(MemberVO memberVO) {
+    System.out.println("memberVO: "+memberVO.toString());
+    return this.memberDAO.update(memberVO);
   }
 
 }

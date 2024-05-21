@@ -4,19 +4,32 @@
 <mapper namespace="dev.mvc.member.MemberDAOInter" >
  <!-- resultType=""  parameterType="" -->
   <insert id="create" parameterType="dev.mvc.member.MemberVO" >
-    INSERT INTO member(m_no, m_id, m_pw, m_name, m_nickname, m_phone, m_email, m_thumb, m_addr1, m_addr2, m_zipcode, m_date, m_rdate, m_point, m_gender, m_grade, m_role)
-    VALUES (member_seq.nextval, #{mId}, #{mPw}, #{mName}, #{mNickname}, #{mPhone}, #{mEmail}, #{mThumb}, #{mAddr1}, #{mAddr2}, #{mZipcode}, #{mDate}, sysdate, 0, #{mGender}, 1, 'USER')
+    INSERT INTO member(memberno, id, pw, name, nickname, phone, email, thumb, addr1, addr2, zipcode, mdate, rdate, point, gender, grade, role)
+    VALUES (member_seq.nextval, #{id}, #{pw}, #{name}, #{nickname}, #{phone}, #{email}, #{thumb}, #{addr1}, #{addr2}, #{zipcode}, #{mdate}, sysdate, 0, #{gender}, 1, 'USER')
   </insert>
   
   <select id="checkId" parameterType="String" resultType="int">
-    SELECT COUNT(m_id) as cnt
+    SELECT COUNT(id) as cnt
     FROM member
-    WHERE m_id=#{id}
+    WHERE id=#{id}
   </select>
   
   <select id="readById" parameterType="String" resultType="dev.mvc.member.MemberVO">
-    SELECT m_no, m_id, m_pw, m_name, m_nickname, m_phone, m_email, m_thumb, m_addr1, m_addr2, m_zipcode, m_date, m_rdate, m_point, m_gender, m_grade, m_role
+    SELECT memberno, id, pw, name, nickname, phone, email, thumb, addr1, addr2, zipcode, mdate, rdate, point, gender, grade, role
     FROM member
-    WHERE m_id=#{id}
+    WHERE id=#{id}
   </select>
+  
+  <select id="readByMemberno" parameterType="int" resultType="dev.mvc.member.MemberVO">
+    SELECT memberno, id, pw, name, nickname, phone, email, thumb, addr1, addr2, zipcode, mdate, rdate, point, gender, grade, role
+    FROM member
+    WHERE memberno=#{memberno}
+  </select>
+  
+  <update id="update" parameterType="dev.mvc.member.MemberVO">
+    UPDATE member
+    SET pw=#{pw}, name=#{name}, nickname=#{nickname}, phone=#{phone}, email=#{email}, 
+        thumb=#{thumb}, addr1=#{addr1}, addr2=#{addr2}, zipcode=#{zipcode}, mdate=#{mdate}, gender=#{gender}
+    WHERE memberno=#{memberno}
+  </update>
 </mapper>

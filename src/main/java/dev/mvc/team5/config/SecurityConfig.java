@@ -24,8 +24,14 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import dev.mvc.loginHistory.LoginHistoryProcInter;
+import dev.mvc.member.MemberProc;
+import dev.mvc.member.MemberProcInter;
 import dev.mvc.member.MemberRole;
+import dev.mvc.member.MemberVO;
+import dev.mvc.tool.Tool;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebListener;
 import jakarta.servlet.http.Cookie;
@@ -37,6 +43,14 @@ import jakarta.servlet.http.HttpSession;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+  @Autowired
+  @Qualifier("dev.mvc.member.MemberProc")
+  private MemberProcInter memberProc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.loginHistory.LoginHistoryProc")
+  private LoginHistoryProcInter loginHistoryProc;
+  
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -44,24 +58,24 @@ public class SecurityConfig {
 	
 	@Bean
 	public SecurityFilterChain filterChain (HttpSecurity http) throws Exception{
-	    return http.csrf(csrf -> 
-	                    csrf.disable()
-	                    )
+	    return http.csrf(csrf ->csrf.disable())
 	        .authorizeHttpRequests(requests -> requests
 	            //.requestMatchers("/member/**").authenticated()
 	            //.requestMatchers("/admin/**").hasAuthority(MemberRole.ADMIN.name())
 	            //.requestMatchers("/business/**").hasAuthority(MemberRole.BUSINESS.name())
+	            .requestMatchers("/mypage/**").authenticated()
+	            .requestMatchers("/login/**").authenticated()
 	            .anyRequest().permitAll()
 	            )
 	            
 	        .formLogin(login -> login
 	            .usernameParameter("id")	                    
 	            .passwordParameter("pw")
-	            .loginPage("/user/login")
+	            .loginPage("/member/login")
 	            .defaultSuccessUrl("/")
-	            .failureUrl("/user/login")
+	            .failureUrl("/member/login")
 	            .successHandler((request, response, authentication) -> {
-/**
+
 	                      String id = request.getParameter("id");
 	                      String pw = request.getParameter("pw"); // 비밀번호 가져오기
 	                      String save = request.getParameter("save");
@@ -85,19 +99,21 @@ public class SecurityConfig {
 	                      }
 	                      HttpSession session = request.getSession();
 	                      // 사용자 정보 조회
-	                      UserVO userVO = userProc.readById(id);
+	                      MemberVO memberVO = memberProc.readById(id);
 	                      // 세션에 사용자 정보 저장
-	                      session.setAttribute("login", userVO);
+	                      session.setAttribute("login", memberVO);
+	                      
+	                      this.loginHistoryProc.create(memberVO.getMemberno(), request);
 	                      
 	                      // 기본 성공 핸들러 실행
 	                      new DefaultRedirectStrategy().sendRedirect(request, response, "/");
- */
+ 
 	                  })
 	            )
 	            
 	            
 	            .logout(logout -> logout
-	                .logoutUrl("/user/logout")
+	                .logoutUrl("/member/logout")
 	                .logoutSuccessUrl("/")
 	                .invalidateHttpSession(true).deleteCookies("JSESSIONID"))
 	            

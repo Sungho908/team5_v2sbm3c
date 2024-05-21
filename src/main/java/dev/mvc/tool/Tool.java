@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -461,35 +463,42 @@ public class Tool {
    * @param HttpServletRequest 객체
    * @return ip주소
    */
-  public static String getClientIP(HttpServletRequest request) {
+  public static String getClientIp(HttpServletRequest request) throws UnknownHostException {
     String ip = request.getHeader("X-Forwarded-For");
 
-    System.out.println("> X-FORWARDED-FOR : " + ip);
+    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+        ip = request.getHeader("Proxy-Client-IP"); 
+    } 
+    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+        ip = request.getHeader("WL-Proxy-Client-IP"); 
+    } 
+    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+        ip = request.getHeader("HTTP_CLIENT_IP"); 
+    } 
+    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+        ip = request.getHeader("HTTP_X_FORWARDED_FOR"); 
+    }
+    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+        ip = request.getHeader("X-Real-IP");
+    }
+    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+        ip = request.getHeader("X-RealIP"); 
+    }
+    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+        ip = request.getHeader("REMOTE_ADDR");
+    }
+    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+        ip = request.getRemoteAddr(); 
+    }
 
-    if (ip == null) {
-      ip = request.getHeader("Proxy-Client-IP");
-      System.out.println("> Proxy-Client-IP : " + ip);
+    if(ip.equals("0:0:0:0:0:0:0:1") || ip.equals("127.0.0.1")) 
+    {
+        InetAddress address = InetAddress.getLocalHost();
+        ip = address.getHostName() + "/" + address.getHostAddress();
     }
-    if (ip == null) {
-      ip = request.getHeader("WL-Proxy-Client-IP");
-      System.out.println(">  WL-Proxy-Client-IP : " + ip);
-    }
-    if (ip == null) {
-      ip = request.getHeader("HTTP_CLIENT_IP");
-      System.out.println("> HTTP_CLIENT_IP : " + ip);
-    }
-    if (ip == null) {
-      ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-      System.out.println("> HTTP_X_FORWARDED_FOR : " + ip);
-    }
-    if (ip == null) {
-      ip = request.getRemoteAddr();
-      System.out.println("> getRemoteAddr : " + ip);
-    }
-    System.out.println("> Result : IP Address : " + ip);
 
     return ip;
-  }
+}
   /**
    * 파일 저장위치 설정 가져오기
    * @return 저장경로

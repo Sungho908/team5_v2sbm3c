@@ -16,7 +16,7 @@ public class PrincipalDetailsService implements UserDetailsService {
   private final MemberProcInter memberProc;
 
   @Autowired // 또는 @Qualifier를 사용하여 빈을 선택할 수 있습니다.
-  public PrincipalDetailsService(@Qualifier("memberProc") MemberProcInter memberProc) {
+  public PrincipalDetailsService(@Qualifier("dev.mvc.member.MemberProc") MemberProcInter memberProc) {
     this.memberProc = memberProc;
   }
 
