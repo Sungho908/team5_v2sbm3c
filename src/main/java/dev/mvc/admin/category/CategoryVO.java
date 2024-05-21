@@ -1,9 +1,6 @@
 package dev.mvc.admin.category;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,26 +22,20 @@ public class CategoryVO {
   /** 카테고리 번호 */
   private Integer categoryno = 0;
   
-  /** 중분류명 */
-  @NotEmpty(message="중분류명은 필수 입력 항목입니다.")
-  @Size(min=1, max=10, message="중분류명의 입력 글자 수는 최소 1자에서 10자 이어야 합니다.")
+  /** 카테고리명 */
+  @NotEmpty(message="카테고리명은 필수 입력 항목입니다.")
+  @Size(min=1, max=10, message="카테고리명의 입력 글자 수는 최소 1자에서 10자 이어야 합니다.")
   private String name;
   
-  /** 소분류명 */
-  @NotEmpty(message="소분류명은 필수 입력 항목입니다.")
-  @Size(min=1, max=30, message="소분류명의 입력 글자 수는 최소 1자에서 30자(한글 10자) 이어야합니다.")
+  /** 서브 카테고리명 */
+  @NotEmpty(message="서브 카테고리명은 필수 입력 항목입니다.")
+  @Size(min=1, max=30, message="서브 카테고리명의 입력 글자 수는 최소 1자에서 30자(한글 10자) 이어야합니다.")
   private String subname;
   
   /** 출력순서 */
-  @NotNull(message="출력 순서는 필수 입력 항목입니다.")
-  @Min(value = 1)
-  @Max(value = 1000000)
   private Integer seq;
   
   /** 항목 수 */
-  @NotNull(message="항목 수는 필수 입력 항목입니다.")
-  @Min(value = 1)
-  @Max(value = 1000000)
   private Integer cnt;
   
   /** 카테고리 부모 번호 */

@@ -29,7 +29,7 @@ dependencies {
   implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
   compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
 //  compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0-M2'
-  
+  implementation 'jakarta.validation:jakarta.validation-api:3.0.0'
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'

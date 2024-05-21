@@ -10,10 +10,10 @@
     <thead>
       <tr>
         <th class="th_bs">번호</th>
-        <th class="th_bs">중분류</th>
-        <th class="th_bs">소분류</th>
+        <th class="th_bs">카테고리명</th>
+        <th class="th_bs">서브 카테고리명</th>
         <th class="th_bs">항목수</th>
-        <th class="th_bs">순서 / 기타</th>
+        <th class="th_bs">순서 / 수정 / 삭제</th>
       </tr>
     </thead>
     <tbody>
@@ -24,8 +24,6 @@
         <td class="td_bs" th:text="${categoryVO.cnt}"></td>
         <td class="td_bs">
           <span th:text="${categoryVO.seq}" style="margin-right: 3px;"></span>              
-          <a th:href="@{|/admin/category/update_seqno_forward/${categoryVO.categoryno}?word=${word}&now_page=${now_page}|}"><img src="/admin/category/images/decrease.png" class="icon"></a>
-          <a th:href="@{|/admin/category/update_seqno_backward/${categoryVO.categoryno}?word=${word}&now_page=${now_page}|}"><img src="/admin/category/images/increase.png" class="icon"></a>
           <a th:href="@{|/admin/category/update/${categoryVO.categoryno}?word=${word}&now_page=${now_page}|}"><img src="/admin/category/images/update.png" class="icon"></a>
           <a th:href="@{|/admin/category/delete/${categoryVO.categoryno}?word=${word}&now_page=${now_page}|}"><img src="/admin/category/images/delete.png" class="icon"></a>
         </td>

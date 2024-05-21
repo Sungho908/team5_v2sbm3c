@@ -8,14 +8,14 @@
     <span th:if="${word!=null and word!=''}" th:text="|${word} ${no} 건|">
   </div>
   <aside class="aside_right">
-    <a href="/admin/category/create">카테고리 등록</a>
+    <a href="/admin/notice/create">카테고리 등록</a>
     <span class="menu_devide">│</span>
     <a href="javascript: location.reload();">새로 고침</a>
   </aside>
 
-  <div th:replace="~{admin/category/list_search_component::list_search_fragment}"></div>
+  <div th:replace="~{admin/notice/list_search_component::list_search_fragment}"></div>
 
-  <div th:replace="~{admin/category/list_all_component::list_all_fragment}"></div>
+  <div th:replace="~{admin/notice/list_all_component::list_all_fragment}"></div>
 
 </div>
 

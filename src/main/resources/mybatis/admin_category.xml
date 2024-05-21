@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
+
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.mvc.admin.category.CategoryDAOInter">
+  <select id="name_list">
+    SELECT distinct name
+    FROM category
+  </select>
+
+  <select id="parent_count" parameterType="Integer">
+    SELECT count(*) as cnt FROM CATEGORY  WHERE PARENTNO = #{categoryno}
+  </select>
+
+  <select id="parent_categoryno" parameterType="String" resultType="Integer">
+    SELECT categoryno
+    FROM category
+    WHERE name = #{name}
+    AND ROWNUM = 1
+  </select>
+
+  <select id="subname_list" parameterType="Integer">
+    SELECT subname
+    FROM category
+    WHERE parentno = #{categoryno}
+  </select>
+  
   <insert id="create" parameterType="dev.mvc.admin.category.CategoryVO">
     INSERT INTO category (categoryno, name, subname, seq, cnt, parentno)
     SELECT 
@@ -24,7 +46,7 @@
         END AS parentno
     FROM dual
   </insert>
-  
+
   <select id="list_all" resultType="dev.mvc.admin.category.CategoryVO">
     SELECT categoryno, name, subname, seq, cnt, parentno 
     FROM category
@@ -37,6 +59,12 @@
     FROM category
     WHERE categoryno = #{categoryno}
   </select>
+
+  <update id="update" parameterType="dev.mvc.admin.category.CategoryVO">
+    UPDATE category
+    SET name = #{name}, subname = #{subname}
+    WHERE categoryno = #{categoryno}
+  </update>
 
   <delete id="delete" parameterType="Integer">
     DELETE FROM category WHERE categoryno = #{categoryno}
@@ -65,11 +93,9 @@
   <select id="list_search" resultType="dev.mvc.admin.category.CategoryVO" parameterType="String">
     SELECT categoryno, name, subname, seq, cnt, parentno 
     FROM category
-    
     <if test="word != null and word != ''">
       WHERE UPPER(name) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(subname) LIKE '%' || UPPER(#{word}) || '%'  
     </if>
-        
     ORDER BY seq ASC
   </select>
 
@@ -81,29 +107,26 @@
         FROM (
             SELECT categoryno, name, subname, seq, cnt, parentno
             FROM category
-            
-            <if test="word != null and word != ''">
+    <if test="word != null and word != ''">
               WHERE UPPER(name) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(subname) LIKE '%' || UPPER(#{word}) || '%'  
             </if>
-         
-            ORDER BY seq ASC
+    ORDER BY seq ASC
         )
     )
-    WHERE r &gt; = #{start_num} AND r &lt; = #{end_num} <!-- WHERE r >= 1 AND r <= 3 -->
+    WHERE r &gt; = #{start_num} AND r &lt; = #{end_num}
+    <!-- WHERE r >= 1 AND r <= 3 -->
   </select>
 
   <!-- 검색된 레코드 수 -->
   <select id="list_search_count" resultType="int" parameterType="String">
     SELECT COUNT(*) as cnt
     FROM category
-    
     <if test="word != null and word != ''">
       WHERE UPPER(name) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(subname) LIKE '%' || UPPER(#{word}) || '%'
     </if>
-        
     ORDER BY seq ASC
   </select>
-                
+
 </mapper>
 
 

@@ -14,6 +14,30 @@ public class CategoryProc implements CategoryProcInter {
   private CategoryDAOInter categoryDAO;
 
   @Override
+  public ArrayList<String> name_list() {
+    ArrayList<String> name = this.categoryDAO.name_list();
+    return name;
+  }
+
+  @Override
+  public int parent_count(int categoryno) {
+    int cnt = this.categoryDAO.parent_count(categoryno);
+    return cnt;
+  }
+
+  @Override
+  public int parent_categoryno(String name) {
+    int categoryno = this.categoryDAO.parent_categoryno(name);
+    return categoryno;
+  }
+
+  @Override
+  public ArrayList<String> subname_list(int categoryno) {
+    ArrayList<String> name = this.categoryDAO.subname_list(categoryno);
+    return name;
+  }
+
+  @Override
   public int create(CategoryVO categoryVO) {
     int cnt = this.categoryDAO.create(categoryVO);
     return cnt;
@@ -26,14 +50,20 @@ public class CategoryProc implements CategoryProcInter {
   }
 
   @Override
-  public CategoryVO read(int c_no) {
-    CategoryVO list = this.categoryDAO.read(c_no);
+  public CategoryVO read(int categoryno) {
+    CategoryVO list = this.categoryDAO.read(categoryno);
     return list;
   }
 
   @Override
-  public int delete(int c_no) {
-    int cnt = this.categoryDAO.delete(c_no);
+  public int update(CategoryVO categoryVO) {
+    int cnt = this.categoryDAO.update(categoryVO);
+    return cnt;
+  }
+
+  @Override
+  public int delete(int categoryno) {
+    int cnt = this.categoryDAO.delete(categoryno);
     return cnt;
   }
 
@@ -44,8 +74,8 @@ public class CategoryProc implements CategoryProcInter {
   }
 
   @Override
-  public ArrayList<CategoryVO> list_all_subname(String c_name) {
-    ArrayList<CategoryVO> list = this.categoryDAO.list_all_subname(c_name);
+  public ArrayList<CategoryVO> list_all_subname(String name) {
+    ArrayList<CategoryVO> list = this.categoryDAO.list_all_subname(name);
     return list;
   }
 
@@ -135,12 +165,13 @@ public class CategoryProc implements CategoryProcInter {
       }
     }
 
-    _now_page = (now_grp * page_per_block)+1; //  최대 페이지수 + 1 
-    if (now_grp < total_grp){ 
-      str.append("<span class='span_box_1'><A href='"+list_file+"?word="+word+"&now_page="+_now_page+"'>다음</A></span>"); 
-    } 
-    str.append("</DIV>"); 
-     
+    _now_page = (now_grp * page_per_block) + 1; // 최대 페이지수 + 1
+    if (now_grp < total_grp) {
+      str.append("<span class='span_box_1'><A href='" + list_file + "?word=" + word + "&now_page=" + _now_page
+          + "'>다음</A></span>");
+    }
+    str.append("</DIV>");
+
     return str.toString();
   }
 
