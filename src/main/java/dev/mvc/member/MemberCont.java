@@ -69,16 +69,16 @@ public class MemberCont {
   
   @PostMapping(value="/create")
   public String create_proc(Model model, MemberVO memberVO) {
-    int checkID_cnt = this.memberProc.checkID(memberVO.getId());
+    int checkID_cnt = this.memberProc.checkID(memberVO.getMId());
     
     if (checkID_cnt == 0) {
-      memberVO.setGrade(15); // 기본 회원 15
+      memberVO.setMGrade(15); // 기본 회원 15
       int cnt = this.memberProc.create(memberVO);
       
       if (cnt == 1) {
         model.addAttribute("code", "create_success");
-        model.addAttribute("mname", memberVO.getMname());
-        model.addAttribute("id", memberVO.getId());
+        model.addAttribute("mname", memberVO.getMName());
+        model.addAttribute("id", memberVO.getMId());
       } else {
         model.addAttribute("code", "create_fail");
       }
@@ -156,8 +156,8 @@ public class MemberCont {
     
     if (cnt == 1) {
       model.addAttribute("code", "update_success");
-      model.addAttribute("mname", memberVO.getMname());
-      model.addAttribute("id", memberVO.getId());
+      model.addAttribute("mname", memberVO.getMName());
+      model.addAttribute("id", memberVO.getMId());
     } else {
       model.addAttribute("code", "update_fail");
     }
@@ -347,18 +347,18 @@ public class MemberCont {
     if (cnt == 1) {
       // id를 이용하여 회원 정보 조회
       MemberVO memverVO = this.memberProc.readById(id);
-      session.setAttribute("memberno", memverVO.getMemberno());      
+      session.setAttribute("memberno", memverVO.getMNo());      
       // int memberno = (int)session.getAttribute("memberno"); // session에서 가져오기
 
-      session.setAttribute("id", memverVO.getId());
-      session.setAttribute("mname", memverVO.getMname());
+      session.setAttribute("id", memverVO.getMId());
+      session.setAttribute("mname", memverVO.getMName());
       // session.setAttribute("grade", memverVO.getGrade());
       
-      if (memverVO.getGrade() >= 1 && memverVO.getGrade() <= 10) {
+      if (memverVO.getMGrade() >= 1 && memverVO.getMGrade() <= 10) {
         session.setAttribute("grade", "admin");
-      } else if (memverVO.getGrade() >= 11 && memverVO.getGrade() <= 20) {
+      } else if (memverVO.getMGrade() >= 11 && memverVO.getMGrade() <= 20) {
         session.setAttribute("grade", "member");
-      } else if (memverVO.getGrade() >= 21) {
+      } else if (memverVO.getMGrade() >= 21) {
         session.setAttribute("grade", "guest");
       }
       
