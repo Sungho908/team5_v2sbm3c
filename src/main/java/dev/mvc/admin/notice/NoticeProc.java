@@ -20,8 +20,8 @@ public class NoticeProc implements NoticeProcInter{
   }
 
   @Override
-  public ArrayList<NoticeVO> list_all() {
-    ArrayList<NoticeVO> list = this.noticeDAO.list_all();
+  public ArrayList<NoticeMemberVO> list_all() {
+    ArrayList<NoticeMemberVO> list = this.noticeDAO.list_all();
     return list;
   }
 
@@ -44,7 +44,7 @@ public class NoticeProc implements NoticeProcInter{
   }
 
   @Override
-  public ArrayList<NoticeVO> list_search_paging(String word, int now_page, int record_per_page) {
+  public ArrayList<NoticeMemberVO> list_search_paging(String word, int now_page, int record_per_page) {
     int begin_of_page = (now_page - 1) * record_per_page;
 
     int start_num = begin_of_page + 1;
@@ -56,8 +56,7 @@ public class NoticeProc implements NoticeProcInter{
     map.put("start_num", start_num);
     map.put("end_num", end_num);
 
-    ArrayList<NoticeVO> list = this.noticeDAO.list_search_paging(map);
-    System.out.println("word" + list.get(0).getNoticeno());
+    ArrayList<NoticeMemberVO> list = this.noticeDAO.list_search_paging(map);
     return list;
   }
 

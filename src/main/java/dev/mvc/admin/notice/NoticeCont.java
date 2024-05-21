@@ -31,7 +31,7 @@ public class NoticeCont {
   }
   
   private void table_paging(Model model, String word, int now_page) {
-    ArrayList<NoticeVO> list = this.noticeProc.list_search_paging(word, now_page, this.record_per_page);
+    ArrayList<NoticeMemberVO> list = this.noticeProc.list_search_paging(word, now_page, this.record_per_page);
     model.addAttribute("list", list);
     System.out.println("ㅎㅇ" + list.get(0).getNoticeno());
     int search_count = this.noticeProc.list_search_count(word);
@@ -51,7 +51,7 @@ public class NoticeCont {
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
     
-    ArrayList<NoticeVO> menu = this.noticeProc.list_all();
+    ArrayList<NoticeMemberVO> menu = this.noticeProc.list_all();
     model.addAttribute("menu", menu);
 
     
