@@ -1,0 +1,44 @@
+<div th:fragment="infoSidebarFragment">
+  <div class="menu-bar" style="width: 150px; float: left; border: solid 1px black;">
+    <div style="background: #cccccc; padding: 10px; border-bottom: solid 1px black;">
+      <h2>마이 메뉴</h2>
+    </div>
+    <nav>
+
+
+      <div>
+        <div style="background: #eeeeee; padding: 10px; border-bottom: solid 1px black;">MY 쇼핑</div>
+        <ul style="list-style-type: none; padding: 5px; margin: 0px auto;">
+          <li><a href="#" title="주문목록/배송조회" target="_self">주문목록/배송조회</a></li>
+          <li><a href="#" title="취소/반품/교환/환불내역" target="_self">취소/반품/교환/환불내역</a></li>
+          <li><a href="#" title="영수증 조회/출력" target="_self">영수증 조회/출력 </a></li>
+        </ul>
+      </div>
+
+
+      <div>
+        <div style="background: #eeeeee; padding: 10px; border-top: solid 1px black; border-bottom: solid 1px black;">MY
+          활동</div>
+        <ul style="list-style-type: none; padding: 5px; margin: 0px auto;">
+          <li><a href="#" title="문의하기" target="_self">문의하기</a></li>
+          <li><a href="#" title="문의내역 확인" target="_self">문의내역 확인</a></li>
+          <li><a href="#" title="리뷰관리" target="_self">리뷰관리</a></li>
+          <li><a href="#" title="찜 리스트" target="_self">찜 리스트</a></li>
+        </ul>
+      </div>
+
+
+      <div>
+        <div style="background: #eeeeee; padding: 10px; border-top: solid 1px black; border-bottom: solid 1px black;">MY
+          정보</div>
+        <ul style="list-style-type: none; padding: 5px; margin: 0px auto;">
+          <li><a href="/member/checkpw" title="개인정보확인/수정" target="_self">개인정보확인/수정</a></li>
+          <li><a href="#" title="결제수단 관리" target="_self">결제수단 관리</a></li>
+          <li><a href="#" title="배송지 관리" target="_self">배송지 관리</a></li>
+          <li><a href="/member/delete" title="배송지 관리" target="_self">회원 탈퇴</a></li>
+        </ul>
+      </div>
+
+    </nav>
+  </div>
+</div>

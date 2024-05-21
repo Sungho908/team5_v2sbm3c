@@ -1,0 +1,55 @@
+<div th:fragment="list_all_fragment"> <!-- <div th:replace=... -->
+  <table class="table table-striped table table-bordered">
+    <colgroup>
+      <col style='width: 5%;' />
+      <col style='width: 10%;' />
+      <col style='width: 10%;' />
+      <col style='width: 10%;' />
+      <col style='width: 10%;' />
+      <col style='width: 10%;' />
+      <col style='width: 10%;' />
+      <col style='width: 10%;' />
+      <col style='width: 10%;' />
+      <col style='width: 5%;' />
+      <col style='width: 5%;' />
+      <col style='width: 5%;' />
+    </colgroup>
+    <thead>
+      <tr onclick="toggleTable()">
+        <th class="th_bs">번호</th>
+        <th class="th_bs">ID(Nickname)</th>
+        <th class="th_bs">PW</th>
+        <th class="th_bs">Name</th>
+        <th class="th_bs">Phone</th>
+        <th class="th_bs">Email</th>
+        <th class="th_bs">Thumb</th>
+        <th class="th_bs">Addr</th>
+        <th class="th_bs">Date / RDate</th>
+        <th class="th_bs">Point</th>
+        <th class="th_bs">Grade</th>
+        <th class="th_bs">Role</th>
+      </tr>
+    </thead>
+    <tbody id="table-body">
+      <tr th:each="member : ${list}">
+        <td class="td_bs" th:text="${member.memberno}"></td>
+        <td class="td_bs"><a href="#" style="display: block;" th:text="|${member.id}(${member.nickname})|"></a></td>
+        <td class="td_bs" th:text="|${member.pw.substring(0,5)}...|"></td>
+        <td class="td_bs" th:text="${member.name}"></td>
+        <td class="td_bs" th:text="${member.phone}"></td>
+        <td class="td_bs" th:text="${member.email}"></td>
+        <td class="td_bs" th:text="${member.thumb}"></td>
+        <td class="td_bs" th:text="|${member.zipcode}-${member.addr1}-${member.addr2}|"></td>
+        <td class="td_bs"
+          th:text="|${#dates.format(member.mdate,'yyyy-MM-dd')} / ${#dates.format(member.rdate,'yyyy-MM-dd')}|"></td>
+        <td class="td_bs" th:text="${member.point}"></td>
+        <td class="td_bs" th:text="${member.grade}"></td>
+        <td class="td_bs" th:text="${member.role}"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 페이지 버튼 목록 출력 시작 -->
+  <div class="bottom_menu" th:utext="${paging}"></div>
+  <!-- 페이지 버튼 목록 출력 종료 -->
+</div>

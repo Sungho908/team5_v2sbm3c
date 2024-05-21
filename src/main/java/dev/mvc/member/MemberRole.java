@@ -1,8 +1,9 @@
 package dev.mvc.member;
 
 public enum MemberRole {
-  USER("USER"),
+  MASTER("MASTER"),
   ADMIN("ADMIN"),
+  USER("USER"),
   BUSINESS("BUSINESS"),
   DELETE("DELETE");
   

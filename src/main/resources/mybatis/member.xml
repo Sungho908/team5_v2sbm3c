@@ -32,4 +32,16 @@
         thumb=#{thumb}, addr1=#{addr1}, addr2=#{addr2}, zipcode=#{zipcode}, mdate=#{mdate}, gender=#{gender}
     WHERE memberno=#{memberno}
   </update>
+  
+  <update id="deleteByMember" parameterType="int">
+    UPDATE member
+    SET grade=99
+    WHERE memberno=#{memberno}
+  </update>
+  
+  <select id="list_all" resultType="dev.mvc.member.MemberVO">
+    SELECT memberno, id, pw, name, nickname, phone, email, thumb, addr1, addr2, zipcode, mdate, rdate, point, gender, grade, role
+    FROM member
+    ORDER BY memberno ASC
+  </select>
 </mapper>

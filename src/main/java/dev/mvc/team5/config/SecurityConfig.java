@@ -6,34 +6,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.util.matcher.RequestMatcher;
+
 
 import dev.mvc.loginHistory.LoginHistoryProcInter;
-import dev.mvc.member.MemberProc;
 import dev.mvc.member.MemberProcInter;
-import dev.mvc.member.MemberRole;
 import dev.mvc.member.MemberVO;
-import dev.mvc.tool.Tool;
+
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebListener;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -60,20 +51,24 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain (HttpSecurity http) throws Exception{
 	    return http.csrf(csrf ->csrf.disable())
 	        .authorizeHttpRequests(requests -> requests
-	            //.requestMatchers("/member/**").authenticated()
 	            //.requestMatchers("/admin/**").hasAuthority(MemberRole.ADMIN.name())
 	            //.requestMatchers("/business/**").hasAuthority(MemberRole.BUSINESS.name())
+	            .requestMatchers("/member/**").authenticated()
 	            .requestMatchers("/mypage/**").authenticated()
-	            .requestMatchers("/login/**").authenticated()
 	            .anyRequest().permitAll()
 	            )
 	            
 	        .formLogin(login -> login
 	            .usernameParameter("id")	                    
 	            .passwordParameter("pw")
-	            .loginPage("/member/login")
-	            .defaultSuccessUrl("/")
-	            .failureUrl("/member/login")
+	            .loginPage("/signin")
+	            .defaultSuccessUrl("/", true)
+	            .failureUrl("/signin")
+	            .failureHandler((request, response, authException)->{
+	              if(authException instanceof DisabledException) {
+	                response.sendRedirect("/signin?error=disabled");
+	              }
+	            })
 	            .successHandler((request, response, authentication) -> {
 
 	                      String id = request.getParameter("id");
@@ -113,7 +108,7 @@ public class SecurityConfig {
 	            
 	            
 	            .logout(logout -> logout
-	                .logoutUrl("/member/logout")
+	                .logoutUrl("/logout")
 	                .logoutSuccessUrl("/")
 	                .invalidateHttpSession(true).deleteCookies("JSESSIONID"))
 	            

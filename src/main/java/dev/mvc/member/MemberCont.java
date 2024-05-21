@@ -6,12 +6,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import dev.mvc.team5.DefaultCont;
 import dev.mvc.tool.Alert;
@@ -21,18 +23,23 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("member")
 public class MemberCont {
   @Autowired
   @Qualifier("dev.mvc.member.MemberProc")
   private MemberProcInter memberProc;
   
-
   @Autowired
   private PasswordEncoder pe;
 
-  @GetMapping("login")
-  public String login(HttpServletRequest request, Model model) {
+  
+  @GetMapping("signin")
+  public String login(HttpServletRequest request, Model model,
+                      @RequestParam(value = "error", required = false) String error) {
+    if("disabled".equals(error)) {
+      Alert message = new Alert("회원탈퇴처리된 회원입니다.", "/signin", RequestMethod.GET, null);
+      return DefaultCont.showMessageAndRedirect(message, model);
+    }
+    
     Cookie[] cookies = request.getCookies();
     if (cookies != null) {
       for (Cookie cookie : cookies) {
@@ -45,17 +52,18 @@ public class MemberCont {
         }
       }
     }
-    return "member/login";
+    return "login/signin";
   }
 
   @PostMapping("login")
   public String loginProc() {
+    //Spring Security 에서 처리
     return "";
   }
 
-  @GetMapping("create")
+  @GetMapping("signup")
   public String signUp(MemberVO memberVO) {
-    return "member/create";
+    return "login/signup";
   }
 
   @ResponseBody
@@ -64,7 +72,7 @@ public class MemberCont {
     return this.memberProc.checkId(id);
   }
 
-  @PostMapping("create")
+  @PostMapping("signup")
   public String signUpProc(MemberVO memberVO, Model model) {
     String file = "";
     String filename = "";
@@ -90,15 +98,40 @@ public class MemberCont {
     return DefaultCont.showMessageAndRedirect(message, model);
   }
   
-  @GetMapping("update")
-  public String update(HttpSession session, Model model) {
+  @GetMapping("member/checkpw")
+  public String checkpw() {
+    return "member/checkpw";
+  }
+  
+  @PostMapping("member/checkpw")
+  public String checkpwProc(RedirectAttributes ra, HttpSession session,Model model,
+                           @RequestParam("pw")String pw) {
+    MemberVO memberVO = (MemberVO) session.getAttribute("login");
+    memberVO = memberProc.readById(memberVO.getId());
+    
+    if(!pe.matches(pw, memberVO.getPw())) {
+      Alert message = new Alert("틀린 비밀번호입니다.", "/member/checkpw", RequestMethod.GET, null);
+      return DefaultCont.showMessageAndRedirect(message, model);
+    }
+    
+    ra.addFlashAttribute("auth", "success");
+    return "redirect:/member/update";
+  }
+  
+  @GetMapping("member/update")
+  public String update(HttpSession session, Model model,
+                       @ModelAttribute("auth")String auth) {
+    if(auth == null || auth != "success" ) {
+      Alert message = new Alert("잘못된 접근입니다. 다시 접속하세요.", "/member/checkpw", RequestMethod.GET, null);
+      return DefaultCont.showMessageAndRedirect(message, model);
+    }
     MemberVO memberVO = (MemberVO) session.getAttribute("login");
     memberVO = memberProc.readById(memberVO.getId());
     model.addAttribute("memberVO", memberVO);
     return "member/update";
   }
   
-  @PostMapping("update")
+  @PostMapping("member/update")
   public String updateProc(MemberVO memberVO, Model model) {
       String file = "";
       String filename = "";
@@ -134,4 +167,32 @@ public class MemberCont {
       return DefaultCont.showMessageAndRedirect(message, model);
   }
 
+  @GetMapping("member/info")
+  public String info() {
+    return "member/info";
+  }
+  
+  @GetMapping("member/delete")
+  public String delete() {
+    return "member/delete";
+  }
+  
+  @PostMapping("member/delete")
+  public String deleteProc(Model model, @RequestParam("pw")String pw, HttpSession session, RedirectAttributes ra) {
+    MemberVO memberVO = (MemberVO) session.getAttribute("login");
+    int memberno = memberVO.getMemberno();
+    if(pe.matches(pw, memberVO.getPw())) {
+      if(this.memberProc.deleteByMember(memberno) == 0) {
+        Alert message = new Alert("알 수 없는 에러", "/member/delete", RequestMethod.GET, null);
+        return DefaultCont.showMessageAndRedirect(message, model);
+      }
+    }else {
+      ra.addFlashAttribute("code", 0);
+      return "redirect:/member/delete";
+    }
+    session.invalidate();
+    Alert message = new Alert("회원탈퇴처리가 완료되었습니다.", "/", RequestMethod.GET, null);
+    return DefaultCont.showMessageAndRedirect(message, model);
+  }
+  
 }
