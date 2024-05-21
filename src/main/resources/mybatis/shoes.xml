@@ -1,8 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.mvc.shoes.ShoesDAOInter">
+  <insert id="create" parameterType="dev.mvc.shoes.ShoesVO">
+    INSERT INTO SHOES (SHOESNO, CATENO, MEMBERNO, TITLE, BRAND, RATING, PRICE,
+    DISCOUNT, CONTENTS, VISIBLE)
+    VALUES (#{shoesno}, #{categoryno}, #{memberno}, #{title}, #{brand}, #{rating},
+    #{price}, #{discount}, #{contents}, #{visible})
+  </insert>
+
+  <select id="select_shoes" parameterType="int" resultType="dev.mvc.shoes.ShoesVO">
+    SELECT * FROM SHOES WHERE SHOESNO = #{shoesno}
+  </select>
+
+  <select id="select_cate" parameterType="int" resultType="dev.mvc.shoes.ShoesVO">
+    SELECT * FROM SHOES WHERE CATENO = #{categoryno}
+  </select>
+
+  <select id="selectwith" parameterType="int" resultType="dev.mvc.shoes.ShoesVO">
+    SELECT s.*, o.OPTIONNO, o.SIZE, o.AMOUNT, o.COLOR
+    FROM SHOES s
+    INNER JOIN OPTION o ON s.SHOESNO = o.SHOESNO
+    WHERE s.SHOESNO = #{shoesno}
+  </select>
   
+  <update id="update" parameterType="dev.mvc.shoes.ShoesVO">
+    UPDATE SHOES
+    SET TITLE = #{title}, BRAND = #{brand}, RATING = #{rating}, PRICE =#{price}, DISCOUNT = #{discount}, CONTENTS = #{contents}, VISIBLE = #{visible}
+    WHERE SHOESNO = #{shoesno}
+  </update>
+
+  <delete id="delete" parameterType="int">
+    DELETE FROM SHOES WHERE SHOESNO = #{shoesno}
+  </delete>
 </mapper>
 
 
