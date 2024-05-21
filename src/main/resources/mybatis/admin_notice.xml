@@ -8,9 +8,10 @@
   </insert>
 
   <select id="list_all" resultType="dev.mvc.admin.notice.NoticeVO">
-    SELECT noticeno, title, contents, rdate, views, memberno
-    FROM notice
-    ORDER BY rdate DESC
+    SELECT n.noticeno, n.title, n.contents, n.rdate, n.views, m.nickname
+    FROM notice n
+    JOIN member m ON n.memberno = m.memberno
+    ORDER BY n.rdate DESC
   </select>
 
   <!-- 검색된 레코드 수 -->
