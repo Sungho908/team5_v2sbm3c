@@ -1,5 +1,7 @@
 package dev.mvc.member;
 
+import java.util.ArrayList;
+
 public interface MemberProcInter {
   /**
    * 멤버 생성 <br>
@@ -46,4 +48,21 @@ public interface MemberProcInter {
    * @return 성공한 쿼리 갯수
    * */
   public int update(MemberVO memberVO);
+  
+  /**
+   * 회원이 탈퇴처리<br>
+   * id="deleteByMember" parameterType="int"
+   * 
+   * @param memberno
+   * @return 성공한 쿼리 갯수
+   * */
+  public int deleteByMember(int memberno);
+  
+  /**
+   * 회원 목록 출력
+   * id="list_all" resultType="dev.mvc.member.memberVO"
+   * @return MemberVO 객체
+   * */
+  public ArrayList<MemberVO> list_all();
+  
 }

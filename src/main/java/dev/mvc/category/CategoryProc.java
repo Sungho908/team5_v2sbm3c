@@ -1,4 +1,4 @@
-package dev.mvc.admin.notice;
+package dev.mvc.category;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,44 +7,86 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("dev.mvc.admin.notice.NoticeProc")
-public class NoticeProc implements NoticeProcInter{
+@Service("dev.mvc.category.CategoryProc")
+public class CategoryProc implements CategoryProcInter {
 
   @Autowired
-  private NoticeDAOInter noticeDAO;
-  
+  private CategoryDAOInter categoryDAO;
+
   @Override
-  public int create(NoticeVO noticeVO) {
-    int cnt = this.noticeDAO.create(noticeVO);
+  public ArrayList<String> name_list() {
+    ArrayList<String> name = this.categoryDAO.name_list();
+    return name;
+  }
+
+  @Override
+  public int parent_count(int categoryno) {
+    int cnt = this.categoryDAO.parent_count(categoryno);
     return cnt;
   }
 
   @Override
-  public ArrayList<NoticeMemberVO> list_all() {
-    ArrayList<NoticeMemberVO> list = this.noticeDAO.list_all();
+  public int parent_categoryno(String name) {
+    int categoryno = this.categoryDAO.parent_categoryno(name);
+    return categoryno;
+  }
+
+  @Override
+  public ArrayList<String> subname_list(int categoryno) {
+    ArrayList<String> name = this.categoryDAO.subname_list(categoryno);
+    return name;
+  }
+
+  @Override
+  public int create(CategoryVO categoryVO) {
+    int cnt = this.categoryDAO.create(categoryVO);
+    return cnt;
+  }
+
+  @Override
+  public ArrayList<CategoryVO> list_all() {
+    ArrayList<CategoryVO> list = this.categoryDAO.list_all();
     return list;
   }
 
   @Override
-  public NoticeVO read(int noticeno) {
-    NoticeVO list = this.noticeDAO.read(noticeno);
+  public CategoryVO read(int categoryno) {
+    CategoryVO list = this.categoryDAO.read(categoryno);
     return list;
   }
 
   @Override
-  public int increased_views(NoticeVO noticeVO) {
-    int cnt = this.noticeDAO.increased_views(noticeVO);
-    return cnt;
-  }
-  
-  @Override
-  public int list_search_count(String word) {
-    int cnt = this.noticeDAO.list_search_count(word);
+  public int update(CategoryVO categoryVO) {
+    int cnt = this.categoryDAO.update(categoryVO);
     return cnt;
   }
 
   @Override
-  public ArrayList<NoticeMemberVO> list_search_paging(String word, int now_page, int record_per_page) {
+  public int delete(int categoryno) {
+    int cnt = this.categoryDAO.delete(categoryno);
+    return cnt;
+  }
+
+  @Override
+  public ArrayList<CategoryVO> list_all_name() {
+    ArrayList<CategoryVO> list = this.categoryDAO.list_all_name();
+    return list;
+  }
+
+  @Override
+  public ArrayList<CategoryVO> list_all_subname(String name) {
+    ArrayList<CategoryVO> list = this.categoryDAO.list_all_subname(name);
+    return list;
+  }
+
+  @Override
+  public ArrayList<CategoryVO> list_search(String word) {
+    ArrayList<CategoryVO> list = this.categoryDAO.list_search(word);
+    return list;
+  }
+
+  @Override
+  public ArrayList<CategoryVO> list_search_paging(String word, int now_page, int record_per_page) {
     int begin_of_page = (now_page - 1) * record_per_page;
 
     int start_num = begin_of_page + 1;
@@ -56,23 +98,16 @@ public class NoticeProc implements NoticeProcInter{
     map.put("start_num", start_num);
     map.put("end_num", end_num);
 
-    ArrayList<NoticeMemberVO> list = this.noticeDAO.list_search_paging(map);
-    
+    ArrayList<CategoryVO> list = this.categoryDAO.list_search_paging(map);
     return list;
   }
 
   @Override
-  public int update(NoticeVO noticeVO) {
-    int cnt = this.noticeDAO.update(noticeVO);
+  public int list_search_count(String word) {
+    int cnt = this.categoryDAO.list_search_count(word);
     return cnt;
   }
 
-  @Override
-  public int delete(int noticeno) {
-    int cnt = this.noticeDAO.delete(noticeno);
-    return cnt;
-  }
-  
   @Override
   public String pagingBox(int now_page, String word, String list_file, int search_count, int record_per_page,
       int page_per_block) {
@@ -139,6 +174,5 @@ public class NoticeProc implements NoticeProcInter{
 
     return str.toString();
   }
-
 
 }

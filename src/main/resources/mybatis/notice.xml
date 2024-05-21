@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="dev.mvc.admin.notice.NoticeDAOInter">
-  <insert id="create" parameterType="dev.mvc.admin.notice.NoticeVO">
+<mapper namespace="dev.mvc.notice.NoticeDAOInter">
+  <insert id="create" parameterType="dev.mvc.notice.NoticeVO">
     INSERT INTO notice(noticeno, title, contents, rdate, memberno)
     VALUES(NOTICE_SEQ.nextval, #{title}, #{contents}, sysdate, #{memberno})
   </insert>
 
-  <insert id="create_file" parameterType="dev.mvc.notice.NoticeFileVO">
+  <insert id="create_file" parameterType="dev.mvc.noticeFile.NoticeFileVO">
     INSERT INTO NOTICE_FILE(notice_file_no, name, sizes, ex, src, noticeno)
     VALUES(NOTICE_FILE_SEQ.nextval, #{name}, #{sizes}, #{ex}, #{src}, #{noticeno});
   </insert>
   
-  <select id="list_all" resultType="dev.mvc.admin.notice.NoticeMemberVO">
+  <select id="list_all" resultType="dev.mvc.notice.NoticeMemberVO">
     SELECT n.noticeno, n.title, n.contents, n.rdate, n.views, m.nickname
     FROM notice n, member m
     WHERE n.memberno = m.memberno
@@ -29,7 +29,7 @@
     ORDER BY rdate DESC
   </select>
 
-  <select id="list_search_paging" resultType="dev.mvc.admin.notice.NoticeMemberVO" parameterType="Map">
+  <select id="list_search_paging" resultType="dev.mvc.notice.NoticeMemberVO" parameterType="Map">
     SELECT n.noticeno, n.title, n.contents, n.rdate, n.views, m.nickname, r
     FROM (
         SELECT noticeno, title, contents, rdate, views, memberno, rownum as r
@@ -49,19 +49,19 @@
         r &gt; = #{start_num} AND r &lt; = #{end_num}
   </select>
 
-  <select id="read" resultType="dev.mvc.admin.notice.NoticeVO" parameterType="Integer">
+  <select id="read" resultType="dev.mvc.notice.NoticeVO" parameterType="Integer">
     SELECT noticeno, title, contents, rdate, views, memberno
     FROM notice
     WHERE noticeno = #{noticeno}
   </select>
 
-  <update id="increased_views" parameterType="dev.mvc.admin.notice.NoticeVO">
+  <update id="increased_views" parameterType="dev.mvc.notice.NoticeVO">
     UPDATE notice
     SET views = views + 1
     WHERE noticeno = #{noticeno}
   </update>
 
-  <update id="update" parameterType="dev.mvc.admin.notice.NoticeVO">
+  <update id="update" parameterType="dev.mvc.notice.NoticeVO">
     UPDATE notice
     SET title = #{title}, contents = #{contents}
     WHERE noticeno = #{noticeno}

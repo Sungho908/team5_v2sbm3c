@@ -1,4 +1,4 @@
-package dev.mvc.admin.notice;
+package dev.mvc.notice;
 
 import java.sql.Date;
 

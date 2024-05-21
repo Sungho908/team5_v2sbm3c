@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import dev.mvc.notice.NoticeMemberVO;
+import dev.mvc.notice.NoticeProcInter;
+import dev.mvc.notice.NoticeVO;
 import dev.mvc.noticeFile.Notice;
 import dev.mvc.noticeFile.NoticeFileVO;
 import dev.mvc.tool.Tool;
@@ -22,10 +25,10 @@ import jakarta.servlet.http.HttpSession;
 
 @RequestMapping("/admin/notice")
 @Controller
-public class NoticeCont {
+public class AdminNoticeCont {
 
   @Autowired
-  @Qualifier("dev.mvc.admin.notice.NoticeProc")
+  @Qualifier("dev.mvc.notice.NoticeProc")
   private NoticeProcInter noticeProc;
 
   /** 페이지당 출력할 레코드 갯수, nowPage는 1부터 시작 */
@@ -34,7 +37,7 @@ public class NoticeCont {
   /** 블럭당 페이지 수, 하나의 블럭은 10개의 페이지로 구성됨 */
   public int page_per_block = 5;
 
-  public NoticeCont() {
+  public AdminNoticeCont() {
     System.out.println("-> Notice created.");
   }
 

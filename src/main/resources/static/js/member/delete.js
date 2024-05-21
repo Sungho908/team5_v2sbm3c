@@ -1,11 +1,3 @@
-window.onpageshow = function(event) {
-  if (event.persisted) {
-    document.querySelector('#id').disabled = true;
-    document.querySelector('#zipcode').disabled = true;
-    document.querySelector('#addr1').disabled = true;
-  }
-};
-
 function checkId() {
   let id = document.querySelector('#id');
   let text = document.querySelector('#checkIdText');
@@ -199,7 +191,7 @@ function send() { // 회원 가입 처리
   }
 
   dateMix()
-  document.querySelector('#id').disabled = false;
+
   document.querySelector('#zipcode').disabled = false;
   document.querySelector('#addr1').disabled = false;
   document.querySelector('#frm').submit();
