@@ -37,6 +37,11 @@ public class MemberProc implements MemberProcInter {
     System.out.println("memberVO: "+memberVO.toString());
     return this.memberDAO.update(memberVO);
   }
+  
+  @Override
+  public int updateAdmin(MemberVO memberVO) {
+    return this.memberDAO.updateAdmin(memberVO);
+  }
 
   @Override
   public int deleteByMember(int memberno) {
@@ -47,5 +52,12 @@ public class MemberProc implements MemberProcInter {
   public ArrayList<MemberVO> list_all() {
     return this.memberDAO.list_all();
   }
+
+  @Override
+  public int delete(int memberno) {
+    return this.memberDAO.delete(memberno);
+  }
+
+
 
 }

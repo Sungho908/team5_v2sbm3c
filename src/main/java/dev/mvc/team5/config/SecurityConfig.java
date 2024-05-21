@@ -51,10 +51,10 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain (HttpSecurity http) throws Exception{
 	    return http.csrf(csrf ->csrf.disable())
 	        .authorizeHttpRequests(requests -> requests
+	            //.requestMatchers("/admin/**").hasAuthority(MemberRole.MASTER.name())
 	            //.requestMatchers("/admin/**").hasAuthority(MemberRole.ADMIN.name())
 	            //.requestMatchers("/business/**").hasAuthority(MemberRole.BUSINESS.name())
 	            .requestMatchers("/member/**").authenticated()
-	            .requestMatchers("/mypage/**").authenticated()
 	            .anyRequest().permitAll()
 	            )
 	            
@@ -64,11 +64,14 @@ public class SecurityConfig {
 	            .loginPage("/signin")
 	            .defaultSuccessUrl("/", true)
 	            .failureUrl("/signin")
+	            /*==============로그인 실패시 동작 START============== */
 	            .failureHandler((request, response, authException)->{
 	              if(authException instanceof DisabledException) {
 	                response.sendRedirect("/signin?error=disabled");
 	              }
-	            })
+	              response.sendRedirect("/signin");
+	            })/*==============로그인 실패시 동작 END============== */
+	            /*==============로그인 성공시 동작 START============== */
 	            .successHandler((request, response, authentication) -> {
 
 	                      String id = request.getParameter("id");
@@ -103,7 +106,7 @@ public class SecurityConfig {
 	                      // 기본 성공 핸들러 실행
 	                      new DefaultRedirectStrategy().sendRedirect(request, response, "/");
  
-	                  })
+	                  })/*==============로그인 성공시 동작 END============== */
 	            )
 	            
 	            

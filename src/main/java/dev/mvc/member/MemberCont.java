@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -179,8 +178,11 @@ public class MemberCont {
   
   @PostMapping("member/delete")
   public String deleteProc(Model model, @RequestParam("pw")String pw, HttpSession session, RedirectAttributes ra) {
+    
     MemberVO memberVO = (MemberVO) session.getAttribute("login");
     int memberno = memberVO.getMemberno();
+    
+    
     if(pe.matches(pw, memberVO.getPw())) {
       if(this.memberProc.deleteByMember(memberno) == 0) {
         Alert message = new Alert("알 수 없는 에러", "/member/delete", RequestMethod.GET, null);

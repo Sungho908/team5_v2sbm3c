@@ -14,7 +14,6 @@ import dev.mvc.member.MemberVO;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("login")
 public class LoginHistoryCont {
   @Autowired
   @Qualifier("dev.mvc.member.MemberProc")
@@ -24,7 +23,7 @@ public class LoginHistoryCont {
   @Qualifier("dev.mvc.loginHistory.LoginHistoryProc")
   private LoginHistoryProcInter lhProc;
 
-  @GetMapping("history")
+  @GetMapping("member/history")
   public String history(HttpSession session, Model model) {
     MemberVO memberVO = (MemberVO) session.getAttribute("login");
     System.out.println(memberVO.toString());
@@ -32,7 +31,7 @@ public class LoginHistoryCont {
     ArrayList<LoginHistoryVO> lhList = this.lhProc.readBymembernoRdateDesc(memberVO.getMemberno());
     model.addAttribute("list", lhList);
 
-    return "login/history";
+    return "member/history";
   }
 
 }

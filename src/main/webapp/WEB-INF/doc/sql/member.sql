@@ -59,7 +59,7 @@ INSERT INTO member(memberno, id, pw, name, nickname, phone, email, thumb, addr1,
 VALUES (0, 'master', '$2a$10$6r1Qb6u/jyTYIfldEhg.b.5LQ9k3E9GQZf1xT1OQFgYsy36x0A1IG', 'master', 'master', '010-0000-0000', 'master@master.com', '', '', '', 0, '1900-01-01', sysdate, 0, '비공개', 1, 'MASTER');
 
 INSERT INTO member(memberno, id, pw, name, nickname, phone, email, thumb, addr1, addr2, zipcode, mdate, rdate, point, gender, grade, role)
-VALUES (member_seq.nextval, 'admin1', '$2a$10$J/wufcsmDCDRQIlwqwRfbug0MWj/t/fS85QBOf94kfpaAM2KT9SeS', 'adminname', 'adminnick', '010-0000-0000', 'email@email.com', '', '', '', 0, '1900-01-01', sysdate, 0, '남성', 1, 'ADMIN');
+VALUES (member_seq.nextval, 'admin1', '$2a$10$J/wufcsmDCDRQIlwqwRfbug0MWj/t/fS85QBOf94kfpaAM2KT9SeS', 'adminname', 'adminnick', '010-0000-0000', 'email@email.com', '', '', '', 0, '1900-01-01', sysdate, 0, '남성', 1, 'USER');
 
 -- R
 
@@ -73,14 +73,13 @@ from member
 where id='9';
 
 -- U
-UPDATE member 
-SET id='user5', mname='조인성', tel='111-1111-1111', zipcode='00000',
-    address1='강원도', address2='홍천군', grade=14
-WHERE memberno=12;
-
-
 UPDATE member
 SET pw='pw', name='name', nickname='nickname', phone='010-1234-5678', email='email@email.com', thumb='', addr1='addr1', addr2='addr2', zipcode=12345, mdate='1900-01-01', gender='비공개'
+WHERE memberno=1;
+
+--관리자 페이지 update
+UPDATE member
+SET nickname='nickname', phone='010-1234-5678', email='email@email.com', thumb='', addr1='addr1', addr2='addr2', zipcode=12345, mdate='1900-01-01', point=0, gender='비공개', grade='1',role='USER'
 WHERE memberno=1;
 
 --회원이 탈퇴할 때
@@ -89,6 +88,8 @@ SET grade=99
 WHERE memberno=5;
 
 --D
+DELETE FROM member
+WHERE memberno=5;
 
 
 

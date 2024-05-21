@@ -50,6 +50,14 @@ public interface MemberProcInter {
   public int update(MemberVO memberVO);
   
   /**
+   * 회원정보 수정 관리자 페이지<br>
+   * id="updateAdmin" parameterType="dev.mvc.member.MemberVO"
+   * @param MemberVO 객체
+   * @return 성공한 쿼리 갯수
+   * */
+  public int updateAdmin(MemberVO memberVO);
+  
+  /**
    * 회원이 탈퇴처리<br>
    * id="deleteByMember" parameterType="int"
    * 
@@ -65,4 +73,12 @@ public interface MemberProcInter {
    * */
   public ArrayList<MemberVO> list_all();
   
+  /**
+   * 회원 삭제
+   * id="delete" parameterType="int"
+   * @param memberno
+   * @return 성공한 쿼리 갯수
+   * */
+  public int delete(int memberno);
+
 }

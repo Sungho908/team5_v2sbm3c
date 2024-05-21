@@ -1,18 +1,19 @@
 <div th:fragment="list_all_fragment"> <!-- <div th:replace=... -->
   <table class="table table-striped table table-bordered">
     <colgroup>
-      <col style='width: 5%;' />
-      <col style='width: 10%;' />
-      <col style='width: 10%;' />
-      <col style='width: 10%;' />
-      <col style='width: 10%;' />
-      <col style='width: 10%;' />
-      <col style='width: 10%;' />
-      <col style='width: 10%;' />
+      <col style='width: 3%;' />
       <col style='width: 10%;' />
       <col style='width: 5%;' />
       <col style='width: 5%;' />
+      <col style='width: 8%;' />
+      <col style='width: 10%;' />
+      <col style='width: 10%;' />
+      <col style='width: 10%;' />
+      <col style='width: 10%;' />
+      <col style='width: 9%;' />
       <col style='width: 5%;' />
+      <col style='width: 5%;' />
+      <col style="width: 10%" />
     </colgroup>
     <thead>
       <tr onclick="toggleTable()">
@@ -28,13 +29,14 @@
         <th class="th_bs">Point</th>
         <th class="th_bs">Grade</th>
         <th class="th_bs">Role</th>
+        <th class="th_bs">기타</th>
       </tr>
     </thead>
     <tbody id="table-body">
       <tr th:each="member : ${list}">
         <td class="td_bs" th:text="${member.memberno}"></td>
-        <td class="td_bs"><a href="#" style="display: block;" th:text="|${member.id}(${member.nickname})|"></a></td>
-        <td class="td_bs" th:text="|${member.pw.substring(0,5)}...|"></td>
+        <td class="td_bs"><a th:href="@{/admin/member/read(memberno=${member.memberno})}" style="display: block;" th:text="|${member.id}(${member.nickname})|"></a></td>
+        <td class="td_bs" th:text="|${member.pw.substring(0,6)}...|"></td>
         <td class="td_bs" th:text="${member.name}"></td>
         <td class="td_bs" th:text="${member.phone}"></td>
         <td class="td_bs" th:text="${member.email}"></td>
