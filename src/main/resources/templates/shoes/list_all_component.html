@@ -1,0 +1,58 @@
+<div th:fragment="list_all_fragment">
+  <!-- <div th:replace=... -->
+  <table class="table table-hover">
+    <colgroup>
+      <col style='width: 5%;' />
+      <col style='width: 10%;' />
+      <col style='width: 5%;' />
+      <col style='width: 10%;' />
+      <col style='width: 10%;' />
+      <col style='width: 5%;' />
+      <col style='width: 10%;' />
+      <col style='width: 10%;' />
+      <col style='width: 30%;' />
+      <col style='width: 5%;' />
+    </colgroup>
+    <thead>
+      <tr>
+        <th class="th_bs">신발 번호</th>
+        <th class="th_bs">카테고리 번호</th>
+        <th class="th_bs">회원번호</th>
+        <th class="th_bs">제목</th>
+        <th class="th_bs">브랜드명</th>
+        <th class="th_bs">평점</th>
+        <th class="th_bs">가격</th>
+        <th class="th_bs">할인율</th>
+        <th class="th_bs">설명</th>
+        <th class="th_bs">판매여부</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="shoesVO, status:${list}">
+        <td class="td_bs"><a th:href="@{|/shoes/read/${shoesVO.shoesno}?word=${word}&now_page=${now_page}|}" style="display: block;" th:text="${shoesVO.shoesno}"></a></td>
+         <td class="td_bs" th:text="${shoesVO.categoryno}"></td>
+         <td class="td_bs" th:text="${shoesVO.memberno}"></td>
+         <td class="td_bs" th:text="${shoesVO.title}"></td>
+         <td class="td_bs" th:text="${shoesVO.brand}"></td>
+         <td class="td_bs" th:text="${shoesVO.rating}"></td>
+         <td class="td_bs" th:text="${shoesVO.price}"></td>
+         <td class="td_bs" th:text="${shoesVO.discount}"></td>
+         <td class="td_bs" th:text="${shoesVO.contents}"></td>
+         <td class="td_bs" th:text="${shoesVO.visible}"></td>
+        <td class="td_bs" >
+            <a th:href="@{|/shoes/update/${shoesVO.shoesno}?word=${word}&now_page=${now_page}|}" ><img
+                src="/shoes/images/update.png" class="icon" ></a>
+            <a th:href="@{|/shoes/delete/${shoesVO.shoesno}?word=${word}&now_page=${now_page}|}"><img
+                src="/shoes/images/delete.png" class="icon"></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 페이지 버튼 목록 출력 시작 -->
+  <div class="bottom_menu" th:utext="${paging}"></div>
+  <!-- 페이지 버튼 목록 출력 종료 -->
+  <div>
+    <div th:replace="~{footer::footerFragment}"></div>
+  </div>
+</div>

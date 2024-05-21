@@ -99,18 +99,6 @@ public interface MemberDAOInter {
    * @return 검색된 쿼리 갯수
    */
   public int checkId(String id);
-<<<<<<< HEAD
-  
-=======
-
-  /**
-   * 아이디로 회원 찾기<br>
-   * id="readById" parameterType="String" resultType="dev.mvc.member.MemberVO"<br>
-   * 
-   * @param 검색할 id명
-   * @return MemberVO 객체
-   */
-  public MemberVO readById(String id);
 
   /**
    * Memberno로 회원 찾기<br>
@@ -129,7 +117,5 @@ public interface MemberDAOInter {
    * @param MemberVO 객체
    * @return 성공한 쿼리 갯수
    * */
-  public int update(MemberVO memberVO);
 
->>>>>>> Sungho
 }

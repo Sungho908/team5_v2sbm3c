@@ -31,10 +31,6 @@ public class HomeCont {
 //      System.out.println("-> 객체 고유 코드: " + security.hashCode());
 //      System.out.println(security.aesEncode("1234"));
 //    }
-    
-    ArrayList<ShoesVOMenu> menu = this.shoesProc.menu();
-    model.addAttribute("menu", menu);
-    
     return "index"; // /templates/index.html  
   }
   

@@ -9,14 +9,9 @@ import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-<<<<<<< HEAD
-
- 
-=======
 import org.springframework.stereotype.Service;
 
 @Service
->>>>>>> Sungho
 @Component("dev.mvc.member.MemberProc")
 public class MemberProc implements MemberProcInter {
   @Autowired
@@ -30,19 +25,13 @@ public class MemberProc implements MemberProcInter {
   }
 
   @Override
-<<<<<<< HEAD
   public int checkID(String id) {
     int cnt = this.memberDAO.checkID(id);
     return cnt;
-=======
-  public int create(MemberVO memberVO) {
-    return this.memberDAO.create(memberVO);
->>>>>>> Sungho
   }
-
   @Override
   public int create(MemberVO memberVO) {
-    String passwd = memberVO.getMPw();
+    String passwd = memberVO.getPw();
     // Security security = new Security();
     //String passwd_encoded = this.security.aesEncode(passwd);
     //memberVO.setPasswd(passwd_encoded);
@@ -71,7 +60,6 @@ public class MemberProc implements MemberProcInter {
     return memberVO;
   }
 
-<<<<<<< HEAD
   /**
    * 회원인지 검사
    */
@@ -136,18 +124,11 @@ public class MemberProc implements MemberProcInter {
     return cnt;
   }
   
-=======
   @Override
   public MemberVO readByMemberno(int id) {
     return this.memberDAO.readByMemberno(id);
   }
 
-  @Override
-  public int update(MemberVO memberVO) {
-    System.out.println("memberVO: "+memberVO.toString());
-    return this.memberDAO.update(memberVO);
-  }
 
->>>>>>> Sungho
 }
 

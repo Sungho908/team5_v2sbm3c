@@ -285,6 +285,17 @@
     padding-bottom: 5px;
     /* 아래쪽 여백을 추가하여 라인과 메뉴 아이템 사이의 간격을 조정합니다 */
   }
+  
+    .top_menu_line {
+    width: 100%;
+    margin: 0px 0px 10px 0px;
+    /* top -> right -> bottom -> left */
+    clear: both;
+    border-bottom: 0.5px solid #000;
+    /* 아래쪽에 검은색 실선 테두리를 추가합니다 */
+    padding-bottom: 5px;
+    /* 아래쪽 여백을 추가하여 라인과 메뉴 아이템 사이의 간격을 조정합니다 */
+  }
 
   .left_menu {
     width: 15%;
@@ -512,11 +523,11 @@
   }
 
   .title_line {
-    text-align: left;
+    text-align: center;
     border-bottom: solid 3px #555555;
     width: 100%;
-    margin: 20px auto;
-    font-size: 20px;
+    margin: 30px auto;
+    font-size: 30px;
   }
 
   .title_line_text {

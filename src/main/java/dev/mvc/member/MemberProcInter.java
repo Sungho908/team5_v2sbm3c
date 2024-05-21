@@ -91,8 +91,7 @@ public interface MemberProcInter {
    */
   public int login(HashMap<String, Object> map);
   
-=======
-   * Memberno로 회원 찾기<br>
+  /* Memberno로 회원 찾기<br>
    * id="readByMemberno" parameterType="int"
    * resultType="dev.mvc.member.MemberVO"<br>
    * 
@@ -108,7 +107,5 @@ public interface MemberProcInter {
    * @param MemberVO 객체
    * @return 성공한 쿼리 갯수
    * */
-  public int update(MemberVO memberVO);
->>>>>>> Sungho
 }
 

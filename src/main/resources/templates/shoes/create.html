@@ -1,31 +1,84 @@
 <!DOCTYPE html>
 
-<html layout:decorate="~{layout}"> <!-- layout.html 상속-->
+<html layout:decorate="~{layout}">
+<!-- layout.html 상속-->
 <div layout:fragment="content">
   <div class="title_line">카테고리 등록</div>
+  <aside class="aside_right">
+    <a href="/shoes/list_all?now_page=1">목록</a>
+    <span class="menu_devide">│</span>
+    <a href="javascript: location.reload();">새로 고침</a>
+  </aside>
   <form name="frm" th:object="${shoesVO}" method="post" action="/shoes/create">
     <div>
-      <label>중분류</label>
-      <input type="text" name="name" value="" autofocus="autofocus"
-             class="form-control fom-control-sm" style="width: 50%;" th:field="*{name}">
-      <div th:if="${#fields.hasErrors('name')}" class="alert alert-danger" role="alert" style="margin-top: 5px;">
-        <div th:each="err : ${#lists.sort(#fields.errors('name'))}" th:text="${err}"></div>
-      </div>  
+      <label>신발 번호</label>
+      <input type="text" name="shoesno" value="1" autofocus="autofocus" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto;">
     </div>
-    <div>
-      <label>소분류</label>
-      <input type="text" name="namesub" value="" 
-             class="form-control fom-control-sm" style="width: 50%;" th:field="*{namesub}">
-      <div th:if="${#fields.hasErrors('namesub')}" class="alert alert-danger" role="alert" style="margin-top: 5px;">
-        <div th:each="err : ${#lists.sort(#fields.errors('namesub'))}" th:text="${err}"></div>
-      </div>             
-    </div>
-    <div class="content_body_bottom">
-      <button type="submit" class="btn btn-secondary btn-sm">등록</button>
-      <button type="button" onclick="location.href='./list_all'" class="btn btn-secondary btn-sm">목록</button>
-    </div>
-    
-  </form>  
-</div>
-</html>
 
+    <div>
+      <label>카테고리 번호</label>
+      <input type="text" name="categoryno" value="1" autofocus="autofocus" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto;">
+    </div>
+
+    <div>
+      <label>회원 번호</label>
+      <input type="text" name="memberno" value="1" autofocus="autofocus" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto;">
+    </div>
+
+    <div>
+      <label>제목</label>
+      <input type="text" name="title" value="1" autofocus="autofocus" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto;">
+    </div>
+
+    <div>
+      <label>브랜드명</label>
+      <input type="text" name="brand" value="1" autofocus="autofocus" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto;">
+    </div>
+
+    <div>
+      <label>평점</label>
+      <input type="text" name="rating" value="1" autofocus="autofocus" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto;">
+    </div>
+
+    <div>
+      <label>금액</label>
+      <input type="text" name="price" value="1" autofocus="autofocus" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto;">
+    </div>
+
+    <div>
+      <label>할인</label>
+      <input type="text" name="discount" value="1" autofocus="autofocus" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto;">
+    </div>
+
+    <div>
+      <label>내용</label>
+      <input type="text" name="contents" value="1" autofocus="autofocus" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto;">
+    </div>
+
+    <div>
+      <label>판매여부</label>
+      <input type="text" name="visible" value="Y" autofocus="autofocus" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto;">
+    </div>
+
+    <button type="submit" class="btn btn-secondary btn-sm">등록</button>
+    <button type="button" onclick="location.href='./list_all'" class="btn btn-secondary btn-sm">목록</button>
+
+    <div th:replace="~{shoes/list_all_component::list_all_fragment}"></div>
+
+    <div>
+      <div th:replace="~{footer::footerFragment}"></div>
+    </div>
+  </form>
+</div>
+
+</html>
