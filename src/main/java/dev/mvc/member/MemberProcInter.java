@@ -44,6 +44,7 @@ public interface MemberProcInter {
   public MemberVO readById(String id);
   
   /**
+<<<<<<< HEAD
    * 로그인된 회원 계정인지 검사합니다.
    * @param session
    * @return true: 사용자
@@ -90,5 +91,24 @@ public interface MemberProcInter {
    */
   public int login(HashMap<String, Object> map);
   
+=======
+   * Memberno로 회원 찾기<br>
+   * id="readByMemberno" parameterType="int"
+   * resultType="dev.mvc.member.MemberVO"<br>
+   * 
+   * @param 검색할 id명
+   * @return MemberVO 객체
+   */
+  public MemberVO readByMemberno(int id);
+  
+  /**
+   * 회원정보 수정<br>
+   * id="update" parameterType="dev.mvc.member.MemberVO"
+   * 
+   * @param MemberVO 객체
+   * @return 성공한 쿼리 갯수
+   * */
+  public int update(MemberVO memberVO);
+>>>>>>> Sungho
 }
 

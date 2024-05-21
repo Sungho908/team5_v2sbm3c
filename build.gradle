@@ -44,7 +44,7 @@ dependencies {
 >>>>>>> f70f4cf77208e3c096eb6034dca50f1fcb7273bf
   compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
 //  compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0-M2'
-  
+  implementation 'jakarta.validation:jakarta.validation-api:3.0.0'
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'

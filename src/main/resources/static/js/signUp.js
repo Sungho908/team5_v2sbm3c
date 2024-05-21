@@ -199,8 +199,8 @@ function send() { // 회원 가입 처리
 
   dateMix()
 
-  document.querySelector('#zipcode').disabled = true;
-  document.querySelector('#addr1').disabled = true;
+  document.querySelector('#zipcode').disabled = false;
+  document.querySelector('#addr1').disabled = false;
   document.querySelector('#frm').submit();
 }
 

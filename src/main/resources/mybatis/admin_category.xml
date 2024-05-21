@@ -1,109 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
+
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.mvc.admin.category.CategoryDAOInter">
+  <select id="name_list">
+    SELECT distinct name
+    FROM category
+  </select>
+
+  <select id="parent_count" parameterType="Integer">
+    SELECT count(*) as cnt FROM CATEGORY  WHERE PARENTNO = #{categoryno}
+  </select>
+
+  <select id="parent_categoryno" parameterType="String" resultType="Integer">
+    SELECT categoryno
+    FROM category
+    WHERE name = #{name}
+    AND ROWNUM = 1
+  </select>
+
+  <select id="subname_list" parameterType="Integer">
+    SELECT subname
+    FROM category
+    WHERE parentno = #{categoryno}
+  </select>
+  
   <insert id="create" parameterType="dev.mvc.admin.category.CategoryVO">
-    INSERT INTO category (c_no, c_name, c_subname, c_seq, c_cnt, c_parent)
+    INSERT INTO category (categoryno, name, subname, seq, cnt, parentno)
     SELECT 
-        CATEGORY_SEQ.nextval AS c_no,
-        #{c_name} AS c_name,
+        CATEGORY_SEQ.nextval AS categoryno,
+        #{name} AS name,
         CASE 
-            WHEN EXISTS (SELECT 1 FROM CATEGORY WHERE c_name = #{c_name}) THEN #{c_subname}
+            WHEN EXISTS (SELECT 1 FROM CATEGORY WHERE name = #{name}) THEN #{subname}
             ELSE '-'
-        END AS c_subname,
+        END AS subname,
         CASE 
-            WHEN EXISTS (SELECT 1 FROM CATEGORY WHERE c_name = #{c_name}) 
-            THEN (SELECT MAX(c_seq) + 1 FROM CATEGORY WHERE c_name = #{c_name})
-            ELSE (SELECT COALESCE(CEIL(MAX(c_seq) / 10 + 0.5) * 10 + 1, 1) FROM CATEGORY)
-        END AS c_seq,
-        100 AS c_cnt,
+            WHEN EXISTS (SELECT 1 FROM CATEGORY WHERE name = #{name}) 
+            THEN (SELECT MAX(seq) + 1 FROM CATEGORY WHERE name = #{name})
+            ELSE (SELECT COALESCE(CEIL(MAX(seq) / 10 + 0.5) * 10 + 1, 1) FROM CATEGORY)
+        END AS seq,
+        100 AS cnt,
         CASE 
-            WHEN EXISTS (SELECT 1 FROM CATEGORY WHERE c_name = #{c_name}) 
-            THEN (SELECT c_no FROM CATEGORY WHERE c_name = #{c_name} AND c_subname = '-')
+            WHEN EXISTS (SELECT 1 FROM CATEGORY WHERE name = #{name}) 
+            THEN (SELECT categoryno FROM CATEGORY WHERE name = #{name} AND subname = '-')
             ELSE NULL
-        END AS c_parent
+        END AS parentno
     FROM dual
   </insert>
-  
+
   <select id="list_all" resultType="dev.mvc.admin.category.CategoryVO">
-    SELECT c_no, c_name, c_subname, c_seq, c_cnt, c_parent 
+    SELECT categoryno, name, subname, seq, cnt, parentno 
     FROM category
-    WHERE c_subname != '-'
-    ORDER BY c_seq ASC
+    WHERE subname != '-'
+    ORDER BY seq ASC
   </select>
 
   <select id="read" resultType="dev.mvc.admin.category.CategoryVO" parameterType="Integer">
-    SELECT c_no, c_name, c_subname, c_seq, c_cnt, c_parent 
+    SELECT categoryno, name, subname, seq, cnt, parentno 
     FROM category
-    WHERE c_no = #{c_no}
+    WHERE categoryno = #{categoryno}
   </select>
 
+  <update id="update" parameterType="dev.mvc.admin.category.CategoryVO">
+    UPDATE category
+    SET name = #{name}, subname = #{subname}
+    WHERE categoryno = #{categoryno}
+  </update>
+
   <delete id="delete" parameterType="Integer">
-    DELETE FROM category WHERE c_no= #{c_no}
+    DELETE FROM category WHERE categoryno = #{categoryno}
   </delete>
 
   <!-- 회원/비회원에게 공개할 중분류 목록 -->
   <select id="list_all_name" resultType="dev.mvc.admin.category.CategoryVO">
-    SELECT c_no, c_name
+    SELECT categoryno, name
     FROM category
-    WHERE c_name IN (
-        SELECT DISTINCT c_name
+    WHERE name IN (
+        SELECT DISTINCT name
         FROM category
-    ) AND c_subname = '-'
-    ORDER BY c_seq ASC
+    ) AND subname = '-'
+    ORDER BY seq ASC
   </select>
 
   <!-- 회원/비회원에게 공개할 소분류 목록 -->
   <select id="list_all_subname" resultType="dev.mvc.admin.category.CategoryVO" parameterType="String">
-    SELECT c_no, c_name, c_subname
+    SELECT categoryno, name, subname
     FROM category
-    WHERE c_name = #{c_name} AND c_subname != '-'
-    ORDER BY c_seq ASC
+    WHERE name = #{name} AND subname != '-'
+    ORDER BY seq ASC
   </select>
 
   <!-- 관리자용 검색 목록, Map은 VO class보다 적은 변수의 전달시 사용 -->
   <select id="list_search" resultType="dev.mvc.admin.category.CategoryVO" parameterType="String">
-    SELECT c_no, c_name, c_subname, c_seq, c_cnt, c_parent 
+    SELECT categoryno, name, subname, seq, cnt, parentno 
     FROM category
-    
     <if test="word != null and word != ''">
-      WHERE UPPER(c_name) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(c_subname) LIKE '%' || UPPER(#{word}) || '%'  
+      WHERE UPPER(name) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(subname) LIKE '%' || UPPER(#{word}) || '%'  
     </if>
-        
-    ORDER BY c_seq ASC
+    ORDER BY seq ASC
   </select>
 
   <!-- 관리자용 검색 목록, Map은 VO class보다 적은 변수의 전달시 사용 -->
   <select id="list_search_paging" resultType="dev.mvc.admin.category.CategoryVO" parameterType="Map">
-    SELECT c_no, c_name, c_subname, c_seq, c_cnt, c_parent, r
+    SELECT categoryno, name, subname, seq, cnt, parentno, r
     FROM (
-        SELECT c_no, c_name, c_subname, c_seq, c_cnt, c_parent, rownum as r
+        SELECT categoryno, name, subname, seq, cnt, parentno, rownum as r
         FROM (
-            SELECT c_no, c_name, c_subname, c_seq, c_cnt, c_parent
+            SELECT categoryno, name, subname, seq, cnt, parentno
             FROM category
-            
-            <if test="word != null and word != ''">
-              WHERE UPPER(c_name) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(c_subname) LIKE '%' || UPPER(#{word}) || '%'  
+    <if test="word != null and word != ''">
+              WHERE UPPER(name) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(subname) LIKE '%' || UPPER(#{word}) || '%'  
             </if>
-         
-            ORDER BY c_seq ASC
+    ORDER BY seq ASC
         )
     )
-    WHERE r &gt; = #{start_num} AND r &lt; = #{end_num} <!-- WHERE r >= 1 AND r <= 3 -->
+    WHERE r &gt; = #{start_num} AND r &lt; = #{end_num}
+    <!-- WHERE r >= 1 AND r <= 3 -->
   </select>
 
   <!-- 검색된 레코드 수 -->
   <select id="list_search_count" resultType="int" parameterType="String">
     SELECT COUNT(*) as cnt
     FROM category
-    
     <if test="word != null and word != ''">
-      WHERE UPPER(c_name) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(c_subname) LIKE '%' || UPPER(#{word}) || '%'
+      WHERE UPPER(name) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(subname) LIKE '%' || UPPER(#{word}) || '%'
     </if>
-        
-    ORDER BY c_seq ASC
+    ORDER BY seq ASC
   </select>
-                
+
 </mapper>
 
 
