@@ -22,7 +22,7 @@
     </aside>
 
     <form name="frm" th:object="${noticeVO}" method="post" action="/admin/notice/create"
-      style="width:50%; margin: 5px auto;">
+      style="width:50%; margin: 5px auto;" enctype="multipart/form-data">
       <div>
         <label>제목</label>
         <input type='text' name='title' placeholder = "공지사항 제목" autofocus="autofocus" class="form-control"
@@ -34,9 +34,6 @@
       </div>
       <div>
 
-        <input type='text' name='word' value='오버랜딩,오지,탐험,일상탈피,힐링,내공,추진력,문제해결' required="required" class="form-control"
-          style='width: 100%;'>
-      </div>
       <div>
         <label>이미지</label>
         

@@ -1,47 +1,50 @@
 package dev.mvc.noticeFile;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
-//CREATE TABLE NOTICE_FILE(
-//    FILE_NO                           NUMBER(9)    NOT NULL    PRIMARY KEY,
-//    FILE_NAME                         VARCHAR2(100)    NOT NULL,
-//    FILE_SIZE                         NUMBER     NOT NULL,
-//    FILE_EX                           VARCHAR2(100)    NOT NULL,
-//    FILE_SRC                          VARCHAR2(100)    NOT NULL,
-//    R_NO                              VARCHAR2(255)    NULL ,
-//    N_NO                              NUMBER(9)    NULL ,
-//  FOREIGN KEY (N_NO) REFERENCES NOTICE (N_NO)
-//);
+/*CREATE TABLE NOTICE_FILE(
+    NOTICE_FILE_NO                    NUMBER(9)    NOT NULL    PRIMARY KEY,
+    NAME                              VARCHAR2(100)    NOT NULL,
+    SIZES                             NUMBER     NOT NULL,
+    EX                                VARCHAR2(100)    NOT NULL,
+    SRC                               VARCHAR2(100)    NOT NULL,
+    NOTICENO                          NUMBER(9)    NULL ,
+  FOREIGN KEY (NOTICENO) REFERENCES NOTICE (NOTICENO)
+);*/
+@Getter@Setter
 public class NoticeFileVO {
-  /** 파일번호 */
-  private Integer fileNo;
   
+  /**
+  이미지 파일
+  <input type='file' class="form-control" name='file1MF' id='file1MF' 
+             value='' placeholder="파일 선택">
+  */
+  private MultipartFile fileSelect;
+  
+  /** 파일번호 */
+  private Integer notice_file_no;
   
   /** 파일명 */
-  private String fileName;
+  private String name;
   
   
   /** 파일크기 */
-  private Double fileSize;
+  private Long size;
   
   
   /** 확장자명 */
-  private String fileEx;
+  private String ex;
   
   
   /** 파일 주소 */
-  private String fileSrc;
+  private String src;
   
   
   /** 후기 번호 */
-  private Integer rNo;
+  private Integer noticeno;
   
-  
-  /** 공지번호 */
-  private Integer nNo;
 }

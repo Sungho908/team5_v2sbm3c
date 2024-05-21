@@ -7,6 +7,11 @@
     VALUES(NOTICE_SEQ.nextval, #{title}, #{contents}, sysdate, #{memberno})
   </insert>
 
+  <insert id="create_file" parameterType="dev.mvc.notice.NoticeFileVO">
+    INSERT INTO NOTICE_FILE(notice_file_no, name, sizes, ex, src, noticeno)
+    VALUES(NOTICE_FILE_SEQ.nextval, #{name}, #{sizes}, #{ex}, #{src}, #{noticeno});
+  </insert>
+  
   <select id="list_all" resultType="dev.mvc.admin.notice.NoticeMemberVO">
     SELECT n.noticeno, n.title, n.contents, n.rdate, n.views, m.nickname
     FROM notice n
