@@ -21,23 +21,23 @@
       <a href="javascript: location.reload();">새로 고침</a>
     </aside>
 
-    <form name="frm" th:object="${noticeVO}" method="post" action="/admin/notice/create"
+    <form name="frm" th:object="${noticefileVO}" method="post" action="/admin/notice/create"
       style="width:50%; margin: 5px auto;" enctype="multipart/form-data">
       <div>
         <label>제목</label>
         <input type='text' name='title' placeholder = "공지사항 제목" autofocus="autofocus" class="form-control"
-          style='width: 100%;' required>
+          style='width: 100%;' th:field="*{noticeVO.title}" required>
       </div>
       <div>
         <label>내용</label>
-        <textarea name='content' required="required" class="form-control" rows="12" style='width: 100%;'> </textarea>
+        <textarea name='content' required="required" class="form-control" rows="12" style='width: 100%;' th:field="*{noticeVO.contents}"> </textarea>
       </div>
       <div>
 
       <div>
         <label>이미지</label>
         
-        <input type='file' class="form-control" name='file1MF' id='file1MF' value='' placeholder="파일 선택">
+        <input type='file' class="form-control" name='fileSelect' id='fileSelect' value='' placeholder="파일 선택">
       </div>
       <div>
         <label>패스워드</label>

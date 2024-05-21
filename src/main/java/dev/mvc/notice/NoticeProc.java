@@ -7,6 +7,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import dev.mvc.noticeFile.NoticeFileVO;
+
 @Service("dev.mvc.notice.NoticeProc")
 public class NoticeProc implements NoticeProcInter{
 
@@ -14,8 +16,8 @@ public class NoticeProc implements NoticeProcInter{
   private NoticeDAOInter noticeDAO;
   
   @Override
-  public int create(NoticeVO noticeVO) {
-    int cnt = this.noticeDAO.create(noticeVO);
+  public int create(NoticeFileVO noticefileVO) {
+    int cnt = this.noticeDAO.create(noticefileVO);
     return cnt;
   }
 

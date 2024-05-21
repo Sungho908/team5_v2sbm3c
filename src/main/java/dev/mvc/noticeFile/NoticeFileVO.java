@@ -2,9 +2,9 @@ package dev.mvc.noticeFile;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import dev.mvc.notice.NoticeVO;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 /*CREATE TABLE NOTICE_FILE(
     NOTICE_FILE_NO                    NUMBER(9)    NOT NULL    PRIMARY KEY,
@@ -15,9 +15,10 @@ import lombok.ToString;
     NOTICENO                          NUMBER(9)    NULL ,
   FOREIGN KEY (NOTICENO) REFERENCES NOTICE (NOTICENO)
 );*/
-@Getter@Setter
+@Getter @Setter
 public class NoticeFileVO {
   
+  private NoticeVO noticeVO;
   /**
   이미지 파일
   <input type='file' class="form-control" name='file1MF' id='file1MF' 
@@ -33,7 +34,7 @@ public class NoticeFileVO {
   
   
   /** 파일크기 */
-  private Long size;
+  private Long sizes;
   
   
   /** 확장자명 */

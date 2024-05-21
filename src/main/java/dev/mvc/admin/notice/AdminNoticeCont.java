@@ -7,19 +7,18 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import dev.mvc.category.CategoryVO;
 import dev.mvc.notice.NoticeMemberVO;
 import dev.mvc.notice.NoticeProcInter;
-import dev.mvc.notice.NoticeVO;
-import dev.mvc.noticeFile.Notice;
 import dev.mvc.noticeFile.NoticeFileVO;
 import dev.mvc.tool.Tool;
-import dev.mvc.tool.Upload;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -37,6 +36,8 @@ public class AdminNoticeCont {
   /** 블럭당 페이지 수, 하나의 블럭은 10개의 페이지로 구성됨 */
   public int page_per_block = 5;
 
+  private String absPath = "C:\\kd\\deploy\\team5_v2sbm3c\\file\\storage\\";
+
   public AdminNoticeCont() {
     System.out.println("-> Notice created.");
   }
@@ -51,7 +52,7 @@ public class AdminNoticeCont {
       int search_count = this.noticeProc.list_search_count(word);
       String paging = this.noticeProc.pagingBox(now_page, word, "/admin/notice/list", search_count,
           this.record_per_page, this.page_per_block);
-      
+
       int no = search_count - ((now_page - 1) * this.record_per_page);
 
       model.addAttribute("paging", paging);
@@ -81,59 +82,44 @@ public class AdminNoticeCont {
   @GetMapping(value = "/create")
   public String create(HttpSession session, Model model) {
 
-    NoticeVO noticeVO = new NoticeVO();
-    model.addAttribute("noticeVO", noticeVO);
+    NoticeFileVO noticefileVO = new NoticeFileVO();
+    model.addAttribute("noticefileVO", noticefileVO);
     return "admin/notice/create";
   }
 
   /** 공지사항 생성 */
   @PostMapping(value = "/create")
-  public String create_process(HttpServletRequest request, HttpSession session, Model model, NoticeVO noticeVO,
-      NoticeFileVO noticefileVO, RedirectAttributes ra) {
-
-    String file1 = ""; // 원본 파일명 image
-    String file1saved = ""; // 저장된 파일명, image
-    String thumb1 = ""; // preview image
-
-    String upDir = Notice.getUploadDir(); // 파일을 업로드할 폴더 준비
-    System.out.println("-> upDir: " + upDir);
-
+  public String create_process(HttpServletRequest request, HttpSession session, Model model, NoticeFileVO noticefileVO,
+      RedirectAttributes ra) {
     MultipartFile mf = noticefileVO.getFileSelect();
-    file1 = mf.getOriginalFilename(); // 원본 파일명 산출
+    String file = mf.getOriginalFilename();
 
-    long size1 = mf.getSize();
-    if (size1 > 0) {
-      if (Tool.checkUploadFile(file1) == true) {
-        file1saved = Upload.saveFileSpring(mf, upDir);
+    noticefileVO.setName(file);
+    noticefileVO.setEx(file.substring(file.length() - 3));
+    noticefileVO.setSizes(mf.getSize());
+    noticefileVO.setSrc(Tool.saveFileSpring(mf, absPath));
 
-        if (Tool.isImage(file1saved)) {
-          thumb1 = Tool.preview(upDir, file1saved, 200, 150);
-        }
-
-        noticefileVO.setName(file1);
-        noticefileVO.setSize(size1);
-        noticefileVO.setEx(file1saved);
-        noticefileVO.setSrc(thumb1);
-      } else {
-        ra.addFlashAttribute("code", "check_upload_file_fail"); // 업로드 할 수 없는 파일
-        ra.addFlashAttribute("cnt", 0); // 업로드 실패
-        ra.addFlashAttribute("url", "/contents/msg"); // msg.html, redirect parameter 적용
-        return "redirect:/admin/notice/msg"; // Post -> Get - param...
-      }
-
-    } else {
-      System.out.println("-> 글만 등록");
-    }
-
-    // int memberno = (int) session.getAttribute("memberno");
-    noticeVO.setMemberno(1); // 로그인 성공 시 변경
-    int cnt = this.noticeProc.create(noticeVO);
-
-    if (cnt == 1) {
-      ra.addAttribute("noticeno", noticeVO.getNoticeno());
-      return "redirect:/admin/notice/list";
-    }
-
-    return "admin/category/msg";
+    this.noticeProc.create(noticefileVO);
+    return "redirect:/admin/notice/list?now_page=1";
   }
+  
+  /** 카테고리 읽기 */
+  @GetMapping(value = "/read/{categoryno}")
+  public String read(HttpSession session, Model model, @PathVariable("categoryno") Integer categoryno,
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+    /*
+     * ArrayList<CategoryVO> menu = this.noticeP.list_all();
+     * model.addAttribute("menu", menu);
+     * 
+     * CategoryVO categoryVO = this.categoryProc.read(categoryno);
+     * model.addAttribute("categoryVO", categoryVO);
+     */
+
+    table_paging(model, word, now_page);
+
+    return "admin/category/read";
+  }
+  
 }

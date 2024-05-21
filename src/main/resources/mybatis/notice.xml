@@ -2,16 +2,19 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.mvc.notice.NoticeDAOInter">
-  <insert id="create" parameterType="dev.mvc.notice.NoticeVO">
-    INSERT INTO notice(noticeno, title, contents, rdate, memberno)
-    VALUES(NOTICE_SEQ.nextval, #{title}, #{contents}, sysdate, #{memberno})
+  <insert id="create" parameterType="dev.mvc.noticeFile.NoticeFileVO">
+    DECLARE
+        v_noticeno NUMBER;
+    BEGIN
+        INSERT INTO notice (noticeno, title, contents, rdate, memberno)
+        VALUES (NOTICE_SEQ.nextval, #{noticeVO.title}, #{noticeVO.contents}, SYSDATE, 1)
+        RETURNING noticeno INTO v_noticeno;
+
+        INSERT INTO notice_file (notice_file_no, name, sizes, ex, src, noticeno)
+        VALUES (NOTICE_FILE_SEQ.nextval, #{name}, #{sizes}, #{ex}, #{src}, v_noticeno);
+    END;
   </insert>
 
-  <insert id="create_file" parameterType="dev.mvc.noticeFile.NoticeFileVO">
-    INSERT INTO NOTICE_FILE(notice_file_no, name, sizes, ex, src, noticeno)
-    VALUES(NOTICE_FILE_SEQ.nextval, #{name}, #{sizes}, #{ex}, #{src}, #{noticeno});
-  </insert>
-  
   <select id="list_all" resultType="dev.mvc.notice.NoticeMemberVO">
     SELECT n.noticeno, n.title, n.contents, n.rdate, n.views, m.nickname
     FROM notice n, member m
@@ -37,7 +40,7 @@
         ORDER BY noticeno DESC
     ) n
     JOIN member m ON n.memberno = m.memberno
-        <if test="word != null and word != ''">
+    <if test="word != null and word != ''">
     WHERE 
       (
         UPPER(n.title) LIKE '%' || UPPER(#{word}) || '%' 

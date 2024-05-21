@@ -139,7 +139,7 @@ public class AdminCategoryCont {
     }
   }
 
-  /** 카테고리 수정 */
+  /** 카테고리 읽기 */
   @GetMapping(value = "/read/{categoryno}")
   public String read(HttpSession session, Model model, @PathVariable("categoryno") Integer categoryno,
       @RequestParam(name = "word", defaultValue = "") String word,

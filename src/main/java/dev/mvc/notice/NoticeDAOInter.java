@@ -3,10 +3,12 @@ package dev.mvc.notice;
 import java.util.ArrayList;
 import java.util.Map;
 
+import dev.mvc.noticeFile.NoticeFileVO;
+
 public interface NoticeDAOInter {
 
   /** 공지사항 생성 */
-  public int create(NoticeVO noticeVO);
+  public int create(NoticeFileVO noticefileVO);
   
   /** 공지사항 목록 */
   public ArrayList<NoticeMemberVO> list_all();
