@@ -20,8 +20,8 @@ public class NoticeProc implements NoticeProcInter{
   }
 
   @Override
-  public ArrayList<NoticeVO> list_all() {
-    ArrayList<NoticeVO> list = this.noticeDAO.list_all();
+  public ArrayList<NoticeMemberVO> list_all() {
+    ArrayList<NoticeMemberVO> list = this.noticeDAO.list_all();
     return list;
   }
 

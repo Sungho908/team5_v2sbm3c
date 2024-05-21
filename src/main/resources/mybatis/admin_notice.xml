@@ -7,10 +7,10 @@
     VALUES(NOTICE_SEQ.nextval, #{title}, #{contents}, sysdate, #{memberno})
   </insert>
 
-  <select id="list_all" resultType="dev.mvc.admin.notice.NoticeVO">
+  <select id="list_all" resultType="dev.mvc.admin.notice.NoticeMemberVO">
     SELECT n.noticeno, n.title, n.contents, n.rdate, n.views, m.nickname
-    FROM notice n
-    JOIN member m ON n.memberno = m.memberno
+    FROM notice n, member m
+    WHERE n.memberno = m.memberno
     ORDER BY n.rdate DESC
   </select>
 

@@ -9,7 +9,7 @@ public interface NoticeDAOInter {
   public int create(NoticeVO noticeVO);
   
   /** 공지사항 목록 */
-  public ArrayList<NoticeVO> list_all();
+  public ArrayList<NoticeMemberVO> list_all();
   
   
   /** 검색 개수 */
