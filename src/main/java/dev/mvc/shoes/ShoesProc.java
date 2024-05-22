@@ -138,6 +138,16 @@ public class ShoesProc implements ShoesProcInter {
   }
 
   @Override
+  public ShoesOptionVO read_option(int shoesno, int optionno) {
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("shoesno", shoesno);
+    map.put("optionno", optionno);
+    
+    ShoesOptionVO list = this.shoesDAO.read_option(map);
+    return list;
+  }
+  
+  @Override
   public int update(ShoesVO shoesVO) {
     int cnt = this.shoesDAO.update(shoesVO);
     return cnt;
@@ -152,6 +162,38 @@ public class ShoesProc implements ShoesProcInter {
   @Override
   public int parent_count(int shoesno) {
     int cnt = this.shoesDAO.parent_count(shoesno);
+    return cnt;
+  }
+  
+
+
+  @Override
+  public ArrayList<ShoesOptionVO> option_paging(int shoesno, String word, int now_page, int record_per_page) {
+    int begin_of_page = (now_page - 1) * record_per_page;
+
+    int start_num = begin_of_page + 1;
+
+    int end_num = begin_of_page + record_per_page;
+
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("shoesno", shoesno);
+    map.put("word", word);
+    map.put("start_num", start_num);
+    map.put("end_num", end_num);
+    
+    ArrayList<ShoesOptionVO> list = this.shoesDAO.option_paging(map);
+    return list; 
+    
+  }
+
+  @Override
+  public int option_update(ShoesOptionVO shoesoptionVO) {
+    int cnt = this.shoesDAO.option_update(shoesoptionVO);
+    return cnt;
+  }
+  @Override
+  public int option_create(ShoesOptionVO shoesoptionVO) {
+    int cnt = this.shoesDAO.option_create(shoesoptionVO);
     return cnt;
   }
   

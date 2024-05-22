@@ -39,12 +39,6 @@
          <td class="td_bs" th:text="${shoesVO.discount}"></td>
          <td class="td_bs" th:text="${shoesVO.contents}"></td>
          <td class="td_bs" th:text="${shoesVO.visible}"></td>
-        <td class="td_bs" >
-            <a th:href="@{|/shoes/update/${shoesVO.shoesno}?word=${word}&now_page=${now_page}|}" ><img
-                src="/shoes/images/update.png" class="icon" ></a>
-            <a th:href="@{|/shoes/delete/${shoesVO.shoesno}?word=${word}&now_page=${now_page}|}"><img
-                src="/shoes/images/delete.png" class="icon"></a>
-        </td>
       </tr>
     </tbody>
   </table>
@@ -52,7 +46,4 @@
   <!-- 페이지 버튼 목록 출력 시작 -->
   <div class="bottom_menu" th:utext="${paging}"></div>
   <!-- 페이지 버튼 목록 출력 종료 -->
-  <div>
-    <div th:replace="~{footer::footerFragment}"></div>
-  </div>
 </div>

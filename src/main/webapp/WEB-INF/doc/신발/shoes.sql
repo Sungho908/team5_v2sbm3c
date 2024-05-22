@@ -7,11 +7,11 @@ CREATE TABLE SHOES(
 		MEMBERNO                          		NUMBER(9)		 NOT NULL,
 		TITLE                       		VARCHAR2(100)		 NOT NULL,
 		BRAND                       		VARCHAR2(100)		 NOT NULL,
-		RATING                      		NUMBER		 NOT NULL,
+		RATING                      		NUMBER		 DEFAULT 0 NOT NULL,
 		PRICE                       		NUMBER		 NOT NULL,
 		DISCOUNT                    		NUMBER		 NOT NULL,
 		CONTENTS                    		VARCHAR2(1000)		 NOT NULL,
-		VISIBLE                     		CHAR(1)		 NOT NULL,
+		VISIBLE                     		CHAR(1)	     DEFAULT 'F' NOT NULL,
    FOREIGN KEY (MEMBERNO) REFERENCES MEMBER (MEMBERNO),
    FOREIGN KEY (CATEGORYNO) REFERENCES CATEGORY (CATEGORYNO)
 );
@@ -39,13 +39,16 @@ CREATE SEQUENCE SHOES_SEQ
 
        
 INSERT INTO SHOES(SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE)
-VALUES(SHOES_SEQ.nextval, 1, 1, '나이키 덩크로우 그레이', '나이키', 4, 190000, 20, '흰색/회색 두가지 색으로 제작한....', 'Y');
+VALUES(SHOES_SEQ.nextval, 1, 1, '나이키 덩크로우 그레이', '나이키', 4, 190000, 20, '흰색/회색 두가지 색으로 제작한....', 'F');
 
 INSERT INTO SHOES(SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE)
-VALUES(SHOES_SEQ.nextval, 2, 1, '나이키 코르테즈', '나이키', 4, 100000, 20, '깔끔하고 트렌디한 디자인으로 제작한....', 'Y');
+VALUES(SHOES_SEQ.nextval, 2, 1, '나이키 코르테즈', '나이키', 4, 100000, 20, '깔끔하고 트렌디한 디자인으로 제작한....', 'F');
 
 INSERT INTO SHOES(SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE)
-VALUES(SHOES_SEQ.nextval, 3, 1, 'VLTN 신발', '발렌티노', 4, 433333, 20, '화려한 신발 발렌티노......', 'Y');
+VALUES(SHOES_SEQ.nextval, 3, 1, 'VLTN 신발', '발렌티노', 4, 433333, 20, '화려한 신발 발렌티노......', 'F');
+
+INSERT INTO SHOES(SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, PRICE, DISCOUNT, CONTENTS)
+VALUES(SHOES_SEQ.nextval, 4, 1, '스포츠신발', '아디다스', 433333, 20, '편안한 아디다스....');
 
 commit; 
 

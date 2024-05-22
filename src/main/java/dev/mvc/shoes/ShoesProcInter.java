@@ -16,6 +16,9 @@ public interface ShoesProcInter {
    */
   public int create(ShoesVO shoesVO);
 
+  
+  public int option_create(ShoesOptionVO shoesoptionVO);
+  
   /**
    * 전체 목록 select id="list_all" resultType="dev.mvc.shoes.ShoesVO"
    * 
@@ -47,6 +50,11 @@ public interface ShoesProcInter {
    */
   public ShoesVO read(int shoesno);
   
+  public ShoesOptionVO read_option(int optionno, int shoesno);
+  
+  // read했을때 옵션 리스트
+  public ArrayList<ShoesOptionVO> option_paging(int shoesno, String word, int now_page, int record_per_page);
+  
   public ArrayList<ShoesVO> list_search(String word);
 
   public ArrayList<ShoesVO> list_search_paging(String word, int now_page, int record_per_page);
@@ -55,10 +63,14 @@ public interface ShoesProcInter {
       int page_per_block);
 
   public int list_search_count(String word);
-  
-  public int update(ShoesVO shoesVO);
+
+  public int update(ShoesVO shoesVO);  // 신발 카테고리 수정
+
+  public int option_update(ShoesOptionVO shoesoptionVO);   // 신발 옵션 수정
 
   public int delete(int shoesno);
 
   public int parent_count(int shoesno);
+
+
 }

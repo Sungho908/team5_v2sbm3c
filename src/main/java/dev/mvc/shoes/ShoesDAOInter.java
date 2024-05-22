@@ -16,6 +16,8 @@ public interface ShoesDAOInter {
   public int create(ShoesVO shoesVO);
   
   
+  
+  public int option_create(ShoesOptionVO shoesoptionVO);
   /**
    * 전체 목록
    * select id="list_all" resultType="dev.mvc.shoes.ShoesVO"     
@@ -31,6 +33,11 @@ public interface ShoesDAOInter {
    */
   public ShoesVO read(int shoesno);
   
+  public ShoesOptionVO read_option(Map<String, Object> map);
+  
+  // read했을때 옵션 리스트
+  public ArrayList<ShoesOptionVO> option_paging(Map<String, Object> map);
+   
   public ArrayList<ShoesVO> list_search(String word);
   
   public ArrayList<ShoesVO> list_search_paging(Map<String, Object> map);
@@ -39,12 +46,13 @@ public interface ShoesDAOInter {
   
   public int update(ShoesVO shoesVO);
   
+  // 신발 옵션 수정(사이즈, 재고 등)
+  public int option_update(ShoesOptionVO shoesoptionVO);
+  
   public int delete(int shoesno);
   
   public int parent_count(int shoesno);
-  
-  
-  
+
 }
 
 

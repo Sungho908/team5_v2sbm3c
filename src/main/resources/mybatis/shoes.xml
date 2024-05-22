@@ -2,8 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.mvc.shoes.ShoesDAOInter">
   <insert id="create" parameterType="dev.mvc.shoes.ShoesVO">
-    INSERT INTO SHOES (SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE)
-    VALUES (SHOES_SEQ.nextval, #{categoryno}, #{memberno}, #{title}, #{brand}, #{rating}, #{price}, #{discount}, #{contents}, #{visible})
+    INSERT INTO SHOES (SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, PRICE, DISCOUNT, CONTENTS)
+    VALUES (SHOES_SEQ.nextval, #{categoryno}, #{memberno}, #{title}, #{brand}, #{price}, #{discount}, #{contents})
+  </insert>
+
+  <insert id="option_create" parameterType="dev.mvc.shoes.ShoesOptionVO">
+    INSERT INTO OPTIONS (OPTIONNO, SIZES, COLOR, SHOESNO)
+    VALUES (OPTION_SEQ.nextval, #{sizes}, #{color}, #{shoesno})
   </insert>
 
   <select id="list_all" resultType="dev.mvc.shoes.ShoesVO">
@@ -22,7 +27,26 @@
     WHERE shoesno=#{shoesno}
   </select>
 
-  <select id="selectwith" parameterType="int" resultType="dev.mvc.shoes.ShoesVO">
+  <select id="read_option" resultType="dev.mvc.shoes.ShoesOptionVO" parameterType="Map">
+    SELECT OPTIONNO, SIZES, AMOUNT, COLOR, SHOESNO
+    FROM options 
+    WHERE shoesno =#{shoesno} AND optionno = #{optionno}
+  </select>
+
+  <select id="option_paging" resultType="dev.mvc.shoes.ShoesOptionVO" parameterType="Map">
+    SELECT o.optionno, o.shoesno, o.sizes, o.amount, o.color, r
+    FROM (
+      SELECT optionno, shoesno, sizes, amount, color, rownum as r
+      FROM options
+    ) o  
+  JOIN shoes s ON o.shoesno = s.shoesno
+  WHERE s.shoesno = #{shoesno}
+  AND
+  r &gt; = #{start_num} AND r &lt; = #{end_num}
+  </select>
+
+
+  <select id="selectwith" resultType="dev.mvc.shoes.ShoesVO">
     SELECT s.*, o.OPTIONNO, o.SIZE, o.AMOUNT, o.COLOR
     FROM SHOES s
     INNER JOIN OPTION o ON s.SHOESNO = o.SHOESNO
@@ -35,15 +59,22 @@
     WHERE SHOESNO = #{shoesno}
   </update>
 
+  <update id="option_update" parameterType="dev.mvc.shoes.ShoesOptionVO">
+    UPDATE OPTIONS
+    SET SIZES = #{sizes}, AMOUNT = #{amount}, COLOR = #{color}
+    WHERE OPTIONNO = #{optionno}
+  </update>
+
+
   <delete id="delete" parameterType="Integer">
     DELETE FROM SHOES WHERE SHOESNO = #{shoesno}
   </delete>
-  
+
   <select id="parent_count" parameterType="Integer">
     SELECT count(*) as cnt FROM SHOES  WHERE SHOESNO = #{shoesno}
   </select>
-   
-  
+
+
   <!-- 검색된 레코드 수 -->
   <select id="list_search_count" resultType="int" parameterType="String">
     SELECT COUNT(*) as cnt

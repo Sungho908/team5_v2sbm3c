@@ -17,21 +17,21 @@ import lombok.ToString;
 //);
 public class OptionVO {
   /** 옵션 번호 */
-  private Integer oNo;
+  private Integer optionno;
   
   
   /** 신발 사이즈 */
-  private Integer oSize;
+  private Integer size;
   
   
   /** 신발 재고 */
-  private Integer oAmount;
+  private Integer amount;
   
   
   /** 신발 색상 */
-  private Integer oColor;
+  private Integer color;
   
   
   /** 신발 번호 */
-  private Integer sNo;
+  private Integer shoesno;
 }
