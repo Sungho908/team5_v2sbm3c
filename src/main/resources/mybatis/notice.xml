@@ -52,10 +52,29 @@
         r &gt; = #{start_num} AND r &lt; = #{end_num}
   </select>
 
-  <select id="read" resultType="dev.mvc.notice.NoticeVO" parameterType="Integer">
-    SELECT noticeno, title, contents, rdate, views, memberno
-    FROM notice
+  <select id="file_count" resultType="int" parameterType="int">
+     select count(*) as cnt
+     FROM notice_file 
     WHERE noticeno = #{noticeno}
+  </select>
+
+  <select id="read" resultType="dev.mvc.notice.NoticeMemberFileVO" parameterType="Map">
+    <if test="count == 0">
+        SELECT n.noticeno, m.memberno, n.title, n.contents, n.rdate, n.views, m.nickname
+        FROM notice n
+        JOIN member m 
+        ON n.memberno = m.memberno
+        WHERE n.noticeno = #{noticeno}
+    </if>
+    <if test="count != 0">
+        SELECT n.noticeno, m.memberno, nf.notice_file_no, n.title, n.contents, n.rdate, n.views, m.nickname, nf.notice_file_no, nf.name, nf.sizes, nf.ex, nf.src
+        FROM notice n
+        JOIN member m 
+        ON n.memberno = m.memberno
+        JOIN notice_file nf
+        ON n.noticeno = nf.noticeno
+        WHERE n.noticeno = #{noticeno}
+    </if>
   </select>
 
   <update id="increased_views" parameterType="dev.mvc.notice.NoticeVO">
@@ -64,14 +83,31 @@
     WHERE noticeno = #{noticeno}
   </update>
 
-  <update id="update" parameterType="dev.mvc.notice.NoticeVO">
-    UPDATE notice
-    SET title = #{title}, contents = #{contents}
-    WHERE noticeno = #{noticeno}
+  <update id="update" parameterType="dev.mvc.notice.NoticeMemberFileVO">
+    DECLARE
+        v_noticeno NUMBER;
+    BEGIN
+        UPDATE notice 
+        SET title = #{title}, 
+        contents = #{contents}
+        WHERE noticeno = #{noticeno};
+    <if test="name != null and name != ''">
+        UPDATE notice_file 
+        SET name = #{name}, 
+        sizes = #{sizes}, 
+        ex = #{ex}, 
+        src = #{src} 
+        WHERE noticeno = #{noticeno};
+        </if>
+    END;
   </update>
 
   <delete id="delete" parameterType="Integer">
     DELETE FROM notice WHERE noticeno = #{notice}
   </delete>
 
+  <delete id="delete_file" parameterType="Integer">
+    DELETE FROM notice_file WHERE noticeno = #{notice}
+  </delete>
+  
 </mapper>

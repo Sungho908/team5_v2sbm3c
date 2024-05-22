@@ -28,9 +28,19 @@ public class NoticeProc implements NoticeProcInter{
   }
 
   @Override
-  public NoticeVO read(int noticeno) {
-    NoticeVO list = this.noticeDAO.read(noticeno);
-    return list;
+  public int file_count(int noticeno) {
+    int cnt = this.noticeDAO.file_count(noticeno);
+    return cnt;
+  }
+  
+  @Override
+  public NoticeMemberFileVO read(int count, int noticeno) {
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("count", count);
+    map.put("noticeno", noticeno);
+    
+    NoticeMemberFileVO noticememberfileVO = this.noticeDAO.read(map);
+    return noticememberfileVO;
   }
 
   @Override
@@ -64,14 +74,20 @@ public class NoticeProc implements NoticeProcInter{
   }
 
   @Override
-  public int update(NoticeVO noticeVO) {
-    int cnt = this.noticeDAO.update(noticeVO);
+  public int update(NoticeMemberFileVO noticememberfileVO) {
+    int cnt = this.noticeDAO.update(noticememberfileVO);
     return cnt;
   }
 
   @Override
   public int delete(int noticeno) {
     int cnt = this.noticeDAO.delete(noticeno);
+    return cnt;
+  }
+  
+  @Override
+  public int delete_file(int noticeno) {
+    int cnt = this.noticeDAO.delete_file(noticeno);
     return cnt;
   }
   

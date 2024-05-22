@@ -19,17 +19,23 @@ public interface NoticeProcInter {
   
   public ArrayList<NoticeMemberVO> list_search_paging(String word, int now_page, int record_per_page);
   
+  /** 파일 유무 */
+  public int file_count(int noticeno);
+  
   /** 공지사항 상세 */
-  public NoticeVO read(int noticeno);
+  public NoticeMemberFileVO read(int count, int noticeno);
   
   /** 조회수 증가 */
   public int increased_views(NoticeVO noticeVO);
   
   /** 공지사항 수정 */
-  public int update(NoticeVO noticeVO);
+  public int update(NoticeMemberFileVO noticememberfileVO);
   
   /** 공지사항 삭제 */
   public int delete(int noticeno);
+  
+  /** 공지사항-파일 삭제 */
+  public int delete_file(int noticeno);
   
   public String pagingBox(int now_page, String word, String list_file, int search_count, 
       int record_per_page, int page_per_block);

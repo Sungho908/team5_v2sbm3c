@@ -19,15 +19,21 @@ public interface NoticeDAOInter {
   
   public ArrayList<NoticeMemberVO> list_search_paging(Map<String, Object> map);
   
+  /** 파일 유무 */
+  public int file_count(int noticeno);
+  
   /** 공지사항 상세 */
-  public NoticeVO read(int noticeno);
+  public NoticeMemberFileVO read(Map<String, Object> map);
   
   /** 조회수 증가 */
   public int increased_views(NoticeVO noticeVO);
   
   /** 공지사항 수정 */
-  public int update(NoticeVO noticeVO);
+  public int update(NoticeMemberFileVO noticememberfileVO);
   
   /** 공지사항 삭제 */
   public int delete(int noticeno);
+  
+  /** 공지사항-파일 삭제 */
+  public int delete_file(int noticeno);
 }

@@ -44,7 +44,6 @@ public class NoticeFileVO {
   /** 파일 주소 */
   private String src;
   
-  
   /** 후기 번호 */
   private Integer noticeno;
   
