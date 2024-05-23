@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import dev.mvc.member.MemberDAOInter;
 import dev.mvc.tool.Tool;
@@ -43,6 +44,18 @@ public class LoginHistoryProc implements LoginHistoryProcInter {
   @Override
   public ArrayList<LoginHistoryVO> readBymembernoRdateDesc(int memberno) {
     return this.loginHistoryDAO.readBymembernoRdateDesc(memberno);
+  }
+  
+  @Override
+  @Transactional
+  public int delete(int memberno) {
+    return this.loginHistoryDAO.delete(memberno);
+  }
+
+  @Override
+  @Transactional
+  public int deleteOld(int memberno) {
+    return this.loginHistoryDAO.deleteOld(memberno);
   }
 
 }

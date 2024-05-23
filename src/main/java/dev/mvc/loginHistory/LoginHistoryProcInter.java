@@ -32,4 +32,20 @@ public interface LoginHistoryProcInter {
    * */
   public ArrayList<LoginHistoryVO> readBymembernoRdateDesc(int memberno);
   
+  /**
+   * member의 모든 데이터 삭제
+   * id="delete" parameterType="int"
+   * @param memberno
+   * @return 성공한 쿼리 갯수
+   * */
+  public int delete(int memberno);
+  
+  /**
+   * 최근 10건을 제외한 나머지 기록 삭제
+   * id="deleteOld" parameterType="int"
+   * @param memberno
+   * @return 성공한 쿼리 갯수
+   * */
+   public int deleteOld(int memberno);
+  
 }

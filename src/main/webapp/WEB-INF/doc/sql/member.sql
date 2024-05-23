@@ -72,6 +72,31 @@ select count(id) as cnt
 from member
 where id='9';
 
+--레코드 수 검색
+SELECT COUNT(*) as cnt
+FROM member;
+
+--레코드 수 검색 + ID NICKNAME 검색항목
+SELECT COUNT(*) as cnt
+FROM member
+WHERE UPPER(id) LIKE UPPER('%test%') OR UPPER(nickname) LIKE UPPER('%test%');
+
+--레코드 수 검색 + NAME 검색항목
+SELECT COUNT(*) as cnt
+FROM member
+WHERE UPPER(name) LIKE UPPER('%test%');
+
+--레코드 수 검색 + 선택 검색항목
+SELECT COUNT(*) as cnt
+FROM member
+WHERE UPPER(#{Key}) LIKE '%' || (#{Value}) || '%'
+ORDER BY memberno ASC;
+
+--레코드 수 검색 + 선택 검색항목
+SELECT COUNT(*) as cnt
+FROM member
+WHERE UPPER(id) LIKE '%' || (#{Value}) || '%' OR UPPER(nickname) LIKE '%' || (#{Value}) || '%';
+
 -- U
 UPDATE member
 SET pw='pw', name='name', nickname='nickname', phone='010-1234-5678', email='email@email.com', thumb='', addr1='addr1', addr2='addr2', zipcode=12345, mdate='1900-01-01', gender='비공개'
@@ -91,6 +116,20 @@ WHERE memberno=5;
 DELETE FROM member
 WHERE memberno=5;
 
+SELECT memberno, id, pw, name, nickname, phone, email, thumb, addr1, addr2, zipcode, mdate, rdate, point, gender, grade, role
+FROM (
+    SELECT memberno, id, pw, name, nickname, phone, email, thumb, addr1, addr2, zipcode, mdate, rdate, point, gender, grade, role, ROWNUM AS r
+    FROM (
+        SELECT memberno, id, pw, name, nickname, phone, email, thumb, addr1, addr2, zipcode, mdate, rdate, point, gender, grade, role
+        FROM member
+        WHERE (
+            UPPER(id) LIKE '%' || UPPER('test') || '%' OR UPPER(nickname) LIKE '%' || UPPER('test') || '%'
+        )
+        ORDER BY memberno ASC
+    )
+    WHERE ROWNUM <= 15
+)
+WHERE r >= 5;
 
 
 commit;

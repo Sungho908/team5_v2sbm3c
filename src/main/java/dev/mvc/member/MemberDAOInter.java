@@ -1,6 +1,7 @@
 package dev.mvc.member;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface MemberDAOInter {
   /**
@@ -81,5 +82,21 @@ public interface MemberDAOInter {
    * @return 성공한 쿼리 갯수
    * */
   public int delete(int memberno);
+  
+  /**
+   * 선택 항목 검색된 레코드 수
+   * id="list_search_count" resultType="int" parameterType="Map"
+   * @param Map 
+   * @return 검색된 레코드 수
+   * */
+  public int list_search_count(Map<String, Object> map);
+  
+  /**
+   * 검색목록 페이징
+   * select id="list_search_paging" resultType="dev.mvc.cate.CateVO" parameterType="Map"
+   * @param map
+   * @return 조회한 레코드 목록
+   */
+  public ArrayList<MemberVO> list_search_paging(Map<String, Object> map);
 
 }

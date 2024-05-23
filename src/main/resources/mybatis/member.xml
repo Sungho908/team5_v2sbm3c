@@ -40,6 +40,11 @@
     WHERE memberno=#{memberno}
   </update>
   
+  <delete id="delete" parameterType="int">
+    DELETE FROM member
+    WHERE memberno=#{memberno}
+  </delete>
+  
   <update id="deleteByMember" parameterType="int">
     UPDATE member
     SET grade=99
@@ -52,8 +57,44 @@
     ORDER BY memberno ASC
   </select>
   
-  <delete id="delete" parameterType="int">
-    DELETE FROM member
-    WHERE memberno=#{memberno}
-  </delete>
+  
+  
+  <!-- 관리자용 검색 목록, Map은 VO class보다 적은 변수의 전달시 사용 -->
+  <select id="list_search_paging" resultType="dev.mvc.member.MemberVO" parameterType="Map">
+    SELECT memberno, id, pw, name, nickname, phone, email, thumb, addr1, addr2, zipcode, mdate, rdate, point, gender, grade, role, r
+    FROM (
+        SELECT memberno, id, pw, name, nickname, phone, email, thumb, addr1, addr2, zipcode, mdate, rdate, point, gender, grade, role, rownum as r
+        FROM (
+            SELECT memberno, id, pw, name, nickname, phone, email, thumb, addr1, addr2, zipcode, mdate, rdate, point, gender, grade, role
+            FROM member
+                <!-- key와 word가 모두 존재할 때 -->
+                <if test="key != null and key != '' and word != null and word != ''">
+                  WHERE UPPER(#{key}) LIKE '%' || UPPER(#{word}) || '%'
+                </if>
+                <!-- key가 없고 word만 존재할 때 -->
+                <if test="(key == null or key == '') and word != null and word != ''">
+                  WHERE UPPER(id) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(nickname) LIKE '%' || #{word} || '%'
+                </if>
+            ORDER BY memberno ASC
+        )
+    )
+    WHERE r &gt;= #{start_num} AND r &lt;= #{end_num}
+</select>
+
+  
+  <!--  검색된 레코드 수 -->
+  <select id="list_search_count" resultType="int" parameterType="Map">
+    SELECT COUNT(*) as cnt
+    FROM member
+    <!-- key와 word가 모두 존재할 때 -->
+    <if test="key != null and key != '' and word != null and word != ''">
+      WHERE UPPER(#{key}) LIKE '%' || UPPER(#{word}) || '%'
+    </if>
+    <!-- key가 없고 word만 존재할 때 -->
+    <if test="(key == null or key == '') and word != null and word != ''">
+      WHERE UPPER(id) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(nickname) LIKE '%' || #{word} || '%'
+    </if>
+    ORDER BY memberno ASC
+</select>
+
 </mapper>

@@ -33,14 +33,20 @@
       </tr>
     </thead>
     <tbody id="table-body">
-      <tr th:each="member : ${list}">
-        <td class="td_bs" th:text="${member.memberno}"></td>
-        <td class="td_bs"><a th:href="@{/admin/member/read(memberno=${member.memberno})}" style="display: block;" th:text="|${member.id}(${member.nickname})|"></a></td>
+      <tr th:each="member : ${list}">        
+        <td class="td_bs" th:with="page=${not #lists.isEmpty(param.now_page) and not #strings.isEmpty(param.now_page[0])} ? ${#numbers.formatInteger(param.now_page[0],1)} : 1" 
+                          th:text="${memberStat.index + 1} + ${page - 1} * 10"></td>
+        <td class="td_bs"><a th:href="@{/admin/member/read(memberno=${member.memberno}, now_page=${param.now_page}, word=${word})}" style="display: block;" th:text="|${member.id}(${member.nickname})|"></a></td>
         <td class="td_bs" th:text="|${member.pw.substring(0,6)}...|"></td>
         <td class="td_bs" th:text="${member.name}"></td>
         <td class="td_bs" th:text="${member.phone}"></td>
         <td class="td_bs" th:text="${member.email}"></td>
-        <td class="td_bs" th:text="${member.thumb}"></td>
+        <th:block th:if="${not #strings.isEmpty(member.thumb)}">
+        <td class="td_bs"><a th:text="|${member.thumb.substring(0,10)}...|" th:href="@{|/file/storage/${member.thumb}|}"></a></td>  
+        </th:block>
+        <th:block th:if="${#strings.isEmpty(member.thumb)}">
+        <td class="td_bs"><a th:text="|NULL|"></a></td>  
+        </th:block>
         <td class="td_bs" th:text="|${member.zipcode}-${member.addr1}-${member.addr2}|"></td>
         <td class="td_bs"
           th:text="|${#dates.format(member.mdate,'yyyy-MM-dd')} / ${#dates.format(member.rdate,'yyyy-MM-dd')}|"></td>

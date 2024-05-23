@@ -10,13 +10,11 @@
 
 
 	<aside class="aside_right">
-		<a href="/admin/member/list?now_page=1">회원 목록</a>
+		<a th:href="@{/admin/member/list(memberno=${memberVO.memberno}, now_page=${param.now_page}, word=${word})}">회원 목록</a>
 		<span class="menu_devide">│</span>
-		<a href="/admin/member/create">회원 등록</a>
+		<a th:href="@{/admin/member/update(memberno=${memberVO.memberno}, now_page=${param.now_page}, word=${word})}">회원 수정</a>
 		<span class="menu_devide">│</span>
-		<a th:href="@{/admin/member/update(memberno=${param.memberno})}">회원 수정</a>
-		<span class="menu_devide">│</span>
-		<a th:href="@{/admin/member/delete(memberno=${param.memberno})}">회원 삭제</a>
+		<a th:href="@{/admin/member/delete(memberno=${memberVO.memberno}, now_page=${param.now_page}, word=${word})}">회원 삭제</a>
 		<span class="menu_devide">│</span>
 		<a href="javascript: location.reload();">새로 고침</a>
 	</aside>

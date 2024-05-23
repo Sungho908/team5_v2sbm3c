@@ -10,68 +10,68 @@ import lombok.ToString;
 @Setter
 @ToString
 //CREATE TABLE PAYMENT(
-//    P_NO                              NUMBER(9)    NOT NULL    PRIMARY KEY,
-//    P_DATE                            DATE     NOT NULL,
-//    P_STATUS                          VARCHAR2(50)     NOT NULL,
-//    P_PAYMANT_STATUS                  VARCHAR2(50)     NOT NULL,
-//    P_CS_STATUS                       VARCHAR2(50)     NULL ,
-//    P_PRICE                           NUMBER     NOT NULL,
-//    P_TOTAL_PRICE                     NUMBER     NULL ,
-//    P_DELICERY                        NUMBER     NOT NULL,
-//    P_TOTAL_PAYMENT                   NUMBER     NOT NULL,
-//    M_NO                              NUMBER(9)    NOT NULL,
-//  FOREIGN KEY (M_NO) REFERENCES MEMBER (M_NO)
+//    PAYMENTNO                         NUMBER(9)    NOT NULL    PRIMARY KEY,
+//    RDATE                             DATE     NOT NULL,
+//    STATUS                            VARCHAR2(50)     NOT NULL,
+//    PAYMANT_STATUS                    VARCHAR2(50)     NOT NULL,
+//    CS_STATUS                         VARCHAR2(50)     NULL ,
+//    PRICE                             NUMBER     NOT NULL,
+//    TOTAL_PRICE                       NUMBER     NULL ,
+//    DELIVERY                          NUMBER     NOT NULL,
+//    TOTAL_PAYMENT                     NUMBER     NOT NULL,
+//    MEMBERNO                          NUMBER(9)    NOT NULL,
+//  FOREIGN KEY (MEMBERNO) REFERENCES MEMBER (MEMBERNO)
 //);
 public class PaymentVO {
   /** 주문번호 */
-  private Integer pNo;
+  private Integer paymentno;
   
   
   /** 주문일자 */
-  private Date pDate;
+  private Date rdate;
   
   
   /** 
    * 주문상태 <br>
    * 상품준비중 / 배송준비중 / 배송보류 / 배송대기 / 배송중 / 배송완료
    */
-  private String pStatus;
+  private String status;
   
   
   /** 결제상태 <br>
    * 입금전 / 추가입금대기 / 입금완료(수동) / 입금완료(자동) / 결제완료
    */
-  private String pPaymentStatus;
+  private String payment_status;
   
   
   /** CS상태 <br>
    * 취소 / 교환 / 반품 / 환불 
    */
-  private String pCsStatus;
+  private String cs_status;
   
   
   /** 상품금액 <br>
    *  판매가 * 상품수량
    */
-  private Double pPrice;
+  private Double price;
   
   
   /** 총 상품금액 <br>
    *  상품금액들의 합
    */
-  private Double pTotalPrice;
+  private Double total_price;
   
   
   /** 배송비 */
-  private Double pDelicery;
+  private Double delicery;
   
   
   /** 총 주문금액 <br>
    *  총상품금액 + 배송비
    */
-  private Double pTotalPayment;
+  private Double total_payment;
   
   
   /** 멤버번호 */
-  private Integer mNo;
+  private Integer memberno;
 }
