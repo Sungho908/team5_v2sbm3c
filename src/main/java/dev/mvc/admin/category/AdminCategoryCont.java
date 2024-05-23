@@ -45,12 +45,13 @@ public class AdminCategoryCont {
     ArrayList<CategoryVO> list = this.categoryProc.list_search_paging(word, now_page, this.record_per_page);
     if (list.isEmpty()) {
     } else {
+      System.out.println("list" + list);
       model.addAttribute("list", list);
       
       int search_count = this.categoryProc.list_search_count(word);
       String paging = this.categoryProc.pagingBox(now_page, word, "/admin/category/list", search_count,
           this.record_per_page, this.page_per_block);
-
+      
       int no = search_count - ((now_page - 1) * this.record_per_page);
 
       model.addAttribute("paging", paging);

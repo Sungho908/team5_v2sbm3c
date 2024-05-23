@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html layout:decorate="~{admin/layout}">
+<!-- layout.html 상속-->
+<div layout:fragment="content">
+  <div class="title_line">
+    공지사항 >
+    <span th:text="${shoesInquiryInfoVO.shoesInquiryVO.title}" class="title_line_text"></span>
+
+  </div>
+  <aside class="aside_right">
+    <a
+      th:href="@{|/admin/inquiry/shoes/answer/${shoesInquiryInfoVO.shoesInquiryVO.shoes_inquiry_no}?word=${word}&now_page=${now_page}|}">답변
+      등록</a>
+    <span class='menu_divide'>│</span>
+    <a
+      th:href="@{|/admin/inquiry/shoes/answer/update/${shoesInquiryInfoVO.shoesInquiryVO.shoes_inquiry_no}?word=${word}&now_page=${now_page}|}">답변
+      등록</a>
+    <span class='menu_divide'>│</span>
+    <a href="javascript:location.reload();">새로고침</a>
+  </aside>
+
+  <div class='menu_line'></div>
+
+  <fieldset class="fieldset_basic">
+    <ul>
+      <li class="li_none">
+        <div style="width: 100%; word-break: break-all;">
+
+          <span style="font-size: 1.5em; font-weight: bold; float:left; margin-left:1%;"
+            th:text="${shoesInquiryInfoVO.shoesInquiryVO.title}"></span><br>
+          <span style="float:right; margin-right:1%;">
+            작성자 : <span style="font-size: 1em;" th:text="${shoesInquiryInfoVO.memberVO.nickname}"></span>
+          </span><br>
+          <span style="float:left; margin-left:1%;">
+            신발 이름 : <span style="font-size: 1em;" th:text="${shoesInquiryInfoVO.shoesVO.title}"></span>
+          </span>
+          <span style="float:right; margin-right:1%;">
+            작성일 : <span style="font-size: 1em;"
+              th:text="${#dates.format(shoesInquiryInfoVO.shoesInquiryVO.rdate, 'yy/MM/dd HH:SS')}"></span>
+          </span><br>
+          <span style="float:left; margin-left:1%;">
+            사이즈 : <span style="font-size: 1em;" th:text="${shoesInquiryInfoVO.optionVO.sizes}"></span> &nbsp;
+            색상 : <span style="font-size: 1em;" th:text="${shoesInquiryInfoVO.optionVO.color}"></span>
+          </span>
+          <div class='menu_line'></div>
+          <div style="white-space: pre-wrap;"><span th:text="${shoesInquiryInfoVO.shoesInquiryVO.contents}"></span>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </fieldset>
+
+  <div th:replace="~{admin/inquiry/shoes/list_all_component::list_all_fragment}"></div>
+</div>
+
+</html>

@@ -6,45 +6,43 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
-//CREATE TABLE SHOES_INQUIRY(
-//    IN_NO                             NUMBER(9)    NOT NULL    PRIMARY KEY,
-//    IN_COMMENT                        VARCHAR2(1000)     NOT NULL,
-//    IN_DATE                           DATE     NOT NULL,
-//    ANSWER_VISIBLE                    CHAR(1)    NOT NULL,
-//    ANSWER_COMMENT                    VARCHAR2(1000)     NOT NULL,
-//    O_NO                              NUMBER(9)    NULL ,
-//    M_NO                              NUMBER(9)    NULL ,
-//  FOREIGN KEY (O_NO) REFERENCES OPTION (O_NO),
-//  FOREIGN KEY (M_NO) REFERENCES MEMBER (M_NO)
-//);
+/*CREATE TABLE SHOES_INQUIRY(
+    SHOES_INQUIRY_NO        NUMBER(9)        NOT NULL PRIMARY KEY,
+    TITLE                   VARCHAR2(100)    NOT NULL,
+    CONTENTS                VARCHAR2(1000)   NOT NULL,
+    RDATE                   DATE             NOT NULL,
+    ANSWER_VISIBLE          CHAR(1)          DEFAULT 'N'   NOT NULL,
+    ANSWER_COMMENT          VARCHAR2(1000)   DEFAULT '',
+    OPTIONNO                NUMBER(9)        NULL,
+    MEMBERNO                NUMBER(9)        NULL,
+    FOREIGN KEY (OPTIONNO) REFERENCES OPTIONS (OPTIONNO),
+    FOREIGN KEY (MEMBERNO) REFERENCES MEMBER (MEMBERNO)
+);
+*/
+@Getter @Setter
 public class ShoesInquiryVO {
   /** 신발 문의 번호 */
-  private Integer inNo;
+  private Integer shoes_inquiry_no;
   
+  /** 문의 제목 */
+  private String title;
   
   /** 문의 내용 */
-  private String inComment;
-  
+  private String contents;
   
   /** 문의 작성일 */
-  private Date inDate;
-  
+  private Date rdate;
   
   /** 답변 여부 */
-  private char answerVisible;
-  
+  private char answer_visible;
   
   /** 답변 내용 */
-  private String answerComment;
-  
+  private String answer_contents;
   
   /** 옵션 번호 */
-  private Integer oNo;
-  
+  private Integer optionno;
   
   /** 멤버 번호 */
-  private Integer mNo;
+  private Integer memberno;
+  
 }
