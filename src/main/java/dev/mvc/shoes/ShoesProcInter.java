@@ -50,7 +50,7 @@ public interface ShoesProcInter {
    */
   public ShoesVO read(int shoesno);
   
-  public ShoesOptionVO read_option(int optionno, int shoesno);
+  public ShoesOptionVO read_option(int optionno, int shoesno); // 단일 read
   
   // read했을때 옵션 리스트
   public ArrayList<ShoesOptionVO> option_paging(int shoesno, String word, int now_page, int record_per_page);
@@ -63,12 +63,16 @@ public interface ShoesProcInter {
       int page_per_block);
 
   public int list_search_count(String word);
+  
+  public int option_search_count(int shoesno);
 
   public int update(ShoesVO shoesVO);  // 신발 카테고리 수정
 
   public int option_update(ShoesOptionVO shoesoptionVO);   // 신발 옵션 수정
 
   public int delete(int shoesno);
+  
+  public int option_delete(int shoesno, int optionno);
 
   public int parent_count(int shoesno);
 

@@ -39,8 +39,19 @@ INSERT INTO OPTIONS(OPTIONNO, SIZES, COLOR, SHOESNO)
 VALUES(OPTION_SEQ.nextval, 270, '검정색', 1);
 commit;
 
-select * from options;
+    SELECT *
+    FROM options
+    WHERE shoesno = 2
+    ORDER BY optionno ASC;
 
+    SELECT o.optionno, o.shoesno, o.sizes, o.amount, o.color, r
+    FROM (
+      SELECT optionno, shoesno, sizes, amount, color, rownum as r
+      FROM options
+      WHERE shoesno = 1
+    ) o  
+  JOIN shoes s ON o.shoesno = s.shoesno
+  WHERE r >= 1 and r <= 5;
 SELECT o.optionno, o.shoesno, o.sizes, o.amount, o.color
 FROM Options o
 JOIN Shoes s ON o.shoesno = s.shoesno
@@ -53,3 +64,11 @@ WHERE s.shoesno = 1;
     ) o
   JOIN shoes s ON o.shoesno = s.shoesno
   WHERE s.shoesno = 1;
+
+  
+    SELECT COUNT(*) as cnt
+    FROM options
+    WHERE shoesno = 4
+    ORDER BY optionno ASC;
+    
+    SELECT count(*) as cnt FROM SHOES  WHERE SHOESNO = 12;

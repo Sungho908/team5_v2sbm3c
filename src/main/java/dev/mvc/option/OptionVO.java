@@ -21,7 +21,7 @@ public class OptionVO {
   
   
   /** 신발 사이즈 */
-  private Integer size;
+  private Integer sizes;
   
   
   /** 신발 재고 */

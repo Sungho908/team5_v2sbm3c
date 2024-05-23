@@ -6,6 +6,7 @@
   <div class='title_line'>
     카테고리 >
     <span th:text="${shoesVO.title}" class="title_line_text"></span>
+
   </div>
   <aside class="aside_right">
     <a th:href="@{|/shoes/option_create/${shoesVO.shoesno}?word=${word}&now_page=${now_page}|}">옵션추가</a>

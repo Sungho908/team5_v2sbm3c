@@ -527,11 +527,11 @@
     border-bottom: solid 3px #555555;
     width: 100%;
     margin: 30px auto;
-    font-size: 30px;
+    font-size: 25px;
   }
 
   .title_line_text {
-    font-size: 20px;
+    font-size: 25px;
   }
 
   .title_link:link {
@@ -795,6 +795,7 @@
     font-weight: bold;
     color: #FF0000;
     padding: 2px;
+    font-size: 15px;
     margin: 10px auto;
     text-align: center;
     width: 80%;
