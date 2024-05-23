@@ -61,15 +61,15 @@ public class SecurityConfig {
 	        .formLogin(login -> login
 	            .usernameParameter("id")	                    
 	            .passwordParameter("pw")
-	            .loginPage("/signin")
+	            .loginPage("/login/signin")
 	            .defaultSuccessUrl("/", true)
-	            .failureUrl("/signin")
+	            .failureUrl("/login/signin")
 	            /*==============로그인 실패시 동작 START============== */
 	            .failureHandler((request, response, authException)->{
 	              if(authException instanceof DisabledException) {
-	                response.sendRedirect("/signin?error=disabled");
+	                response.sendRedirect("/login/signin?error=disabled");
 	              }
-	              response.sendRedirect("/signin");
+	              response.sendRedirect("/login/signin");
 	            })/*==============로그인 실패시 동작 END============== */
 	            /*==============로그인 성공시 동작 START============== */
 	            .successHandler((request, response, authentication) -> {
@@ -111,7 +111,7 @@ public class SecurityConfig {
 	            
 	            
 	            .logout(logout -> logout
-	                .logoutUrl("/logout")
+	                .logoutUrl("/login/logout")
 	                .logoutSuccessUrl("/")
 	                .invalidateHttpSession(true).deleteCookies("JSESSIONID"))
 	            

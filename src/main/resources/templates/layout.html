@@ -51,7 +51,7 @@
 
         <ul class="mymenu">
     <th:block th:unless="${not #strings.isEmpty(session.login)}">
-          <li class="xans-element- xans-layout xans-layout-statelogoff "><a href="/signin">LOGIN</a>
+          <li class="xans-element- xans-layout xans-layout-statelogoff "><a href="/login/signin">LOGIN</a>
           </li>
           </th:block>
           <th:block th:if="${not #strings.isEmpty(session.login)}">
@@ -67,7 +67,7 @@
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <li><a class="nav-link" href="/member/info">내 정보</a></li>
                     <li><a class="nav-link" href="/member/history">접속기록 확인</a></li>
-                    <li><a class="nav-link" href="/logout">로그아웃</a></li>
+                    <li><a class="nav-link" href="/login/logout">로그아웃</a></li>
                 </ul>
             </li>   
         </th:block>
