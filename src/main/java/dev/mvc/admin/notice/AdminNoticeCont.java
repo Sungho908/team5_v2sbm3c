@@ -97,11 +97,12 @@ public class AdminNoticeCont {
     MultipartFile mf = noticefileVO.getFileSelect();
     String file = mf.getOriginalFilename();
 
-    noticefileVO.setName(file);
-    noticefileVO.setEx(file.substring(file.length() - 3));
-    noticefileVO.setSizes(mf.getSize());
-    noticefileVO.setSrc(Tool.saveFileSpring(mf, absPath));
-
+    if (file != null && !file.trim().isEmpty()) {
+      noticefileVO.setName(file);
+      noticefileVO.setEx(file.substring(file.length() - 3));
+      noticefileVO.setSizes(mf.getSize());
+      noticefileVO.setSrc(Tool.saveFileSpring(mf, absPath));
+    }
     // 생성
     this.noticeProc.create(noticefileVO);
     return "redirect:/admin/notice/list?now_page=1";
@@ -195,7 +196,7 @@ public class AdminNoticeCont {
   public String delete_process(HttpSession session, Model model, @RequestParam("noticeno") Integer noticeno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
+
     this.noticeProc.delete_file(noticeno);
     this.noticeProc.delete(noticeno);
 

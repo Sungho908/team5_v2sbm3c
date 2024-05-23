@@ -36,7 +36,6 @@ public class NoticeFileVO {
   /** 파일크기 */
   private Long sizes;
   
-  
   /** 확장자명 */
   private String ex;
   
