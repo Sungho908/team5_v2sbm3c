@@ -23,6 +23,7 @@
   </aside>
 
   <div class="container mt-3" style="width: 50%; margin: 5px auto;">
+    <input type="hidden" name="shoesno" th:value="${shoesVO.shoesno}">
     <ul class="list-group list-group-flush">
       <li class="list-group-item">신발 번호: <span th:text="${shoesVO.shoesno}"></span></li>
       <li class="list-group-item">카테고리 번호: <span th:text="${shoesVO.categoryno}"></span></li>

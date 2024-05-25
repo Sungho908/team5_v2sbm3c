@@ -87,13 +87,14 @@ public class ShoesCont {
    * @return
    */
   @GetMapping(value = "/list_all")
-  public String list_all(HttpSession session, Model model, ShoesVO shoesVO,
+  public String list_all(HttpSession session, Model model,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-
+    
+      
     word = Tool.checkNull(word).trim();
     // shoesVO.setNamesub("-"); // 폼 초기값 설정
-
+    
     table_paging(model, word, now_page);
 
     return "shoes/list_all"; // /shoes/list_search.html
@@ -187,12 +188,12 @@ public class ShoesCont {
   public String read(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-
-    ArrayList<ShoesVO> menu = this.shoesProc.list_all();
-    model.addAttribute("menu", menu);
-
+    
     ShoesVO shoesVO = this.shoesProc.read(shoesno);
     model.addAttribute("shoesVO", shoesVO);
+    
+    ArrayList<ShoesVO> menu = this.shoesProc.list_all();
+    model.addAttribute("menu", menu);
 
     table_paging_option(model, shoesno, word, now_page);
 
