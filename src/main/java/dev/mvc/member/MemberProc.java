@@ -3,14 +3,20 @@ package dev.mvc.member;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service("dev.mvc.member.MemberProc")
 public class MemberProc implements MemberProcInter {
   @Autowired
   private MemberDAOInter memberDAO;
+  
+  @Autowired
+  private PasswordEncoder pe;
 
   @Override
   public int create(MemberVO memberVO) {
@@ -194,6 +200,25 @@ public class MemberProc implements MemberProcInter {
     map.put("end_num", end_num);
     ArrayList<MemberVO> list=this.memberDAO.list_search_paging(map);
     return list;
+  }
+
+  @Override
+  public ArrayList<String> findid(String email) {
+    return this.memberDAO.findid(email);
+  }
+
+  @Override
+  public HashMap<String, Object> findpw(HashMap<String, Object> map) {
+    UUID uuid = UUID.randomUUID();
+    String uuidstr = uuid.toString().substring(24);
+    String encode = pe.encode(uuidstr);
+    map.put("originpw", uuidstr);
+    map.put("pw", encode);
+    if(this.memberDAO.findpw(map) == 0) {
+      return null;
+    }
+    
+    return map;
   }
 
 

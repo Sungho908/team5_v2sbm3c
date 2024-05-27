@@ -14,7 +14,7 @@ import jakarta.mail.internet.MimeMessage.RecipientType;
 
 @Service
 public class EmailProc implements EmailProcInter {
- @Value("${spring.mail.username}")
+  @Value("${spring.mail.username}")
   private String sender;
   
   @Autowired
@@ -27,6 +27,17 @@ public class EmailProc implements EmailProcInter {
     mm.addRecipient(RecipientType.TO, new InternetAddress(sendTO));
     mm.setSubject(sub);
     mm.setText(con);
+    jms.send(mm);
+  }
+  
+  
+    public void send_pw(String sendTO, String originPw) throws Exception{
+    MimeMessage mm = jms.createMimeMessage();
+    mm.setFrom(this.sender);
+    
+    mm.addRecipient(RecipientType.TO, new InternetAddress(sendTO));
+    mm.setSubject("[발걸음] 변경된 비밀번호를 확인하세요.");
+    mm.setText("변경된 비밀번호: " + originPw);
     jms.send(mm);
   }
 }

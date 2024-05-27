@@ -131,5 +131,15 @@ FROM (
 )
 WHERE r >= 5;
 
+-- id 찾기용
+SELECT *
+FROM member
+WHERE email='admin@admin.com';
+
+-- pw 찾기용
+UPDATE MEMBER
+SET pw='$2a$10$wIhgjF1F6PBh.4iHvAd8euYpOf2ofXL.rkbkBJZP/xWh8/0Wvg7vK'
+WHERE id='admin1' and email='admin@admin.com';
+
 
 commit;

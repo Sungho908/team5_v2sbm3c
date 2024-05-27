@@ -1,6 +1,7 @@
 package dev.mvc.member;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public interface MemberDAOInter {
@@ -99,4 +100,19 @@ public interface MemberDAOInter {
    */
   public ArrayList<MemberVO> list_search_paging(Map<String, Object> map);
 
+  /**
+   * 아이디 찾기 email이 일치하는 id 찾기
+   * id="findid" resultType="String" parameterType="String"
+   * @param email
+   * @return id
+   * */
+  public ArrayList<String> findid(String email);
+  
+  /**
+   * 비밀번호 찾기(변경) id, email이 일치하는 pw 변경하기
+   * id="findpw" parameterType="Map"
+   * @param Map
+   * @return 성공한 쿼리 갯수
+   * */
+  public int findpw(HashMap<String, Object> map);
 }

@@ -10,16 +10,15 @@ import lombok.ToString;
 @Setter
 @ToString
 //CREATE TABLE PAYMENT(
-//    PAYMENTNO                         NUMBER(9)    NOT NULL    PRIMARY KEY,
-//    RDATE                             DATE     NOT NULL,
+//    PAYMENTNO                         NUMBER(9)        NOT NULL    PRIMARY KEY,
+//    RDATE                             DATE             NOT NULL,
 //    STATUS                            VARCHAR2(50)     NOT NULL,
-//    PAYMANT_STATUS                    VARCHAR2(50)     NOT NULL,
+//    PAYMENT_STATUS                    VARCHAR2(50)     NOT NULL,
 //    CS_STATUS                         VARCHAR2(50)     NULL ,
-//    PRICE                             NUMBER     NOT NULL,
-//    TOTAL_PRICE                       NUMBER     NULL ,
-//    DELIVERY                          NUMBER     NOT NULL,
-//    TOTAL_PAYMENT                     NUMBER     NOT NULL,
-//    MEMBERNO                          NUMBER(9)    NOT NULL,
+//    TOTAL_PRICE                         NUMBER             DEFAULT 0       NULL  , 
+//    DELIVERY                          NUMBER             DEFAULT 2500    NULL,
+//    TOTAL_PAYMENT                     NUMBER             DEFAULT 0       NOT NULL,
+//    MEMBERNO                          NUMBER(9)        NOT NULL,
 //  FOREIGN KEY (MEMBERNO) REFERENCES MEMBER (MEMBERNO)
 //);
 public class PaymentVO {
@@ -50,12 +49,6 @@ public class PaymentVO {
   private String cs_status;
   
   
-  /** 상품금액 <br>
-   *  판매가 * 상품수량
-   */
-  private Double price;
-  
-  
   /** 총 상품금액 <br>
    *  상품금액들의 합
    */
@@ -63,7 +56,7 @@ public class PaymentVO {
   
   
   /** 배송비 */
-  private Double delicery;
+  private Double delivery;
   
   
   /** 총 주문금액 <br>

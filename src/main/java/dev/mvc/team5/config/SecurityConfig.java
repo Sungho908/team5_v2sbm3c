@@ -21,6 +21,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 
 
 import dev.mvc.loginHistory.LoginHistoryProcInter;
+import dev.mvc.member.MemberProc;
 import dev.mvc.member.MemberProcInter;
 import dev.mvc.member.MemberVO;
 
@@ -42,11 +43,8 @@ public class SecurityConfig {
   @Qualifier("dev.mvc.loginHistory.LoginHistoryProc")
   private LoginHistoryProcInter loginHistoryProc;
   
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	
+  
+  
 	@Bean
 	public SecurityFilterChain filterChain (HttpSecurity http) throws Exception{
 	    return http.csrf(csrf ->csrf.disable())
