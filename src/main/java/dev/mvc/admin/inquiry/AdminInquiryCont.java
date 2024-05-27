@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import dev.mvc.otherInquiry.OtherInquiryInfoVO;
+import dev.mvc.otherInquiry.OtherInquiryProcInter;
+import dev.mvc.otherInquiry.OtherInquiryVO;
 import dev.mvc.shoesInquiry.ShoesInquiryInfoVO;
 import dev.mvc.shoesInquiry.ShoesInquiryProcInter;
 import dev.mvc.shoesInquiry.ShoesInquiryVO;
@@ -28,6 +31,10 @@ public class AdminInquiryCont {
   @Qualifier("dev.mvc.shoesInquiry.ShoesInquiryProc")
   private ShoesInquiryProcInter shoesinquiryProc;
 
+  @Autowired
+  @Qualifier("dev.mvc.otherInquiry.OtherInquiryProc")
+  private OtherInquiryProcInter otherinquiryProc;
+
   /** 페이지당 출력할 레코드 갯수, nowPage는 1부터 시작 */
   public int record_per_page = 5;
 
@@ -38,27 +45,48 @@ public class AdminInquiryCont {
     System.out.println("-> AdminInquiry created.");
   }
   
+  /** 신발 문의 페이징 */
   private void shoes_table_paging(Model model, String word, int now_page) {
     ArrayList<ShoesInquiryInfoVO> list = this.shoesinquiryProc.list_search_paging(word, now_page, this.record_per_page);
 
     if (list.isEmpty()) {
     } else {
       model.addAttribute("list", list);
-      
+
       int search_count = this.shoesinquiryProc.list_search_count(word);
       String paging = this.shoesinquiryProc.pagingBox(now_page, word, "/admin/category/list", search_count,
           this.record_per_page, this.page_per_block);
-      
+
       int no = search_count - ((now_page - 1) * this.record_per_page);
-      
+
       model.addAttribute("paging", paging);
       model.addAttribute("now_page", now_page);
       model.addAttribute("word", word);
       model.addAttribute("no", no);
-
     }
   }
   
+  /** 기타 문의 페이징 */
+  private void other_table_paging(Model model, String word, int now_page) {
+    ArrayList<OtherInquiryInfoVO> list = this.otherinquiryProc.list_search_paging(word, now_page, this.record_per_page);
+
+    if (list.isEmpty()) {
+    } else {
+      model.addAttribute("list", list);
+
+      int search_count = this.otherinquiryProc.list_search_count(word);
+      String paging = this.otherinquiryProc.pagingBox(now_page, word, "/admin/category/list", search_count,
+          this.record_per_page, this.page_per_block);
+
+      int no = search_count - ((now_page - 1) * this.record_per_page);
+
+      model.addAttribute("paging", paging);
+      model.addAttribute("now_page", now_page);
+      model.addAttribute("word", word);
+      model.addAttribute("no", no);
+    }
+  }
+
   /** 신발 문의 목록 */
   @GetMapping(value = "/shoes")
   public String shoes_list(HttpSession session, Model model,
@@ -69,31 +97,66 @@ public class AdminInquiryCont {
 
     return "admin/inquiry/shoes/list";
   }
-  
+
   /** 신발 문의 읽기 */
   @GetMapping(value = "/shoes/{shoes_inquiry_no}")
   public String shoes_read(HttpSession session, Model model, @PathVariable("shoes_inquiry_no") Integer shoes_inquiry_no,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
+
     ShoesInquiryInfoVO shoesInquiryInfoVO = this.shoesinquiryProc.read(shoes_inquiry_no);
     model.addAttribute("shoesInquiryInfoVO", shoesInquiryInfoVO);
-    
+
     shoes_table_paging(model, word, now_page);
     return "admin/inquiry/shoes/read";
   }
-  
-  /** 신발 문의 읽기 */
+
+  /** 신발 문의 답변 */
   @PostMapping(value = "/shoes")
-  public String shoes_answer(HttpSession session, Model model, 
-      @Valid ShoesInquiryInfoVO shoesInquiryInfoVO, BindingResult bindingResult,
-      @RequestParam(name = "word", defaultValue = "") String word,
+  public String shoes_answer(HttpSession session, Model model, @Valid ShoesInquiryInfoVO shoesInquiryInfoVO,
+      BindingResult bindingResult, @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
     ShoesInquiryVO shoesInquiryVO = shoesInquiryInfoVO.getShoesInquiryVO();
-    
+
     this.shoesinquiryProc.answer(shoesInquiryVO.getShoes_inquiry_no(), 'Y', shoesInquiryVO.getAnswer_contents());
-    return "redirect:/admin/inquiry/shoes/" + shoesInquiryVO.getShoes_inquiry_no()
-        + "?word=" + word + "&now_page=" + now_page;
+    return "redirect:/admin/inquiry/shoes/" + shoesInquiryVO.getShoes_inquiry_no() + "?word=" + word + "&now_page="
+        + now_page;
   }
   
+  /** 신발 문의 목록 */
+  @GetMapping(value = "/other")
+  public String other_list(HttpSession session, Model model,
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    word = Tool.checkNull(word).trim();
+    other_table_paging(model, word, now_page);
+
+    return "admin/inquiry/other/list";
+  }
+
+  /** 신발 문의 읽기 */
+  @GetMapping(value = "/other/{other_inquiry_no}")
+  public String other_read(HttpSession session, Model model, @PathVariable("other_inquiry_no") Integer other_inquiry_no,
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+    OtherInquiryInfoVO otherInquiryInfoVO = this.otherinquiryProc.read(other_inquiry_no);
+    model.addAttribute("otherInquiryInfoVO", otherInquiryInfoVO);
+
+    other_table_paging(model, word, now_page);
+    return "admin/inquiry/other/read";
+  }
+
+  /** 신발 문의 답변 */
+  @PostMapping(value = "/other")
+  public String other_answer(HttpSession session, Model model, @Valid OtherInquiryInfoVO otherInquiryInfoVO,
+      BindingResult bindingResult, @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    OtherInquiryVO otherInquiryVO = otherInquiryInfoVO.getOtherInquiryVO();
+
+    this.shoesinquiryProc.answer(otherInquiryVO.getOther_inquiry_no(), 'Y', otherInquiryVO.getAnswer_contents());
+    return "redirect:/admin/inquiry/other/" + otherInquiryVO.getOther_inquiry_no() + "?word=" + word + "&now_page="
+        + now_page;
+  }
+
 }

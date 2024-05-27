@@ -4,7 +4,6 @@ import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 /*CREATE TABLE SHOES_INQUIRY(
     SHOES_INQUIRY_NO        NUMBER(9)        NOT NULL PRIMARY KEY,
@@ -22,7 +21,7 @@ import lombok.ToString;
 @Setter @Getter
 public class ShoesInquiryVO {
   /** 신발 문의 번호 */
-  private Integer shoes_inquiry_no = 0;
+  private Integer shoes_inquiry_no;
   
   /** 문의 제목 */
   private String title;

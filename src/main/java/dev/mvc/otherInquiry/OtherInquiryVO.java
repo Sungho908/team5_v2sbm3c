@@ -4,41 +4,39 @@ import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
-//CREATE TABLE OTHER_INQUIRY(
-//    IN_NO                             NUMBER(9)    NOT NULL    PRIMARY KEY,
-//    IN_COMMENT                        VARCHAR2(1000)     NOT NULL,
-//    IN_DATE                           DATE     NOT NULL,
-//    ANSWER_VISIBLE                    CHAR(1)    NOT NULL,
-//    ANSWER_COMMENT                    VARCHAR2(1000)     NULL ,
-//    M_NO                              NUMBER(9)    NOT NULL,
-//  FOREIGN KEY (M_NO) REFERENCES MEMBER (M_NO)
-//);
+/*CREATE TABLE OTHER_INQUIRY(
+    OTHER_INQUIRY_NO        NUMBER(9)        NOT NULL PRIMARY KEY,
+    TITLE                   VARCHAR2(100)    NOT NULL,
+    CONTENTS                VARCHAR2(1000)   NOT NULL,
+    RDATE                   DATE             NOT NULL,
+    ANSWER_VISIBLE          CHAR(1)          DEFAULT 'N'   NOT NULL,
+    ANSWER_CONTENTS          VARCHAR2(1000)   DEFAULT '',
+    MEMBERNO                NUMBER(9),   
+    FOREIGN KEY (MEMBERNO) REFERENCES MEMBER (MEMBERNO)
+);
+*/
+@Setter @Getter
 public class OtherInquiryVO {
-  /** 기타문의번호 */
-  private Integer inNo;
+  /** 기타 문의 번호 */
+  private Integer other_inquiry_no;
   
+  /** 문의 제목 */
+  private String title;
   
-  /** 기타문의내용 */
-  private String inComment;
+  /** 문의 내용 */
+  private String contents;
   
+  /** 문의 작성일 */
+  private Date rdate;
   
-  /** 문의작성일 */
-  private Date inDate;
-  
-  
-  /** 답변여부 */
-  private char answerVisible;
+  /** 답변 여부 */
+  private char answer_visible;
   
   
   /** 답변 내용 */
-  private String answerComment;
-  
+  private String answer_contents;
   
   /** 멤버 번호 */
-  private Integer mNo;
+  private Integer memberno;
 }

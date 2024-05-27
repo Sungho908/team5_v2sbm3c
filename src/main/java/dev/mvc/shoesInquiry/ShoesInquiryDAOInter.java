@@ -15,7 +15,7 @@ public interface ShoesInquiryDAOInter {
   public int create(ShoesInquiryVO shoesInquiryVO);
   
   /**
-   * 검색된 레코드 수s
+   * 검색된 레코드 수
    * id="list_search_count" resultType="int" parameterType="String"
    * 
    * @param word 검색어
