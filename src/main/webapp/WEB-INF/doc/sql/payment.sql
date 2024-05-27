@@ -1,7 +1,9 @@
 /**********************************/
 /* Table Name: 주문 */
 /**********************************/
-DROP TABLE payment
+DROP TABLE payment CASCADE CONSTRAINTS; 
+
+DROP TABLE payment;
 
 CREATE TABLE PAYMENT(
 		PAYMENTNO                     		NUMBER(9)		     NOT NULL		 PRIMARY KEY,
@@ -40,6 +42,9 @@ CREATE SEQUENCE payment_seq
   
 INSERT INTO payment(paymentno, rdate, status, payment_status, cs_status, total_price, delivery, total_payment, memberno)
 VALUES(payment_seq.nextval, sysdate, '상품준비중', '입금전', '', 300000, 2500, 302500, 1);
+
+INSERT INTO payment(paymentno, rdate, status, payment_status, cs_status, total_price, delivery, total_payment, memberno)
+VALUES(payment_seq.nextval, sysdate, '배송완료', '결제완료', '', 100000, 2500, 102500, 1);
 
 SELECT paymentno, rdate, status, payment_status, cs_status, total_price, delivery, total_payment, memberno
 FROM payment
