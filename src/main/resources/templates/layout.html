@@ -19,6 +19,7 @@
 
 <body>
   <script src="/fotorama/fotorama.js"></script>
+  <script src="/js/search.js"></script>
 
 
 
@@ -33,20 +34,29 @@
       <div class="main_inner">
 
         <ul class="mymenu">
-          <li class="xans-element- xans-layout xans-layout-statelogoff "><a href="/member/login.html">HOME</a>
+          <li><a href="/">HOME</a>
           </li>
           <!-- <li module="Layout_statelogoff"><a href="/member/join.html">JOIN</a></li> -->
           <li><a href="/myshop/order/list.html">STYLE</a></li>
-          <li><a class="cart_num" href="/order/basket.html">SHOP<span style="display:none"
-                class="xans-element- xans-myshop xans-myshop-main "><span
-                  class="xans_myshop_main_basket_cnt">0</span></span>
-            </a></li>
-          <a href="/"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-              class="bi bi-search" viewBox="0 0 16 16">
+          <a href="#" id="search-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-search"
+              viewBox="0 0 16 16">
               <path
                 d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-            </svg></a>
+            </svg>
+          </a>
+          <form>
+          <div id="search-modal" class="modal">
+            <div class="modal-content" style="display: inline-block; text-align: center;">
+              <span class="close" onclick="closeModal()" style="text-align: right; color:black;">&times;</span>
+              <!-- 검색 창 추가 -->
+              <input type="text"  id="search-input" placeholder="찾으시는 상품이나 브랜드를 입력하세요." style="font-size: 18px; text-align: center; width:80%;">
+              <button class="btn-secondary"  id="search-btn" onclick="search()" style="width: 10%;">검색</button>
+            </div>
+          </div>
+          </form>
         </ul>
+
 
         <ul class="mymenu">
           <th:block th:unless="${not #strings.isEmpty(session.login)}">
@@ -55,7 +65,7 @@
           </th:block>
           <th:block th:if="${not #strings.isEmpty(session.login)}">
             <li><a href="/myshop/order/list.html">ORDER</a></li>
-            <li><a class="cart_num" href="/order/basket.html">CART
+            <li><a class="cart_num" href="/shoes/basket">CART
                 <span style="display:none" class="xans-element- xans-myshop xans-myshop-main ">
                   <span class="xans_myshop_main_basket_cnt">0</span></span>
               </a>
@@ -77,7 +87,7 @@
       <div th:replace="~{navbar::navbarFragment}"></div> <!-- navbar.html navbarFragment import -->
 
 
-
+ <div id="search-results"></div>
       <div class="content_categorytop">
         <div class="content_category ">
           <a href="/"><img src="/images/vans.jpg" class="rounded-image" style="width:100px;  height: 100px"></a>

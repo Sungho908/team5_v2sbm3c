@@ -360,4 +360,88 @@ public class ShoesCont {
       return "shoes/msg";
     }
   }
+  
+  /**
+   * 장바구니 폼
+   */
+  @GetMapping(value = "/basket")
+  public String basket(HttpSession session, Model model,
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+
+    table_paging(model, word, now_page);
+
+    return "shoes/basket";
+  }
+  
+  /**
+   * 스니커즈 목록
+   * 
+   * @param model
+   * @param shoesno 조회할 카테고리 번호
+   * @return
+   */
+  @GetMapping(value = "/sneakers")
+  public String sneakers(HttpSession session, Model model, 
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+    table_paging(model, word, now_page);
+
+    return "shoes/sneakers"; // /templates/shoes/read.html
+  }
+
+  /**
+   * 슬립온 목록
+   * 
+   * @param model
+   * @param shoesno 조회할 카테고리 번호
+   * @return
+   */
+  @GetMapping(value = "/slipon")
+  public String slipon(HttpSession session, Model model, 
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    
+    table_paging(model, word, now_page);
+
+    return "shoes/slipon"; // /templates/shoes/read.html
+
+  }
+
+  /**
+   * 부츠 목록
+   * 
+   * @param model
+   * @param shoesno 조회할 카테고리 번호
+   * @return
+   */
+  @GetMapping(value = "/boots")
+  public String boots(HttpSession session, Model model, 
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    
+    table_paging(model, word, now_page);
+
+    return "shoes/boots"; // /templates/shoes/read.html
+
+  }
+  /**
+   * 워커 목록
+   * 
+   * @param model
+   * @param shoesno 조회할 카테고리 번호
+   * @return
+   */
+  @GetMapping(value = "/worker")
+  public String worker(HttpSession session, Model model, 
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    
+    table_paging(model, word, now_page);
+
+    return "shoes/worker"; // /templates/shoes/read.html
+
+  }
 }

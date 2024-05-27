@@ -1,22 +1,32 @@
-function openSearchPopup() {
-    var popup = window.open("", "Search Popup", "width=300,height=150");
-    popup.document.write(`
-        <html>
-        <head><title>Search Popup</title></head>
-        <body>
-            <label for="searchQuery">Enter search query:</label>
-            <input type="text" id="searchQuery" />
-            <button onclick="search()">Search</button>
-            <p id="result"></p>
-            <script src="js/search-handler.js"></script>
-        </body>
-        </html>
-    `);
-}
-function openPopup() {
-    document.getElementById('popup').style.display = 'block';
+// DOMContentLoaded 이벤트 리스너 등록
+document.addEventListener('DOMContentLoaded', function() {
+  // 검색 아이콘 클릭 이벤트 처리
+  document.getElementById('search-icon').addEventListener('click', function(event) {
+    event.preventDefault(); // 기본 동작 방지
+    openModal(); // 모달 열기
+  });
+
+  // 검색 버튼 클릭 이벤트 처리
+  document.getElementById('search-btn').addEventListener('click', function(event) {
+    event.preventDefault(); // 기본 동작 방지
+    search(); // 검색 실행
+  });
+});
+
+// 모달 열기 함수
+function openModal() {
+  document.getElementById('search-modal').style.display = 'block';
 }
 
-function closePopup() {
-    document.getElementById('popup').style.display = 'none';
+// 모달 닫기 함수
+function closeModal() {
+  document.getElementById('search-modal').style.display = 'none';
 }
+
+// 검색 실행 함수
+function search() {
+  var search = document.getElementById('search-input').value;
+  // 검색어를 저장해
+  var url = '/shoes/list_all?word=' + encodeURIComponent(search);
+  window.location.href = url;
+  }

@@ -65,7 +65,7 @@ WHERE s.shoesno = 1;
   JOIN shoes s ON o.shoesno = s.shoesno
   WHERE s.shoesno = 1;
 
-  
+  desc options;
     SELECT COUNT(*) as cnt
     FROM options
     WHERE shoesno = 4

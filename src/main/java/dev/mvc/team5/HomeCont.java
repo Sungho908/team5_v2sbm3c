@@ -25,15 +25,7 @@ public class HomeCont {
     System.out.println("-> HomeCont created.");
   }
   
-  @GetMapping(value="/") // http://localhost:9091
-  public String home(Model model) { // 파일명 return
-//    if (this.security != null) {
-//      System.out.println("-> 객체 고유 코드: " + security.hashCode());
-//      System.out.println(security.aesEncode("1234"));
-//    }
-    return "index"; // /templates/index.html  
-  }
-  
+
 }
 
 

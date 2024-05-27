@@ -100,7 +100,12 @@
     font-style: italic;
     z-index: 31;
   }
-
+ .btn-secondary{
+   width:100px;
+   border-radius: 10%;
+   background-color: #e3f2fd;
+   color:black;
+ }
   .mymenu {
     list-style-type: none;
     /* 목록 기호 제거 */
@@ -169,6 +174,117 @@
   }
 
 
+  .basket {
+    display: flex;
+    align-items: center;
+  justify-content: center; /* 수평 가운데 정렬 */
+  margin-top: 50px;
+}
+
+.basket img {
+    margin-right: 20px; /* 이미지와 텍스트 사이의 간격 조정 */
+}
+
+.cart-quantity {
+        display: flex;
+    justify-content: center; /* 가로 가운데 정렬 */
+    align-items: center; /* 세로 가운데 정렬 */
+    margin-bottom: 10px; /* 버튼과 수량 사이의 간격 조절 */
+    text-align: center;
+}
+
+.quantity-btn {
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: none;
+    padding: 5px 10px;
+}
+
+.quantity {
+    padding: 0 10px;
+}
+
+
+.description {
+  width: auto;
+    text-align: center; /* 내용 가운데 정렬 */
+}
+
+.description p{
+    text-align: center;
+    width: 300px;
+}
+.main-slide {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.swiper-container {
+  width: 100%;
+  height: auto; /* 이미지가 자동으로 높이를 조정하도록 변경 */
+}
+
+.multiple-slides {
+  display: flex; /* 내부 요소를 가로로 배치 */
+  overflow-x: auto; /* 내부 요소가 넘칠 경우 가로 스크롤 표시 */
+  -webkit-overflow-scrolling: touch; /* iOS에서 스크롤 시 부드러운 애니메이션 적용 */
+  scroll-snap-type: x mandatory; /* 슬라이드 단위로 가로 스크롤 가능 */
+}
+
+.swiper-slide {
+  flex: 0 0 auto; /* 슬라이드가 유연하게 크기를 조절하지 않도록 설정 */
+  scroll-snap-align: start; /* 슬라이드가 스냅되어 정렬되도록 설정 */
+}
+
+.swiper-wrapper {
+  display: flex; /* 내부 요소를 가로로 배치 */
+  justify-content: space-between; /* 슬라이드 간의 간격을 균등하게 설정 */
+  align-items: center; /* 슬라이드를 수직 중앙 정렬 */
+}
+
+.swiper-slide img {
+  max-width: 100%; /* 이미지를 부모 요소에 맞게 최대 너비로 설정 */
+  height: auto; /* 이미지 높이를 자동으로 조정 */
+}
+
+.swiper-slide .title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.swiper-slide .subtitle {
+  font-size: 18px;
+  color: #666;
+}
+
+/* 슬라이드가 호버될 때 효과 추가 */
+.swiper-slide:hover {
+  transform: scale(1.05);
+}
+
+/* 좌우 화살표 버튼 */
+.swiper-button-prev,
+.swiper-button-next {
+  position: absolute;
+  top: 50%;
+  width: 30px;
+  height: 30px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border-radius: 50%;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.swiper-button-prev {
+  left: 10px;
+}
+
+.swiper-button-next {
+  right: 10px;
+}
+
   .shoes img {
     width: 300px;
     /* 이미지의 너비를 조절합니다 */
@@ -191,13 +307,66 @@
     /* 텍스트를 굵게 표시합니다 */
   }
 
-  .dropdown-menu {
-    width: 60px;
+.dropdown-menu {
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
 
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  font-size: 16px;
+  color: #343a40;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.modal {
+    display: none; /* 초기에는 숨김 */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2); /* 반투명한 배경 */
   }
-  .dropdown-item{
-         border: 1px solid black; 
+
+  /* 모달 내용 스타일 */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 가운데 정렬 */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 600px;
   }
+
+  /* 닫기 버튼 스타일 */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+
   .footer {
     background-color: red;
     /* Footer 배경색 */
@@ -310,6 +479,12 @@
   .content_body {
     width: 90%;
     margin: 10px auto;
+  }
+  .basket_body{
+    width: 100%;
+    margin: 0 auto;
+  display: flex;
+  align-items: center; /* 수직 가운데 정렬 */
   }
 
   .content_body {
@@ -523,6 +698,9 @@
   }
 
   .title_line {
+    align-items: center;  
+      display: flex;
+  cursor: pointer;
     text-align: center;
     border-bottom: solid 3px #555555;
     width: 100%;
