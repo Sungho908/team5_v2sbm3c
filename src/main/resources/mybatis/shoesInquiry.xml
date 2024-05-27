@@ -98,7 +98,7 @@
       <result property="sizes" column="sizes" />
       <result property="color" column="color" />
     </association>
-  
+
     <association property="shoesVO" javaType="dev.mvc.shoes.ShoesVO">
       <result property="title" column="shoestitle" />
     </association>
@@ -107,4 +107,11 @@
       <result property="nickname" column="nickname" />
     </association>
   </resultMap>
+
+  <update id="answer" parameterType="Map">
+    UPDATE shoes_inquiry
+    SET answer_visible = #{answer_visible}, answer_contents = #{answer_contents}
+    WHERE shoes_inquiry_no = #{shoes_inquiry_no}
+  </update>
+  
 </mapper>

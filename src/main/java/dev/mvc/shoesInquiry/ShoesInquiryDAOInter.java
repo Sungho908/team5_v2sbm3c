@@ -41,4 +41,12 @@ public interface ShoesInquiryDAOInter {
    */
   public ShoesInquiryInfoVO read(int shoes_inquiry_no);
   
+  /**
+   * 답변 등록
+   * id="answer" parameterType="Map"
+   * 
+   * @param Map<String, Object> map
+   * @return int
+   */
+  public int answer(Map<String, Object> map);
 }

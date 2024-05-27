@@ -6,15 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import dev.mvc.shoesInquiry.ShoesInquiryInfoVO;
 import dev.mvc.shoesInquiry.ShoesInquiryProcInter;
+import dev.mvc.shoesInquiry.ShoesInquiryVO;
 import dev.mvc.tool.Tool;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @RequestMapping("/admin/inquiry")
 @Controller
@@ -76,9 +80,20 @@ public class AdminInquiryCont {
     model.addAttribute("shoesInquiryInfoVO", shoesInquiryInfoVO);
     
     shoes_table_paging(model, word, now_page);
-    System.out.println("ㅎㅇ");
     return "admin/inquiry/shoes/read";
   }
   
+  /** 신발 문의 읽기 */
+  @PostMapping(value = "/shoes")
+  public String shoes_answer(HttpSession session, Model model, 
+      @Valid ShoesInquiryInfoVO shoesInquiryInfoVO, BindingResult bindingResult,
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    ShoesInquiryVO shoesInquiryVO = shoesInquiryInfoVO.getShoesInquiryVO();
+    
+    this.shoesinquiryProc.answer(shoesInquiryVO.getShoes_inquiry_no(), 'Y', shoesInquiryVO.getAnswer_contents());
+    return "redirect:/admin/inquiry/shoes/" + shoesInquiryVO.getShoes_inquiry_no()
+        + "?word=" + word + "&now_page=" + now_page;
+  }
   
 }

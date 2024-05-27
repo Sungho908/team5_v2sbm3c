@@ -19,10 +19,10 @@ import lombok.ToString;
     FOREIGN KEY (MEMBERNO) REFERENCES MEMBER (MEMBERNO)
 );
 */
-@Getter @Setter
+@Setter @Getter
 public class ShoesInquiryVO {
   /** 신발 문의 번호 */
-  private Integer shoes_inquiry_no;
+  private Integer shoes_inquiry_no = 0;
   
   /** 문의 제목 */
   private String title;

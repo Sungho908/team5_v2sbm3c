@@ -22,7 +22,6 @@ public class ShoesInquiryProc implements ShoesInquiryProcInter {
   @Override
   public int list_search_count(String word) {
     int cnt = this.shoesInquiryDAO.list_search_count(word);
-    System.out.println("cnt" + cnt);
     return cnt;
   }
 
@@ -112,6 +111,17 @@ public class ShoesInquiryProc implements ShoesInquiryProcInter {
   public ShoesInquiryInfoVO read(int shoes_inquiry_no) {
     ShoesInquiryInfoVO shoesInquiryInfoVO = this.shoesInquiryDAO.read(shoes_inquiry_no);
     return shoesInquiryInfoVO;
+  }
+
+  @Override
+  public int answer(int shoes_inquiry_no, char answer_visible, String answer_contents) {
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("shoes_inquiry_no", shoes_inquiry_no);
+    map.put("answer_visible", answer_visible);
+    map.put("answer_contents", answer_contents);
+    
+    int cnt = this.shoesInquiryDAO.answer(map);
+    return cnt;
   }
   
 }
