@@ -105,6 +105,7 @@
    border-radius: 10%;
    background-color: #e3f2fd;
    color:black;
+   transition: background-color 0.3s ease;
  }
   .mymenu {
     list-style-type: none;
@@ -165,14 +166,68 @@
   }
 
   .shoes {
+    width: 200px;
+    box-sizing: border-box; 
     display: inline-block;
     /* 요소들을 가로로 나열하기 위해 플렉스 박스로 설정합니다 */
     align-items: center;
     margin-top: 15px;
+    margin-left: 15px;
     text-align: center;
     /* 요소들을 세로 중앙 정렬합니다 */
+     justify-content: center; 
+  }
+ .shoes img {
+     width: 100%; 
+    /* 이미지의 너비를 조절합니다 */
+    border: 1px solid black;
+    /* 이미지의 높이를 조절합니다 */
+    border-radius: 0%;
+    margin-right: 40px;
+    /* 이미지와 텍스트 사이의 간격을 조정합니다 */
+  }
+.shoes:hover {
+    /* 마우스를 올렸을 때의 스타일을 지정합니다 */
+     border: 5px solid black; /* 테두리를 검정색으로 설정합니다 */
+}
+  .shoes p {
+    width: 200px;
+    margin: 0 auto; /* 왼쪽과 오른쪽 마진을 자동으로 설정하여 가운데 정렬합니다 */
+    text-align: left; /* 텍스트는 왼쪽으로 정렬됩니다 */
+    font-size: 12px;
+    font-weight: inherit;
   }
 
+   .moreMenuContainer {
+      position: relative;
+    }
+
+    .moreMenu {
+ display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 2;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 300px;
+    }
+    
+#moreButton {
+  /* 버튼 기본 스타일 */
+  background-color: #e3f2fd;
+  color:black;
+  cursor: pointer; /* 커서 모양 설정 */
+
+  /* 버튼 클릭 후 스타일 */
+  transition: background-color 0.3s ease; /* 배경색 변경 시 부드럽게 전환 */
+}
+
+#moreButton:hover {
+  background-color: #0056b3; /* 버튼에 마우스를 올렸을 때 배경색 변경 */
+}
 
   .basket {
     display: flex;
@@ -284,36 +339,25 @@
 .swiper-button-next {
   right: 10px;
 }
-
-  .shoes img {
-    width: 300px;
-    /* 이미지의 너비를 조절합니다 */
-    height: 300px;
-    border: 1px solid black;
-    /* 이미지의 높이를 조절합니다 */
-    border-radius: 0%;
-    margin-right: 40px;
-    /* 이미지와 텍스트 사이의 간격을 조정합니다 */
-  }
-
-  .shoes p {
-    width: 100px;
-    text-align: left;
-    margin: 0;
-    /* 문단의 기본 마진을 없앱니다 */
-    font-size: 12px;
-    /* 텍스트의 크기를 설정합니다 */
-    font-weight: inherit;
-    /* 텍스트를 굵게 표시합니다 */
-  }
-
+.nav-link{
+  width: 120px;/* 내용에 맞게 크기 조정 */
+  text-align: center;
+}
+ 
 .dropdown-menu {
+    width: 100%;/* 내용에 맞게 크기 조정 */
   background-color: #ffffff;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.dropdown-menu .dropdown-item {
+  width: 100%; /* 부모 요소에 맞게 너비 설정 */
+  text-align: center; /* 가운데 정렬 */
+  padding: 10px; /* 내부 여백 추가 */
+  box-sizing: border-box; /* 내부 여백이 요소의 전체 크기에 포함되도록 설정 */
+}
 .dropdown-item {
   padding: 0.5rem 1rem;
   font-size: 16px;
@@ -427,23 +471,24 @@
     float: left;
   }
 
-  .navbar-nav {
-    width: 100%;
-    justify-content: center;
-    /* 이 부분을 추가하여 가로로 나열합니다 */
-  }
+.navbar-nav {
+  width: 100%;
+  justify-content: center; /* 가운데 정렬 */
+}
 
-  .navbar-nav .nav-item {
-    margin-right: 15px;
-    flex-direction: row;
-    margin: 10px;
-  }
+.navbar-nav .nav-item {
+  margin-right: 30px; /* 각 아이템 간격 설정 */
+}
 
-  .navbar-nav .nav-item {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
 
+.link-style {
+  color: black; /* 링크 텍스트색 */
+}
+
+.link-style:hover {
+  background-color: #87b9ff; /* 링크에 마우스를 올렸을 때 배경색 변경 */
+  color: black; /* 링크 텍스트색 변경 */
+}
   .menu_line {
     width: 300px;
     margin: 0px 0px 10px 0px;
@@ -476,10 +521,6 @@
     margin: 10px auto;
   }
 
-  .content_body {
-    width: 90%;
-    margin: 10px auto;
-  }
   .basket_body{
     width: 100%;
     margin: 0 auto;
@@ -488,7 +529,7 @@
   }
 
   .content_body {
-    width: 90%;
+    width: 100%;
     color: red;
     margin: 10px auto;
    display: flex;
@@ -566,7 +607,7 @@
     /* 아이템들을 동일한 간격으로 가로로 배치 */
     flex-wrap: wrap;
     clear: both;
-    padding-top: 20px;
+    padding-top: 200px;
     padding-right: 20px;
     padding-bottom: 20px;
     text-align: center;

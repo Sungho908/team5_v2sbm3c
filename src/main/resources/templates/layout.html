@@ -46,14 +46,15 @@
             </svg>
           </a>
           <form>
-          <div id="search-modal" class="modal">
-            <div class="modal-content" style="display: inline-block; text-align: center;">
-              <span class="close" onclick="closeModal()" style="text-align: right; color:black;">&times;</span>
-              <!-- 검색 창 추가 -->
-              <input type="text"  id="search-input" placeholder="찾으시는 상품이나 브랜드를 입력하세요." style="font-size: 18px; text-align: center; width:80%;">
-              <button class="btn-secondary"  id="search-btn" onclick="search()" style="width: 10%;">검색</button>
+            <div id="search-modal" class="modal">
+              <div class="modal-content" style="display: inline-block; text-align: center;">
+                <span class="close" onclick="closeModal()" style="text-align: right; color:black;">&times;</span>
+                <!-- 검색 창 추가 -->
+                <input type="text" id="search-input" placeholder="찾으시는 상품이나 브랜드를 입력하세요."
+                  style="font-size: 18px; text-align: center; width:80%;">
+                <button class="btn-secondary" id="search-btn" onclick="search()" style="width: 10%;">검색</button>
+              </div>
             </div>
-          </div>
           </form>
         </ul>
 
@@ -87,7 +88,7 @@
       <div th:replace="~{navbar::navbarFragment}"></div> <!-- navbar.html navbarFragment import -->
 
 
- <div id="search-results"></div>
+      <div id="search-results"></div>
       <div class="content_categorytop">
         <div class="content_category ">
           <a href="/"><img src="/images/vans.jpg" class="rounded-image" style="width:100px;  height: 100px"></a>
@@ -114,10 +115,12 @@
           <p> 구두</p>
         </div>
       </div>
-      <div>
 
-        <th:block layout:fragment="content"></th:block> <!-- 각 파일의 내용 출력 -->
+      <div>
+        <th:block layout:fragment="content"></th:block>
+        <!-- 각 파일의 내용 출력 -->
       </div> <!-- content_body 종료 -->
+
 
       <div th:replace="~{footer::footerFragment}"></div>
     </div> <!-- container_main 종료 -->
