@@ -84,7 +84,9 @@
     margin-bottom: 0px;
     margin: 0 auto;
   }
-
+.top_menu_img a {
+  text-decoration: none !important; /* a 태그의 텍스트에 파란 줄을 제거합니다 */
+}
   .top_bnn {
     font: 0.75em Verdana, Dotum, AppleGothic, sans-serif;
     font-family: 'Roboto', 'NanumBarunGothic', sans-serif;
@@ -134,6 +136,7 @@
 
   .top_menu_label {
     position: relative;
+      text-decoration: none !important;
     /* 속해 있는 부모 태그 기준 설정 */
     top: 50%;
     left: 0%;
@@ -188,7 +191,7 @@
   }
 .shoes:hover {
     /* 마우스를 올렸을 때의 스타일을 지정합니다 */
-     border: 5px solid black; /* 테두리를 검정색으로 설정합니다 */
+     border: 2px solid black; /* 테두리를 검정색으로 설정합니다 */
 }
   .shoes p {
     width: 200px;
@@ -476,8 +479,9 @@
   justify-content: center; /* 가운데 정렬 */
 }
 
-.navbar-nav .nav-item {
+.navbar-nav .nav-item  {
   margin-right: 30px; /* 각 아이템 간격 설정 */
+  color:white;
 }
 
 
@@ -536,31 +540,27 @@
        align-items: center; /* 세로 방향 가운데 정렬 */
     justify-content: center; /* 가로 방향 가운데 정렬 */
   }
-  .content_category {
-    width: 10%;
-    /* 요소의 너비를 10%로 설정합니다. */
-    max-width: 100px;
-    /* 요소의 최대 너비를 100px로 설정합니다. */
-    display: inline-block;
-    text-align: center;
-    vertical-align: top;
-    /* 요소를 위쪽으로 정렬합니다. */
-    margin: 0 auto;
-  }
-
-  .content_category p {
-    width: 100px;
+.content_categorytop {
+  display: flex; /* Flexbox 사용 */
+  align-items: center; /* 수직 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    height: 400px; /* 높이를 조절할 수 있습니다. */
+}
+  .content_category img {
+    width: 100%;;
     text-align: center;
     margin: 0 auto;
-    font-size: 20px;
+    font-size: 25px;
   }
-
-  .content_categorytop {
-    width: 100%;
-    text-align: center;
-    margin-top: 20px;
-  }
-
+.content_category {
+  display: flex; /* Flexbox 사용 */
+  align-items: center; /* 수직 정렬 */
+  margin-right: 20px; /* 각 카테고리 사이의 간격 설정 */
+}
+.content_category p {
+  margin-left: 10px; /* 텍스트와 이미지 사이의 간격 설정 */
+  font-size: 40px;
+}
   .content_categorytop a {
     width: 100%;
     text-align: right;
@@ -569,11 +569,60 @@
   }
 
   .rounded-image {
+    width:100%;
     border-radius: 45%;
     /* 50%로 설정하여 이미지를 원형으로 만듭니다 */
     
   }
+/* ------------------------------------*/
 
+  .Brand--5up {
+  text-align: center; /* 내부 요소를 가운데 정렬합니다 */
+      justify-content: center; /* 수평 가운데 정렬 */
+   color: #000;
+    -webkit-font-smoothing: antialiased;
+    font: 1rem/1.5 Roboto, Arial, sans-serif;
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    }
+
+.row--xs {
+  display: flex;
+  justify-content: center; /* 요소를 수평으로 중앙 정렬합니다 */
+  
+}
+.row--xs > * {
+  margin: auto; /* 가운데 정렬 */
+}
+
+.Bands-item {
+  list-style-type: none; /* li 태그의 점을 제거합니다 */
+  margin: 0 10px; /* 각 항목 사이의 여백을 조정합니다 */
+      color: #000;
+    -webkit-font-smoothing: antialiased;
+    font: 1rem/1.5 Roboto, Arial, sans-serif;
+    box-sizing: inherit;
+    padding: 0;
+    border: 0;
+    flex: 1 1 0%;
+    position: relative;
+}
+
+.ProductBand {
+  display: block;
+  text-align: center; /* 내부 요소를 가운데 정렬합니다 */
+}
+
+.ProductBand-image {
+  display: block;
+  margin: 0 auto; /* 이미지를 가운데 정렬합니다 */
+}
+/* ------------------------------------*/
   .gnb_list {
     text-align: right;
     margin: 0 auto;
@@ -798,34 +847,29 @@
       DIV 태그가 20px 일경우 자식태그가 1em이면 최종적으로 20px이 적용됨.
       DIV 태그가 20px 일경우 자식태그가 1.5em이면 최종적으로 30px이 적용됨.
   */
-  .th_basic {
-    font-size: 0.8em;
-    border-bottom: solid 3px #DDDDDD;
-  }
 
   .th_bs {
     text-align: center;
+    background-color: #e3f2fd; /* 파란색 */
+    color: black; /* 흰색 텍스트 */
   }
-
-  .td_basic {
-    border-top: none;
-    border-right: none;
-    border-bottom: solid 1px #DDDDDD;
-    border-left: none;
-    text-align: center;
-  }
-
+.list-group-item::before {
+  content: attr(data-label); /* 항목의 라벨 속성 값 표시 */
+  font-weight: bold; /* 굵은 글꼴 */
+}
+.list-group-item {
+  border: none; /* 테두리 제거 */
+}
+/* 각 항목의 값에 대한 스타일 */
+.list-group-item span {
+  font-weight: normal; /* 일반 글꼴 */
+}
   .td_left {
     border-top: none;
     border-right: none;
     border-bottom: solid 1px #DDDDDD;
     border-left: none;
     text-align: left;
-  }
-
-  .td_bs {
-    text-align: center;
-    vertical-align: middle;
   }
 
   .td_bs_left {
@@ -1079,6 +1123,19 @@
     margin-top: 15px;
     margin-bottom: 5px;
     text-align: center;
+  }
+   table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+    th {
+    background-color: black;
   }
 
   .display_table {

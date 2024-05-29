@@ -26,9 +26,8 @@
   <div class='container_main'>
 
 
-    <div class='top_bnn' style="background-color: #e3f2fd;">
-
-      <p><b>오늘도 발걸음을 찾아주셔서 감사합니다.</b></p>
+    <div class='top_bnn' style="background-color: black;">
+      <p><b style="color:white; font-size: 20px" >오늘도 발걸음을 찾아주셔서 감사합니다.</b></p>
       <div class="btn_close"><i class="xi-close"></i></div>
 
       <div class="main_inner">
@@ -37,7 +36,6 @@
           <li><a href="/">HOME</a>
           </li>
           <!-- <li module="Layout_statelogoff"><a href="/member/join.html">JOIN</a></li> -->
-          <li><a href="/myshop/order/list.html">STYLE</a></li>
           <a href="#" id="search-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-search"
               viewBox="0 0 16 16">
@@ -65,7 +63,7 @@
             </li>
           </th:block>
           <th:block th:if="${not #strings.isEmpty(session.login)}">
-            <li><a href="/myshop/order/list.html">ORDER</a></li>
+            <li><a href="/shoes/list_all">LIST</a></li>
             <li><a class="cart_num" href="/shoes/basket">CART
                 <span style="display:none" class="xans-element- xans-myshop xans-myshop-main ">
                   <span class="xans_myshop_main_basket_cnt">0</span></span>
@@ -89,32 +87,7 @@
 
 
       <div id="search-results"></div>
-      <div class="content_categorytop">
-        <div class="content_category ">
-          <a href="/"><img src="/images/vans.jpg" class="rounded-image" style="width:100px;  height: 100px"></a>
-          <p>스니커즈</p>
-        </div>
-        <div class="content_category ">
-          <a href="/"><img src="/images/sandals.jpg" class="rounded-image" style="width:100px;  height: 100px"></a>
-          <p> 샌들</p>
-        </div>
-        <div class="content_category ">
-          <a href="/"><img src="/images/slipper.jpg" class="rounded-image" style="width:100px;  height: 100px"></a>
-          <p> 슬리퍼</p>
-        </div>
-        <div class="content_category ">
-          <a href="/"><img src="/images/nike2.jpg" class="rounded-image" style="width:100px;  height: 100px"></a>
-          <p> 운동화</p>
-        </div>
-        <div class="content_category ">
-          <a href="/"><img src="/images/adidas.jpg" class="rounded-image" style="width:100px;  height: 100px"></a>
-          <p> 러닝화</p>
-        </div>
-        <div class="content_category ">
-          <a href="/"><img src="/images/roper.jpg" class="rounded-image" style="width:100px;  height: 100px"></a>
-          <p> 구두</p>
-        </div>
-      </div>
+
 
       <div>
         <th:block layout:fragment="content"></th:block>

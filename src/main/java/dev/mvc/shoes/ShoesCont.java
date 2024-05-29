@@ -444,6 +444,78 @@ public class ShoesCont {
     return "shoes/worker"; // /templates/shoes/read.html
 
   }
+  /**
+   * 슬리퍼 목록
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/sandal")
+  public String sandal(HttpSession session, Model model, 
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    
+    table_paging(model, word, now_page);
+
+    return "shoes/sandal"; // /templates/shoes/read.html
+
+  }
+  /**
+   * 샌들 목록
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/slipper")
+  public String slipper(HttpSession session, Model model, 
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    
+    table_paging(model, word, now_page);
+
+    return "shoes/slipper"; // /templates/shoes/read.html
+
+  }
+  /**
+   * 러닝화 목록
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/running")
+  public String running(HttpSession session, Model model, 
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    
+    table_paging(model, word, now_page);
+
+    return "shoes/running"; // /templates/shoes/read.html
+  }
+  
+  /**
+   * 로퍼 목록
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/roper")
+  public String roper(HttpSession session, Model model, 
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    
+    table_paging(model, word, now_page);
+
+    return "shoes/roper"; // /templates/shoes/read.html
+  }
+  
   
   @GetMapping(value = "/showlist")
   public String showlist(HttpSession session, Model model, 
