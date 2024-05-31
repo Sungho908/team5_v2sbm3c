@@ -31,7 +31,7 @@ public class NoticeCont {
   }
   
   private void table_paging(Model model, String word, int now_page) {
-    ArrayList<NoticeVO> list = this.noticeProc.list_search_paging(word, now_page, this.record_per_page);
+    ArrayList<NoticeMemberVO> list = this.noticeProc.list_search_paging(word, now_page, this.record_per_page);
     model.addAttribute("list", list);
     int search_count = this.noticeProc.list_search_count(word);
     String paging = this.noticeProc.pagingBox(now_page, word, "/admin/category/list", search_count,

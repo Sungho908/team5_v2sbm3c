@@ -15,7 +15,7 @@ public interface NoticeDAOInter {
   /** 검색 개수 */
   public int list_search_count(String word);
   
-  public ArrayList<NoticeVO> list_search_paging(Map<String, Object> map);
+  public ArrayList<NoticeMemberVO> list_search_paging(Map<String, Object> map);
   
   /** 공지사항 상세 */
   public NoticeVO read(int noticeno);

@@ -18,6 +18,6 @@ public class NoticeMemberVO {
   private Date rdate;
   
   private Integer views;
-  
+
   private String nickname;
 }

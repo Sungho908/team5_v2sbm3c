@@ -1,5 +1,8 @@
 package dev.mvc.member;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 import java.util.function.Supplier;
 

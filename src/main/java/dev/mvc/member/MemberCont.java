@@ -32,10 +32,9 @@ public class MemberCont {
   @Autowired
   private PasswordEncoder pe;
 
-  
-  @GetMapping("checkpw")
-  public String checkpw() {
-    return "member/checkpw";
+  @GetMapping("create")
+  public String signUp(MemberVO memberVO) {
+    return "member/create";
   }
   
   @PostMapping("checkpw")

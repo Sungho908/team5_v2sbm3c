@@ -1,57 +1,120 @@
 <!DOCTYPE html>
 
-<html layout:decorate="~{layout}"> <!-- layout.html 상속-->
+<html layout:decorate="~{layout}">
+<!-- layout.html 상속-->
 <div layout:fragment="content">
-  <div class="title_line">카테고리 수정</div>
+  <div class="title_line">신발 수정</div>
+  <div>
+    <aside class="aside_right">
+      <a href="/shoes/list_all?now_page=1">신발 목록</a>
+      <span class="menu_devide">│</span>
+      <a href="/shoes/create">신발 등록</a>
+      <span class="menu_devide">│</span>
+      <a th:href="@{|/shoes/delete/${shoesVO.shoesno}?word=${word}&now_page=${now_page}|}">신발 삭제</a>
+      <span class="menu_devide">│</span>
+      <a href="javascript: location.reload();">새로 고침</a>
+    </aside>
+    <div class="top_menu_line"></div>
+  </div>
   <form name="frm" th:object="${shoesVO}" method="post" action="/shoes/update">
     <input type="hidden" name="shoesno" th:value="${shoesVO.shoesno}">
     <div>
-      <label>중분류</label>
-      <input type="text" name="name" th:value="${shoesVO.name}" autofocus="autofocus"
-             class="form-control fom-control-sm" style="width: 50%;" th:field="*{name}">
-      <div th:if="${#fields.hasErrors('name')}" class="alert alert-danger" role="alert" style="margin-top: 5px;">
-        <div th:each="err : ${#lists.sort(#fields.errors('name'))}" th:text="${err}"></div>
-      </div>  
+      <label style="margin:0 auto;">신발 번호</label>
+      <input type="text" name="name" th:value="${shoesVO.shoesno}" autofocus="autofocus"
+        class="form-control fom-control-sm" style="width: 20%; margin: 0 auto; text-align: center;"
+        th:field="*{shoesno}" readonly>
+      <div th:if="${#fields.hasErrors('shoesno')}" class="alert alert-danger" role="alert" style="margin-top: 5px;">
+        <div th:each="err : ${#lists.sort(#fields.errors('shoesno'))}" th:text="${err}"></div>
+      </div>
     </div>
     <div>
-      <label>소분류</label>
-      <input type="text" name="namesub" th:value="${shoesVO.namesub}" 
-             class="form-control fom-control-sm" style="width: 50%;" th:field="*{namesub}">
-      <div th:if="${#fields.hasErrors('namesub')}" class="alert alert-danger" role="alert" style="margin-top: 5px;">
-        <div th:each="err : ${#lists.sort(#fields.errors('namesub'))}" th:text="${err}"></div>
-      </div>             
+      <label>카테고리 번호</label>
+      <input type="text" name="categoryno" th:value="${shoesVO.categoryno}" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto; text-align: center;" th:field="*{categoryno}">
+      <div th:if="${#fields.hasErrors('categoryno')}" class="alert alert-danger" role="alert" style="margin-top: 5px;">
+        <div th:each="err : ${#lists.sort(#fields.errors('categoryno'))}" th:text="${err}"></div>
+      </div>
     </div>
     <div>
-      <label>관련 글수</label>
-      <input type="number" name="cnt" th:value="${shoesVO.cnt}" 
-             class="form-control fom-control-sm" style="width: 50%;" th:field="*{cnt}">
-      <div th:if="${#fields.hasErrors('cnt')}" class="alert alert-danger" role="alert" style="margin-top: 5px;">
-        <div th:each="err : ${#lists.sort(#fields.errors('cnt'))}" th:text="${err}"></div>
-      </div>  
+      <label>회원 번호</label>
+      <input type="text" name="cnt" th:value="${shoesVO.memberno}" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto; text-align: center;" th:field="*{memberno}">
+      <div th:if="${#fields.hasErrors('memberno')}" class="alert alert-danger" role="alert" style="margin-top: 5px;">
+        <div th:each="err : ${#lists.sort(#fields.errors('memberno'))}" th:text="${err}"></div>
+      </div>
     </div>
     <div>
-      <label>출력 순서</label>
-      <input type="number" name="seqno" th:value="${shoesVO.seqno}" 
-             class="form-control fom-control-sm" style="width: 50%;" th:field="*{seqno}">
-      <div th:if="${#fields.hasErrors('seqno')}" class="alert alert-danger" role="alert" style="margin-top: 5px;">
-        <div th:each="err : ${#lists.sort(#fields.errors('seqno'))}" th:text="${err}"></div>
-      </div>             
+      <label>제목</label>
+      <input type="text" name="title" th:value="${shoesVO.title}" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto; text-align: center;" th:field="*{title}">
+      <div th:if="${#fields.hasErrors('title')}" class="alert alert-danger" role="alert" style="margin-top: 5px;">
+        <div th:each="err : ${#lists.sort(#fields.errors('title'))}" th:text="${err}"></div>
+      </div>
     </div>
     <div>
-      <label>출력 모드</label>
-      <input type="text" name="visible" th:value="${shoesVO.visible}" 
-             class="form-control fom-control-sm" style="width: 50%;" th:field="*{visible}"> Y / N 만 입력 가능합니다.
+      <label>브랜드명</label>
+      <input type="text" name="brand" th:value="${shoesVO.brand}" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto; text-align: center;" th:field="*{brand}">
+      <div th:if="${#fields.hasErrors('brand')}" class="alert alert-danger" role="alert" style="margin-top: 5px;">
+        <div th:each="err : ${#lists.sort(#fields.errors('brand'))}" th:text="${err}"></div>
+      </div>
+    </div>
+
+    <div>
+      <label>평점</label>
+      <input type="text" name="rating" th:value="${shoesVO.rating}" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto; text-align: center;" th:field="*{rating}">
+      <div th:if="${#fields.hasErrors('rating')}" class="alert alert-danger" role="alert" style="margin-top: 5px;">
+        <div th:each="err : ${#lists.sort(#fields.errors('rating'))}" th:text="${err}"></div>
+      </div>
+    </div>
+
+    <div>
+      <label>가격</label>
+      <input type="text" name="price" th:value="${shoesVO.price}" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto; text-align: center;" th:field="*{price}">
+      <div th:if="${#fields.hasErrors('price')}" class="alert alert-danger" role="alert" style="margin-top: 5px;">
+        <div th:each="err : ${#lists.sort(#fields.errors('price'))}" th:text="${err}"></div>
+      </div>
+    </div>
+
+    <div>
+      <label>할인율</label>
+      <input type="text" name="discount" th:value="${shoesVO.discount}" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto; text-align: center;" th:field="*{discount}">
+      <div th:if="${#fields.hasErrors('discount')}" class="alert alert-danger" role="alert" style="margin-top: 5px;">
+        <div th:each="err : ${#lists.sort(#fields.errors('discount'))}" th:text="${err}"></div>
+      </div>
+    </div>
+
+    <div>
+      <label>내용</label>
+      <input type="text" name="contents" th:value="${shoesVO.contents}" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto; text-align: center;" th:field="*{contents}">
+      <div th:if="${#fields.hasErrors('contents')}" class="alert alert-danger" role="alert" style="margin-top: 5px;">
+        <div th:each="err : ${#lists.sort(#fields.errors('contents'))}" th:text="${err}"></div>
+      </div>
+    </div>
+
+    <div>
+      <label>판매여부</label>
+      <input type="text" name="visible" th:value="${shoesVO.visible}" class="form-control fom-control-sm"
+        style="width: 20%; margin: 0 auto; text-align: center;" th:field="*{visible}">
       <div th:if="${#fields.hasErrors('visible')}" class="alert alert-danger" role="alert" style="margin-top: 5px;">
         <div th:each="err : ${#lists.sort(#fields.errors('visible'))}" th:text="${err}"></div>
       </div>
     </div>
-    
+
     <div class="content_body_bottom">
       <button type="submit" class="btn btn-secondary btn-sm">저장</button>
-      <button type="button" onclick="location.href='/shoes/list_all'" class="btn btn-secondary btn-sm">목록</button>
+      <button type="button"
+        th:attr="onclick=|location.href='/shoes/read/${shoesVO.shoesno}?word=${word}&now_page=${now_page}'|"
+        class="btn btn-secondary btn-sm">취소</button>
     </div>
-    
-  </form>  
-</div>
-</html>
 
+    <div th:replace="~{shoes/list_all_component::list_all_fragment}"></div>
+    
+  </form>
+</div>
+
+</html>

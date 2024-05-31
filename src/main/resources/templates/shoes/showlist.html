@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html layout:decorate="~{layout}">
+<!-- layout.html 상속-->
+<div layout:fragment="content">
+  <div class="title_line">신발</div>
+  <aside class="aside_right">
+    <a href="/shoes/create">신발 등록</a>
+    <span class="menu_devide">│</span>
+    <a href="javascript: location.reload();">새로 고침</a>
+  </aside>
+<div th:fragment="navbarFragment">
+  <div class="top_menu_img">
+    <div class="top_menu_label">발 걸 음</div>
+  </div>
+
+  <nav class="navbar navbar-expand-lg " style="background-color: #e3f2fd;">
+    <div class="container">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown mr-3">
+            <a class="nav-link" href="#" id="navbarDropdown1" role="button" aria-haspopup="true"
+              aria-expanded="false">
+              스니커즈/슬립온
+            </a>
+            <div class="dropdown-menu text-center" aria-labelledby="navbarDropdown1">
+              <a class="dropdown-item" href="/shoes/sneakers" onclick="showSneakers()">스니커즈</a>
+              <a class="dropdown-item" href="#" onclick="showSlipOns()">슬립온</a>
+            </div>
+          </li>
+          <!-- 다른 메뉴들은 여기에 추가 -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+
+</div>
+
+</div>
+
+</html>
