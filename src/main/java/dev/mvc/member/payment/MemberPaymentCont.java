@@ -25,10 +25,10 @@ public class MemberPaymentCont {
   public String order(HttpSession session, Model model) {
     MemberVO memberVO = (MemberVO) session.getAttribute("login");
     
-//    ArrayList<PaymentVO> paymentList = this.paymentProc.list_all(memberVO.getMemberno());
-//    System.out.println("pay: " + paymentList);
-//    if(paymentList != null && !paymentList.isEmpty())
-//      model.addAttribute("paymentList", paymentList);
+    ArrayList<PaymentVO> paymentList = this.paymentProc.list_all(memberVO.getMemberno());
+    System.out.println("pay: " + paymentList);
+    if(paymentList != null && !paymentList.isEmpty())
+      model.addAttribute("paymentList", paymentList);
     return "member/payment/order";
   }
 }
