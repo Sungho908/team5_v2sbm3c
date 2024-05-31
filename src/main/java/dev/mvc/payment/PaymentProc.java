@@ -16,4 +16,10 @@ public class PaymentProc implements PaymentProcInter {
     return this.paymentDAO.list_all(memberno);
   }
 
+
+  @Override
+  public int delete(int paymentno) {
+    return this.paymentDAO.delete(paymentno);
+  }
+
 }
