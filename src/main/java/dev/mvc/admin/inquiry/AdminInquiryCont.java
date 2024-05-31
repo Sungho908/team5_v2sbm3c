@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import dev.mvc.otherInquiry.OtherInquiryInfoVO;
 import dev.mvc.otherInquiry.OtherInquiryProcInter;
 import dev.mvc.otherInquiry.OtherInquiryVO;
+import dev.mvc.paymentInquiry.PaymentInquiryProcInter;
 import dev.mvc.shoesInquiry.ShoesInquiryInfoVO;
 import dev.mvc.shoesInquiry.ShoesInquiryProcInter;
 import dev.mvc.shoesInquiry.ShoesInquiryVO;
@@ -35,6 +36,10 @@ public class AdminInquiryCont {
   @Qualifier("dev.mvc.otherInquiry.OtherInquiryProc")
   private OtherInquiryProcInter otherinquiryProc;
 
+  @Autowired
+  @Qualifier("dev.mvc.paymentInquiry.PaymentInquiryProc")
+  private PaymentInquiryProcInter paymentinquiryProc;
+  
   /** 페이지당 출력할 레코드 갯수, nowPage는 1부터 시작 */
   public int record_per_page = 5;
 
@@ -87,6 +92,27 @@ public class AdminInquiryCont {
     }
   }
 
+  /** 기타 문의 페이징 */
+  private void payment_table_paging(Model model, String word, int now_page) {
+    ArrayList<OtherInquiryInfoVO> list = this.otherinquiryProc.list_search_paging(word, now_page, this.record_per_page);
+
+    if (list.isEmpty()) {
+    } else {
+      model.addAttribute("list", list);
+
+      int search_count = this.otherinquiryProc.list_search_count(word);
+      String paging = this.otherinquiryProc.pagingBox(now_page, word, "/admin/category/list", search_count,
+          this.record_per_page, this.page_per_block);
+
+      int no = search_count - ((now_page - 1) * this.record_per_page);
+
+      model.addAttribute("paging", paging);
+      model.addAttribute("now_page", now_page);
+      model.addAttribute("word", word);
+      model.addAttribute("no", no);
+    }
+  }
+  
   /** 신발 문의 목록 */
   @GetMapping(value = "/shoes")
   public String shoes_list(HttpSession session, Model model,
@@ -154,7 +180,7 @@ public class AdminInquiryCont {
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
     OtherInquiryVO otherInquiryVO = otherInquiryInfoVO.getOtherInquiryVO();
 
-    this.shoesinquiryProc.answer(otherInquiryVO.getOther_inquiry_no(), 'Y', otherInquiryVO.getAnswer_contents());
+    this.otherinquiryProc.answer(otherInquiryVO.getOther_inquiry_no(), 'Y', otherInquiryVO.getAnswer_contents());
     return "redirect:/admin/inquiry/other/" + otherInquiryVO.getOther_inquiry_no() + "?word=" + word + "&now_page="
         + now_page;
   }

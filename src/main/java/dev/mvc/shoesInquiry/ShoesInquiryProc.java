@@ -120,6 +120,9 @@ public class ShoesInquiryProc implements ShoesInquiryProcInter {
     map.put("answer_visible", answer_visible);
     map.put("answer_contents", answer_contents);
     
+    System.out.println(shoes_inquiry_no);
+    System.out.println(answer_visible);
+    System.out.println(answer_contents);
     int cnt = this.shoesInquiryDAO.answer(map);
     return cnt;
   }

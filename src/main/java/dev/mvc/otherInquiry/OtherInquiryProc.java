@@ -116,7 +116,7 @@ public class OtherInquiryProc implements OtherInquiryProcInter {
   @Override
   public int answer(int other_inquiry_no, char answer_visible, String answer_contents) {
     Map<String, Object> map = new HashMap<String, Object>();
-    map.put("shoes_inquiry_no", other_inquiry_no);
+    map.put("other_inquiry_no", other_inquiry_no);
     map.put("answer_visible", answer_visible);
     map.put("answer_contents", answer_contents);
     

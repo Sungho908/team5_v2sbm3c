@@ -60,8 +60,8 @@
   </select>
 
   <resultMap id="InquiryResult" type="dev.mvc.paymentInquiry.PaymentInquiryInfoVO">
-    <association property="shoesInquiryVO" javaType="dev.mvc.shoesInquiry.ShoesInquiryVO">
-      <id property="shoes_inquiry_no" column="shoes_inquiry_no" />
+    <association property="paymentInquiryVO" javaType="dev.mvc.paymentInquiry.PaymentInquiryVO">
+      <id property="payment_inquiry_no" column="payment_inquiry_no" />
       <result property="title" column="title" />
       <result property="contents" column="contents" />
       <result property="rdate" column="rdate" />
@@ -78,19 +78,21 @@
   </resultMap>
 
   <select id="read" resultMap="ReadInquiry" parameterType="Integer">
-    SELECT si.shoes_inquiry_no as shoes_inquiry_no, si.title as title, si.contents as contents, 
-    si.rdate as rdate, si.answer_visible as answer_visible, s.title shoestitle, m.nickname as nickname,
-    o.sizes as sizes, o.color as color, si.answer_contents as answer_contents
-    FROM shoes_inquiry si
-    JOIN member m ON si.memberno = m.memberno
-    JOIN options o ON si.optionno = o.optionno
-    JOIN shoes s ON o.shoesno = s.shoesno
-    WHERE shoes_inquiry_no = ${shoes_inquiry_no}
+    SELECT pi.payment_inquiry_no as payment_inquiry_no, pi.title as title, pi.contents as contents, pi.rdate as inquiry_rdate, pi.answer_visible as answer_visible, 
+    p.rdate payment_rdate, p.total_payment as total_payment, s.title shoestitle, m.nickname as nickname,
+    o.sizes as sizes, o.color as color, pi.answer_contents as answer_contents
+    FROM payment_inquiry pi
+    JOIN member m ON pi.memberno = m.memberno
+    JOIN payment p ON pi.paymentno = p.paymentno
+    JOIN payment_details pd ON pd.paymentno = p.paymentno
+    JOIN options o ON o.optionno = pd.optionno
+    JOIN shoes s ON s.shoesno = o.shoesno
+    WHERE payment_inquiry_no = ${payment_inquiry_no}
   </select>
 
-  <resultMap id="ReadInquiry" type="dev.mvc.shoesInquiry.ShoesInquiryInfoVO">
-    <association property="shoesInquiryVO" javaType="dev.mvc.shoesInquiry.ShoesInquiryVO">
-      <id property="shoes_inquiry_no" column="shoes_inquiry_no" />
+  <resultMap id="ReadInquiry" type="dev.mvc.paymentInquiry.PaymentInquiryInfoVO">
+    <association property="paymentInquiryVO" javaType="dev.mvc.paymentInquiry.PaymentInquiryVO">
+      <id property="payment_inquiry_no" column="payment_inquiry_no" />
       <result property="title" column="title" />
       <result property="contents" column="contents" />
       <result property="rdate" column="rdate" />
@@ -110,12 +112,16 @@
     <association property="memberVO" javaType="dev.mvc.member.MemberVO">
       <result property="nickname" column="nickname" />
     </association>
+
+    <association property="paymentVO" javaType="dev.mvc.payment.PaymentVO">
+      <result property="total_payment" column="total_payment" />
+    </association>
   </resultMap>
 
   <update id="answer" parameterType="Map">
-    UPDATE shoes_inquiry
+    UPDATE payment_inquiry
     SET answer_visible = #{answer_visible}, answer_contents = #{answer_contents}
-    WHERE shoes_inquiry_no = #{shoes_inquiry_no}
+    WHERE payment_inquiry_no = #{payment_inquiry_no}
   </update>
 
 </mapper>
