@@ -1,4 +1,4 @@
-package dev.mvc.admin.category;
+package dev.mvc.category;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("dev.mvc.admin.category.CategoryProc")
+@Service("dev.mvc.category.CategoryProc")
 public class CategoryProc implements CategoryProcInter {
 
   @Autowired

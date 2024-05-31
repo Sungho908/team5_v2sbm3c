@@ -16,17 +16,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import dev.mvc.category.CategoryProcInter;
+import dev.mvc.category.CategoryVO;
 import dev.mvc.tool.Tool;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @RequestMapping("/admin/category")
 @Controller
-public class CategoryCont {
+public class AdminCategoryCont {
 
   @Autowired
-  @Qualifier("dev.mvc.admin.category.CategoryProc")
+  @Qualifier("dev.mvc.category.CategoryProc")
   private CategoryProcInter categoryProc;
+  
 
   /** 페이지당 출력할 레코드 갯수, nowPage는 1부터 시작 */
   public int record_per_page = 5;
@@ -34,24 +37,29 @@ public class CategoryCont {
   /** 블럭당 페이지 수, 하나의 블럭은 10개의 페이지로 구성됨 */
   public int page_per_block = 5;
 
-  public CategoryCont() {
+  public AdminCategoryCont() {
     System.out.println("-> Category created.");
   }
 
   private void table_paging(Model model, String word, int now_page) {
     ArrayList<CategoryVO> list = this.categoryProc.list_search_paging(word, now_page, this.record_per_page);
-    model.addAttribute("list", list);
+    if (list.isEmpty()) {
+    } else {
+      System.out.println("list" + list);
+      model.addAttribute("list", list);
+      
+      int search_count = this.categoryProc.list_search_count(word);
+      String paging = this.categoryProc.pagingBox(now_page, word, "/admin/category/list", search_count,
+          this.record_per_page, this.page_per_block);
+      
+      int no = search_count - ((now_page - 1) * this.record_per_page);
 
-    int search_count = this.categoryProc.list_search_count(word);
-    String paging = this.categoryProc.pagingBox(now_page, word, "/admin/category/list", search_count,
-        this.record_per_page, this.page_per_block);
+      model.addAttribute("paging", paging);
+      model.addAttribute("now_page", now_page);
+      model.addAttribute("word", word);
+      model.addAttribute("no", no);
 
-    int no = search_count - ((now_page - 1) * this.record_per_page);
-
-    model.addAttribute("paging", paging);
-    model.addAttribute("now_page", now_page);
-    model.addAttribute("word", word);
-    model.addAttribute("no", no);
+    }
   }
 
   /** 카테고리 목록 */
@@ -60,7 +68,7 @@ public class CategoryCont {
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
     word = Tool.checkNull(word).trim();
-
+    
     ArrayList<CategoryVO> menu = this.categoryProc.list_all();
     model.addAttribute("menu", menu);
     
@@ -132,7 +140,7 @@ public class CategoryCont {
     }
   }
 
-  /** 카테고리 수정 */
+  /** 카테고리 읽기 */
   @GetMapping(value = "/read/{categoryno}")
   public String read(HttpSession session, Model model, @PathVariable("categoryno") Integer categoryno,
       @RequestParam(name = "word", defaultValue = "") String word,
@@ -179,7 +187,7 @@ public class CategoryCont {
       table_paging(model, word, now_page);
       return "admin/category/update";
     }
-
+    
     int cnt = this.categoryProc.update(categoryVO);
     if (cnt == 1) {
       return "redirect:/admin/category/read/" + categoryVO.getCategoryno() + "?word=" + Tool.encode(word) + "&now_page="

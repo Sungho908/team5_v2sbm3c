@@ -3,9 +3,6 @@ package dev.mvc.shoes;
 import java.util.ArrayList;
 import java.util.Map;
 
-import dev.mvc.admin.category.CategoryVO;
-import dev.mvc.shoes.ShoesVO;
-
 public interface ShoesDAOInter {
   /**
    * 등록 insert id="create" parameterType="dev.mvc.shoes.ShoesVO"

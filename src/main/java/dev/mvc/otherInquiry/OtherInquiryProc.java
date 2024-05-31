@@ -1,4 +1,4 @@
-package dev.mvc.admin.notice;
+package dev.mvc.otherInquiry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,46 +7,27 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("dev.mvc.admin.notice.NoticeProc")
-public class NoticeProc implements NoticeProcInter{
+@Service("dev.mvc.otherInquiry.OtherInquiryProc")
+public class OtherInquiryProc implements OtherInquiryProcInter {
 
   @Autowired
-  private NoticeDAOInter noticeDAO;
-  
+  private OtherInquiryDAOInter otherInquiryDAO;
+
   @Override
-  public int create(NoticeVO noticeVO) {
-    int cnt = this.noticeDAO.create(noticeVO);
+  public int create(OtherInquiryVO otherInquiryVO) {
+    int cnt = this.otherInquiryDAO.create(otherInquiryVO);
     return cnt;
   }
 
-  @Override
-  public ArrayList<NoticeMemberVO> list_all() {
-    ArrayList<NoticeMemberVO> list = this.noticeDAO.list_all();
-    return list;
-  }
-
-  @Override
-  public NoticeVO read(int noticeno) {
-    NoticeVO list = this.noticeDAO.read(noticeno);
-    return list;
-  }
-
-  @Override
-  public int increased_views(NoticeVO noticeVO) {
-    int cnt = this.noticeDAO.increased_views(noticeVO);
-    return cnt;
-  }
-  
   @Override
   public int list_search_count(String word) {
-    int cnt = this.noticeDAO.list_search_count(word);
+    int cnt = this.otherInquiryDAO.list_search_count(word);
     return cnt;
   }
 
   @Override
-  public ArrayList<NoticeMemberVO> list_search_paging(String word, int now_page, int record_per_page) {
+  public ArrayList<OtherInquiryInfoVO> list_search_paging(String word, int now_page, int record_per_page) {
     int begin_of_page = (now_page - 1) * record_per_page;
-
     int start_num = begin_of_page + 1;
 
     int end_num = begin_of_page + record_per_page;
@@ -55,23 +36,10 @@ public class NoticeProc implements NoticeProcInter{
     map.put("word", word);
     map.put("start_num", start_num);
     map.put("end_num", end_num);
-
-    ArrayList<NoticeMemberVO> list = this.noticeDAO.list_search_paging(map);
+    ArrayList<OtherInquiryInfoVO> list = this.otherInquiryDAO.list_search_paging(map);
     return list;
   }
 
-  @Override
-  public int update(NoticeVO noticeVO) {
-    int cnt = this.noticeDAO.update(noticeVO);
-    return cnt;
-  }
-
-  @Override
-  public int delete(int noticeno) {
-    int cnt = this.noticeDAO.delete(noticeno);
-    return cnt;
-  }
-  
   @Override
   public String pagingBox(int now_page, String word, String list_file, int search_count, int record_per_page,
       int page_per_block) {
@@ -139,5 +107,21 @@ public class NoticeProc implements NoticeProcInter{
     return str.toString();
   }
 
+  @Override
+  public OtherInquiryInfoVO read(int other_inquiry_no) {
+    OtherInquiryInfoVO otherInquiryInfoVO = this.otherInquiryDAO.read(other_inquiry_no);
+    return otherInquiryInfoVO;
+  }
+
+  @Override
+  public int answer(int other_inquiry_no, char answer_visible, String answer_contents) {
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("shoes_inquiry_no", other_inquiry_no);
+    map.put("answer_visible", answer_visible);
+    map.put("answer_contents", answer_contents);
+    
+    int cnt = this.otherInquiryDAO.answer(map);
+    return cnt;
+  }
 
 }

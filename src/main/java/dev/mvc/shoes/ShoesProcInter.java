@@ -1,11 +1,6 @@
 package dev.mvc.shoes;
 
 import java.util.ArrayList;
-import java.util.Map;
-
-import dev.mvc.admin.category.CategoryVO;
-import dev.mvc.shoes.ShoesVO;
-import dev.mvc.shoes.ShoesVOMenu;
 
 public interface ShoesProcInter {
   /**

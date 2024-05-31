@@ -37,20 +37,16 @@ dependencies {
 
   compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
   implementation 'jakarta.validation:jakarta.validation-api:3.0.0'
-  
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
-  
   compileOnly 'org.projectlombok:lombok'
   compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
-  
   annotationProcessor 'org.projectlombok:lombok'
-  
   runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
-  
   providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
-  
+  implementation 'commons-fileupload:commons-fileupload:1.5'
+  implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 }
 
 tasks.named('test') {

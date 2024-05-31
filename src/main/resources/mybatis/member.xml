@@ -25,6 +25,7 @@
     FROM member
     WHERE memberno=#{memberno}
   </select>
+  
   <!-- 일반 회원 정보 수정 -->
   <update id="update" parameterType="dev.mvc.member.MemberVO">
     UPDATE member
@@ -32,6 +33,7 @@
         thumb=#{thumb}, addr1=#{addr1}, addr2=#{addr2}, zipcode=#{zipcode}, mdate=#{mdate}, gender=#{gender}
     WHERE memberno=#{memberno}
   </update>
+
   <!-- 어드민 회원 정보 수정 -->
   <update id="updateAdmin" parameterType="dev.mvc.member.MemberVO">
     UPDATE member
@@ -39,17 +41,20 @@
     thumb=#{thumb}, addr1=#{addr1}, addr2=#{addr2}, zipcode=#{zipcode}, mdate=#{mdate}, point=#{point}, gender=#{gender}, grade=#{grade}, role=#{role}
     WHERE memberno=#{memberno}
   </update>
+  
   <!-- 일반 회원 삭제처리(등급 탈퇴회원인 99로 지정) -->
   <delete id="delete" parameterType="int">
     DELETE FROM member
     WHERE memberno=#{memberno}
   </delete>
+  
   <!-- 어드민 회원 삭제처리(완전 삭제) -->
   <update id="deleteByMember" parameterType="int">
     UPDATE member
     SET grade=99
     WHERE memberno=#{memberno}
   </update>
+  
   <!-- 모든 회원 조회 -->
   <select id="list_all" resultType="dev.mvc.member.MemberVO">
     SELECT memberno, id, pw, name, nickname, phone, email, thumb, addr1, addr2, zipcode, mdate, rdate, point, gender, grade, role
@@ -57,9 +62,7 @@
     ORDER BY memberno ASC
   </select>
   
-  
-  
-  <!-- 모든 회원 조회 페이징처리 -->
+    <!-- 모든 회원 조회 페이징처리 -->
   <select id="list_search_paging" resultType="dev.mvc.member.MemberVO" parameterType="Map">
     SELECT memberno, id, pw, name, nickname, phone, email, thumb, addr1, addr2, zipcode, mdate, rdate, point, gender, grade, role, r
     FROM (
