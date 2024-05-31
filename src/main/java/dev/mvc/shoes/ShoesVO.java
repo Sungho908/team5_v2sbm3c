@@ -46,15 +46,14 @@ public class ShoesVO {
   
   
   /** 신발 설명 */
-  private String content;
-  
+  private String contents;
   
   /** 신발 판매 여부 */
   private char visible;
   
   
   /** 유저 번호 */
-  private Integer mNo;
+  private Integer memberno;
   
   
   /** 카테고리 번호 */

@@ -1,6 +1,8 @@
 package dev.mvc.member;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public interface MemberDAOInter {
   /**
@@ -50,6 +52,14 @@ public interface MemberDAOInter {
   public int update(MemberVO memberVO);
   
   /**
+   * 회원정보 수정 관리자 페이지<br>
+   * id="updateAdmin" parameterType="dev.mvc.member.MemberVO"
+   * @param MemberVO 객체
+   * @return 성공한 쿼리 갯수
+   * */
+  public int updateAdmin(MemberVO memberVO);
+  
+  /**
    * 회원이 탈퇴처리<br>
    * id="deleteByMember" parameterType="int"
    * 
@@ -65,5 +75,44 @@ public interface MemberDAOInter {
    * @return MemberVO 객체
    * */
   public ArrayList<MemberVO> list_all();
+  
+  /**
+   * 회원 삭제
+   * id="delete" parameterType="int"
+   * @param memberno
+   * @return 성공한 쿼리 갯수
+   * */
+  public int delete(int memberno);
+  
+  /**
+   * 선택 항목 검색된 레코드 수
+   * id="list_search_count" resultType="int" parameterType="Map"
+   * @param Map 
+   * @return 검색된 레코드 수
+   * */
+  public int list_search_count(Map<String, Object> map);
+  
+  /**
+   * 검색목록 페이징
+   * select id="list_search_paging" resultType="dev.mvc.cate.CateVO" parameterType="Map"
+   * @param map
+   * @return 조회한 레코드 목록
+   */
+  public ArrayList<MemberVO> list_search_paging(Map<String, Object> map);
 
+  /**
+   * 아이디 찾기 email이 일치하는 id 찾기
+   * id="findid" resultType="String" parameterType="String"
+   * @param email
+   * @return id
+   * */
+  public ArrayList<String> findid(String email);
+  
+  /**
+   * 비밀번호 찾기(변경) id, email이 일치하는 pw 변경하기
+   * id="findpw" parameterType="Map"
+   * @param Map
+   * @return 성공한 쿼리 갯수
+   * */
+  public int findpw(HashMap<String, Object> map);
 }

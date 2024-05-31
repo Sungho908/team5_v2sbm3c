@@ -64,6 +64,9 @@ public class PrincipalDetails implements UserDetails {
   // 계정이 활성화(사용가능)인지 (true: 활성화)
   @Override
   public boolean isEnabled() {
+    if(memberVO.getGrade() == 99) {
+      return false;
+    }
     return true;
   }
 
