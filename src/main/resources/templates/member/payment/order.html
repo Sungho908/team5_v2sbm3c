@@ -2,82 +2,109 @@
 <!-- layout.html 상속-->
 
 <body>
-	<div layout:fragment="content">
-			<div th:replace="~{fragment/infoSidebarFragment::infoSidebarFragment}"></div>
-			<div style="margin: 10px; padding:30px; display: flex;">
-				<table style="margin: 0px auto; min-width: 700px;">
-				<caption style="caption-side: top; font-size: 2rem; text-align: left;">주문 내역</caption>
-					<colgroup>
-						<col width="20%">
-						<col width="40%">
-						<col width="20%">
-						<col width="20%">
-					</colgroup>
-					<thead style="border-bottom: 1px solid #999; border-top: 2px solid #594f4f; background: #f7f5f5">
-						<tr>
-							<td>주문일(주문번호)</td>
-							<td>상품명/주문옵션/주문번호</td>
-							<td>판매자</td>
-							<td>주문상태</td>
-						</tr>
-					</thead>
-					<tbody th:each="list : ${paymentList}" style="border-bottom:1px solid #999;">
-						<tr style="border-bottom: 1px solid #ddd;">
-							<td th:rowspan="2" style="border-right: 1px solid #ddd;">
-								<div>
-									<span th:text="${#dates.format(list.rdate,'yyyy-MM-dd')}">구매일표시</span>
-									<span style="color: #ddd;" th:text="|(${list.paymentno})|">주문번호표시</span>
-								</div>
-								<div style="border-top: 1px solid #ddd;">
-									결제금액:
-									<span th:text="|${#numbers.formatInteger(list.total_payment, 3, 'COMMA')}원|"></span>
-									<div style="text-align: left; margin-left: 8px;">
-										<a style="color: #416de9; font-size: 12px;" href="">주문상세보기▶</a>
-									</div>
+  <div layout:fragment="content">
+    <div th:replace="~{fragment/infoSidebarFragment::infoSidebarFragment}"></div>
+    <div style="margin: 10px; padding:30px; display: flex;">
+      <table style="margin: 0px auto; min-width: 700px;">
+        <caption style="caption-side: top; font-size: 2rem; text-align: left;">주문 내역</caption>
+        <colgroup>
+          <col width="20%">
+          <col width="40%">
+          <col width="20%">
+          <col width="20%">
+        </colgroup>
+        <thead style="border-bottom: 1px solid #999; border-top: 2px solid #594f4f; background: #f7f5f5">
+          <tr>
+            <td>주문일(주문번호)</td>
+            <td>상품명/주문옵션/주문번호</td>
+            <td>판매자</td>
+            <td>주문상태</td>
+          </tr>
+        </thead>
+        <tbody th:if="${#lists.isEmpty(paymentList)}">
+          <tr><td colspan="4">주문 내역이 존재하지 않습니다.</td></tr>
+        </tbody>
+        <tbody th:each="list : ${paymentList}" style="border-bottom:1px solid #999;">
+          <tr style="border-bottom: 1px solid #ddd;">
+            <td th:rowspan="2" style="border-right: 1px solid #ddd;">
+              <div>
+                <span th:text="${#dates.format(list.rdate,'yyyy-MM-dd')}">구매일표시</span>
+                <span class="paymentno" style="color: #ddd;" th:text="|(${list.paymentno})|">주문번호표시</span>
+              </div>
+              <div style="border-top: 1px solid #ddd;">
+                결제금액:
+                <span th:text="|${#numbers.formatInteger(list.total_payment, 3, 'COMMA')}원|"></span>
+                <div style="text-align: left; margin-left: 8px;">
+                  <a style="color: #416de9; font-size: 12px;" href="">주문상세보기▶</a>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div>
+                <div style="margin: 5px 5px 5px 5px">주문상세정보 테이블 제작시 구현 예정</div>
+              </div>
+            </td>
+            <td>3</td>
+            <td>
+              <div>
+                <span th:text="${list.status}"></span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <div style="display: flex; justify-content: space-between; margin: 0px 10px 0px 10px; height: 30px; align-items: center;">
+                <div>
+                  <a href="#" style="color: #416de9; font-size: 12px; margin-right:10px;">문의하기▶</a>
+                  <a href="javascript:void(0);" class="deletepayment" style="color: #416de9; font-size: 12px;">주문내역삭제▶</a>
+                </div>
+                <div>
+                  <button class="btn btn-danger">구매후기</button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function() {
+        // 모든 deletepayment 링크를 선택
+        let deleteLinks = document.querySelectorAll(".deletepayment");
 
-								</div>
-							</td>
+        deleteLinks.forEach(function(link) {
+          // 각 링크에 클릭 이벤트 리스너 추가
+          link.addEventListener("click", function() {
+            // paymentno 요소 찾기
+            let paynospan = this.closest("tr").previousElementSibling.querySelector(".paymentno");
+            // paymentno 텍스트 가져오기
+            let paytext = paynospan.textContent || paynospan.innerHTML;
+            // 숫자만 추출
+            let payno = paytext.match(/\d+/)[0];
 
-							<td>
-								<div>
-									<div style="margin: 5px 5px 5px 5px">주문상세정보 테이블 제작시 구현 예정</div>
-
-								</div>
-
-
-							</td>
-
-
-							<td>3</td>
-
-							<td>
-								<div>
-									<span th:text="${list.status}"></span>
-								</div>
-							</td>
-
-
-						</tr>
-
-
-						<tr>
-							<td colspan="3">
-							  <div style="display: flex; justify-content: space-between; margin: 0px 10px 0px 10px; height: 30px; align-items: center;">
-							    <div>
-							      <a href="#" style="color: #416de9; font-size: 12px; margin-right:10px;">문의하기▶</a>
-                    <a href="#" style="color: #416de9; font-size: 12px;">주문내역삭제▶</a>
-							    </div>
-							    <div>
-							      <button class="btn btn-danger">구매후기</button>
-							    </div>
-							  </div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-
-	</div>
+            if (confirm("정말로 주문내역을 삭제하시겠습니까?")) {
+              fetch('./delete?no=' + payno, {
+                method:'POST'
+              })
+              .then(response =>{
+                if(!response.ok){
+                  throw new Error('Network Error');
+                }
+                return response.text();
+              })
+              .then(rdata =>{
+                alert('주문내역이 삭제되었습니다.');
+                location.reload(true);
+              })
+              .catch(error => {
+                console.error('Error: error');
+              })
+            }
+          });
+        });
+      });
+    </script>
+  </div>
 </body>
 
 </html>
