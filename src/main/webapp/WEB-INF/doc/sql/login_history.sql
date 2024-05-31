@@ -44,20 +44,72 @@ FROM login_history
 where memberno = 1
 ORDER BY rdate desc;
 
+-- 최근 10건을 제외한 나머지 삭제-----------------------
 
-
-SELECT loginno, ip, rdate, memberno
+SELECT loginno
 FROM (
-    SELECT loginno, ip, rdate, memberno
+    SELECT loginno
     FROM login_history
     WHERE memberno = 1
-    ORDER BY rdate DESC
+);
+
+--   LOGINNO
+------------
+--       127
+--       128
+--       129
+--       130
+--       131
+--       132
+--       133
+--       134
+--       135
+--       136
+--       137
+--       138
+--
+--12개 행이 선택되었습니다. 
+
+
+SELECT loginno
+FROM login_history
+WHERE loginno NOT IN (
+    SELECT loginno
+    FROM (
+        SELECT loginno
+        FROM login_history
+        WHERE memberno = 1
+        ORDER BY rdate desc
+    )
+    WHERE ROWNUM <= 10
+);
+
+--   LOGINNO
+------------
+--       137
+--       138
+
+DELETE FROM login_history
+WHERE loginno IN (
+    SELECT loginno
+    FROM login_history
+    WHERE loginno NOT IN (
+        SELECT loginno
+        FROM (
+            SELECT loginno
+            FROM login_history
+            WHERE memberno = 1
+            ORDER BY rdate desc
+        )
+        WHERE ROWNUM <= 10
+    )
 )
-WHERE ROWNUM <= 10
+-----------------------------------------
 
 
+commit;
 
-
+rollback;
 
 
 

@@ -22,16 +22,11 @@ public class PrincipalDetailsService implements UserDetailsService {
 
 
   @Override
-  public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-    MemberVO memberVO = null;
-    try {
-      memberVO = memberProc.readById(id).orElseThrow(() -> {
-        return new UsernameNotFoundException("해당 유저를 찾을 수 없습니다.");
-      });
-    } catch (Throwable e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+  public UserDetails loadUserByUsername(String id){
+    MemberVO memberVO = memberProc.readById(id);
+    if(memberVO != null) {
+      return new PrincipalDetails(memberVO);
     }
-    return new PrincipalDetails(memberVO);
+    return null;
   }
 }
