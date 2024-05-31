@@ -201,9 +201,6 @@
     font-weight: inherit;
   }
 
-   .moreMenuContainer {
-      position: relative;
-    }
 
     .moreMenu {
  display: none;
@@ -212,7 +209,7 @@
   left: 0;
   z-index: 2;
   background-color: #f9f9f9;
-  border: 1px solid #ccc;
+  border: 5px solid #ccc;
   padding: 10px;
   width: 100%;
   margin-bottom: 300px;
@@ -540,6 +537,18 @@
        align-items: center; /* 세로 방향 가운데 정렬 */
     justify-content: center; /* 가로 방향 가운데 정렬 */
   }
+  .brand-shoes{
+    width: 100%;
+    display: flex;
+    align-items: center; /* 세로 방향 가운데 정렬 */
+    justify-content: center; /* 가로 방향 가운데 정렬 */
+  }
+  .brand{
+     display: flex; /* 가로로 나열하기 위해 flex 사용 */
+    list-style-type: none; /* 리스트 스타일 제거 */
+    padding: 0; /* 내부 여백 제거 */
+}
+ 
 .content_categorytop {
   display: flex; /* Flexbox 사용 */
   align-items: center; /* 수직 정렬 */
@@ -591,15 +600,113 @@
     flex-wrap: wrap;
     }
 
-.row--xs {
-  display: flex;
-  justify-content: center; /* 요소를 수평으로 중앙 정렬합니다 */
-  
-}
-.row--xs > * {
-  margin: auto; /* 가운데 정렬 */
+
+    .Page-body constrained{
+      color: #000;
+    -webkit-font-smoothing: antialiased;
+    font: 1rem/1.5 Roboto, Arial, sans-serif;
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: 90rem;
+    }
+
+.row gutterV-2{
+    color: #000;
+    -webkit-font-smoothing: antialiased;
+    font: 1rem/1.5 Roboto, Arial, sans-serif;
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    display: flex;
+    flex-wrap: wrap;
 }
 
+.main col{
+    color: #000;
+    -webkit-font-smoothing: antialiased;
+    font: 1rem/1.5 Roboto, Arial, sans-serif;
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    flex: 1 1 0%;
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+/* 가로로 나열되도록 설정 */
+.row-1cols--xs {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* 각 브랜드 그룹의 너비를 조정 */
+.Brands-group {
+      color: #000;
+    -webkit-font-smoothing: antialiased;
+    font: 1rem/1.5 Roboto, Arial, sans-serif;
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    position: relative;
+    margin-bottom: 1rem;
+    padding-left: 1rem;
+    flex: 0 0 20%;
+    max-width: 20%;
+}
+.Brands-group li{
+  list-style: none;
+  }
+.sr-only{
+      color: #000;
+    -webkit-font-smoothing: antialiased;
+    font: 1rem/1.5 Roboto, Arial, sans-serif;
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    position: absolute;
+    opacity: 0 !important;
+}
+/* 버튼 스타일링 */
+.Link {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  border: none; /* 테두리 없애기 */
+  cursor: pointer;
+}
+
+/* 버튼 호버 효과 */
+.Link:hover {
+  background-color: #e0e0e0;
+}
+
+.row row-1cols--xs row-5cols-lg gutter{
+    color: #000;
+    -webkit-font-smoothing: antialiased;
+    font: 1rem/1.5 Roboto, Arial, sans-serif;
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    margin-left: -1rem;
+    flex-flow: row wrap;
+    display: flex;
+    flex-wrap: wrap;
+}
 .Bands-item {
   list-style-type: none; /* li 태그의 점을 제거합니다 */
   margin: 0 10px; /* 각 항목 사이의 여백을 조정합니다 */
@@ -835,6 +942,31 @@
     text-align: right;
     width: 100%;
   }
+/* 스타일을 적용할 클래스들 */
+.row {
+    display: flex; /* 가로로 나열하기 위해 flex 사용 */
+    flex-wrap: wrap; /* 필요 시 여러 줄에 걸쳐 표시 */
+    margin-bottom: 20px; /* 각 행 간격 조정 */
+}
+
+.shoe {
+    flex: 1 0 20%; /* 각 항목이 균일하게 차지하도록 설정 */
+    margin-right: 20px; /* 각 항목 간격 조정 */
+    box-sizing: border-box; /* 내용이 요소의 너비와 높이에 포함되도록 설정 */
+}
+
+.shoe img {
+    width: 100%; /* 이미지 너비 100%로 설정 */
+    height: auto; /* 비율에 맞게 높이 조정 */
+}
+
+.shoe h3 {
+    margin-top: 10px; /* 제목 위 간격 조정 */
+}
+
+.shoe p {
+    margin-top: 5px; /* 가격과 설명 사이 간격 조정 */
+}
 
   .table_basic {
     border-collapse: collapse;

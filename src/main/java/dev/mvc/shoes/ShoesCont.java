@@ -516,6 +516,25 @@ public class ShoesCont {
     return "shoes/roper"; // /templates/shoes/read.html
   }
   
+  /**
+   * 브랜드 목록
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/brand")
+  public String brand(HttpSession session, Model model, 
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    
+    table_paging(model, word, now_page);
+
+    return "shoes//brand"; // /templates/shoes/read.html
+
+  }
+  
   
   @GetMapping(value = "/showlist")
   public String showlist(HttpSession session, Model model, 

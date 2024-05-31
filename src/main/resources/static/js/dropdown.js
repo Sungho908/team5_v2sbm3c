@@ -9,8 +9,6 @@ document.addEventListener("DOMContentLoaded", function() {
   var dropdownTrigger5 = document.getElementById("navbarDropdown5");
   var dropdownTrigger6 = document.getElementById("navbarDropdown6");
   var dropdownTrigger7 = document.getElementById("navbarDropdown7");
-  var dropdownTrigger8 = document.getElementById("navbarDropdown8");
-  var dropdownTrigger9 = document.getElementById("navbarDropdown9");
   var dropdownMenu1 = dropdownTrigger1.nextElementSibling;
   var dropdownMenu2 = dropdownTrigger2.nextElementSibling;
   var dropdownMenu3 = dropdownTrigger3.nextElementSibling;
@@ -18,8 +16,6 @@ document.addEventListener("DOMContentLoaded", function() {
   var dropdownMenu5 = dropdownTrigger5.nextElementSibling;
   var dropdownMenu6 = dropdownTrigger6.nextElementSibling;
   var dropdownMenu7 = dropdownTrigger7.nextElementSibling;
-  var dropdownMenu8 = dropdownTrigger8.nextElementSibling;
-  var dropdownMenu9 = dropdownTrigger9.nextElementSibling;
 
 
   //---------------------------------------------------------------------
@@ -135,38 +131,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
   dropdownMenu7.addEventListener("mouseleave", function() {
     dropdownMenu7.classList.remove("show");
-  });
-  //---------------------------------------------------------------------
-  dropdownTrigger8.addEventListener("mouseenter", function() {
-    dropdownMenu8.classList.add("show");
-  });
-
-  dropdownTrigger8.addEventListener("mouseleave", function() {
-    dropdownMenu8.classList.remove("show");
-  });
-
-  dropdownMenu8.addEventListener("mouseenter", function() {
-    dropdownMenu8.classList.add("show");
-  });
-
-  dropdownMenu8.addEventListener("mouseleave", function() {
-    dropdownMenu8.classList.remove("show");
-  });
-  //---------------------------------------------------------------------
-  dropdownTrigger9.addEventListener("mouseenter", function() {
-    dropdownMenu9.classList.add("show");
-  });
-
-  dropdownTrigger9.addEventListener("mouseleave", function() {
-    dropdownMenu9.classList.remove("show");
-  });
-
-  dropdownMenu9.addEventListener("mouseenter", function() {
-    dropdownMenu9.classList.add("show");
-  });
-
-  dropdownMenu9.addEventListener("mouseleave", function() {
-    dropdownMenu9.classList.remove("show");
   });
   //---------------------------------------------------------------------
 

@@ -10,43 +10,43 @@
     샌들/슬리퍼> 슬리퍼
   </div>
 
-  <div>
-    <div class="content_body">
+    <div class="content_body" th:each="shoe : ${shoes}">
+      <input type="hidden" name="shoesno" th:value="${shoesVO.shoesno}">
       <div class="shoes">
-        <img src="/images/" alt="">
-        <p>설명</p>
-        <p>크록스</p>
-        <p>가격</p>
+        <img src="/images/vans.jpg" alt="">
+        <p th:text="${shoe.contents}"></p>
+        <p th:text="${shoe.title}"></p>
+        <p th:text="'가격: ' + ${shoe.price}"></p>
       </div>
       <div class="shoes">
-        <img src="/images/" alt="">
-        <p>설명</p>
-        <p>크록스</p>
-        <p>가격</p>
+        <img src="/images/vans.jpg" alt="">
+        <p th:text="${shoe.contents}"></p>
+        <p th:text="${shoe.title}"></p>
+        <p th:text="'가격: ' + ${shoe.price}"></p>
       </div>
       <div class="shoes">
-        <img src="/images/" alt="">
-        <p>설명</p>
-        <p>크록스</p>
-        <p>가격</p>
+        <img src="/images/vans.jpg" alt="">
+        <p th:text="${shoe.contents}"></p>
+        <p th:text="${shoe.title}"></p>
+        <p th:text="'가격: ' + ${shoe.price}"></p>
       </div>
       <div class="shoes">
-        <img src="/images/" alt="">
-        <p>설명</p>
-        <p>크록스</p>
-        <p>가격</p>
+        <img src="/images/vans.jpg" alt="">
+        <p th:text="${shoe.contents}"></p>
+        <p th:text="${shoe.title}"></p>
+        <p th:text="'가격: ' + ${shoe.price}"></p>
       </div>
       <div class="shoes">
-        <img src="/images/" alt="">
-        <p>설명</p>
-        <p>크록스</p>
-        <p>가격</p>
+        <img src="/images/vans.jpg" alt="">
+        <p th:text="${shoe.contents}"></p>
+        <p th:text="${shoe.title}"></p>
+        <p th:text="'가격: ' + ${shoe.price}"></p>
       </div>
       <div class="shoes">
-        <img src="/images/" alt="">
-        <p>설명</p>
-        <p>크록스</p>
-        <p>가격</p>
+        <img src="/images/vans.jpg" alt="">
+        <p th:text="${shoe.contents}"></p>
+        <p th:text="${shoe.title}"></p>
+        <p th:text="'가격: ' + ${shoe.price}"></p>
       </div>
     </div>
 
