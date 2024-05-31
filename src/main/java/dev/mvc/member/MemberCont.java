@@ -32,9 +32,10 @@ public class MemberCont {
   @Autowired
   private PasswordEncoder pe;
 
-  @GetMapping("create")
-  public String signUp(MemberVO memberVO) {
-    return "member/create";
+  
+  @GetMapping("checkpw")
+  public String checkpw() {
+    return "member/checkpw";
   }
   
   @PostMapping("checkpw")
@@ -86,7 +87,7 @@ public class MemberCont {
           Alert message = new Alert("업로드가 불가능한 파일입니다. 이미지 파일을 등록해주세요.", "signup", RequestMethod.GET, null);
           return DefaultCont.showMessageAndRedirect(message, model);
       } else if (!file.isEmpty() && Tool.isImage(file)) {
-          filename = Tool.saveFileSpring(mf, upDir);
+          filename = Tool.saveFileSpring(mf);
           memberVO.setThumb(filename); // 새로운 파일이 저장된 경우에만 thumb 값을 설정
       }
 

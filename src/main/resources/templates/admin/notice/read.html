@@ -45,7 +45,7 @@
         <div>
           <!-- 다운로드 기능 미구현 -->
           첨부 파일: <a
-            th:href='@{|/download?dir=/notice/storage&filename=${noticememberfileVO.src}&downname=${noticememberfileVO.name}|}'
+            th:href='@{|/download?dir=/file/storage/&filename=${noticememberfileVO.src}&downname=${noticememberfileVO.name}|}'
             th:text='|${noticememberfileVO.name}|'></a> <span th:text="|(${noticememberfileVO.sizes} kb)|"></span>
         </div>
       </li>
