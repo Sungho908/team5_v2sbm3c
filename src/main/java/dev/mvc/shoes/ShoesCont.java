@@ -515,7 +515,7 @@ public class ShoesCont {
 
     return "shoes/roper"; // /templates/shoes/read.html
   }
-  
+
   /**
    * 브랜드 목록
    * @param session
@@ -531,10 +531,101 @@ public class ShoesCont {
     
     table_paging(model, word, now_page);
 
-    return "shoes//brand"; // /templates/shoes/read.html
+    return "shoes/brand"; // /templates/shoes/read.html
 
   }
   
+  
+  /**
+   * 나이키 목록
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/nike")
+  public String nike(HttpSession session, Model model, 
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    
+    table_paging(model, word, now_page);
+
+    return "shoes/nike"; // /templates/shoes/read.html
+
+  }
+  /**
+   * 뉴발란스 목록
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/nb")
+  public String nb(HttpSession session, Model model, 
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    
+    table_paging(model, word, now_page);
+
+    return "shoes/nb"; // /templates/shoes/read.html
+
+  }
+  /**
+   * 아디다스 목록
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/adidas")
+  public String adidas(HttpSession session, Model model, 
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    
+    table_paging(model, word, now_page);
+
+    return "shoes/adidas"; // /templates/shoes/read.html
+
+  }
+  /**
+   * 크록스 목록
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/crocs")
+  public String crocs(HttpSession session, Model model, 
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    
+    table_paging(model, word, now_page);
+
+    return "shoes/crocs"; // /templates/shoes/read.html
+
+  }
+  /**
+   * 컨버스 목록
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/converse")
+  public String converse(HttpSession session, Model model, 
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    
+    table_paging(model, word, now_page);
+
+    return "shoes/converse"; // /templates/shoes/read.html
+
+  }
   
   @GetMapping(value = "/showlist")
   public String showlist(HttpSession session, Model model, 
