@@ -1,50 +1,19 @@
 <!DOCTYPE html>
 
-<html layout:decorate="~{layout}"> <!-- layout.html 상속-->
+<html layout:decorate="~{layout}">
+<!-- layout.html 상속-->
 <div layout:fragment="content">
-  <div class="title_line">카테고리</div>
-  
-  <table class="table table-hover">
-    <colgroup>
-      <col style='width: 10%;'/>
-      <col style='width: 20%;'/>
-      <col style='width: 20%;'/>
-      <col style='width: 10%;'/>    
-      <col style='width: 20%;'/>
-      <col style='width: 20%;'/>
-    </colgroup>
-    <thead>
-      <tr>
-        <th class="th_bs">순서</th>
-        <th class="th_bs">중분류</th>
-        <th class="th_bs">소분류</th>
-        <th class="th_bs">자료수</th>
-        <th class="th_bs">등록일</th>
-        <th class="th_bs">기타</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr th:each="shoesVO:${list}">
-        <td class="td_bs" th:text="${shoesVO.shoesno}"></td>
-        <td class="td_bs"><a th:href="@{|./read/${shoesVO.shoesno}|}" style="display: block;" th:text="${shoesVO.name}"></a></td>
-        <td class="td_bs"><a th:href="@{|./read/${shoesVO.shoesno}|}" style="display: block;" th:text="${shoesVO.namesub}"></a></td>
-        <td class="td_bs" th:text="${shoesVO.cnt}"></td>
-        <td class="td_bs" th:text="${shoesVO.rdate.substring(0, 10)}"></td>
-        <td class="td_bs">
-          <img src="/shoes/images/show.png" class="icon"> <!-- /static/shoes/images/show.png -->
-          <img src="/shoes/images/decrease.png" class="icon">
-          <img src="/shoes/images/increase.png" class="icon">
-          <a th:href="@{|/shoes/update/${shoesVO.shoesno}|}"><img src="/shoes/images/update.png" class="icon"></a>
-          <a th:href="@{|/shoes/delete/${shoesVO.shoesno}|}"><img src="/shoes/images/delete.png" class="icon"></a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="title_line">
+    <
+    </div>
+  <aside class="aside_right">
+    <a href="/shoes/create">신발 등록</a>
+    <span class="menu_devide">│</span>
+    <a href="javascript: location.reload();">새로 고침</a>
+  </aside>
+
+  <div th:replace="~{shoes/list_search_component::list_search_fragment}"></div>
+  <div th:replace="~{shoes/list_all_component::list_all_fragment}"></div>
 </div>
+
 </html>
-
-
-
-
-
-

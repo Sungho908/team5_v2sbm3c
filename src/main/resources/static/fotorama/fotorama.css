@@ -19,6 +19,27 @@
   bottom: 0
 }
 
+.fotorama {
+  /* 가운데 정렬을 위해 좌우 여백을 자동으로 설정합니다 */
+  width:600px;
+  height:600px;
+  margin: 0px auto; 
+  margin: 0 auto;
+  text-align: center;
+  /* 최대 너비를 설정하여 너무 커지지 않도록 제한합니다 */
+  overflow: hidden;
+}
+
+.fotorama > div {
+  width: calc(33.33% - 10px); /* 이미지 컨테이너의 너비를 세 개로 나누고 간격을 고려 */
+  margin-bottom: 20px; /* 이미지 아래에 간격 추가 */
+}
+
+.fotorama img {
+  width: 100%; /* 이미지를 컨테이너에 꽉 차도록 설정 */
+  display: block; /* 인라인 요소가 블록 요소처럼 동작하도록 함 */
+}
+
 .fotorama--fullscreen,
 .fotorama__img {
   max-width: 99999px !important;
@@ -215,16 +236,7 @@
   margin: 0 auto;
   /* 가운데 정렬을 위해 좌우 여백을 자동으로 설정합니다. */
 }
-.fotorama {
-  /* 가운데 정렬을 위해 좌우 여백을 자동으로 설정합니다 */
-  width:600px;
-  height:600px;
-  margin: 0px auto; 
-  margin: 0 auto;
-  text-align: center;
-  /* 최대 너비를 설정하여 너무 커지지 않도록 제한합니다 */
-  overflow: hidden;
-}
+
 
 .fotorama:not(.fotorama--unobtrusive)>*:not(:first-child) {
   display: none

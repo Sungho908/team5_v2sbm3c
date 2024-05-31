@@ -17,8 +17,8 @@ public class DefaultCont {
   }
   
   
-  @GetMapping({"","/"}) // http://localhost:9091/
-  public String index(HttpSession session) {
+  @GetMapping({"/"}) // http://localhost:9091/
+  public String index(HttpSession session, Model model) {
     return "index"; // /templates/index.html
   }
   

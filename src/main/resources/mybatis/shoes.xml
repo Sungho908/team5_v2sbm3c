@@ -2,44 +2,115 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.mvc.shoes.ShoesDAOInter">
   <insert id="create" parameterType="dev.mvc.shoes.ShoesVO">
-    INSERT INTO SHOES (SHOESNO, CATENO, MEMBERNO, TITLE, BRAND, RATING, PRICE,
-    DISCOUNT, CONTENTS, VISIBLE)
-    VALUES (#{shoesno}, #{categoryno}, #{memberno}, #{title}, #{brand}, #{rating},
-    #{price}, #{discount}, #{contents}, #{visible})
+    INSERT INTO SHOES (SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, PRICE, DISCOUNT, CONTENTS)
+    VALUES (SHOES_SEQ.nextval, #{categoryno}, #{memberno}, #{title}, #{brand}, #{price}, #{discount}, #{contents})
   </insert>
 
-  <select id="select_shoes" parameterType="int" resultType="dev.mvc.shoes.ShoesVO">
+  <insert id="option_create" parameterType="dev.mvc.shoes.ShoesOptionVO">
+    INSERT INTO OPTIONS (OPTIONNO, SIZES, COLOR, SHOESNO)
+    VALUES (OPTION_SEQ.nextval, #{sizes}, #{color}, #{shoesno})
+  </insert>
+
+  <select id="list_all" resultType="dev.mvc.shoes.ShoesVO">
+    SELECT SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE
+    FROM shoes
+    ORDER BY rating ASC
+  </select>
+
+  <select id="select_shoes" resultType="dev.mvc.shoes.ShoesVO">
     SELECT * FROM SHOES WHERE SHOESNO = #{shoesno}
   </select>
 
-  <select id="select_cate" parameterType="int" resultType="dev.mvc.shoes.ShoesVO">
-    SELECT * FROM SHOES WHERE CATENO = #{categoryno}
+  <select id="read" resultType="dev.mvc.shoes.ShoesVO">
+    SELECT SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE
+    FROM SHOES
+    WHERE shoesno=#{shoesno}
   </select>
 
-  <select id="selectwith" parameterType="int" resultType="dev.mvc.shoes.ShoesVO">
+  <select id="read_option" resultType="dev.mvc.shoes.ShoesOptionVO" parameterType="Map">
+    SELECT OPTIONNO, SIZES, AMOUNT, COLOR, SHOESNO
+    FROM options 
+    WHERE shoesno =#{shoesno} AND optionno = #{optionno}
+  </select>
+
+  <select id="option_paging" resultType="dev.mvc.shoes.ShoesOptionVO" parameterType="Map">
+    SELECT o.optionno, o.shoesno, o.sizes, o.amount, o.color, r
+    FROM (
+      SELECT optionno, shoesno, sizes, amount, color, rownum as r
+      FROM options
+      WHERE shoesno = #{shoesno}
+    ) o  
+  JOIN shoes s ON o.shoesno = s.shoesno
+  WHERE r &gt; = #{start_num} AND r &lt; = #{end_num}
+  </select>
+
+
+  <select id="selectwith" resultType="dev.mvc.shoes.ShoesVO">
     SELECT s.*, o.OPTIONNO, o.SIZE, o.AMOUNT, o.COLOR
     FROM SHOES s
     INNER JOIN OPTION o ON s.SHOESNO = o.SHOESNO
     WHERE s.SHOESNO = #{shoesno}
   </select>
-  
+
   <update id="update" parameterType="dev.mvc.shoes.ShoesVO">
     UPDATE SHOES
     SET TITLE = #{title}, BRAND = #{brand}, RATING = #{rating}, PRICE =#{price}, DISCOUNT = #{discount}, CONTENTS = #{contents}, VISIBLE = #{visible}
     WHERE SHOESNO = #{shoesno}
   </update>
 
-  <delete id="delete" parameterType="int">
+  <update id="option_update" parameterType="dev.mvc.shoes.ShoesOptionVO">
+    UPDATE OPTIONS
+    SET SIZES = #{sizes}, AMOUNT = #{amount}, COLOR = #{color}
+    WHERE OPTIONNO = #{optionno}
+  </update>
+
+
+  <delete id="delete" parameterType="Integer">
     DELETE FROM SHOES WHERE SHOESNO = #{shoesno}
   </delete>
+
+  <delete id="option_delete" parameterType="Integer">
+    DELETE FROM OPTIONS WHERE OPTIONNO = #{optionno}
+  </delete>
+
+  
+
+  <select id="parent_count" parameterType="Integer">
+    SELECT count(*) as cnt FROM SHOES  WHERE SHOESNO = #{shoesno}
+  </select>
+
+
+  <!-- 검색된 레코드 수 -->
+  <select id="list_search_count" resultType="int" parameterType="String">
+    SELECT COUNT(*) as cnt
+    FROM shoes
+    <if test="word != null and word != ''">
+      WHERE UPPER(TITLE) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(BRAND) LIKE '%' || UPPER(#{word}) || '%'
+    </if>
+    ORDER BY shoesno ASC
+  </select>
+
+  <select id="option_search_count" resultType="int">
+    SELECT COUNT(*) as cnt
+    FROM options
+    WHERE shoesno = #{shoesno}
+    ORDER BY optionno ASC
+  </select>
+  
+  <select id="list_search_paging" resultType="dev.mvc.shoes.ShoesVO" parameterType="Map">
+    SELECT SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE, r
+    FROM (
+        SELECT SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE, rownum as r
+        FROM (
+            SELECT SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE
+            FROM SHOES
+    <if test="word != null and word != ''">
+              WHERE UPPER(TITLE) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(BRAND) LIKE '%' || UPPER(#{word}) || '%'  
+            </if>
+    ORDER BY shoesno ASC
+        )
+    )
+    WHERE r &gt; = #{start_num} AND r &lt; = #{end_num}
+    <!-- WHERE r >= 1 AND r <= 3 -->
+  </select>
 </mapper>
-
-
-
-
-
-
-
-
-
-

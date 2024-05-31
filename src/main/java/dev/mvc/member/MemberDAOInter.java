@@ -6,6 +6,13 @@ import java.util.Map;
 
 public interface MemberDAOInter {
   /**
+   * 중복 아이디 검사
+   * @param id
+   * @return 중복 아이디 갯수
+   */
+  public int checkID(String id);
+  
+  /**
    * 멤버 생성 <br>
    * id="create" parameterType="dev.mvc.member.MemberVO" <br>
    * 
@@ -15,22 +22,53 @@ public interface MemberDAOInter {
   public int create(MemberVO memberVO);
 
   /**
-   * 중복 아이디 검사<br>
+   * 회원 전체 목록
+   * @return
+   */
+  public ArrayList<MemberVO> list();
+
+  /**
+   * memberno로 회원 정보 조회
+   * @param memberno
+   * @return
+   */
+  public MemberVO read(int memberno);
+  
+  /**
+   * id로 회원 정보 조회
+   * @param id
+   * @return
+   */
+  public MemberVO readById(String id);
+
+  /**
+   * 현재 패스워드 검사
+   * @param map
+   * @return 0: 일치하지 않음, 1: 일치함
+   */
+  public int passwd_check(HashMap<String, Object> map);
+  
+  /**
+   * 패스워드 변경
+   * @param map
+   * @return 변경된 패스워드 갯수
+   */
+  public int passwd_update(HashMap<String, Object> map);
+  
+  /**
+   * 로그인 처리
+   */
+  public int login(HashMap<String, Object> map);
+  
+ 
+
+   /* 중복 아이디 검사<br>
    * id="checkId" parameterType="String" resultType="int"<br>
    * 
    * @param 검색할 Id
    * @return 검색된 쿼리 갯수
    */
   public int checkId(String id);
-
-  /**
-   * 아이디로 회원 찾기<br>
-   * id="readById" parameterType="String" resultType="dev.mvc.member.MemberVO"<br>
-   * 
-   * @param 검색할 id명
-   * @return MemberVO 객체
-   */
-  public MemberVO readById(String id);
 
   /**
    * Memberno로 회원 찾기<br>

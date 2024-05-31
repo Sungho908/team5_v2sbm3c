@@ -31,7 +31,6 @@ public class OptionVO {
   /** 신발 색상 */
   private String color;
   
-  
   /** 신발 번호 */
   private Integer shoesno;
 }

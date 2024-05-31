@@ -24,37 +24,28 @@ public class ShoesVO {
   /** 신발 번호 */
   private Integer shoesno;
   
-  
   /** 신발명 */
   private String title;
-  
   
   /** 신발 브랜드명 */
   private String brand;
   
-  
   /** 신발 평점*/
   private Double rating;
-  
   
   /** 신발 가격*/
   private Double price;
   
-  
   /** 신발 할인율 */
   private Double discount;
-  
   
   /** 신발 설명 */
   private String contents;
   
   /** 신발 판매 여부 */
-  private char visible;
-  
+  private char visible = 'Y';
   
   /** 유저 번호 */
-  private Integer memberno;
-  
   
   /** 카테고리 번호 */
   private Integer categoryno;

@@ -75,7 +75,7 @@ public class AdminMemberCont {
   @ResponseBody
   @GetMapping("checkId")
   public int checkId(@RequestParam("id") String id) {
-    return this.memberProc.checkId(id);
+    return this.memberProc.checkID(id);
   }
 
   @PostMapping("signup")
