@@ -17,17 +17,17 @@ import lombok.ToString;
 //);
 public class BasketVO {
   /** 장바구니 번호 */
-  private Integer bNo;
+  private Integer basketno;
   
   
   /** 신발 수량 */
-  private Integer bAmount;
+  private Integer amount;
   
   
   /** 멤버 번호 */
-  private Integer mNo;
+  private Integer memberno;
   
   
   /** 옵션 번호 */
-  private Integer oNo;
+  private Integer optionno;
 }

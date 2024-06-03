@@ -23,7 +23,12 @@ public interface ShoesDAOInter {
    * @return 레코드 목록
    */
   public ArrayList<ShoesVO> list_all();
+  
+  // 스니커즈 목록 리스트
+  public ArrayList<ShoesVO> sneakers_list(String word);
 
+  // 슬립온 목록 리스트
+  public ArrayList<ShoesVO> slipon_list(String word);
   /**
    * 조회 select id="read" resultType="dev.mvc.cate.CateVO" parameterType="int"
    * 

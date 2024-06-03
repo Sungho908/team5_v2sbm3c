@@ -10,17 +10,11 @@
     <a href="javascript: location.reload();">새로 고침</a>
   </aside>
   <div class="top_menu_line"></div>
+    <form th:object="${shoesVO}" method="post" action="/shoes/create" style="text-align: center;">
   <div>
-    <form th:object="${shoesVO}" method="post" action="/shoes/create">
       <label>신발 번호</label>
       <input type="text" name="shoesno" value="1" autofocus="autofocus" class="form-control fom-control-sm"
         style="width: 20%; margin: 0 auto; text-align: center;">
-  </div>
-
-  <div>
-    <label>카테고리 번호</label>
-    <input type="text" name="categoryno" value="1" autofocus="autofocus" class="form-control fom-control-sm"
-      style="width: 20%; margin: 0 auto; text-align: center;">
   </div>
 
   <div>
@@ -71,7 +65,7 @@
       style="width: 20%; margin: 0 auto; text-align: center;">
   </div>
 
-  <button type="submit" class="btn btn-secondary btn-sm">등록</button>
+  <button type="submit" class="search_btn">등록</button>
   <button type="button" onclick="location.href='./list_all'" class="btn btn-secondary btn-sm">목록</button>
   </form>
 

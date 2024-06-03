@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout}">
+<html xmlns:th="http://www.thymeleaf.org">
 <!-- layout.html 상속 -->
 <div layout:fragment="content" style="width: 100%; margin:40px auto; text-align: center;">
 
@@ -10,210 +11,58 @@
   <div class="title_line">
     스니커즈/슬립온 > 스니커즈
   </div>
+  
   <div class="content_main">
-    <div class="content_body">
-      <div class="shoes">
-        <img src="/images/" alt="스니커즈1">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/" alt="스니커즈2">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/" alt="스니커즈3">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/" alt="스니커즈4">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/" alt="스니커즈5">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/" alt="스니커즈6">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
-      </div>
-    </div>
-
-    <div class="content_body">
-      <div class="shoes">
-        <img src="/images/" alt="스니커즈7">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/" alt="스니커즈8">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/" alt="스니커즈9">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/" alt="스니커즈10">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/" alt="스니커즈11">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/" alt="스니커즈12">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
-      </div>
-    </div>
-
-
-    <div class="content_body">
+    <div class="content_body" th:each="shoesVO, status:${list}">
       <div class="shoes">
         <img src="/images/" alt="스니커즈13">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
+        <p th:text="${shoesVO.contents}"></p>
+        <p th:text="${shoesVO.title}"></p>
+        <p th:text="${shoesVO.price}"></p>
+        
       </div>
-      <div class="shoes">
-        <img src="/images/" alt="스니커즈14">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/" alt="스니커즈15">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/" alt="스니커즈16">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/" alt="스니커즈17">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/" alt="스니커즈18">
-        <p>설명</p>
-        <p>스니커즈</p>
-        <p>가격</p>
-      </div>
-    </div>
-
-    <!-- 더보기메뉴 -->
-    <div class="moreMenuContainer">
-      <a id="moreButton" style="font-size: 20px;">더보기+</a>
-      <div class="moreMenu" style="display: none;">
-        <div class="content_body">
-          <div class="shoes">
-            <img src="/images/" alt="">
-            <p>설명</p>
-            <p>스니커즈</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/" alt="스니커즈1">
-            <p>설명</p>
-            <p>스니커즈</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/" alt="스니커즈1">
-            <p>설명</p>
-            <p>스니커즈</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/" alt="스니커즈1">
-            <p>설명</p>
-            <p>스니커즈</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/" alt="스니커즈1">
-            <p>설명</p>
-            <p>스니커즈</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/" alt="스니커즈1">
-            <p>설명</p>
-            <p>스니커즈</p>
-            <p>가격</p>
-          </div>
-        </div>
-
-        <div class="content_body">
-          <div class="shoes">
-            <img src="/images/" alt="스니커즈1">
+            <div class="shoes" >
+            <img src="/images/nike.jpg" alt="스니커즈1">
             <p>설명</p>
             <p>사용자 이름1</p>
             <p>가격</p>
           </div>
-          <div class="shoes">
-            <img src="/images/" alt="스니커즈1">
-            <p>설명</p>
-            <p>사용자 이름2</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/" alt="스니커즈1">
-            <p>설명</p>
-            <p>사용자 이름3</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/" alt="스니커즈1">
-            <p>설명</p>
-            <p>사용자 이름4</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/" alt="스니커즈1">
-            <p>설명</p>
-            <p>사용자 이름4</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/" alt="스니커즈1">
-            <p>설명</p>
-            <p>사용자 이름4</p>
-            <p>가격</p>
-          </div>
-        </div>
-      </div>
-
-
+      <!-- 한 줄에 6개가 안 되는 경우 빈 칸으로 채워줍니다 -->
     </div>
+    
+    
+    
+    
+    
+    
+    <!-- 더보기메뉴 -->
+    <div class="moreMenuContainer">
+      <a id="moreButton" style="font-size: 20px;">더보기+</a>
+      <div class="moreMenu" style="display: none;">
+        <div class="content_body"th:each="shoesVO, status:${list}">
+          <div class="shoes">
+            <img src="/images/nike.jpg" alt="">
+            <p>설명</p>
+            <p>스니커즈</p>
+            <p>가격</p>
+          </div>
+
+        </div>
+
+        <div class="content_body">
+          <div class="shoes" >
+            <img src="/images/nike.jpg" alt="스니커즈1">
+            <p>설명</p>
+            <p>사용자 이름1</p>
+            <p>가격</p>
+          </div>
+
+        </div>
+
+      </div><!-- content_main-->
+    </div>
+  </div>
+</div>
 
 
 </html>

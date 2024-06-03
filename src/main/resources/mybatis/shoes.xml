@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.mvc.shoes.ShoesDAOInter">
   <insert id="create" parameterType="dev.mvc.shoes.ShoesVO">
-    INSERT INTO SHOES (SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, PRICE, DISCOUNT, CONTENTS)
-    VALUES (SHOES_SEQ.nextval, #{categoryno}, #{memberno}, #{title}, #{brand}, #{price}, #{discount}, #{contents})
+    INSERT INTO SHOES (SHOESNO, MEMBERNO, TITLE, BRAND, PRICE, DISCOUNT, CONTENTS)
+    VALUES (SHOES_SEQ.nextval, #{memberno}, #{title}, #{brand}, #{price}, #{discount}, #{contents})
   </insert>
 
   <insert id="option_create" parameterType="dev.mvc.shoes.ShoesOptionVO">
@@ -12,9 +12,25 @@
   </insert>
 
   <select id="list_all" resultType="dev.mvc.shoes.ShoesVO">
-    SELECT SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE
+    SELECT SHOESNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE
     FROM shoes
     ORDER BY rating ASC
+  </select>
+
+  <select id="sneakers_list" resultType="dev.mvc.shoes.ShoesVO">
+  SELECT s.title, s.brand, s.contents
+  FROM shoes s
+  JOIN category_list cl ON s.shoesno = cl.shoesno
+  JOIN category c ON cl.categoryno = c.categoryno
+ WHERE UPPER(TITLE) LIKE '%' || ('스니커즈') || '%' OR (BRAND) LIKE '%' || ('스니커즈') || '%'
+  </select>
+  
+    <select id="slipon_list" resultType="dev.mvc.shoes.ShoesVO">
+  SELECT s.title, s.brand, s.contents
+  FROM shoes s
+  JOIN category_list cl ON s.shoesno = cl.shoesno
+  JOIN category c ON cl.categoryno = c.categoryno
+ WHERE UPPER(TITLE) LIKE '%' || ('슬립온') || '%' OR (BRAND) LIKE '%' || ('슬립온') || '%'
   </select>
 
   <select id="select_shoes" resultType="dev.mvc.shoes.ShoesVO">
@@ -22,7 +38,7 @@
   </select>
 
   <select id="read" resultType="dev.mvc.shoes.ShoesVO">
-    SELECT SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE
+    SELECT SHOESNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE
     FROM SHOES
     WHERE shoesno=#{shoesno}
   </select>
@@ -73,7 +89,6 @@
     DELETE FROM OPTIONS WHERE OPTIONNO = #{optionno}
   </delete>
 
-  
 
   <select id="parent_count" parameterType="Integer">
     SELECT count(*) as cnt FROM SHOES  WHERE SHOESNO = #{shoesno}
@@ -96,13 +111,13 @@
     WHERE shoesno = #{shoesno}
     ORDER BY optionno ASC
   </select>
-  
+
   <select id="list_search_paging" resultType="dev.mvc.shoes.ShoesVO" parameterType="Map">
-    SELECT SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE, r
+    SELECT SHOESNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE, r
     FROM (
-        SELECT SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE, rownum as r
+        SELECT SHOESNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE, rownum as r
         FROM (
-            SELECT SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE
+            SELECT SHOESNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE
             FROM SHOES
     <if test="word != null and word != ''">
               WHERE UPPER(TITLE) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(BRAND) LIKE '%' || UPPER(#{word}) || '%'  
