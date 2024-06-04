@@ -1674,6 +1674,46 @@
     font-size: 1.5em;
   }
 
+/*고객센터 */
+
+    .xans-element- xans-board xans-board-list-4 xans-board-list xans-board-4 center{
+      font: 0.75em 'Lato',sans-serif,Dotum,AppleGothic,sans-serif;
+      border-spacing: 0;
+      border-collapse: collapse;
+      color: #fff;
+      line-height: 1.5;
+      text-align: center;
+      font-size: 11px;
+    }
+    .gRight{
+      font: 0.75em 'Lato',sans-serif,Dotum,AppleGothic,sans-serif;
+      color: #353535;
+      float: right;
+      text-align: right;
+      min-width: 80px;
+      font-size: 11px;
+    }
+    .displaynone{
+    font: 0.75em 'Lato',sans-serif,Dotum,AppleGothic,sans-serif;
+    border-spacing: 0;
+    border-collapse: collapse;
+    line-height: 1.5;
+    text-align: center;
+    font-size: 11px;
+    margin: 0;
+    border: 0;
+    display: none !important;
+    border-top: 1px solid #f1f1f1;
+    color: #353535;
+    vertical-align: middle;
+    padding: 8px 10px 7px;
+    border-left: 0px solid #dfdfdf;
+    padding-left: 0;
+    padding-right: 0;
+    }
+
+/*고객센터 끝 */
+
   .cart_price {
     width: 50%;
     text-align: right;
