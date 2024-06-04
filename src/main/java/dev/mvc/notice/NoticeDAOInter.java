@@ -36,4 +36,7 @@ public interface NoticeDAOInter {
   
   /** 공지사항-파일 삭제 */
   public int delete_file(int noticeno);
+  
+  /** 공지사항 조회수 증가 */
+  public int increased_views(int noticeno);
 }

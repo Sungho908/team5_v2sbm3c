@@ -158,5 +158,11 @@ public class NoticeProc implements NoticeProcInter{
     return str.toString();
   }
 
+  @Override
+  public int increased_views(int noticeno) {
+    int cnt = this.noticeDAO.increased_views(noticeno);
+    return cnt;
+  }
+
 
 }

@@ -1,0 +1,86 @@
+<div th:fragment="list_all_fragment">
+  <style>
+    table.table tr td {
+      border-color: #e9e9e9;
+    }
+
+    .zoom {
+      cursor: pointer;
+    }
+
+    .contents {
+      display: none;
+    }
+
+    .contents td {
+      text-align: center;
+    }
+  </style>
+
+  <div class="search-box">
+    <div class="input-group">
+
+    </div>
+  </div>
+  <div class="container">
+
+    <div class="table-wrapper">
+      <div class="table-title">
+      </div>
+      <table class="table table-bordered">
+        <colgroup>
+          <col style='width: 15%;' />
+          <col style='width: 45%;' />
+          <col style='width: 20%;' />
+          <col style='width: 10%;' />
+          <col style='width: 10%;' />
+        </colgroup>
+        <tbody th:each="noticememberVO, status:${list}">
+          <input type="hidden" id="noticeno" name="noticeno" th:value="${noticememberVO.noticeno}">
+          <tr>
+            <td class="td_bs" th:text="|${(now_page-1) * 5 + status.index + 1}|"></td>
+            <td class="td_bs" th:text="${noticememberVO.title}"></td>
+            <td class="td_bs" th:text="${#dates.format(noticememberVO.rdate, 'yy/MM/dd')}"></td>
+            <td class="td_bs" th:text="${noticememberVO.views}">+</td>
+            <td class="td_bs zoom">+</td>
+          </tr>
+          <tr class="contents">
+            <td colspan="5" style="padding:10px 20% 10px 20%;">
+              <span th:text="${noticememberVO.contents}"></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var zoom = document.querySelectorAll('.zoom');
+      zoom.forEach(function (button) {
+        button.addEventListener('click', function () {
+          var noticeno = this.parentElement.querySelector('.noticeno').value;
+          alert(noticeno);
+          if (this.innerText === "+") {
+            $.ajax({
+              type: 'POST',
+              url: '/notice/increased_views',
+              contentType: 'application/json',
+              data: JSON.stringify({noticeno: noticeno}),
+              success: function (response) {
+                this.innerText = "-";
+              }
+            });
+
+          } else {
+            this.innerText = "+";
+          }
+
+          var content = this.parentElement.nextElementSibling;
+          content.classList.toggle('contents');
+
+        });
+      });
+    });
+  </script>
+</div>
