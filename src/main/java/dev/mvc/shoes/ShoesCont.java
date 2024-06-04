@@ -658,5 +658,59 @@ public class ShoesCont {
     return "shoes/showlist"; // /templates/shoes/read.html
 
   }
+  /**
+   * 장바구니 목록
+   * 
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/basket")
+  public String basket(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
+    table_paging(model, word, now_page);
+
+    return "shoes/basket"; // /templates/shoes/read.html
+
+  }
+  
+  /**
+   * 제품 상세
+   * 
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/product_details")
+  public String product_details(HttpSession session, Model model,
+      @RequestParam(name = "word", defaultValue = "") String word) {
+
+
+    return "shoes/product_details"; // /templates/shoes/read.html
+
+  }
+  
+  
+  /**
+   * 고객센터 상세
+   * 
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/servicecenter")
+  public String servicecenter(HttpSession session, Model model,
+      @RequestParam(name = "word", defaultValue = "") String word) {
+
+
+    return "shoes/servicecenter"; // /templates/shoes/read.html
+
+  }
 }
