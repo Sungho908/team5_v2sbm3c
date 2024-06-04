@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import dev.mvc.otherInquiry.OtherInquiryInfoVO;
 import dev.mvc.otherInquiry.OtherInquiryProcInter;
 import dev.mvc.otherInquiry.OtherInquiryVO;
+import dev.mvc.paymentInquiry.PaymentInquiryInfoVO;
 import dev.mvc.paymentInquiry.PaymentInquiryProcInter;
+import dev.mvc.paymentInquiry.PaymentInquiryVO;
 import dev.mvc.shoesInquiry.ShoesInquiryInfoVO;
 import dev.mvc.shoesInquiry.ShoesInquiryProcInter;
 import dev.mvc.shoesInquiry.ShoesInquiryVO;
@@ -33,12 +35,14 @@ public class AdminInquiryCont {
   private ShoesInquiryProcInter shoesinquiryProc;
 
   @Autowired
+  @Qualifier("dev.mvc.paymentInquiry.PaymentInquiryProc")
+  private PaymentInquiryProcInter paymentinquiryProc;
+  
+  @Autowired
   @Qualifier("dev.mvc.otherInquiry.OtherInquiryProc")
   private OtherInquiryProcInter otherinquiryProc;
 
-  @Autowired
-  @Qualifier("dev.mvc.paymentInquiry.PaymentInquiryProc")
-  private PaymentInquiryProcInter paymentinquiryProc;
+
   
   /** 페이지당 출력할 레코드 갯수, nowPage는 1부터 시작 */
   public int record_per_page = 5;
@@ -59,7 +63,28 @@ public class AdminInquiryCont {
       model.addAttribute("list", list);
 
       int search_count = this.shoesinquiryProc.list_search_count(word);
-      String paging = this.shoesinquiryProc.pagingBox(now_page, word, "/admin/category/list", search_count,
+      String paging = this.shoesinquiryProc.pagingBox(now_page, word, "/admin/inquiry/shoes/list", search_count,
+          this.record_per_page, this.page_per_block);
+
+      int no = search_count - ((now_page - 1) * this.record_per_page);
+
+      model.addAttribute("paging", paging);
+      model.addAttribute("now_page", now_page);
+      model.addAttribute("word", word);
+      model.addAttribute("no", no);
+    }
+  }
+  
+  /** 구매 문의 페이징 */
+  private void payment_table_paging(Model model, String word, int now_page) {
+    ArrayList<PaymentInquiryInfoVO> list = this.paymentinquiryProc.list_search_paging(word, now_page, this.record_per_page);
+
+    if (list.isEmpty()) {
+    } else {
+      model.addAttribute("list", list);
+
+      int search_count = this.paymentinquiryProc.list_search_count(word);
+      String paging = this.paymentinquiryProc.pagingBox(now_page, word, "/admin/inquiry/payment/list", search_count,
           this.record_per_page, this.page_per_block);
 
       int no = search_count - ((now_page - 1) * this.record_per_page);
@@ -80,7 +105,7 @@ public class AdminInquiryCont {
       model.addAttribute("list", list);
 
       int search_count = this.otherinquiryProc.list_search_count(word);
-      String paging = this.otherinquiryProc.pagingBox(now_page, word, "/admin/category/list", search_count,
+      String paging = this.otherinquiryProc.pagingBox(now_page, word, "/admin/inquiry/other/list", search_count,
           this.record_per_page, this.page_per_block);
 
       int no = search_count - ((now_page - 1) * this.record_per_page);
@@ -92,27 +117,6 @@ public class AdminInquiryCont {
     }
   }
 
-  /** 기타 문의 페이징 */
-  private void payment_table_paging(Model model, String word, int now_page) {
-    ArrayList<OtherInquiryInfoVO> list = this.otherinquiryProc.list_search_paging(word, now_page, this.record_per_page);
-
-    if (list.isEmpty()) {
-    } else {
-      model.addAttribute("list", list);
-
-      int search_count = this.otherinquiryProc.list_search_count(word);
-      String paging = this.otherinquiryProc.pagingBox(now_page, word, "/admin/category/list", search_count,
-          this.record_per_page, this.page_per_block);
-
-      int no = search_count - ((now_page - 1) * this.record_per_page);
-
-      model.addAttribute("paging", paging);
-      model.addAttribute("now_page", now_page);
-      model.addAttribute("word", word);
-      model.addAttribute("no", no);
-    }
-  }
-  
   /** 신발 문의 목록 */
   @GetMapping(value = "/shoes")
   public String shoes_list(HttpSession session, Model model,
@@ -149,7 +153,7 @@ public class AdminInquiryCont {
         + now_page;
   }
   
-  /** 신발 문의 목록 */
+  /** 기타 문의 목록 */
   @GetMapping(value = "/other")
   public String other_list(HttpSession session, Model model,
       @RequestParam(name = "word", defaultValue = "") String word,
@@ -160,7 +164,7 @@ public class AdminInquiryCont {
     return "admin/inquiry/other/list";
   }
 
-  /** 신발 문의 읽기 */
+  /** 기타 문의 읽기 */
   @GetMapping(value = "/other/{other_inquiry_no}")
   public String other_read(HttpSession session, Model model, @PathVariable("other_inquiry_no") Integer other_inquiry_no,
       @RequestParam(name = "word", defaultValue = "") String word,
@@ -173,7 +177,7 @@ public class AdminInquiryCont {
     return "admin/inquiry/other/read";
   }
 
-  /** 신발 문의 답변 */
+  /** 기타 문의 답변 */
   @PostMapping(value = "/other")
   public String other_answer(HttpSession session, Model model, @Valid OtherInquiryInfoVO otherInquiryInfoVO,
       BindingResult bindingResult, @RequestParam(name = "word", defaultValue = "") String word,
@@ -185,4 +189,39 @@ public class AdminInquiryCont {
         + now_page;
   }
 
+  /** 구매 문의 목록 */
+  @GetMapping(value = "/payment")
+  public String payment_list(HttpSession session, Model model,
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    word = Tool.checkNull(word).trim();
+    payment_table_paging(model, word, now_page);
+
+    return "admin/inquiry/payment/list";
+  }
+
+  /** 기타 문의 읽기 */
+  @GetMapping(value = "/payment/{payment_inquiry_no}")
+  public String payment_read(HttpSession session, Model model, @PathVariable("payment_inquiry_no") Integer payment_inquiry_no,
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+    PaymentInquiryInfoVO paymentInquiryInfoVO = this.paymentinquiryProc.read(payment_inquiry_no);
+    model.addAttribute("paymentInquiryInfoVO", paymentInquiryInfoVO);
+
+    payment_table_paging(model, word, now_page);
+    return "admin/inquiry/payment/read";
+  }
+
+  /** 기타 문의 답변 */
+  @PostMapping(value = "/payment")
+  public String payment_answer(HttpSession session, Model model, @Valid PaymentInquiryInfoVO paymentInquiryInfoVO,
+      BindingResult bindingResult, @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    PaymentInquiryVO paymentInquiryVO = paymentInquiryInfoVO.getPaymentInquiryVO();
+
+    this.paymentinquiryProc.answer(paymentInquiryVO.getPayment_inquiry_no(), 'Y', paymentInquiryVO.getAnswer_contents());
+    return "redirect:/admin/inquiry/payment/" + paymentInquiryVO.getPayment_inquiry_no() + "?word=" + word + "&now_page="
+        + now_page;
+  }
 }

@@ -29,7 +29,6 @@ public class AdminCategoryCont {
   @Autowired
   @Qualifier("dev.mvc.category.CategoryProc")
   private CategoryProcInter categoryProc;
-  
 
   /** 페이지당 출력할 레코드 갯수, nowPage는 1부터 시작 */
   public int record_per_page = 5;
@@ -47,11 +46,11 @@ public class AdminCategoryCont {
     } else {
       System.out.println("list" + list);
       model.addAttribute("list", list);
-      
+
       int search_count = this.categoryProc.list_search_count(word);
       String paging = this.categoryProc.pagingBox(now_page, word, "/admin/category/list", search_count,
           this.record_per_page, this.page_per_block);
-      
+
       int no = search_count - ((now_page - 1) * this.record_per_page);
 
       model.addAttribute("paging", paging);
@@ -68,11 +67,10 @@ public class AdminCategoryCont {
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
     word = Tool.checkNull(word).trim();
-    
+
     ArrayList<CategoryVO> menu = this.categoryProc.list_all();
     model.addAttribute("menu", menu);
-    
-    
+
     table_paging(model, word, now_page);
 
     return "admin/category/list";
@@ -108,18 +106,21 @@ public class AdminCategoryCont {
   public String checkSubName(@RequestBody Map<String, String> request) {
     String name = request.get("name");
     String subname = request.get("subname");
-    
+
     int categoryno = this.categoryProc.parent_categoryno(name);
-    System.out.println("categoryno" + categoryno);
     ArrayList<String> subnamelist = this.categoryProc.subname_list(categoryno);
-    System.out.println(subnamelist.get(0));
-    for (int i = 0; i < subnamelist.size(); i++) {
-      System.out.println(subnamelist.get(i));
-      if (subname.equals(subnamelist.get(i))) {
-        return "old";
+    if (subnamelist.isEmpty()) {
+      return "new";
+    } else {
+      for (int i = 0; i < subnamelist.size(); i++) {
+        System.out.println(subnamelist.get(i));
+        if (subname.equals(subnamelist.get(i))) {
+          return "old";
+        }
       }
+      return "new";
     }
-    return "new";
+
   }
 
   /** 카테고리 생성 */
@@ -187,7 +188,7 @@ public class AdminCategoryCont {
       table_paging(model, word, now_page);
       return "admin/category/update";
     }
-    
+
     int cnt = this.categoryProc.update(categoryVO);
     if (cnt == 1) {
       return "redirect:/admin/category/read/" + categoryVO.getCategoryno() + "?word=" + Tool.encode(word) + "&now_page="

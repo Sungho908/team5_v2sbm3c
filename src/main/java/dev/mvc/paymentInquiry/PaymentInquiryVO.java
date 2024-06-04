@@ -38,11 +38,11 @@ public class PaymentInquiryVO {
   
   
   /** 답변 여부 */
-  private char answervisible;
+  private char answer_visible;
   
   
   /** 답변 내용 */
-  private String answercontents;
+  private String answer_contents;
   
   
   /** 멤버 번호 */

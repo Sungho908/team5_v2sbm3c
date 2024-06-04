@@ -36,7 +36,7 @@
         CASE 
             WHEN EXISTS (SELECT 1 FROM CATEGORY WHERE name = #{name}) 
             THEN (SELECT MAX(seq) + 1 FROM CATEGORY WHERE name = #{name})
-            ELSE (SELECT COALESCE(CEIL(MAX(seq) / 10 + 0.5) * 10 + 1, 1) FROM CATEGORY)
+            ELSE (SELECT COALESCE(CEIL(MAX(seq) / 10) * 10 + 1, 1) FROM CATEGORY)
         END AS seq,
         100 AS cnt,
         CASE 
