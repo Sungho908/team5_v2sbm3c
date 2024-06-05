@@ -29,16 +29,26 @@ public interface ShoesDAOInter {
 
   // 슬립온 목록 리스트
   public ArrayList<ShoesVO> slipon_list(String word);
+  
+  
+  public ArrayList<ShoesReviewVO> review_list_all(int shoesno);
+  
+
   /**
    * 조회 select id="read" resultType="dev.mvc.cate.CateVO" parameterType="int"
    * 
    * @param cateno
    * @return
    */
+
+  
   public ShoesVO read(int shoesno);
 
   public ShoesOptionVO read_option(Map<String, Object> map);
 
+  
+  public ArrayList<ShoesReviewVO> review_paging(Map<String, Object> map);
+  
   // read했을때 옵션 리스트
   public ArrayList<ShoesOptionVO> option_paging(Map<String, Object> map);
 
@@ -49,6 +59,9 @@ public interface ShoesDAOInter {
   public int list_search_count(String word);
 
   public int option_search_count(int shoesno);
+  
+  public int review_search_count(String word);
+  
 
   public int update(ShoesVO shoesVO);
 

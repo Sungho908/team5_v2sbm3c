@@ -33,6 +33,13 @@ public class ShoesProc implements ShoesProcInter {
     ArrayList<ShoesVO> list = this.shoesDAO.list_all();
     return list;
   }
+  
+  @Override
+  public ArrayList<ShoesReviewVO> review_list_all(int shoesno) {
+   ArrayList<ShoesReviewVO>list = this.shoesDAO.review_list_all(shoesno);
+    return list;
+  }
+  
 
   @Override
   public ArrayList<ShoesVO> list_search_paging(String word, int now_page, int record_per_page) {
@@ -221,4 +228,32 @@ public class ShoesProc implements ShoesProcInter {
     ArrayList<ShoesVO> list = shoesDAO.slipon_list(word);
     return list;
   }
+
+  @Override
+  public int review_search_count(String word) {
+    int cnt = this.shoesDAO.review_search_count(word);
+    return cnt;
+  }
+
+  @Override
+  public ArrayList<ShoesReviewVO> review_paging(String word, int now_page, int record_per_page) {
+    int begin_of_page = (now_page - 1) * record_per_page;
+
+    int start_num = begin_of_page + 1;
+
+    int end_num = begin_of_page + record_per_page;
+
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("word", word);
+    map.put("start_num", start_num);
+    map.put("end_num", end_num);
+
+    ArrayList<ShoesReviewVO> list = this.shoesDAO.review_paging(map);
+    return list;
+
+  }
+
+
+
+
 }

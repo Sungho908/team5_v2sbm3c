@@ -17,6 +17,13 @@
     ORDER BY rating ASC
   </select>
 
+  <select id="review_list_all" resultType="dev.mvc.shoes.ShoesReviewVO">
+    SELECT r.reviewno, r.contents, r.grade, r.shoesno, r.memberno, r.rdate
+    FROM review r
+    INNER JOIN shoes s ON s.shoesno = r.shoesno
+    WHERE r.shoesno = #{shoesno}
+  </select>
+
   <select id="sneakers_list" resultType="dev.mvc.shoes.ShoesVO">
   SELECT s.title, s.brand, s.contents
   FROM shoes s
@@ -24,8 +31,8 @@
   JOIN category c ON cl.categoryno = c.categoryno
  WHERE UPPER(TITLE) LIKE '%' || ('스니커즈') || '%' OR (BRAND) LIKE '%' || ('스니커즈') || '%'
   </select>
-  
-    <select id="slipon_list" resultType="dev.mvc.shoes.ShoesVO">
+
+  <select id="slipon_list" resultType="dev.mvc.shoes.ShoesVO">
   SELECT s.title, s.brand, s.contents
   FROM shoes s
   JOIN category_list cl ON s.shoesno = cl.shoesno
@@ -112,6 +119,16 @@
     ORDER BY optionno ASC
   </select>
 
+  <select id="review_search_count" resultType="int">
+    SELECT COUNT(*) as cnt
+    FROM review
+    <if test="word != null and word != ''">
+      WHERE UPPER(contents) LIKE '%' || UPPER(#{word}) || '%'
+    </if>
+    ORDER BY grade ASC
+  </select>
+
+
   <select id="list_search_paging" resultType="dev.mvc.shoes.ShoesVO" parameterType="Map">
     SELECT SHOESNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE, r
     FROM (
@@ -127,6 +144,24 @@
     )
     WHERE r &gt; = #{start_num} AND r &lt; = #{end_num}
     <!-- WHERE r >= 1 AND r <= 3 -->
+  </select>
+
+
+  <select id="review_paging" resultType="dev.mvc.shoes.ShoesReviewVO" parameterType="Map">
+ SELECT REVIEWNO, CONTENTS, GRADE, RDATE, SHOESNO, MEMBERNO, r
+  FROM (
+    SELECT REVIEWNO, CONTENTS, GRADE, RDATE, SHOESNO, MEMBERNO, rownum as r
+    FROM (
+      SELECT R.REVIEWNO, R.CONTENTS, R.GRADE, R.RDATE, R.SHOESNO, R.MEMBERNO
+      FROM REVIEW R
+      INNER JOIN SHOES S ON R.SHOESNO = S.SHOESNO
+      <if test="word != null and word != ''">
+        WHERE UPPER(R.CONTENTS) LIKE '%' || UPPER(#{word}) || '%'
+      </if>
+      ORDER BY R.GRADE DESC
+    )
+  )
+  WHERE r &gt;= #{start_num} AND r &lt;= #{end_num}
   </select>
 </mapper>
 

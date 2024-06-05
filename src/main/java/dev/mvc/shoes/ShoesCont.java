@@ -56,6 +56,22 @@ public class ShoesCont {
     model.addAttribute("word", word);
     model.addAttribute("no", no);
   }
+  
+  private void review_paging(Model model, String word, int now_page) {
+    ArrayList<ShoesReviewVO> list = this.shoesProc.review_paging(word, now_page, this.record_per_page);
+    model.addAttribute("list", list);
+
+    int search_count = this.shoesProc.review_search_count(word);
+    String paging = this.shoesProc.pagingBox(now_page, word, "/shoes/review_list_all", search_count, this.record_per_page,
+        this.page_per_block);
+
+    int no = search_count - ((now_page - 1) * this.record_per_page);
+
+    model.addAttribute("paging", paging);
+    model.addAttribute("now_page", now_page);
+    model.addAttribute("word", word);
+    model.addAttribute("no", no);
+}
 
   private void table_paging_option(Model model, int shoesno, String word, int now_page) {
     ArrayList<ShoesOptionVO> list = this.shoesProc.option_paging(shoesno, word, now_page, this.record_per_page);
@@ -99,6 +115,29 @@ public class ShoesCont {
     return "shoes/list_all"; // /shoes/list_search.html
   }
 
+  /**
+   * 후기 목록
+   * 
+   * @param model
+   * @param shoesVO
+   * @return
+   */
+  @GetMapping(value = "/review_list_all")
+  public String review_list_all(HttpSession session, Model model,
+      @RequestParam(name = "shoesno") int shoesno,
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+    ArrayList<ShoesReviewVO> list = shoesProc.review_list_all(shoesno);
+    // 모델에 후기 목록 추가
+    model.addAttribute("list", list);
+    
+    review_paging(model, word, now_page);
+    
+    return "shoes/review_list_all"; // /shoes/list_search.html
+  }
+  
+    
   /**
    * 신발 생성 폼
    */
@@ -649,15 +688,6 @@ public class ShoesCont {
 
   }
 
-  @GetMapping(value = "/showlist")
-  public String showlist(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
-      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-
-    table_paging(model, word, now_page);
-
-    return "shoes/showlist"; // /templates/shoes/read.html
-
-  }
   /**
    * 장바구니 목록
    * 
@@ -695,7 +725,6 @@ public class ShoesCont {
 
   }
   
-  
   /**
    * 고객센터 상세
    * 
@@ -713,4 +742,24 @@ public class ShoesCont {
     return "shoes/servicecenter"; // /templates/shoes/read.html
 
   }
+  
+  
+  /**
+   * 고객센터 문의
+   * 
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/servicecenter_create")
+  public String servicecenter_create(HttpSession session, Model model,
+      @RequestParam(name = "word", defaultValue = "") String word) {
+    
+
+    return "shoes/servicecenter_create"; // /templates/shoes/read.html
+
+  }
+  
 }

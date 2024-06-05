@@ -15,7 +15,9 @@
   <div class="content_main">
     <div class="content_body" th:each="shoesVO, status:${list}">
       <div class="shoes">
-        <img src="/images/" alt="스니커즈13">
+        <a th:href="@{|/shoes/review_detail/${shoesVO.shoesno}|}">
+          <img src="/images/" alt="스니커즈13">
+        </a>
         <p th:text="${shoesVO.contents}"></p>
         <p th:text="${shoesVO.title}"></p>
         <p th:text="${shoesVO.price}"></p>
