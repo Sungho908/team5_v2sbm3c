@@ -5,67 +5,95 @@
   <div layout:fragment="content">
     <div th:replace="~{fragment/infoSidebarFragment::infoSidebarFragment}"></div>
     <div style="margin: 10px; padding:30px; display: flex;">
-      <table style="margin: 0px auto; min-width: 700px;">
-        <caption style="caption-side: top; font-size: 2rem; text-align: left;">주문 내역</caption>
-        <colgroup>
-          <col width="20%">
-          <col width="40%">
-          <col width="20%">
-          <col width="20%">
-        </colgroup>
-        <thead style="border-bottom: 1px solid #999; border-top: 2px solid #594f4f; background: #f7f5f5">
-          <tr>
-            <td>주문일(주문번호)</td>
-            <td>상품명/주문옵션/주문번호</td>
-            <td>판매자</td>
-            <td>주문상태</td>
-          </tr>
-        </thead>
-        <tbody th:if="${#lists.isEmpty(paymentList)}">
-          <tr><td colspan="4">주문 내역이 존재하지 않습니다.</td></tr>
-        </tbody>
-        <tbody th:each="list : ${paymentList}" style="border-bottom:1px solid #999;">
-          <tr style="border-bottom: 1px solid #ddd;">
-            <td th:rowspan="2" style="border-right: 1px solid #ddd;">
-              <div>
-                <span th:text="${#dates.format(list.rdate,'yyyy-MM-dd')}">구매일표시</span>
-                <span class="paymentno" style="color: #ddd;" th:text="|(${list.paymentno})|">주문번호표시</span>
-              </div>
-              <div style="border-top: 1px solid #ddd;">
-                결제금액:
-                <span th:text="|${#numbers.formatInteger(list.total_payment, 3, 'COMMA')}원|"></span>
-                <div style="text-align: left; margin-left: 8px;">
-                  <a style="color: #416de9; font-size: 12px;" href="">주문상세보기▶</a>
-                </div>
-              </div>
-            </td>
-            <td>
-              <div>
-                <div style="margin: 5px 5px 5px 5px">주문상세정보 테이블 제작시 구현 예정</div>
-              </div>
-            </td>
-            <td>3</td>
-            <td>
-              <div>
-                <span th:text="${list.status}"></span>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="3">
-              <div style="display: flex; justify-content: space-between; margin: 0px 10px 0px 10px; height: 30px; align-items: center;">
+      
+        <table style="margin: 0px auto; table-layout: fixed; min-width:750px; width:750px;">
+          <caption style="caption-side: top; font-size: 2rem; text-align: left;">주문내역</caption>
+          <colgroup>
+            <col width="20%">
+            <col width="40%">
+            <col width="10%">
+            <col width="20%">
+          </colgroup>
+          <thead style="border-bottom: 1px solid #999; border-top: 3px solid #594f4f; background: #f7f5f5">
+            <tr>
+              <td>주문일(주문번호)</td>
+              <td>상품명/주문옵션/주문번호</td>
+              <td>브랜드</td>
+              <td>주문상태</td>
+            </tr>
+          </thead>
+          
+          
+          <tbody th:if="${#lists.isEmpty(paymentsList)}">
+            <tr><td colspan="4">주문 내역이 존재하지 않습니다.</td></tr>
+          </tbody>
+          
+          
+          <tbody th:each="list : ${paymentsList}" style="border-bottom: 2px solid #594f4f;">
+            <tr style="border-bottom: 1px solid #ddd;">
+              <!--/*====================== 주문일(주문번호) ======================*/-->
+              <td th:rowspan="${#lists.size(list.payment_details_option)}" style="border-right: 1px solid #ddd;">              
                 <div>
-                  <a href="#" style="color: #416de9; font-size: 12px; margin-right:10px;">문의하기▶</a>
-                  <a href="javascript:void(0);" class="deletepayment" style="color: #416de9; font-size: 12px;">주문내역삭제▶</a>
+                  <span th:text="${#dates.format(list.rdate,'yyyy-MM-dd')}">구매일표시</span>
+                  <span class="paymentno" style="color: #999;" th:text="|(${list.paymentno})|">주문번호표시</span>
                 </div>
+                <div style="border-top: 1px solid #ddd;">
+                  결제금액:<span style="font-size: 1.2rem;" th:text="|${#numbers.formatInteger(list.total_payment, 3, 'COMMA')}원|">결제금액표시</span>
+                  <div style="text-align: left; margin-left: 8px;">
+                    <a style="color: #416de9; font-size: 12px;" href="">주문상세보기▶</a>
+                  </div>
+                </div>
+              </td>
+              
+              <!--/*====================== 상품명/주문옵션/주문번호 ======================*/-->
+              <td style="padding: 18px 5px 18px 20px;">
+                <div style="display: flex; align-items: center; border-top: 1px solid #ddd;" th:each="pd : ${list.payment_details_option}">
+                  
+                  <div>
+                    <a href="#"><img style="width:60px; height: 60px; float:left; display: block;" th:src="@{|/file/storage/${list.src}|}"></a>  
+                  </div>
+                  
+                  <div>
+                    <a style="position: relative; top: 25px; font-size: 1.3rem;" href="#" th:text="${list.title}">상품명</a>
+                    <ul style="list-style-type: none; padding: 0px;">
+                      <li style="color: #666; font-size: 0.8rem; position: relative; top: 25px;" th:text="|색상 / ${pd.color} / ${#numbers.formatInteger(list.price, 3, 'COMMA')}원 / ${pd.payment_amount}개|">색상/가격/수량</li>
+                      <li style="color: #666; font-size: 0.8rem; position: relative; top: 5px;" th:text="|수량 │ ${pd.payment_amount}개 / 주문번호 ${pd.payment_details_no}|">수량 | 주문번호 |</li>
+                    </ul>
+                    <div>
+                      
+                    </div>
+                  </div>
+                  
+                </div>
+              </td>
+              <!--/*====================== 브랜드 정보 ======================*/-->
+              
+              <td>
+                <a style="color: #416de9; font-size: 12px;" href="" th:text="|${list.brand}▶|">브랜드</a>
+              </td>
+              <!--/*====================== 주문상태 ======================*/-->
+              <td>
                 <div>
-                  <button class="btn btn-danger">구매후기</button>
+                  <span th:text="${list.payment_status}">결제 상태</span>
+                  <span th:text="${list.status}">주문상태/CS상태</span>
                 </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3">
+                <div style="display: flex; justify-content: space-between; margin: 0px 10px 0px 10px; height: 30px; align-items: center;">
+                  <div>
+                    <a href="#" style="color: #416de9; font-size: 12px; margin-right:10px;">문의하기▶</a>
+                    <a href="javascript:void(0);" class="deletepayment" style="color: #416de9; font-size: 12px;">주문내역삭제▶</a>
+                  </div>
+                  <div>
+                    <button class="btn btn-danger">구매후기</button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
     </div>
     <script type="text/javascript">
       document.addEventListener("DOMContentLoaded", function() {

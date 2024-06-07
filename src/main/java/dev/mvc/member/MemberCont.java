@@ -28,35 +28,32 @@ public class MemberCont {
   @Autowired
   @Qualifier("dev.mvc.member.MemberProc")
   private MemberProcInter memberProc;
-  
+
   @Autowired
   private PasswordEncoder pe;
 
-  
   @GetMapping("checkpw")
   public String checkpw() {
     return "member/checkpw";
   }
-  
+
   @PostMapping("checkpw")
-  public String checkpwProc(RedirectAttributes ra, HttpSession session,Model model,
-                           @RequestParam("pw")String pw) {
+  public String checkpwProc(RedirectAttributes ra, HttpSession session, Model model, @RequestParam("pw") String pw) {
     MemberVO memberVO = (MemberVO) session.getAttribute("login");
     memberVO = memberProc.readById(memberVO.getId());
-    
-    if(!pe.matches(pw, memberVO.getPw())) {
+
+    if (!pe.matches(pw, memberVO.getPw())) {
       Alert message = new Alert("틀린 비밀번호입니다.", "/member/checkpw", RequestMethod.GET, null);
       return DefaultCont.showMessageAndRedirect(message, model);
     }
-    
+
     ra.addFlashAttribute("auth", "success");
     return "redirect:/member/update";
   }
-  
+
   @GetMapping("update")
-  public String update(HttpSession session, Model model,
-                       @ModelAttribute("auth")String auth) {
-    if(auth == null || auth != "success" ) {
+  public String update(HttpSession session, Model model, @ModelAttribute("auth") String auth) {
+    if (auth == null || auth != "success") {
       Alert message = new Alert("잘못된 접근입니다. 다시 접속하세요.", "/member/checkpw", RequestMethod.GET, null);
       return DefaultCont.showMessageAndRedirect(message, model);
     }
@@ -65,66 +62,64 @@ public class MemberCont {
     model.addAttribute("memberVO", memberVO);
     return "member/update";
   }
-  
+
   @PostMapping("update")
-  public String updateProc(MemberVO memberVO, Model model) {
-      String file = "";
-      String filename = "";
-      String upDir = Tool.getUploadDir();
-      MultipartFile mf = memberVO.getMf();
+  public String updateProc(MemberVO memberVO, Model model, HttpSession session) {
+    MemberVO memberVOorigin = memberProc.readById(memberVO.getId());
+    MultipartFile mf = memberVO.getMf();
+    String file = mf.getOriginalFilename();
+    String filename = "";
 
-      // MultipartFile 객체가 null인지 확인
-      if (mf != null && !mf.isEmpty()) {
-          file = mf.getOriginalFilename();
-      }
-
-      // 비밀번호 암호화
+    // 비밀번호 암호화
+    if (memberVO.getPw().isEmpty()) {
+      memberVO.setPw(memberVOorigin.getPw());
+    }else {
       memberVO.setPw(pe.encode(memberVO.getPw()));
-      System.out.println(memberVO.toString());
+    }
 
-      // 파일 검사 및 저장
-      if (!file.isEmpty() && !Tool.isImage(file)) {
-          Alert message = new Alert("업로드가 불가능한 파일입니다. 이미지 파일을 등록해주세요.", "signup", RequestMethod.GET, null);
-          return DefaultCont.showMessageAndRedirect(message, model);
-      } else if (!file.isEmpty() && Tool.isImage(file)) {
-          filename = Tool.saveFileSpring(mf);
-          memberVO.setThumb(filename); // 새로운 파일이 저장된 경우에만 thumb 값을 설정
-      }
-
-      // 회원 생성 처리
-      if (memberProc.update(memberVO) == 0) {
-          Alert message = new Alert("알 수 없는 에러", "member/update", RequestMethod.GET, null);
-          return DefaultCont.showMessageAndRedirect(message, model);
-      }
-
-      // 성공 메시지
-      Alert message = new Alert("회원정보 수정 성공.", "/", RequestMethod.GET, null);
+    // 파일 검사 및 저장
+    if (!file.isEmpty() && !Tool.isImage(file)) {
+      Alert message = new Alert("업로드가 불가능한 파일입니다. 이미지 파일을 등록해주세요.", "signup", RequestMethod.GET, null);
       return DefaultCont.showMessageAndRedirect(message, model);
+    } else if (!file.isEmpty() && Tool.isImage(file)) {
+      filename = Tool.saveFileSpring(mf);
+      memberVO.setThumb(filename); // 새로운 파일이 저장된 경우에만 thumb 값을 설정
+    }
+
+    // 회원 생성 처리
+    if (memberProc.update(memberVO) == 0) {
+      Alert message = new Alert("알 수 없는 에러", "member/update", RequestMethod.GET, null);
+      return DefaultCont.showMessageAndRedirect(message, model);
+    }
+
+    // 성공 메시지
+    session.invalidate();
+    Alert message = new Alert("회원정보 수정 성공\n다시 로그인 해주세요.", "/", RequestMethod.GET, null);
+    return DefaultCont.showMessageAndRedirect(message, model);
   }
 
   @GetMapping("info")
   public String info() {
     return "member/info";
   }
-  
+
   @GetMapping("delete")
   public String delete() {
     return "member/delete";
   }
-  
+
   @PostMapping("delete")
-  public String deleteProc(Model model, @RequestParam("pw")String pw, HttpSession session, RedirectAttributes ra) {
-    
+  public String deleteProc(Model model, @RequestParam("pw") String pw, HttpSession session, RedirectAttributes ra) {
+
     MemberVO memberVO = (MemberVO) session.getAttribute("login");
     int memberno = memberVO.getMemberno();
-    
-    
-    if(pe.matches(pw, memberVO.getPw())) {
-      if(this.memberProc.deleteByMember(memberno) == 0) {
+
+    if (pe.matches(pw, memberVO.getPw())) {
+      if (this.memberProc.delete(memberno) == 0) {
         Alert message = new Alert("알 수 없는 에러", "/member/delete", RequestMethod.GET, null);
         return DefaultCont.showMessageAndRedirect(message, model);
       }
-    }else {
+    } else {
       ra.addFlashAttribute("code", 0);
       return "redirect:/member/delete";
     }
@@ -132,5 +127,5 @@ public class MemberCont {
     Alert message = new Alert("회원탈퇴처리가 완료되었습니다.", "/", RequestMethod.GET, null);
     return DefaultCont.showMessageAndRedirect(message, model);
   }
-  
+
 }

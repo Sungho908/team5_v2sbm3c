@@ -1,6 +1,7 @@
 package dev.mvc.member.payment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import dev.mvc.member.MemberVO;
 import dev.mvc.payment.PaymentProcInter;
 import dev.mvc.payment.PaymentVO;
+import dev.mvc.paymentTotal.PaymentTotalProcInter;
+import dev.mvc.paymentTotal.PaymentTotalVO;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -26,16 +29,19 @@ public class MemberPaymentCont {
   @Qualifier("dev.mvc.payment.PaymentProc")
   private PaymentProcInter paymentProc;
   
+  @Autowired
+  @Qualifier("dev.mvc.paymentTotal.paymentTotalProc")
+  private PaymentTotalProcInter paymentTotalProc;
+  
   @GetMapping("order")
   public String order(HttpSession session, Model model) {
     MemberVO memberVO = (MemberVO) session.getAttribute("login");
+    ArrayList<PaymentTotalVO> list = this.paymentTotalProc.list(memberVO.getMemberno());
+    model.addAttribute("paymentsList", list);
     
-    ArrayList<PaymentVO> paymentList = this.paymentProc.list_all(memberVO.getMemberno());
-    System.out.println("pay: " + paymentList);
-    if(paymentList != null && !paymentList.isEmpty())
-      model.addAttribute("paymentList", paymentList);
     return "member/payment/order";
   }
+  
   
   @ResponseBody
   @PostMapping("delete")

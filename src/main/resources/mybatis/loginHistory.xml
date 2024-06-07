@@ -2,12 +2,13 @@
  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.mvc.loginHistory.LoginHistoryDAOInter">
+
 	<insert id="create" parameterType="dev.mvc.loginHistory.LoginHistoryVO">
 		INSERT INTO LOGIN_HISTORY(loginno, ip, rdate, memberno)
 		VALUES (login_seq.nextval, #{ip}, sysdate, #{memberno})
 	</insert>
 	
-	<select id="readBymembernoRdateDesc" parameterType="int" resultType="dev.mvc.loginHistory.LoginHistoryVO">
+	<select id="readByMembernoRdateDesc" parameterType="int" resultType="dev.mvc.loginHistory.LoginHistoryVO">
 	SELECT loginno, ip, rdate, memberno
   FROM login_history
   where memberno = #{memberno}

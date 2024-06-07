@@ -1,6 +1,8 @@
 /**********************************/
 /* Table Name: 신발 */
 /**********************************/
+DROP TABLE SHOES;
+
 CREATE TABLE SHOES(
 		SHOESNO                       		NUMBER(9)		 NOT NULL		 PRIMARY KEY,
 		CATEGORYNO                    		NUMBER(9)		 NOT NULL,

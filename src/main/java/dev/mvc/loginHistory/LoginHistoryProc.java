@@ -42,8 +42,8 @@ public class LoginHistoryProc implements LoginHistoryProcInter {
   }
 
   @Override
-  public ArrayList<LoginHistoryVO> readBymembernoRdateDesc(int memberno) {
-    return this.loginHistoryDAO.readBymembernoRdateDesc(memberno);
+  public ArrayList<LoginHistoryVO> readByMembernoRdateDesc(int memberno) {
+    return this.loginHistoryDAO.readByMembernoRdateDesc(memberno);
   }
   
   @Override

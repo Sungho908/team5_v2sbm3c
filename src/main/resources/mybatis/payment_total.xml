@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dev.mvc.paymentTotal.PaymentTotalDAOInter">
+
+  <resultMap id="PaymentDetailsOptionMap" type="dev.mvc.paymentTotal.PaymentDetailsOptionVO">
+    <id property="payment_details_no" column="payment_details_no"/>
+    <result property="payment_amount" column="payment_amount"/>
+    <result property="optionno" column="optionno"/>
+    <result property="sizes" column="sizes"/>
+    <result property="amount" column="amount"/>
+    <result property="color" column="color"/>
+  </resultMap>
+
+  <resultMap id="PaymentTotalMap" type="dev.mvc.paymentTotal.PaymentTotalVO">
+    <id property="paymentno" column="paymentno"/>
+    <result property="memberno" column="memberno"/>
+    <result property="rdate" column="rdate"/>
+    <result property="status" column="status"/>
+    <result property="payment_status" column="payment_status"/>
+    <result property="cs_status" column="cs_status"/>
+    <result property="total_price" column="total_price"/>
+    <result property="delivery" column="delivery"/>
+    <result property="total_payment" column="total_payment"/>
+    <result property="shoesno" column="shoesno"/>
+    <result property="title" column="title"/>
+    <result property="brand" column="brand"/>
+    <result property="rating" column="rating"/>
+    <result property="price" column="price"/>
+    <result property="discount" column="discount"/>
+    <result property="contents" column="contents"/>
+    <result property="visible" column="visible"/>
+    <result property="shoes_file_no" column="shoes_file_no"/>
+    <result property="name" column="name"/>
+    <result property="shoes_file_sizes" column="shoes_file_sizes"/>
+    <result property="ex" column="ex"/>
+    <result property="src" column="src"/>
+    <collection property="payment_details_option" ofType="dev.mvc.paymentTotal.PaymentDetailsOptionVO" column="paymentno" select="selectPaymentDetailsByPaymentNo"/>
+  </resultMap>
+
+  <select id="list" parameterType="int" resultMap="PaymentTotalMap">
+    SELECT DISTINCT
+      m.memberno,
+      p.paymentno, 
+      p.rdate, 
+      p.status, 
+      p.payment_status, 
+      p.cs_status, 
+      p.total_price, 
+      p.delivery, 
+      p.total_payment,
+      o.shoesno, 
+      s.title, 
+      s.brand, 
+      s.rating, 
+      s.price, 
+      s.discount, 
+      s.contents, 
+      s.visible,
+      sf.shoes_file_no, 
+      sf.name, 
+      sf.sizes as shoes_file_sizes, 
+      sf.ex, 
+      sf.src
+    FROM 
+      member m 
+      INNER JOIN payment p ON m.memberno = p.memberno
+      INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
+      INNER JOIN options o ON pd.optionno = o.optionno
+      INNER JOIN shoes s ON o.shoesno = s.shoesno
+      INNER JOIN shoes_file sf ON s.shoesno = sf.shoesno
+    WHERE 
+      m.memberno = #{memberno}
+    ORDER BY 
+      p.paymentno
+  </select>
+
+  <select id="selectPaymentDetailsByPaymentNo" parameterType="int" resultMap="PaymentDetailsOptionMap">
+    SELECT 
+      pd.payment_details_no,
+      pd.payment_amount,
+      o.optionno,
+      o.sizes,
+      o.amount,
+      o.color
+    FROM 
+      payment_details pd
+      INNER JOIN options o ON pd.optionno = o.optionno
+    WHERE 
+      pd.paymentno = #{paymentno}
+    ORDER BY 
+      pd.payment_details_no
+  </select>
+
+</mapper>

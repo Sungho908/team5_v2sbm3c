@@ -77,23 +77,21 @@ public class LoginCont {
   @ResponseBody
   @GetMapping("checkId")
   public int checkId(@RequestParam("id") String id) {
-    return this.memberProc.checkID(id);
+    return this.memberProc.checkId(id);
   }
 
   @PostMapping("signup")
   public String signUpProc(MemberVO memberVO, Model model) {
-    String file = "";
-    String filename = "";
-    String upDir = Tool.getUploadDir();
     MultipartFile mf = memberVO.getMf();
-    file = mf.getOriginalFilename();
+    String file = mf.getOriginalFilename();
+    String filename = "";
 
     memberVO.setPw(pe.encode(memberVO.getPw()));
 
-    if (file != "" && !Tool.isImage(file)) {// 업로드 가능한 파일인지 검사
+    if (file != null && !Tool.isImage(file)) {// 업로드 가능한 파일인지 검사
       Alert message = new Alert("업로드가 불가능한 파일입니다. 이미지 파일을 등록해주세요.", "signup", RequestMethod.GET, null);
       return DefaultCont.showMessageAndRedirect(message, model);
-    } else if (file != "" && Tool.isImage(file)) {
+    } else if (file != null && Tool.isImage(file)) {
       filename = Tool.saveFileSpring(memberVO.getMf());
       memberVO.setThumb(filename);
     }

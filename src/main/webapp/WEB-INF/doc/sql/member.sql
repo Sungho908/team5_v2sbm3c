@@ -142,4 +142,14 @@ SET pw='$2a$10$wIhgjF1F6PBh.4iHvAd8euYpOf2ofXL.rkbkBJZP/xWh8/0Wvg7vK'
 WHERE id='admin1' and email='admin@admin.com';
 
 
+select count(role) as cnt
+from member
+where UPPER(role)= UPPER('master');
+
 commit;
+
+rollback;
+
+savepoint test1;
+
+rollback savepoint to test1;

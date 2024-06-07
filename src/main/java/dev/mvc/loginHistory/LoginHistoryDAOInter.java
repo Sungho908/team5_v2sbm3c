@@ -23,12 +23,12 @@ public interface LoginHistoryDAOInter {
 
   /**
    * 회원 로그인정보 기록일 최근순으로 정렬<br>
-   * id="readBymembernoRdateDesc" parameterType="int" resultType="dev.mvc.loginHistory.LoginHistoryVO"
+   * id="readByMembernoRdateDesc" parameterType="int" resultType="dev.mvc.loginHistory.LoginHistoryVO"
    * 
    * @param memberno
    * @return LoginHistoryVO 객체
    */
-  public ArrayList<LoginHistoryVO> readBymembernoRdateDesc(int memberno);
+  public ArrayList<LoginHistoryVO> readByMembernoRdateDesc(int memberno);
   
   /**
    * member의 모든 데이터 삭제

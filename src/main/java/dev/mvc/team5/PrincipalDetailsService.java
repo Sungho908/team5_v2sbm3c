@@ -12,13 +12,13 @@ import dev.mvc.member.MemberVO;
 
 @Service
 public class PrincipalDetailsService implements UserDetailsService {
-  
-  private final MemberProcInter memberProc;
+  @Autowired
+  @Qualifier("dev.mvc.member.MemberProc")
+  private MemberProcInter memberProc;
 
-  @Autowired // 또는 @Qualifier를 사용하여 빈을 선택할 수 있습니다.
-  public PrincipalDetailsService(@Qualifier("dev.mvc.member.MemberProc") MemberProcInter memberProc) {
-    this.memberProc = memberProc;
-  }
+//  public PrincipalDetailsService( MemberProcInter memberProc) {
+//    this.memberProc = memberProc;
+//  }
 
 
   @Override

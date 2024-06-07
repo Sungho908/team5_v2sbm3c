@@ -5,7 +5,7 @@ DROP SEQUENCE PAYMENT_DETAILS_SEQ;
 /**********************************/
 CREATE TABLE PAYMENT_DETAILS(
 		PAYMENT_DETAILS_NO            		NUMBER(9)		 NOT NULL		 PRIMARY KEY,
-		PAYMOUNT                      		NUMBER(9)		 NOT NULL,
+		PAYMENT_AMOUNT                      NUMBER(9)		 NOT NULL,
 		OPTIONNO                      		NUMBER(9)		 NOT NULL,
 		PAYMENTNO                     		NUMBER(9)		 NULL ,
   FOREIGN KEY (OPTIONNO) REFERENCES OPTIONS (OPTIONNO),
@@ -14,7 +14,7 @@ CREATE TABLE PAYMENT_DETAILS(
 
 COMMENT ON TABLE PAYMENT_DETAILS is '주문상세';
 COMMENT ON COLUMN PAYMENT_DETAILS.PAYMENT_DETAILS_NO is '주문 상세번호';
-COMMENT ON COLUMN PAYMENT_DETAILS.PAYMOUNT is '주문 수량';
+COMMENT ON COLUMN PAYMENT_DETAILS.PAYMENT_AMOUNT is '주문 수량';
 COMMENT ON COLUMN PAYMENT_DETAILS.OPTIONNO is '옵션 번호';
 COMMENT ON COLUMN PAYMENT_DETAILS.PAYMENTNO is '주문 번호';
 
@@ -27,14 +27,17 @@ CREATE SEQUENCE PAYMENT_DETAILS_SEQ
  
 SELECT * FROM options;
 
-INSERT INTO PAYMENT_DETAILS(payment_details_no, paymount, optionno, paymentno)
+INSERT INTO PAYMENT_DETAILS(payment_details_no, payment_amount, optionno, paymentno)
 VALUES (PAYMENT_DETAILS_SEQ.nextval, 2, 1, 1);
+
+INSERT INTO PAYMENT_DETAILS(payment_details_no, payment_amount, optionno, paymentno)
+VALUES (PAYMENT_DETAILS_SEQ.nextval, 3, 1, 1);
  
-INSERT INTO PAYMENT_DETAILS(payment_details_no, paymount, optionno, paymentno)
+INSERT INTO PAYMENT_DETAILS(payment_details_no, payment_amount, optionno, paymentno)
 VALUES (PAYMENT_DETAILS_SEQ.nextval, 3, 3, 2);
 
-INSERT INTO PAYMENT_DETAILS(payment_details_no, paymount, optionno, paymentno)
+INSERT INTO PAYMENT_DETAILS(payment_details_no, payment_amount, optionno, paymentno)
 VALUES (PAYMENT_DETAILS_SEQ.nextval, 5, 2, 3);
 
-SELECT payment_details_no, paymount, optionno, paymentno
+SELECT payment_details_no, payment_amount, optionno, paymentno
 FROM PAYMENT_DETAILS;

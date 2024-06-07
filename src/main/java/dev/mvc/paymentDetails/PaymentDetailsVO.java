@@ -17,17 +17,17 @@ import lombok.ToString;
 //);
 public class PaymentDetailsVO {
   /** 주문상세번호 */
-  private Integer pdNo;
+  private Integer payment_details_no;
   
   
   /** 주문 수량 */
-  private Integer pdAmount;
+  private Integer payment_amount;
   
   
   /** 주문번호 */
-  private Integer pNo;
+  private Integer paymentno;
   
   
   /** 옵션 번호 */
-  private Integer oNo;
+  private Integer optionno;
 }

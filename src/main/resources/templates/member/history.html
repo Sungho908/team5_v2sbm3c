@@ -2,6 +2,9 @@
 <html layout:decorate="~{layout}" xmlns:th="www.thymeleaf.org">
 <!-- layout.html 상속 -->
 <div layout:fragment="content">
+  
+  <div th:replace="~{fragment/infoSidebarFragment::infoSidebarFragment}"></div>
+  
   <div style="margin-top: 10px;">
     <h2>최근기록 10건만 저장됩니다.</h2>
     <input type="hidden" id="memberno" th:value="${#lists.isEmpty(list) ? '' : list[0].memberno}">

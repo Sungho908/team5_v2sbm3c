@@ -97,3 +97,5 @@ VALUES (member_seq.nextval, 'testuser19', '$2a$10$FY9DVoAay4vMa7hRRUtQFeREpLV09v
 -- 원래 비밀번호: password20
 INSERT INTO member(memberno, id, pw, name, nickname, phone, email, thumb, addr1, addr2, zipcode, mdate, rdate, point, gender, grade, role)
 VALUES (member_seq.nextval, 'testuser20', '$2a$10$/i/BnlmPLU1W/jJ8V4bJe.SF4lzAtY6xrb9A/XjZ5BfwL46X4.BkO', 'Test User20', 'testnick20', '010-0000-1111', 'test20@test.com', '', '', '', 0, '2022-01-01', sysdate, 0, '남성', 1, 'USER');
+
+commit;
