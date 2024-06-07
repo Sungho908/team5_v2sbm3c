@@ -23,7 +23,6 @@
     </div>
   </div>
   <div class="container">
-
     <div class="table-wrapper">
       <div class="table-title">
       </div>
@@ -35,18 +34,23 @@
           <col style='width: 10%;' />
           <col style='width: 10%;' />
         </colgroup>
-        <tbody th:each="noticememberVO, status:${list}">
-          <input type="hidden" id="noticeno" name="noticeno" th:value="${noticememberVO.noticeno}">
+        <tbody th:each="noticememberfileVO, status:${list}">
           <tr>
             <td class="td_bs" th:text="|${(now_page-1) * 5 + status.index + 1}|"></td>
-            <td class="td_bs" th:text="${noticememberVO.title}"></td>
-            <td class="td_bs" th:text="${#dates.format(noticememberVO.rdate, 'yy/MM/dd')}"></td>
-            <td class="td_bs" th:text="${noticememberVO.views}">+</td>
+            <td class="td_bs" th:text="${noticememberfileVO.title}"></td>
+            <td class="td_bs" th:text="${#dates.format(noticememberfileVO.rdate, 'yy/MM/dd')}"></td>
+            <td class="td_bs" id="views" th:text="${noticememberfileVO.views}"></td>
             <td class="td_bs zoom">+</td>
+            <input type="hidden" id="noticeno" name="noticeno" th:value="${noticememberfileVO.noticeno}">
           </tr>
           <tr class="contents">
             <td colspan="5" style="padding:10px 20% 10px 20%;">
-              <span th:text="${noticememberVO.contents}"></span>
+              <span th:text="${noticememberfileVO.contents}"></span><br>
+              <span th:if="${noticememberfileVO.sizes > 0}">
+                첨부 파일: <a
+                  th:href='@{|/download?dir=/notice/storage&filename=${noticememberfileVO.src}&downname=${noticememberfileVO.name}|}'
+                  th:text='|${noticememberfileVO.name}|'></a> <span th:text="|(${noticememberfileVO.sizes} kb)|"></span>
+              </span>
             </td>
           </tr>
         </tbody>
@@ -54,33 +58,4 @@
     </div>
   </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var zoom = document.querySelectorAll('.zoom');
-      zoom.forEach(function (button) {
-        button.addEventListener('click', function () {
-          var noticeno = this.parentElement.querySelector('.noticeno').value;
-          alert(noticeno);
-          if (this.innerText === "+") {
-            $.ajax({
-              type: 'POST',
-              url: '/notice/increased_views',
-              contentType: 'application/json',
-              data: JSON.stringify({noticeno: noticeno}),
-              success: function (response) {
-                this.innerText = "-";
-              }
-            });
-
-          } else {
-            this.innerText = "+";
-          }
-
-          var content = this.parentElement.nextElementSibling;
-          content.classList.toggle('contents');
-
-        });
-      });
-    });
-  </script>
 </div>

@@ -34,6 +34,18 @@ public class NoticeProc implements NoticeProcInter{
   }
   
   @Override
+  public int increased_views(int noticeno) {
+    int cnt = this.noticeDAO.increased_views(noticeno);
+    return cnt;
+  }
+  
+  @Override
+  public int views(int noticeno) {
+    int views = this.noticeDAO.views(noticeno);
+    return views;
+  }
+  
+  @Override
   public NoticeMemberFileVO read(int count, int noticeno) {
     Map<String, Object> map = new HashMap<String, Object>();
     map.put("count", count);
@@ -41,12 +53,6 @@ public class NoticeProc implements NoticeProcInter{
     
     NoticeMemberFileVO noticememberfileVO = this.noticeDAO.read(map);
     return noticememberfileVO;
-  }
-
-  @Override
-  public int increased_views(NoticeVO noticeVO) {
-    int cnt = this.noticeDAO.increased_views(noticeVO);
-    return cnt;
   }
   
   @Override
@@ -56,7 +62,7 @@ public class NoticeProc implements NoticeProcInter{
   }
 
   @Override
-  public ArrayList<NoticeMemberVO> list_search_paging(String word, int now_page, int record_per_page) {
+  public ArrayList<NoticeMemberFileVO> list_search_paging(String word, int now_page, int record_per_page) {
     int begin_of_page = (now_page - 1) * record_per_page;
 
     int start_num = begin_of_page + 1;
@@ -68,7 +74,7 @@ public class NoticeProc implements NoticeProcInter{
     map.put("start_num", start_num);
     map.put("end_num", end_num);
 
-    ArrayList<NoticeMemberVO> list = this.noticeDAO.list_search_paging(map);
+    ArrayList<NoticeMemberFileVO> list = this.noticeDAO.list_search_paging(map);
     
     return list;
   }
@@ -157,12 +163,5 @@ public class NoticeProc implements NoticeProcInter{
 
     return str.toString();
   }
-
-  @Override
-  public int increased_views(int noticeno) {
-    int cnt = this.noticeDAO.increased_views(noticeno);
-    return cnt;
-  }
-
 
 }

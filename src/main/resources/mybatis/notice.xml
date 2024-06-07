@@ -36,14 +36,15 @@
   </select>
 
   <!-- 페이징 -->
-  <select id="list_search_paging" resultType="dev.mvc.notice.NoticeMemberVO" parameterType="Map">
-    SELECT n.noticeno, n.title, n.contents, n.rdate, n.views, m.nickname, r
-    FROM (
-        SELECT noticeno, title, contents, rdate, views, memberno, rownum as r
-        FROM notice
-        ORDER BY noticeno DESC
-    ) n
-    JOIN member m ON n.memberno = m.memberno
+  <select id="list_search_paging" resultType="dev.mvc.notice.NoticeMemberFileVO" parameterType="Map">
+    SELECT n.noticeno, n.title, n.contents, n.rdate, n.views, m.nickname, nf.notice_file_no, nf.name, nf.sizes, nf.ex, nf.src, r
+        FROM (
+            SELECT noticeno, title, contents, rdate, views, memberno, rownum as r
+            FROM notice
+            ORDER BY noticeno DESC
+        ) n
+        JOIN member m ON n.memberno = m.memberno
+        LEFT JOIN notice_file nf ON n.noticeno = nf.noticeno
     <if test="word != null and word != ''">
     WHERE 
       (
@@ -84,11 +85,18 @@
   </select>
 
   <!-- 공지사항 조회수 1 상승 -->
-  <update id="increased_views" parameterType="dev.mvc.notice.NoticeVO">
+  <update id="increased_views" parameterType="int">
     UPDATE notice
     SET views = views + 1
     WHERE noticeno = #{noticeno}
   </update>
+
+  <!-- 공지사항 조회한 후 조회 수 -->
+  <select id="views" parameterType="int">
+     select views
+     FROM notice 
+     WHERE noticeno = #{noticeno}
+  </select>
 
   <!-- 공지사항 수정 -->
   <update id="update" parameterType="dev.mvc.notice.NoticeMemberFileVO">

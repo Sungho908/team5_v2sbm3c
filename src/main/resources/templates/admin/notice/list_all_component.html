@@ -20,20 +20,20 @@
       </tr>
     </thead>
     <tbody>
-      <tr th:each="noticememberVO, status:${list}">
+      <tr th:each="noticememberfileVO, status:${list}">
         <td class="td_bs" th:text="|${(now_page-1) * 5 + status.index + 1}|"></td>
         <td class="td_bs"><a
-            th:href="@{|/admin/notice/read/${noticememberVO.noticeno}?word=${word}&now_page=${now_page}|}"
-            style="display: block;" th:text="${noticememberVO.title}"></a></td>
+            th:href="@{|/admin/notice/read/${noticememberfileVO.noticeno}?word=${word}&now_page=${now_page}|}"
+            style="display: block;" th:text="${noticememberfileVO.title}"></a></td>
         <td class="td_bs"><a
-            th:href="@{|/admin/notice/read/${noticememberVO.noticeno}?word=${word}&now_page=${now_page}|}"
-            style="display: block;" th:text="${noticememberVO.rdate}"></a></td>
-        <td class="td_bs" th:text="${noticememberVO.views}"></td>
-        <td class="td_bs" th:text="${noticememberVO.nickname}"></td>
+            th:href="@{|/admin/notice/read/${noticememberfileVO.noticeno}?word=${word}&now_page=${now_page}|}"
+            style="display: block;" th:text="${noticememberfileVO.rdate}"></a></td>
+        <td class="td_bs" th:text="${noticememberfileVO.views}"></td>
+        <td class="td_bs" th:text="${noticememberfileVO.nickname}"></td>
         <td class="td_bs">
-          <a th:href="@{|/admin/notice/update/${noticememberVO.noticeno}?word=${word }&now_page=${now_page}|}"><img
+          <a th:href="@{|/admin/notice/update/${noticememberfileVO.noticeno}?word=${word }&now_page=${now_page}|}"><img
               src="/admin/notice/images/update.png" class="icon"></a>
-          <a th:href="@{|/admin/notice/delete/${noticememberVO.noticeno}?word=${word}&now_page=${now_page}|}"><img
+          <a th:href="@{|/admin/notice/delete/${noticememberfileVO.noticeno}?word=${word}&now_page=${now_page}|}"><img
               src="/admin/notice/images/delete.png" class="icon"></a>
         </td>
       </tr>

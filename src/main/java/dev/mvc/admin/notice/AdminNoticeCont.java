@@ -45,7 +45,7 @@ public class AdminNoticeCont {
   }
 
   private void table_paging(Model model, String word, int now_page) {
-    ArrayList<NoticeMemberVO> list = this.noticeProc.list_search_paging(word, now_page, this.record_per_page);
+    ArrayList<NoticeMemberFileVO> list = this.noticeProc.list_search_paging(word, now_page, this.record_per_page);
     model.addAttribute("list", list);
     if (list.isEmpty()) {
     } else {

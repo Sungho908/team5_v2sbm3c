@@ -13,11 +13,10 @@ public interface NoticeProcInter {
   /** 공지사항 목록 */
   public ArrayList<NoticeMemberVO> list_all();
   
-  
   /** 검색 개수 */
   public int list_search_count(String word);
   
-  public ArrayList<NoticeMemberVO> list_search_paging(String word, int now_page, int record_per_page);
+  public ArrayList<NoticeMemberFileVO> list_search_paging(String word, int now_page, int record_per_page);
   
   /** 파일 유무 */
   public int file_count(int noticeno);
@@ -26,7 +25,10 @@ public interface NoticeProcInter {
   public NoticeMemberFileVO read(int count, int noticeno);
   
   /** 조회수 증가 */
-  public int increased_views(NoticeVO noticeVO);
+  public int increased_views(int noticeno);
+  
+  /** 공지사항 조회한 후 조회 수 */
+  public int views(int noticeno);
   
   /** 공지사항 수정 */
   public int update(NoticeMemberFileVO noticememberfileVO);
@@ -39,7 +41,5 @@ public interface NoticeProcInter {
   
   public String pagingBox(int now_page, String word, String list_file, int search_count, 
       int record_per_page, int page_per_block);
-  
-  public int increased_views(int noticeno);
   
 }
