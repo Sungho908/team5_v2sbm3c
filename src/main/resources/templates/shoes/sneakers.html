@@ -11,20 +11,19 @@
   <div class="title_line">
     스니커즈/슬립온 > 스니커즈
   </div>
-
   <div class="content_main">
     <div class="content_body" th:each="shoesVO, status:${list}">
       <div class="shoes">
-        <a th:href="@{|/shoes/review_detail/${shoesVO.shoesno}|}">
-          <img src="/images/" alt="스니커즈13">
+        <a href="/shoes/product_details?shoesno=1">
+          <!-- 이미지 및 기타 정보 -->dd
         </a>
         <p th:text="${shoesVO.contents}"></p>
         <p th:text="${shoesVO.title}"></p>
         <p th:text="${shoesVO.price}"></p>
-
       </div>
+
       <div class="shoes">
-        <a href="./product_details">
+        <a href="/shoes/product_details?shoesno=2">
           <img src="/images/nike.jpg" alt="스니커즈1">
         </a>
         <p>설명</p>
@@ -33,7 +32,6 @@
       </div>
       <!-- 한 줄에 6개가 안 되는 경우 빈 칸으로 채워줍니다 -->
     </div>
-
 
     <!-- 더보기메뉴 -->
     <div class="moreMenuContainer">
@@ -63,6 +61,5 @@
     </div>
   </div>
 </div>
-
 
 </html>

@@ -1,37 +1,7 @@
 <div th:fragment="review_list_all_fragment">
   <!-- <div th:replace=... -->
   
-  <table class="table_basic">
-    <colgroup>
-      <col style='width: 5%;' />
-      <col style='width: 60%;' />
-      <col style='width: 5%;' />
-      <col style='width: 5%;' />
-      <col style='width: 5%;' />
-      <col style='width: 20%;' />
-    </colgroup>
-    <thead>
-      <tr>
-        <th class="th_bs">후기 번호</th>
-        <th class="th_bs">후기 내용</th>
-        <th class="th_bs">후기 점수</th>
-        <th class="th_bs">신발 번호</th>
-        <th class="th_bs">멤버 번호</th>
-        <th class="th_bs">후기 작성일</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr th:each="shoesreviewVO, status:${list}">
-           <td class="td_bs" th:text="${shoesreviewVO.reviewno}"></td>
-         <td class="td_bs" th:text="${shoesreviewVO.contents}"></td>
-         <td class="td_bs" th:text="${shoesreviewVO.grade}"></td>
-         <td class="td_bs" th:text="${shoesreviewVO.shoesno}"></td>
-         <td class="td_bs" th:text="${shoesreviewVO.memberno}"></td>
-         <td class="td_bs" th:text="${shoesreviewVO.rdate}"></td> 
-      </tr>
-    </tbody>
-  </table>
-  
+    <h1 class="title">후기 모두보기</h1>
   <div class="review-list">
   <div class="review-item" th:each="shoesreviewVO, status:${list}">
     <div class="review-info">
@@ -58,7 +28,9 @@
       <span class="review-label">후기 작성일:</span>
       <span class="review-value" th:text="${shoesreviewVO.rdate}"></span>
     </div>
+    
   </div>
+  
 </div>
 
 

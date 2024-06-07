@@ -36,7 +36,7 @@ public class ShoesVO {
   
   
   /** 신발 가격*/
-  private Double price;
+  private Integer price;
   
   
   /** 신발 할인율 */
