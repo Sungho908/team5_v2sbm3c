@@ -92,7 +92,7 @@ public class AdminMemberCont {
       Alert message = new Alert("업로드가 불가능한 파일입니다. 이미지 파일을 등록해주세요.", "admin/signup", RequestMethod.GET, null);
       return DefaultCont.showMessageAndRedirect(message, model);
     } else if (file != "" && Tool.isImage(file)) {
-      filename = Tool.saveFileSpring(memberVO.getMf(), upDir);
+      filename = Tool.saveFileSpring(memberVO.getMf());
       memberVO.setThumb(filename);
     }
 
@@ -139,7 +139,6 @@ public class AdminMemberCont {
   public String updateProc(MemberVO memberVO, Model model) {
     String file = "";
     String filename = "";
-    String upDir = Tool.getUploadDir();
     MultipartFile mf = memberVO.getMf();
 
     // MultipartFile 객체가 null인지 확인
@@ -156,7 +155,7 @@ public class AdminMemberCont {
       Alert message = new Alert("업로드가 불가능한 파일입니다. 이미지 파일을 등록해주세요.", "admin/signup", RequestMethod.GET, null);
       return DefaultCont.showMessageAndRedirect(message, model);
     } else if (!file.isEmpty() && Tool.isImage(file)) {
-      filename = Tool.saveFileSpring(mf, upDir);
+      filename = Tool.saveFileSpring(mf);
       memberVO.setThumb(filename); // 새로운 파일이 저장된 경우에만 thumb 값을 설정
     }
 

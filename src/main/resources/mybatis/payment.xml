@@ -10,7 +10,13 @@
   SELECT paymentno, rdate, status, payment_status, cs_status, total_price, delivery, total_payment, memberno
   FROM payment
   WHERE memberno = #{memberno}
+  ORDER BY rdate ASC
   </select>
+  
+  <delete id="delete" parameterType="int">
+    delete from payment
+    where paymentno = #{paymentno}
+  </delete>
   
   
 </mapper>
