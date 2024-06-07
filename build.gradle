@@ -26,7 +26,10 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-validation'
   implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
   implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/han
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
   implementation 'org.springframework.boot:spring-boot-starter-validation'  
     implementation 'commons-fileupload:commons-fileupload:1.5'

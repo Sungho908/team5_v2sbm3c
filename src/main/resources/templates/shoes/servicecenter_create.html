@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고객센터 글 등록</title>
+<link href="/css/service.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
+</head>
+<body>
+   <h2 style="text-align: center; margin-top: 20px;" >글 쓰기</h2>
+    <form action="/board/product/write.html?board_no=6" method="POST">
+        <label for="title">제목:</label><br>
+        <input type="text" id="title" class="service" name="title" placeholder="제목을 입력하세요"><br>
+        <label for="content">내용:</label><br>
+        <textarea id="content" class="service" name="content" rows="4" cols="50" placeholder="내용을 입력하세요"></textarea><br><br>
+        <div class="service_btn">
+        <input type="submit" class="btn" value="등록">
+        <input type="button"  class="btn" value="취소" onclick="window.location.href='/customer_service.html'">
+        </div>
+    </form>
+</body>
+
+</html>

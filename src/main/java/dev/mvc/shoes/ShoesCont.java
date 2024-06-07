@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import dev.mvc.category.CategoryVO;
 import dev.mvc.member.MemberProcInter;
 import dev.mvc.option.OptionVO;
 import dev.mvc.tool.Tool;
@@ -56,6 +57,22 @@ public class ShoesCont {
     model.addAttribute("no", no);
   }
 
+  private void review_paging(Model model, String word, int now_page) {
+    ArrayList<ShoesReviewVO> list = this.shoesProc.review_paging(word, now_page, this.record_per_page);
+    model.addAttribute("list", list);
+
+    int search_count = this.shoesProc.review_search_count(word);
+    String paging = this.shoesProc.pagingBox(now_page, word, "/shoes/review_list_all", search_count,
+        this.record_per_page, this.page_per_block);
+
+    int no = search_count - ((now_page - 1) * this.record_per_page);
+
+    model.addAttribute("paging", paging);
+    model.addAttribute("now_page", now_page);
+    model.addAttribute("word", word);
+    model.addAttribute("no", no);
+  }
+
   private void table_paging_option(Model model, int shoesno, String word, int now_page) {
     ArrayList<ShoesOptionVO> list = this.shoesProc.option_paging(shoesno, word, now_page, this.record_per_page);
     model.addAttribute("list", list);
@@ -87,17 +104,39 @@ public class ShoesCont {
    * @return
    */
   @GetMapping(value = "/list_all")
-  public String list_all(HttpSession session, Model model,
-      @RequestParam(name = "word", defaultValue = "") String word,
+  public String list_all(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
-      
+
     word = Tool.checkNull(word).trim();
     // shoesVO.setNamesub("-"); // 폼 초기값 설정
-    
+
     table_paging(model, word, now_page);
 
     return "shoes/list_all"; // /shoes/list_search.html
+  }
+
+  /**
+   * 후기 목록
+   * 
+   * @param model
+   * @param shoesVO
+   * @return
+
+   */
+  @GetMapping(value = "/review_list_all")
+  public String review_list_all(HttpSession session, Model model,
+      @RequestParam(name = "shoesno") int shoesno,
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+    ArrayList<ShoesReviewVO> list = shoesProc.review_list_all(shoesno);
+    // 모델에 후기 목록 추가
+    model.addAttribute("list", list);
+
+    review_paging(model, word, now_page);
+    
+  
+    return "shoes/review_list_all"; // /shoes/list_search.html
   }
 
   /**
@@ -161,7 +200,7 @@ public class ShoesCont {
       BindingResult bindingResult, @RequestParam(name = "shoesno") Integer shoesno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
+
     ShoesVO shoesVO = this.shoesProc.read(shoesno);
     model.addAttribute("shoesVO", shoesVO);
 
@@ -172,8 +211,8 @@ public class ShoesCont {
 
     int cnt = this.shoesProc.option_create(shoesoptionVO);
     model.addAttribute("cnt", cnt);
-    return "redirect:/shoes/read/" + shoesno + "?optionno=" + shoesoptionVO.getOptionno() + "&word=" + Tool.encode(word) + "&now_page=" + now_page;
-
+    return "redirect:/shoes/read/" + shoesno + "?optionno=" + shoesoptionVO.getOptionno() + "&word=" + Tool.encode(word)
+        + "&now_page=" + now_page;
 
   }
 
@@ -188,10 +227,10 @@ public class ShoesCont {
   public String read(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
+
     ShoesVO shoesVO = this.shoesProc.read(shoesno);
     model.addAttribute("shoesVO", shoesVO);
-    
+
     ArrayList<ShoesVO> menu = this.shoesProc.list_all();
     model.addAttribute("menu", menu);
 
@@ -319,10 +358,8 @@ public class ShoesCont {
 
   /** 옵션 삭제 폼 */
   @GetMapping(value = "/option_delete/{optionno}")
-  public String option_delete(HttpSession session, Model model, 
-      @PathVariable("optionno") Integer optionno,
-      @RequestParam(name = "shoesno") Integer shoesno, 
-      @RequestParam(name = "word", defaultValue = "") String word,
+  public String option_delete(HttpSession session, Model model, @PathVariable("optionno") Integer optionno,
+      @RequestParam(name = "shoesno") Integer shoesno, @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
     ShoesOptionVO shoesoptionVO = this.shoesProc.read_option(shoesno, optionno);
@@ -339,10 +376,8 @@ public class ShoesCont {
 
   /** 옵션 삭제 */
   @PostMapping(value = "/option_delete")
-  public String option_delete_process(HttpSession session, Model model, 
-      @Valid ShoesOptionVO shoesoptionVO,
-      @RequestParam("shoesno") Integer shoesno,
-      @RequestParam("optionno") Integer optionno,
+  public String option_delete_process(HttpSession session, Model model, @Valid ShoesOptionVO shoesoptionVO,
+      @RequestParam("shoesno") Integer shoesno, @RequestParam("optionno") Integer optionno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
@@ -356,58 +391,80 @@ public class ShoesCont {
       return "redirect:/shoes/list_all?now_page=1";
     } else {
       model.addAttribute("code", "delete_fail");
-      
+
       return "shoes/msg";
     }
   }
-  
+
   /**
-   * 장바구니 폼
-   */
-  @GetMapping(value = "/basket")
-  public String basket(HttpSession session, Model model,
-      @RequestParam(name = "word", defaultValue = "") String word,
-      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-
-
-    table_paging(model, word, now_page);
-
-    return "shoes/basket";
-  }
-  
-  /**
-   * 스니커즈 목록
+   * 스니커즈 폼
    * 
    * @param model
    * @param shoesno 조회할 카테고리 번호
    * @return
    */
   @GetMapping(value = "/sneakers")
-  public String sneakers(HttpSession session, Model model, 
-      @RequestParam(name = "word", defaultValue = "") String word,
-      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+  public String sneakers(HttpSession session, Model model,
+      @RequestParam(name = "word", defaultValue = "") String word) {
 
-    table_paging(model, word, now_page);
+    ArrayList<ShoesVO> list = shoesProc.sneakers_list(word);
+    model.addAttribute("list", list);
+    System.out.println("list:" + list.size());
 
     return "shoes/sneakers"; // /templates/shoes/read.html
   }
 
   /**
-   * 슬립온 목록
+   * 스니커즈 목록 리스트
+   * 
+   * @param session
+   * @param model
+   * @param categoryVO
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @PostMapping(value = "/sneakers_list")
+  public String sneakers_list(HttpSession session, Model model,
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+    table_paging(model, word, now_page);
+    return "redirect:/shoes/sneakers";
+  }
+
+  /**
+   * 슬립온 폼
    * 
    * @param model
    * @param shoesno 조회할 카테고리 번호
    * @return
    */
   @GetMapping(value = "/slipon")
-  public String slipon(HttpSession session, Model model, 
-      @RequestParam(name = "word", defaultValue = "") String word,
+  public String slipon(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
-    table_paging(model, word, now_page);
+
+    ArrayList<ShoesVO> list = shoesProc.slipon_list(word);
+    model.addAttribute("list", list);
 
     return "shoes/slipon"; // /templates/shoes/read.html
+  }
 
+  /**
+   * 슬립온 목록 리스트
+   * 
+   * @param model
+   * @param shoesno 조회할 카테고리 번호
+   * @return
+   */
+  @PostMapping(value = "/slipon_list")
+  public String slipon_list(HttpSession session, Model model,
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+    table_paging(model, word, now_page);
+
+    return "redirect:/shoes/slipon";
   }
 
   /**
@@ -418,15 +475,15 @@ public class ShoesCont {
    * @return
    */
   @GetMapping(value = "/boots")
-  public String boots(HttpSession session, Model model, 
-      @RequestParam(name = "word", defaultValue = "") String word,
+  public String boots(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
+
     table_paging(model, word, now_page);
 
     return "shoes/boots"; // /templates/shoes/read.html
 
   }
+
   /**
    * 워커 목록
    * 
@@ -435,17 +492,18 @@ public class ShoesCont {
    * @return
    */
   @GetMapping(value = "/worker")
-  public String worker(HttpSession session, Model model, 
-      @RequestParam(name = "word", defaultValue = "") String word,
+  public String worker(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
+
     table_paging(model, word, now_page);
 
     return "shoes/worker"; // /templates/shoes/read.html
 
   }
+
   /**
    * 슬리퍼 목록
+   * 
    * @param session
    * @param model
    * @param word
@@ -453,17 +511,18 @@ public class ShoesCont {
    * @return
    */
   @GetMapping(value = "/sandal")
-  public String sandal(HttpSession session, Model model, 
-      @RequestParam(name = "word", defaultValue = "") String word,
+  public String sandal(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
+
     table_paging(model, word, now_page);
 
     return "shoes/sandal"; // /templates/shoes/read.html
 
   }
+
   /**
    * 샌들 목록
+   * 
    * @param session
    * @param model
    * @param word
@@ -471,17 +530,18 @@ public class ShoesCont {
    * @return
    */
   @GetMapping(value = "/slipper")
-  public String slipper(HttpSession session, Model model, 
-      @RequestParam(name = "word", defaultValue = "") String word,
+  public String slipper(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
+
     table_paging(model, word, now_page);
 
     return "shoes/slipper"; // /templates/shoes/read.html
 
   }
+
   /**
    * 러닝화 목록
+   * 
    * @param session
    * @param model
    * @param word
@@ -489,17 +549,17 @@ public class ShoesCont {
    * @return
    */
   @GetMapping(value = "/running")
-  public String running(HttpSession session, Model model, 
-      @RequestParam(name = "word", defaultValue = "") String word,
+  public String running(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
+
     table_paging(model, word, now_page);
 
     return "shoes/running"; // /templates/shoes/read.html
   }
-  
+
   /**
    * 로퍼 목록
+   * 
    * @param session
    * @param model
    * @param word
@@ -507,17 +567,17 @@ public class ShoesCont {
    * @return
    */
   @GetMapping(value = "/roper")
-  public String roper(HttpSession session, Model model, 
-      @RequestParam(name = "word", defaultValue = "") String word,
+  public String roper(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
+
     table_paging(model, word, now_page);
 
     return "shoes/roper"; // /templates/shoes/read.html
   }
-  
+
   /**
    * 브랜드 목록
+   * 
    * @param session
    * @param model
    * @param word
@@ -525,26 +585,180 @@ public class ShoesCont {
    * @return
    */
   @GetMapping(value = "/brand")
-  public String brand(HttpSession session, Model model, 
-      @RequestParam(name = "word", defaultValue = "") String word,
+  public String brand(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
+
     table_paging(model, word, now_page);
 
-    return "shoes//brand"; // /templates/shoes/read.html
+    return "shoes/brand"; // /templates/shoes/read.html
 
   }
-  
-  
-  @GetMapping(value = "/showlist")
-  public String showlist(HttpSession session, Model model, 
-      @RequestParam(name = "word", defaultValue = "") String word,
+
+  /**
+   * 나이키 목록
+   * 
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/nike")
+  public String nike(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
+
     table_paging(model, word, now_page);
 
-    return "shoes/showlist"; // /templates/shoes/read.html
+    return "shoes/nike"; // /templates/shoes/read.html
 
   }
-  
+
+  /**
+   * 뉴발란스 목록
+   * 
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/nb")
+  public String nb(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+    table_paging(model, word, now_page);
+
+    return "shoes/nb"; // /templates/shoes/read.html
+
+  }
+
+  /**
+   * 아디다스 목록
+   * 
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/adidas")
+  public String adidas(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+    table_paging(model, word, now_page);
+
+    return "shoes/adidas"; // /templates/shoes/read.html
+
+  }
+
+  /**
+   * 크록스 목록
+   * 
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/crocs")
+  public String crocs(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+    table_paging(model, word, now_page);
+
+    return "shoes/crocs"; // /templates/shoes/read.html
+
+  }
+
+  /**
+   * 컨버스 목록
+   * 
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/converse")
+  public String converse(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+    table_paging(model, word, now_page);
+
+    return "shoes/converse"; // /templates/shoes/read.html
+
+  }
+
+  /**
+   * 장바구니 목록
+   * 
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/basket")
+  public String basket(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+    table_paging(model, word, now_page);
+
+    return "shoes/basket"; // /templates/shoes/read.html
+
+  }
+
+  /**
+   * 제품 상세
+   * 
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/product_details")
+  public String product_details(HttpSession session, Model model,
+      @RequestParam(name = "shoesno") int shoesno) {
+
+    
+    
+    return "shoes/product_details"; // /templates/shoes/read.html
+
+  }
+
+  /**
+   * 고객센터 상세
+   * 
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/servicecenter")
+  public String servicecenter(HttpSession session, Model model,
+      @RequestParam(name = "word", defaultValue = "") String word) {
+
+    return "shoes/servicecenter"; // /templates/shoes/read.html
+
+  }
+
+  /**
+   * 고객센터 문의
+   * 
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/servicecenter_create")
+  public String servicecenter_create(HttpSession session, Model model,
+      @RequestParam(name = "word", defaultValue = "") String word) {
+
+    return "shoes/servicecenter_create"; // /templates/shoes/read.html
+
+  }
+
 }

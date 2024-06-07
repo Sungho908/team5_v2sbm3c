@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html layout:decorate="~{layout}">
+<!-- layout.html 상속-->
+
+
+<div layout:fragment="content">
+
+  <body>
+    <div class="detail_container">
+      <h1 class="title">신발 제목</h1>
+      <div id="wrap" class="product">
+        <img src="/images/nike.jpg" alt="스니커즈1">
+        <div class="content">
+          <p>상품 설명 </p>
+          <p>가격:</p>
+        </div>
+        <td>
+          <div class="content">
+            <h3 for="sizes" style="text-align: center;">SIZE</h3>
+            <p style="text-align: center; text-align: center;">[필수] 옵션을 선택해주세요</p>
+
+            <select name="sizes" id="sizes" class="form-control form-control-sm" value="사이즈를 선택하세요"
+              style="width: 50%; margin: 0 auto; margin-top: 20px; text-align: center;">
+              <!-- 220부터 300까지의 옵션 추가 -->
+              <option value="220">220</option>
+              <option value="225">225</option>
+              <option value="230">230</option>
+              <option value="235">235</option>
+              <option value="240">240</option>
+              <option value="245">245</option>
+              <option value="250">250</option>
+              <option value="255">255</option>
+              <option value="260">260</option>
+              <option value="265">265</option>
+              <option value="270">270</option>
+              <option value="275">275</option>
+              <option value="280">280</option>
+              <option value="285">285</option>
+              <option value="290">290</option>
+              <option value="295">295</option>
+              <option value="300">300</option>
+              <!-- 다른 옵션들을 필요에 따라 추가하세요 -->
+            </select>
+            <div class="content">
+              <button class="detail_btnl">장바구니</button>
+              <button class="detail_btnr">구매하기</button>
+            </div>
+
+          </div>
+        </td>
+      </div>
+
+
+      <!-- //상품상세정보 -->
+      <!-- //상품구매안내 -->
+      <!-- 상품사용후기 -->
+      <h2 class="title">상품후기<span class="all">
+          <a href="/shoes/review_list_all?shoesno=1">
+            상품 후기 모두보기
+          </a>
+          <i class="bi bi-chevron-right"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+              fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+            </svg></i>
+        </span>
+      </h2>
+
+      <div class="review">
+        <div class="rating">평점: <span class="stars">★★★★★</span></div>
+        <div class="username">아이디: JohnDoe123</div>
+        <div class="content">내용</div>
+        <div class="date">2024-06-04</div>
+        <div class="like-btn">
+          <button>좋아요</button> <!-- 좋아요 버튼 추가 -->
+        </div>
+      </div>
+
+      <!-- 후기 답글 -->
+      <div class="widget_item_comment_container">
+        <div class="widget_answer_img"></div>
+        <div class="widget_item_comment_content">
+          <p>내용<br></p>
+          <div class="widget_item_comment_content_1">운영자</div>
+        </div>
+      </div>
+      <div class="between_line"></div>
+      <!-- 후기 답글 끝-->
+
+      <div class="review">
+        <div class="rating">평점: <span class="stars">★★★★★</span></div>
+        <div class="username">아이디: JohnDoe123</div>
+        <div class="content">내용</div>
+        <div class="date">2024-06-04</div>
+        <div class="like-btn">
+          <button>좋아요</button> <!-- 좋아요 버튼 추가 -->
+        </div>
+      </div>
+
+      <!-- 후기 답글 -->
+      <div class="widget_item_comment_container">
+        <div class="widget_answer_img"></div>
+        <div class="widget_item_comment_content">
+          <p>내용<br></p>
+          <div class="widget_item_comment_content_1">운영자</div>
+        </div>
+      </div>
+      <!-- 후기 답글 -->
+      <div class="between_line"></div>
+    </div>
+  </body>
+
+
+</html>

@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.mvc.shoes.ShoesDAOInter">
   <insert id="create" parameterType="dev.mvc.shoes.ShoesVO">
-    INSERT INTO SHOES (SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, PRICE, DISCOUNT, CONTENTS)
-    VALUES (SHOES_SEQ.nextval, #{categoryno}, #{memberno}, #{title}, #{brand}, #{price}, #{discount}, #{contents})
+    INSERT INTO SHOES (SHOESNO, MEMBERNO, TITLE, BRAND, PRICE, DISCOUNT, CONTENTS)
+    VALUES (SHOES_SEQ.nextval, #{memberno}, #{title}, #{brand}, #{price}, #{discount}, #{contents})
   </insert>
 
   <insert id="option_create" parameterType="dev.mvc.shoes.ShoesOptionVO">
@@ -12,9 +12,34 @@
   </insert>
 
   <select id="list_all" resultType="dev.mvc.shoes.ShoesVO">
-    SELECT SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE
+    SELECT SHOESNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE
     FROM shoes
     ORDER BY rating ASC
+  </select>
+
+  <select id="review_list_all" resultType="dev.mvc.shoes.ShoesReviewVO">
+    SELECT r.reviewno, r.contents, r.grade, r.shoesno, r.memberno, r.rdate
+    FROM review r
+    JOIN shoes s ON s.shoesno = r.shoesno
+    WHERE r.shoesno = #{shoesno}
+  </select>
+
+  <!--없어도됨-->
+  <select id="sneakers_list" resultType="dev.mvc.shoes.ShoesVO">
+  SELECT s.title, s.brand, s.contents
+  FROM shoes s
+  JOIN category_list cl ON s.shoesno = cl.shoesno
+  JOIN category c ON cl.categoryno = c.categoryno
+ WHERE UPPER(TITLE) LIKE '%' || ('스니커즈') || '%' OR (BRAND) LIKE '%' || ('스니커즈') || '%'
+  </select>
+
+  <!--없어도됨-->
+  <select id="slipon_list" resultType="dev.mvc.shoes.ShoesVO">
+  SELECT s.title, s.brand, s.contents
+  FROM shoes s
+  JOIN category_list cl ON s.shoesno = cl.shoesno
+  JOIN category c ON cl.categoryno = c.categoryno
+ WHERE UPPER(TITLE) LIKE '%' || ('슬립온') || '%' OR (BRAND) LIKE '%' || ('슬립온') || '%'
   </select>
 
   <select id="select_shoes" resultType="dev.mvc.shoes.ShoesVO">
@@ -22,7 +47,7 @@
   </select>
 
   <select id="read" resultType="dev.mvc.shoes.ShoesVO">
-    SELECT SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE
+    SELECT SHOESNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE
     FROM SHOES
     WHERE shoesno=#{shoesno}
   </select>
@@ -73,7 +98,6 @@
     DELETE FROM OPTIONS WHERE OPTIONNO = #{optionno}
   </delete>
 
-  
 
   <select id="parent_count" parameterType="Integer">
     SELECT count(*) as cnt FROM SHOES  WHERE SHOESNO = #{shoesno}
@@ -96,13 +120,23 @@
     WHERE shoesno = #{shoesno}
     ORDER BY optionno ASC
   </select>
-  
+
+  <select id="review_search_count" resultType="int">
+    SELECT COUNT(*) as cnt
+    FROM review
+    <if test="word != null and word != ''">
+      WHERE UPPER(contents) LIKE '%' || UPPER(#{word}) || '%'
+    </if>
+    ORDER BY grade ASC
+  </select>
+
+
   <select id="list_search_paging" resultType="dev.mvc.shoes.ShoesVO" parameterType="Map">
-    SELECT SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE, r
+    SELECT SHOESNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE, r
     FROM (
-        SELECT SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE, rownum as r
+        SELECT SHOESNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE, rownum as r
         FROM (
-            SELECT SHOESNO, CATEGORYNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE
+            SELECT SHOESNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT, CONTENTS, VISIBLE
             FROM SHOES
     <if test="word != null and word != ''">
               WHERE UPPER(TITLE) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(BRAND) LIKE '%' || UPPER(#{word}) || '%'  
@@ -113,4 +147,22 @@
     WHERE r &gt; = #{start_num} AND r &lt; = #{end_num}
     <!-- WHERE r >= 1 AND r <= 3 -->
   </select>
+
+  <select id="review_paging" resultType="dev.mvc.shoes.ShoesReviewVO" parameterType="Map">
+    SELECT REVIEWNO, CONTENTS, GRADE, RDATE, SHOESNO, MEMBERNO, r
+  FROM (
+    SELECT REVIEWNO, CONTENTS, GRADE, RDATE, SHOESNO, MEMBERNO, rownum as r
+    FROM (
+      SELECT R.REVIEWNO, R.CONTENTS, R.GRADE, R.RDATE, R.SHOESNO, R.MEMBERNO
+      FROM REVIEW R
+      INNER JOIN SHOES S ON R.SHOESNO = S.SHOESNO
+    <if test="word != null and word != ''">
+        WHERE UPPER(R.CONTENTS) LIKE '%' || UPPER(#{word}) || '%'
+      </if>
+    ORDER BY R.REVIEWNO ASC
+    )
+  )
+  WHERE r &gt;= #{start_num} AND r &lt;= #{end_num}
+  </select>
 </mapper>
+

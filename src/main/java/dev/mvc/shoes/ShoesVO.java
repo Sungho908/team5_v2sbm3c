@@ -34,7 +34,7 @@ public class ShoesVO {
   private Double rating;
   
   /** 신발 가격*/
-  private Double price;
+  private Integer price;
   
   /** 신발 할인율 */
   private Double discount;
