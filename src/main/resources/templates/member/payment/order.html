@@ -32,7 +32,7 @@
           <tbody th:each="list : ${paymentsList}" style="border-bottom: 2px solid #594f4f;">
             <tr style="border-bottom: 1px solid #ddd;">
               <!--/*====================== 주문일(주문번호) ======================*/-->
-              <td th:rowspan="${#lists.size(list.payment_details_option)}" style="border-right: 1px solid #ddd;">              
+              <td th:rowspan="2" style="border-right: 1px solid #ddd;">              
                 <div>
                   <span th:text="${#dates.format(list.rdate,'yyyy-MM-dd')}">구매일표시</span>
                   <span class="paymentno" style="color: #999;" th:text="|(${list.paymentno})|">주문번호표시</span>
@@ -83,7 +83,7 @@
               <td colspan="3">
                 <div style="display: flex; justify-content: space-between; margin: 0px 10px 0px 10px; height: 30px; align-items: center;">
                   <div>
-                    <a href="#" style="color: #416de9; font-size: 12px; margin-right:10px;">문의하기▶</a>
+                    <a href="/member/order/inquiry" style="color: #416de9; font-size: 12px; margin-right:10px;">문의하기▶</a>
                     <a href="javascript:void(0);" class="deletepayment" style="color: #416de9; font-size: 12px;">주문내역삭제▶</a>
                   </div>
                   <div>
@@ -94,7 +94,7 @@
             </tr>
           </tbody>
         </table>
-    </div>
+    </div>    
     <script type="text/javascript">
       document.addEventListener("DOMContentLoaded", function() {
         // 모든 deletepayment 링크를 선택
@@ -125,14 +125,16 @@
                 location.reload(true);
               })
               .catch(error => {
-                console.error('Error: error');
+                console.error('Error:', error);
               })
             }
           });
         });
       });
     </script>
+    
   </div>
+  
 </body>
 
 </html>

@@ -27,7 +27,7 @@ public class PaymentTotalVO {
   private Double delivery;
   private Double total_payment;
   
-  private ArrayList<HashMap<String, Object>> payment_details_option;
+  private ArrayList<PaymentDetailsOptionVO> payment_details_option;
   
   private Integer shoesno;
   private String title;

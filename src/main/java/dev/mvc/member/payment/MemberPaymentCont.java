@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import dev.mvc.member.MemberVO;
 import dev.mvc.payment.PaymentProcInter;
 import dev.mvc.payment.PaymentVO;
+import dev.mvc.paymentDetails.PaymentDetailsProcInter;
 import dev.mvc.paymentTotal.PaymentTotalProcInter;
 import dev.mvc.paymentTotal.PaymentTotalVO;
 import jakarta.servlet.http.HttpSession;
@@ -30,7 +31,11 @@ public class MemberPaymentCont {
   private PaymentProcInter paymentProc;
   
   @Autowired
-  @Qualifier("dev.mvc.paymentTotal.paymentTotalProc")
+  @Qualifier("dev.mvc.paymentDetails.PaymentDetailsProc")
+  private PaymentDetailsProcInter paymentDetailsProc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.paymentTotal.PaymentTotalProc")
   private PaymentTotalProcInter paymentTotalProc;
   
   @GetMapping("order")
@@ -46,7 +51,7 @@ public class MemberPaymentCont {
   @ResponseBody
   @PostMapping("delete")
   public ResponseEntity<String> delete(@RequestParam("no")int paymentno){
-    if(this.paymentProc.delete(paymentno) == 0) {
+    if(this.paymentDetailsProc.delete(paymentno) == 0 && this.paymentProc.delete(paymentno) == 0) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("주문내역을 찾을 수 없음");
     }
     
