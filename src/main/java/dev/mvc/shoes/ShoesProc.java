@@ -6,12 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import dev.mvc.admin.category.CategoryVO;
-import dev.mvc.shoes.ShoesVO;
-import dev.mvc.shoes.ShoesVOMenu;
 
 //@Component("dev.mvc.shoes.ShoesProc")
 @Service("dev.mvc.shoes.ShoesProc")

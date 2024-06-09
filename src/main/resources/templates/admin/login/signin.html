@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html layout:decorate="~{admin/layout}">
+<!-- layout.html 상속 -->
+<div layout:fragment="content">
+
+  <div style="border: 1px solid black; width: 80%; margin: 0px auto;">
+
+
+    <form style="width:80%; margin:0 auto;" class="row g-3" id="frm" name="frm" method="post" action="./signin"
+      enctype="multipart/form-data">
+      
+      <div class="col-12">
+        <label for="id" class="form-label">아이디 │ admin1</label>
+        <input id="id" type="text" class="form-control" name="id" placeholder="아이디" th:value="${ck_id}" autofocus>
+      </div>
+      <span id='id_msg'></span>
+
+
+
+      <div class="col-12">
+        <label class="form-label">패스워드 │ admin123</label>
+        <input id="pw1" type='password' class="form-control" name="pw" required="required" th:value="${ck_pw}" placeholder="패스워드">
+      </div>
+      <span id='pw_msg'></span>
+
+
+      <div class="col-12">
+        <input type="checkbox" name="save" th:checked="${save}">
+        <label for="save"
+          style="-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">로그인
+          정보 기억하기</label>
+      </div>
+
+      <div class="col-4" style="margin-left: 29%; margin-bottom:2%">
+        <button type="button" class="btn btn-secondary btn-sm" id="submitBtn" onclick="send()">로그인</button>
+      </div>
+
+      <div class="col-4">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='/signup'">회원가입</button>
+      </div>
+      
+    </form>
+  </div>
+  <script type="text/javascript" src="/js/signin.js"></script>
+</div>
+
+
+</html>

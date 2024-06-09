@@ -2,10 +2,7 @@ package dev.mvc.member;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;  // 구현 클래스를 교체하기 쉬운 구조 지원
-
-// import javax.servlet.http.HttpSession; // Spring Boot ~ 2.9
+import java.util.Map;
 import jakarta.servlet.http.HttpSession; //  Spring Boot 3.0~
 
 public interface MemberProcInter {
@@ -44,7 +41,6 @@ public interface MemberProcInter {
   public MemberVO readById(String id);
   
   /**
-<<<<<<< HEAD
    * 로그인된 회원 계정인지 검사합니다.
    * @param session
    * @return true: 사용자
@@ -57,20 +53,6 @@ public interface MemberProcInter {
    * @return true: 사용자
    */
   public boolean isMemberAdmin(HttpSession session);
-
-  /**
-   * 수정 처리
-   * @param memberVO
-   * @return
-   */
-  public int update(MemberVO memberVO);
- 
-  /**
-   * 회원 삭제 처리
-   * @param memberno
-   * @return
-   */
-  public int delete(int memberno);
   
   /**
    * 현재 패스워드 검사
@@ -107,5 +89,84 @@ public interface MemberProcInter {
    * @param MemberVO 객체
    * @return 성공한 쿼리 갯수
    * */
+  public int update(MemberVO memberVO);
+  
+  /**
+   * 회원정보 수정 관리자 페이지<br>
+   * id="updateAdmin" parameterType="dev.mvc.member.MemberVO"
+   * @param MemberVO 객체
+   * @return 성공한 쿼리 갯수
+   * */
+  public int updateAdmin(MemberVO memberVO);
+  
+  /**
+   * 회원이 탈퇴처리<br>
+   * id="deleteByMember" parameterType="int"
+   * 
+   * @param memberno
+   * @return 성공한 쿼리 갯수
+   * */
+  public int deleteByMember(int memberno);
+  
+  /**
+   * 회원 목록 출력
+   * id="list_all" resultType="dev.mvc.member.memberVO"
+   * @return MemberVO 객체
+   * */
+  public ArrayList<MemberVO> list_all();
+  
+  /**
+   * 회원 삭제
+   * id="delete" parameterType="int"
+   * @param memberno
+   * @return 성공한 쿼리 갯수
+   * */
+  public int delete(int memberno);
+  
+  /**
+   * 선택 항목 검색된 레코드 수
+   * id="list_search_count" resultType="int" parameterType="Map"
+   * @param Map 
+   * @return 검색된 레코드 수
+   * */
+  public int list_search_count(Map<String, Object> map);
+  
+  /**
+   * 검색목록 페이징
+   * select id="list_search_paging" resultType="dev.mvc.cate.CateVO" parameterType="Map"
+   * @param map
+   * @return 조회한 레코드 목록
+   */
+  public ArrayList<MemberVO> list_search_paging(String word, int now_page, int record_per_page);
+  
+  /** 
+   * SPAN태그를 이용한 박스 모델의 지원, 1 페이지부터 시작 
+   * 현재 페이지: 11 / 22   [이전] 11 12 13 14 15 16 17 18 19 20 [다음] 
+   *
+   * @param memberno 카테고리번호 
+   * @param now_page  현재 페이지
+   * @param word 검색어
+   * @param list_file 목록 파일명
+   * @param search_count 검색 레코드수    
+   * @return 페이징 생성 문자열
+   */
+  String pagingBox(int memberno, int now_page, String word, String list_file, int search_count);
+
+  /**
+   * 아이디 찾기 email이 일치하는 id 찾기
+   * id="findid" resultType="String" parameterType="String"
+   * @param email
+   * @return id
+   * */
+  public ArrayList<String> findid(String email);
+  
+  /**
+   * 비밀번호 찾기(변경) id, email이 일치하는 pw 변경하기
+   * id="findpw" parameterType="Map"
+   * @param Map
+   * @return 성공한 쿼리 갯수
+   * */
+  public HashMap<String, Object> findpw(HashMap<String, Object> map);
+  
 }
 

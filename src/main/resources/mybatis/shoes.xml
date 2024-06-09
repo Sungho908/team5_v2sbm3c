@@ -33,6 +33,7 @@
   </select>
 
   <!--없어도됨-->
+<<<<<<< HEAD
   <select id="sneakers_list" resultType="dev.mvc.shoes.ShoesReviewVO">
     SELECT s.title, s.brand, s.contents, s.price
     FROM shoes s
@@ -50,6 +51,23 @@
     JOIN category c ON cl.categoryno = c.categoryno
     WHERE UPPER(TITLE) LIKE '%' || ('슬립온') || '%' OR (BRAND) LIKE '%' || ('슬립온')
     || '%'
+=======
+  <select id="sneakers_list" resultType="dev.mvc.shoes.ShoesVO">
+  SELECT s.title, s.brand, s.contents
+  FROM shoes s
+  JOIN category_list cl ON s.shoesno = cl.shoesno
+  JOIN category c ON cl.categoryno = c.categoryno
+ WHERE UPPER(TITLE) LIKE '%' || ('스니커즈') || '%' OR (BRAND) LIKE '%' || ('스니커즈') || '%'
+  </select>
+
+  <!--없어도됨-->
+  <select id="slipon_list" resultType="dev.mvc.shoes.ShoesVO">
+  SELECT s.title, s.brand, s.contents
+  FROM shoes s
+  JOIN category_list cl ON s.shoesno = cl.shoesno
+  JOIN category c ON cl.categoryno = c.categoryno
+ WHERE UPPER(TITLE) LIKE '%' || ('슬립온') || '%' OR (BRAND) LIKE '%' || ('슬립온') || '%'
+>>>>>>> 9e71262b6eeddb27194735ee7c6f7e0c9032cbf2
   </select>
 
   <!--없어도됨-->
@@ -171,6 +189,7 @@
     ORDER BY shoesno ASC ) ) WHERE r &gt; = #{start_num} AND r &lt; = #{end_num} <!-- WHERE r >= 1 AND r <= 3 -->
   </select>
 
+<<<<<<< HEAD
 
   <select id="review_paging" resultType="dev.mvc.shoes.ShoesReviewVO"
     parameterType="Map"> SELECT REVIEWNO, CONTENTS, GRADE, RDATE, SHOESNO,
@@ -220,14 +239,23 @@
     JOIN shoes s ON o.shoesno = s.shoesno
     WHERE b.memberno = ${memberno}
 </select>
+=======
+  <select id="review_paging" resultType="dev.mvc.shoes.ShoesReviewVO" parameterType="Map">
+    SELECT REVIEWNO, CONTENTS, GRADE, RDATE, SHOESNO, MEMBERNO, r
+  FROM (
+    SELECT REVIEWNO, CONTENTS, GRADE, RDATE, SHOESNO, MEMBERNO, rownum as r
+    FROM (
+      SELECT R.REVIEWNO, R.CONTENTS, R.GRADE, R.RDATE, R.SHOESNO, R.MEMBERNO
+      FROM REVIEW R
+      INNER JOIN SHOES S ON R.SHOESNO = S.SHOESNO
+    <if test="word != null and word != ''">
+        WHERE UPPER(R.CONTENTS) LIKE '%' || UPPER(#{word}) || '%'
+      </if>
+    ORDER BY R.REVIEWNO ASC
+    )
+  )
+  WHERE r &gt;= #{start_num} AND r &lt;= #{end_num}
+  </select>
+>>>>>>> 9e71262b6eeddb27194735ee7c6f7e0c9032cbf2
 </mapper>
-
-
-
-
-
-
-
-
-
 

@@ -1,6 +1,7 @@
 package dev.mvc.shoes;
 
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import dev.mvc.admin.category.CategoryVO;
 import dev.mvc.shoes.ShoesVO;
 import dev.mvc.shoes.ShoesVOMenu;
+=======
+>>>>>>> 9e71262b6eeddb27194735ee7c6f7e0c9032cbf2
 
 public interface ShoesProcInter {
   /**

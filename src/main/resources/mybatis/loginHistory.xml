@@ -6,21 +6,34 @@
 		INSERT INTO LOGIN_HISTORY(loginno, ip, rdate, memberno)
 		VALUES (login_seq.nextval, #{ip}, sysdate, #{memberno})
 	</insert>
-
-	<select id="countByMemberno" parameterType="int" resultType="int">
-		SELECT COUNT(memberno) as cnt
-		FROM login_history
-		WHERE memberno = #{memberno}
-	</select>
-
+	
 	<select id="readBymembernoRdateDesc" parameterType="int" resultType="dev.mvc.loginHistory.LoginHistoryVO">
-    SELECT loginno, ip, rdate, memberno
-    FROM (
-        SELECT loginno, ip, rdate, memberno
-        FROM login_history
-        WHERE memberno = #{memberno}
-        ORDER BY rdate DESC
+	SELECT loginno, ip, rdate, memberno
+  FROM login_history
+  where memberno = #{memberno}
+  ORDER BY rdate desc
+	</select>
+	
+	<delete id="delete" parameterType="int">
+	  DELETE FROM login_history
+    WHERE memberno=#{memberno}
+	</delete>
+	
+	<delete id="deleteOld" parameterType="int">
+    DELETE FROM login_history
+    WHERE loginno IN (
+      SELECT loginno
+      FROM login_history
+      WHERE loginno NOT IN (
+        SELECT loginno
+        FROM (
+          SELECT loginno
+          FROM login_history
+          WHERE memberno = #{memberno}
+          ORDER BY rdate DESC
+        )
+        WHERE ROWNUM &lt;= 10
+      )
     )
-    WHERE ROWNUM &lt;= 10
-</select>
+  </delete>
 </mapper>

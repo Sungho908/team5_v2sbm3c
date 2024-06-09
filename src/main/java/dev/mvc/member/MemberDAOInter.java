@@ -1,16 +1,8 @@
 package dev.mvc.member;
 
 import java.util.ArrayList;
-import java.util.HashMap;  // class
-import java.util.List;
-// interface, 인터페이스를 사용하는 이유는 다른 형태의 구현 클래스로 변경시 소스 변경이 거의 발생 안됨
-// 예) 2022년 세금 계산 방법 구현 class, 2023년 세금 계산 방법 구현 class
-// 인터페이스 = 구현 클래스
-// Payend pay = new Payend2022();
-// Payend pay = new Payend2023();
-// Payend pay = new Payend2024();
-// pay.calc();
-import java.util.Map;         
+import java.util.HashMap;
+import java.util.Map;
 
 public interface MemberDAOInter {
   /**
@@ -21,23 +13,15 @@ public interface MemberDAOInter {
   public int checkID(String id);
   
   /**
-   * 회원 가입
-   * @param memberVO
-   * @return 추가한 레코드 갯수
-=======
-public interface MemberDAOInter {
-  /**
    * 멤버 생성 <br>
    * id="create" parameterType="dev.mvc.member.MemberVO" <br>
    * 
    * @param memberVO 객체
    * @return 성공한 쿼리 갯수
->>>>>>> daec155c7e65840f2db5dab7588f3457314619f4
    */
   public int create(MemberVO memberVO);
 
   /**
-<<<<<<< HEAD
    * 회원 전체 목록
    * @return
    */
@@ -57,20 +41,6 @@ public interface MemberDAOInter {
    */
   public MemberVO readById(String id);
 
-  /**
-   * 수정 처리
-   * @param memberVO
-   * @return
-   */
-  public int update(MemberVO memberVO);
- 
-  /**
-   * 회원 삭제 처리
-   * @param memberno
-   * @return
-   */
-  public int delete(int memberno);
-  
   /**
    * 현재 패스워드 검사
    * @param map
@@ -117,5 +87,70 @@ public interface MemberDAOInter {
    * @param MemberVO 객체
    * @return 성공한 쿼리 갯수
    * */
+  public int update(MemberVO memberVO);
+  
+  /**
+   * 회원정보 수정 관리자 페이지<br>
+   * id="updateAdmin" parameterType="dev.mvc.member.MemberVO"
+   * @param MemberVO 객체
+   * @return 성공한 쿼리 갯수
+   * */
+  public int updateAdmin(MemberVO memberVO);
+  
+  /**
+   * 회원이 탈퇴처리<br>
+   * id="deleteByMember" parameterType="int"
+   * 
+   * @param memberno
+   * @return 성공한 쿼리 갯수
+   * */
+  public int deleteByMember(int memberno);
+  
+  
+  /**
+   * 회원 목록 출력
+   * id="list_all" resultType="dev.mvc.member.memberVO"
+   * @return MemberVO 객체
+   * */
+  public ArrayList<MemberVO> list_all();
+  
+  /**
+   * 회원 삭제
+   * id="delete" parameterType="int"
+   * @param memberno
+   * @return 성공한 쿼리 갯수
+   * */
+  public int delete(int memberno);
+  
+  /**
+   * 선택 항목 검색된 레코드 수
+   * id="list_search_count" resultType="int" parameterType="Map"
+   * @param Map 
+   * @return 검색된 레코드 수
+   * */
+  public int list_search_count(Map<String, Object> map);
+  
+  /**
+   * 검색목록 페이징
+   * select id="list_search_paging" resultType="dev.mvc.cate.CateVO" parameterType="Map"
+   * @param map
+   * @return 조회한 레코드 목록
+   */
+  public ArrayList<MemberVO> list_search_paging(Map<String, Object> map);
 
+  /**
+   * 아이디 찾기 email이 일치하는 id 찾기
+   * id="findid" resultType="String" parameterType="String"
+   * @param email
+   * @return id
+   * */
+  public ArrayList<String> findid(String email);
+  
+  /**
+   * 비밀번호 찾기(변경) id, email이 일치하는 pw 변경하기
+   * id="findpw" parameterType="Map"
+   * @param Map
+   * @return 성공한 쿼리 갯수
+   * */
+  public int findpw(HashMap<String, Object> map);
 }

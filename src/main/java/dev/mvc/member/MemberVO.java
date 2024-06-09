@@ -36,6 +36,11 @@ import lombok.ToString;
 //    ROLE                              VARCHAR2(30)     DEFAULT 'USER'    NOT NULL
 //);
 public class MemberVO {
+  /** 페이지당 출력할 레코드 갯수, nowPage는 1부터 시작 */
+  public static int RECORD_PER_PAGE = 10;
+  /** 블럭당 페이지 수, 하나의 블럭은 10개의 페이지로 구성됨 */
+  public static int PAGE_PER_BLOCK = 10;
+  
   /** 멤버번호 */
   private Integer memberno;
   
@@ -108,12 +113,4 @@ public class MemberVO {
   /** 썸네일파일 업로드를 위한 MultipartFile*/
   private MultipartFile mf;
 
-
-  public MemberVO orElseThrow(Supplier<? extends Throwable> exceptionSupplier) throws Throwable {
-    if (this == null) {
-        throw exceptionSupplier.get();
-    } else {
-        return this;
-    }
-}
 }

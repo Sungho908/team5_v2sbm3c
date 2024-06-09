@@ -3,6 +3,9 @@
 
 <body>
   <div layout:fragment="content">
+
+    <div th:replace="~{fragment/infoSidebarFragment::infoSidebarFragment}"></div>
+
     <form style="width:80%; margin:0 auto;" class="row g-3" id="frm" name="frm" method="post" action="./update"
       enctype="multipart/form-data" th:object="${memberVO}">
       <input type="hidden" th:field="*{memberno}">
@@ -102,13 +105,14 @@
 
 
       <div class="col-4">
-        <input type="hidden" th:field="*{thumb}">
-        <a th:href="@{|/file/storage/*{thumb}|}" target="_blank"><img th:src="@{|/file/storage/*{thumb}|}"
-            style="width:150px"></a>
+        <input id="thumb" type="hidden" th:field="*{thumb}">
+        <a th:href="@{|/file/storage/*{thumb}|}" target="_blank">
+          <img id="thumbimg" th:src="@{|/file/storage/*{thumb}|}" style="width:150px"></a><br>
+        <button class="btn btn-secondary btn-sm" onclick="thumbDelete()">썸네일 삭제</button>
       </div>
 
       <div class="col-4">
-        <label>썸네일 이미지</label>
+        <label>썸네일 이미지 등록</label>
         <input type='file' class="form-control" required placeholder="파일 선택" th:field="*{mf}">
       </div>
 
@@ -154,7 +158,7 @@
 
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script type="text/javascript" src="/js/daumAddr.js"></script>
-    <script type="text/javascript" src="/js/update.js"></script>
+    <script type="text/javascript" src="/js/member/update.js"></script>
 
 
   </div>

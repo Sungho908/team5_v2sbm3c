@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+<<<<<<< HEAD
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import dev.mvc.admin.category.CategoryVO;
 import dev.mvc.shoes.ShoesVO;
 
+=======
+>>>>>>> 9e71262b6eeddb27194735ee7c6f7e0c9032cbf2
 public interface ShoesDAOInter {
   /**
    * 등록 insert id="create" parameterType="dev.mvc.shoes.ShoesVO"

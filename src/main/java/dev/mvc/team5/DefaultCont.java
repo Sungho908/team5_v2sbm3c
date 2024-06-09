@@ -5,11 +5,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import dev.mvc.tool.Alert;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class DefaultCont {
+  
   /** Alert 창 띄우기 */
   public static String showMessageAndRedirect(final Alert params, Model model) {
     model.addAttribute("params", params);
@@ -40,4 +40,5 @@ public class DefaultCont {
     return "authorization"; // /templates/authorization.html
   }
   
+
 }
