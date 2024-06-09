@@ -492,19 +492,21 @@
   }
 
 
-  /* 상세페이지 끝 */
-  .shoes {
-    width: 200px;
-    margin-left: 30px;
+ .content_body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; /* 요소 사이의 간격 */
+    justify-content: center; /* 요소를 왼쪽 정렬 */
+}
+
+.shoes {
+    flex: 0 1 calc((60% / 5) - 100px); /* 한 줄에 6개씩 배치 */
     box-sizing: border-box;
-    display: inline-block;
-    /* 요소들을 가로로 나열하기 위해 플렉스 박스로 설정합니다 */
-    align-items: center;
-    margin-top: 15px;
-    text-align: center;
-    /* 요소들을 세로 중앙 정렬합니다 */
-    justify-content: center;
-  }
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin:20px;
+}
+
 
   .shoes img {
     width: 100%;
@@ -522,15 +524,11 @@
     /* 테두리를 검정색으로 설정합니다 */
   }
 
-  .shoes p {
-    width: 200px;
-    margin: 0 auto;
-    /* 왼쪽과 오른쪽 마진을 자동으로 설정하여 가운데 정렬합니다 */
-    text-align: left;
-    /* 텍스트는 왼쪽으로 정렬됩니다 */
-    font-size: 12px;
-    font-weight: inherit;
-  }
+.shoes p {
+    width: 100%;
+    font-size: 20px;
+    text-align: left; /* 텍스트를 왼쪽 정렬 */
+}
 
   .moreMenuContainer {
     position: relative;
@@ -555,7 +553,6 @@
     /* 화면에 고정 */
     bottom: 20px;
     /* 하단으로부터 20px 떨어진 위치에 표시 */
-    right: 320px;
     float: right;
     /* 기본 스타일 */
     color: black;
@@ -948,18 +945,6 @@
     /* 수직 가운데 정렬 */
   }
 
-  .content_body {
-    width: 100%;
-    color: red;
-    margin: 10px auto;
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    /* 세로 방향 가운데 정렬 */
-    justify-content: center;
-    /* 가로 방향 가운데 정렬 */
-    flex-wrap: wrap;
-  }
 
   .brand-shoes {
     width: 100%;

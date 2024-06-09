@@ -1,7 +1,10 @@
 package dev.mvc.shoes;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import dev.mvc.admin.category.CategoryVO;
 import dev.mvc.shoes.ShoesVO;
@@ -25,11 +28,14 @@ public interface ShoesDAOInter {
   public ArrayList<ShoesVO> list_all();
   
   // 스니커즈 목록 리스트
-  public ArrayList<ShoesVO> sneakers_list(String word);
+  public ArrayList<ShoesReviewVO> sneakers_list(int categoryno);
 
   // 슬립온 목록 리스트
-  public ArrayList<ShoesVO> slipon_list(String word);
+  public ArrayList<ShoesReviewVO> slipon_list(String word);
   
+  public ArrayList<ShoesReviewVO> boots_list(String word);
+  
+  public ArrayList<ShoesReviewVO> worker_list(String word);
   
   public ArrayList<ShoesReviewVO> review_list_all(int shoesno);
   
@@ -73,5 +79,8 @@ public interface ShoesDAOInter {
   public int option_delete(Map<String, Object> map);
 
   public int parent_count(int shoesno);
+
+  public ArrayList<ShoesReviewVO> findByCategoryNo(Integer categoryno);
+  public ArrayList<ShoesReviewVO> findByCategoryNoAndWord(Integer categoryno, String word);
 
 }

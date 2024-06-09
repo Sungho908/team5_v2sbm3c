@@ -2,6 +2,7 @@ package dev.mvc.shoes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -218,14 +219,25 @@ public class ShoesProc implements ShoesProcInter {
   }
 
   @Override
-  public ArrayList<ShoesVO> sneakers_list(String word) {
-    ArrayList<ShoesVO> list = shoesDAO.sneakers_list(word);
+  public ArrayList<ShoesReviewVO> sneakers_list(int categoryno) {
+    return shoesDAO.sneakers_list(categoryno);
+  }
+
+  @Override
+  public ArrayList<ShoesReviewVO> slipon_list(String word) {
+    ArrayList<ShoesReviewVO> list = shoesDAO.slipon_list(word);
     return list;
   }
 
   @Override
-  public ArrayList<ShoesVO> slipon_list(String word) {
-    ArrayList<ShoesVO> list = shoesDAO.slipon_list(word);
+  public ArrayList<ShoesReviewVO> boots_list(String word) {
+    ArrayList<ShoesReviewVO> list = shoesDAO.boots_list(word);
+    return list;
+  }
+
+  @Override
+  public ArrayList<ShoesReviewVO> worker_list(String word) {
+    ArrayList<ShoesReviewVO> list = shoesDAO.worker_list(word);
     return list;
   }
 
@@ -253,7 +265,9 @@ public class ShoesProc implements ShoesProcInter {
 
   }
 
-
-
+  @Override
+  public ArrayList<ShoesReviewVO> getShoesByCategoryNo(Integer categoryno) {
+      return shoesDAO.findByCategoryNo(categoryno);
+  }
 
 }

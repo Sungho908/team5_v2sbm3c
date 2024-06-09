@@ -1,6 +1,7 @@
 package dev.mvc.shoes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -121,11 +122,10 @@ public class ShoesCont {
    * @param model
    * @param shoesVO
    * @return
-
+   * 
    */
   @GetMapping(value = "/review_list_all")
-  public String review_list_all(HttpSession session, Model model,
-      @RequestParam(name = "shoesno") int shoesno,
+  public String review_list_all(HttpSession session, Model model, @RequestParam(name = "shoesno") int shoesno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
@@ -134,8 +134,7 @@ public class ShoesCont {
     model.addAttribute("list", list);
 
     review_paging(model, word, now_page);
-    
-  
+
     return "shoes/review_list_all"; // /shoes/list_search.html
   }
 
@@ -407,9 +406,6 @@ public class ShoesCont {
   public String sneakers(HttpSession session, Model model,
       @RequestParam(name = "word", defaultValue = "") String word) {
 
-    ArrayList<ShoesVO> list = shoesProc.sneakers_list(word);
-    model.addAttribute("list", list);
-    System.out.println("list:" + list.size());
 
     return "shoes/sneakers"; // /templates/shoes/read.html
   }
@@ -444,7 +440,7 @@ public class ShoesCont {
   public String slipon(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
-    ArrayList<ShoesVO> list = shoesProc.slipon_list(word);
+    ArrayList<ShoesReviewVO> list = shoesProc.slipon_list(word);
     model.addAttribute("list", list);
 
     return "shoes/slipon"; // /templates/shoes/read.html
@@ -718,11 +714,8 @@ public class ShoesCont {
    * @return
    */
   @GetMapping(value = "/product_details")
-  public String product_details(HttpSession session, Model model,
-      @RequestParam(name = "shoesno") int shoesno) {
+  public String product_details(HttpSession session, Model model, @RequestParam(name = "shoesno") int shoesno) {
 
-    
-    
     return "shoes/product_details"; // /templates/shoes/read.html
 
   }
@@ -761,4 +754,51 @@ public class ShoesCont {
 
   }
 
+  /**
+   * 
+   * 신발카테고리별 목록
+   * 
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/index")
+  public String index(HttpSession session, Model model,
+                      @RequestParam(name = "categoryno", required = false) Integer categoryno,
+                      @RequestParam(name = "word", defaultValue = "") String word) {
+      
+      ArrayList<ShoesReviewVO> shoesList = new ArrayList<>();
+      ArrayList<ShoesReviewVO> list = shoesProc.sneakers_list(categoryno);
+      model.addAttribute("list", list);
+      if (categoryno != null) {
+        switch (categoryno) {
+            case 1: // Sneakers
+                shoesList = shoesProc.sneakers_list(categoryno);
+                model.addAttribute("shoesList", shoesList);
+                break;
+            case 2: // Slip-on
+                shoesList = shoesProc.slipon_list(word);
+                model.addAttribute("shoesList", shoesList);
+                break;
+            case 3: // Boots
+                shoesList = shoesProc.boots_list(word);
+                model.addAttribute("shoesList", shoesList);
+                break;
+            case 4: // Worker
+                shoesList = shoesProc.worker_list(word);
+                model.addAttribute("shoesList", shoesList);
+                break;
+            default:
+                shoesList = shoesProc.getShoesByCategoryNo(1); // Default category
+        }
+    } 
+
+      model.addAttribute("list", shoesList);
+      
+      model.addAttribute("word", word);
+
+      return "shoes/index"; // /templates/shoes/index.html
+  }
 }

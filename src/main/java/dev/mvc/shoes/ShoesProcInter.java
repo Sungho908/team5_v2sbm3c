@@ -1,7 +1,10 @@
 package dev.mvc.shoes;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import dev.mvc.admin.category.CategoryVO;
 import dev.mvc.shoes.ShoesVO;
@@ -25,12 +28,10 @@ public interface ShoesProcInter {
    */
   public ArrayList<ShoesVO> list_all();
 
-  // 스니커즈 목록 리스트
-  public ArrayList<ShoesVO> sneakers_list(String word);
+  public ArrayList<ShoesReviewVO> boots_list(String word);
 
-  // 슬립온 목록 리스트
-  public ArrayList<ShoesVO> slipon_list(String word);
-  
+  public ArrayList<ShoesReviewVO> worker_list(String word);
+
   public ArrayList<ShoesReviewVO> review_list_all(int shoesno);
 
   /**
@@ -49,7 +50,7 @@ public interface ShoesProcInter {
   public ArrayList<ShoesVO> list_search(String word);
 
   public ArrayList<ShoesVO> list_search_paging(String word, int now_page, int record_per_page);
-  
+
   public ArrayList<ShoesReviewVO> review_paging(String word, int now_page, int record_per_page);
 
   public String pagingBox(int now_page, String word, String list_file, int search_count, int record_per_page,
@@ -58,7 +59,7 @@ public interface ShoesProcInter {
   public int list_search_count(String word);
 
   public int option_search_count(int shoesno);
-  
+
   public int review_search_count(String word);
 
   public int update(ShoesVO shoesVO); // 신발 카테고리 수정
@@ -70,5 +71,14 @@ public interface ShoesProcInter {
   public int option_delete(int shoesno, int optionno);
 
   public int parent_count(int shoesno);
+  
+  // 스니커즈 목록 리스트
+  public ArrayList<ShoesReviewVO> sneakers_list(int categoryno);
+
+  // 슬립온 목록 리스트
+  public ArrayList<ShoesReviewVO> slipon_list(String word);
+
+
+  public ArrayList<ShoesReviewVO> getShoesByCategoryNo(Integer categoryno);
 
 }

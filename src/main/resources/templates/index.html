@@ -174,210 +174,25 @@
         <span class="subtitle">채정안이 만보걷기 성공한 신발은?? </span>
       </div>
     </a>
-  </div>  <!-- 포토라마 끝 -->
+  </div> <!-- 포토라마 끝 -->
 
   <!-- 메인 인기상품? -->
   <div class="content_main">
-    <div class="content_body">
-      <div class="shoes">
-        <img src="/images/crocs.jpg" alt="사진">
-        <p>설명</p>
-        <p>크록스</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/vans.jpg" alt="사진">
-        <p>설명</p>
-        <p>크록스</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/crocs.jpg" alt="사진">
-        <p>설명</p>
-        <p>크록스</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/nike2.jpg" alt="사진">
-        <p>설명</p>
-        <p>크록스</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/nike2.jpg" alt="사진">
-        <p>설명</p>
-        <p>크록스</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/nike2.jpg" alt="사진">
-        <p>설명</p>
-        <p>크록스</p>
-        <p>가격</p>
-      </div>
-    </div>
-
-    <div class="content_body">
-      <div class="shoes">
-        <img src="/images/adidas.jpg" alt="사진">
-        <p>설명</p>
-        <p>사용자 이름1</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/slipper.jpg" alt="사진">
-        <p>설명</p>
-        <p>사용자 이름2</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/NB.jpg" alt="사진">
-        <p>설명</p>
-        <p>사용자 이름3</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/nike.jpg" alt="사진">
-        <p>설명</p>
-        <p>사용자 이름4</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/nike.jpg" alt="사진">
-        <p>설명</p>
-        <p>사용자 이름4</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/nike.jpg" alt="사진">
-        <p>설명</p>
-        <p>사용자 이름4</p>
-        <p>가격</p>
-      </div>
-    </div>
+            <div class="content_body">
+                <div class="shoes" th:each="shoesVO : ${list}">
+                    <a th:href="@{/shoes/product_details(shoesno=${shoesVO.shoesno})}">
+                        <img th:src="@{/images/${shoesVO.brand}.jpg}" alt="신발 이미지"><!-- 이미지 및 기타 정보 -->
+                    </a>
+                    <p th:text="${shoesVO.contents}"></p>
+                    <p th:text="${shoesVO.title}"></p>
+                    <p th:text="'가격: ' + ${shoesVO.price} + '원'"></p>
+                </div>
+            </div>
 
 
-    <div class="content_body">
-      <div class="shoes">
-        <img src="/images/VLTN.jpg" alt="사진">
-        <p>설명</p>
-        <p>사용자 이름1</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/puma.jpg" alt="사진">
-        <p>설명</p>
-        <p>사용자 이름2</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/roper.jpg" alt="사진">
-        <p>설명</p>
-        <p>사용자 이름3</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/sandals.jpg" alt="사진">
-        <p>설명</p>
-        <p>사용자 이름4</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/sandals.jpg" alt="사진">
-        <p>설명</p>
-        <p>사용자 이름4</p>
-        <p>가격</p>
-      </div>
-      <div class="shoes">
-        <img src="/images/sandals.jpg" alt="사진">
-        <p>설명</p>
-        <p>사용자 이름4</p>
-        <p>가격</p>
-      </div>
-    </div>
-    <!-- 더보기 메뉴-->
-    <div class="moreMenuContainer">
-      <a id="moreButton" style="font-size: 20px;">더보기+</a>
-      <div class="moreMenu" style="display: none;">
-        <div class="content_body">
-          <div class="shoes">
-            <img src="/images/crocs.jpg" alt="사진">
-            <p>설명</p>
-            <p>크록스</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/vans.jpg" alt="사진">
-            <p>설명</p>
-            <p>크록스</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/crocs.jpg" alt="사진">
-            <p>설명</p>
-            <p>크록스</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/nike2.jpg" alt="사진">
-            <p>설명</p>
-            <p>크록스</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/nike2.jpg" alt="사진">
-            <p>설명</p>
-            <p>크록스</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/nike2.jpg" alt="사진">
-            <p>설명</p>
-            <p>크록스</p>
-            <p>가격</p>
-          </div>
-        </div>
 
-        <div class="content_body">
-          <div class="shoes">
-            <img src="/images/crocs.jpg" alt="사진">
-            <p>설명</p>
-            <p>크록스</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/vans.jpg" alt="사진">
-            <p>설명</p>
-            <p>크록스</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/crocs.jpg" alt="사진">
-            <p>설명</p>
-            <p>크록스</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/nike2.jpg" alt="사진">
-            <p>설명</p>
-            <p>크록스</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/nike2.jpg" alt="사진">
-            <p>설명</p>
-            <p>크록스</p>
-            <p>가격</p>
-          </div>
-          <div class="shoes">
-            <img src="/images/nike2.jpg" alt="사진">
-            <p>설명</p>
-            <p>크록스</p>
-            <p>가격</p>
-          </div>
-        </div>
-      </div>
-    </div> <!-- 더보기 끝 -->  <!-- 메인 인기상품? 끝 -->
+
+
 
   </div>
 </div>

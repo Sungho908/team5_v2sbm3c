@@ -12,24 +12,16 @@
     스니커즈/슬립온 > 스니커즈
   </div>
   <div class="content_main">
-    <div class="content_body" th:each="shoesVO, status:${list}">
-      <div class="shoes">
-        <a href="/shoes/product_details?shoesno=1">
-          <!-- 이미지 및 기타 정보 -->dd
+    <div class="content_body" >
+      <div class="shoes" th:each="shoesVO, status:${list}">
+        <a th:href="@{/shoes/product_details(shoesno=${shoesVO.shoesno})}">
+          <img src="/images/nike.jpg"><!-- 이미지 및 기타 정보 -->
         </a>
         <p th:text="${shoesVO.contents}"></p>
         <p th:text="${shoesVO.title}"></p>
-        <p th:text="${shoesVO.price}"></p>
+        <p th:text="'가격: ' + ${shoesVO.price} +'원 '"></p>
       </div>
 
-      <div class="shoes">
-        <a href="/shoes/product_details?shoesno=2">
-          <img src="/images/nike.jpg" alt="스니커즈1">
-        </a>
-        <p>설명</p>
-        <p>사용자 이름1</p>
-        <p>가격</p>
-      </div>
       <!-- 한 줄에 6개가 안 되는 경우 빈 칸으로 채워줍니다 -->
     </div>
 
@@ -37,8 +29,8 @@
     <div class="moreMenuContainer">
       <a id="moreButton" style="font-size: 20px;">더보기+</a>
       <div class="moreMenu" style="display: none;">
-        <div class="content_body" th:each="shoesVO, status:${list}">
-          <div class="shoes">
+        <div class="content_body" >
+          <div class="shoes" th:each="shoesVO, status:${list}">
             <img src="/images/nike.jpg" alt="">
             <p>설명</p>
             <p>스니커즈</p>
@@ -47,15 +39,6 @@
 
         </div>
 
-        <div class="content_body">
-          <div class="shoes">
-            <img src="/images/nike.jpg" alt="스니커즈1">
-            <p>설명</p>
-            <p>사용자 이름1</p>
-            <p>가격</p>
-          </div>
-
-        </div>
 
       </div><!-- content_main-->
     </div>
