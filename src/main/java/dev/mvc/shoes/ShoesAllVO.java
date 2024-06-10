@@ -1,5 +1,6 @@
 package dev.mvc.shoes;
 
+import dev.mvc.basket.BasketVO;
 import dev.mvc.category.CategoryListVO;
 import dev.mvc.category.CategoryVO;
 import dev.mvc.member.MemberVO;
@@ -16,4 +17,5 @@ public class ShoesAllVO {
   private OptionVO optionVO;
   private ReviewVO reviewVO;
   private MemberVO memberVO;
+  private BasketVO basketVO;
 }

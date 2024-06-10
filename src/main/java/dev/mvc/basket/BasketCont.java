@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import dev.mvc.member.MemberProcInter;
+import dev.mvc.shoes.ShoesAllVO;
 import dev.mvc.shoes.ShoesProcInter;
 import dev.mvc.shoes.ShoesVO;
 import jakarta.servlet.http.HttpSession;
@@ -37,15 +39,15 @@ public class BasketCont {
   public int page_per_block = 5;
 
   public BasketCont() {
-    System.out.println("-> ShoesCont created.");
+    System.out.println("-> BasketCont created.");
   }
 
   private void table_paging(Model model, int memberno, String word, int now_page) {
-    
+
     ArrayList<ShoesVO> list = this.shoesProc.list_search_paging(memberno, word);
     model.addAttribute("list", list);
     int search_count = this.shoesProc.list_search_count(memberno, word);
-    
+
     int no = search_count - ((now_page - 1) * this.record_per_page);
 
     model.addAttribute("now_page", now_page);
@@ -54,10 +56,8 @@ public class BasketCont {
     model.addAttribute("no", no);
   }
 
-  
-  
   /**
-   * 장바구니 
+   * 장바구니
    * 
    * @param session
    * @param model
@@ -65,20 +65,19 @@ public class BasketCont {
    * @param now_page
    * @return
    */
-  @GetMapping(value = "/basket")
+  @GetMapping(value = "/basket/{memberno}")
   public String basket(HttpSession session, Model model, 
+      @PathVariable("basketno") Integer basketno,
       @RequestParam(name = "memberno") int memberno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
-     ArrayList<BasketVO> list =  basketProc.getBasket(memberno);
+    
+    ArrayList<ShoesAllVO> list = this.basketProc.getBasket(basketno, memberno);
     model.addAttribute("list", list);
     
-    System.out.println("size"+ list.size());
-    
     table_paging(model, memberno, word, now_page);
-    return "basket/basket"; // /templates/shoes/read.html
-
+    return "basket/basket"; // /templates/basket/basket.html
   }
-  
+
 }

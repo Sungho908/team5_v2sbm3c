@@ -1,9 +1,13 @@
 package dev.mvc.basket;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import dev.mvc.shoes.ShoesAllVO;
 
 //@Component("dev.mvc.shoes.ShoesProc")
 @Service("dev.mvc.basket.BasketProc")
@@ -16,11 +20,14 @@ public class BasketProc implements BasketProcInter {
   }
 
   @Override
-  public ArrayList<BasketVO> getBasket(int memberno) {
-    ArrayList<BasketVO> list = basketDAO.getBasket(memberno);
+  public ArrayList<ShoesAllVO>getBasket(int basketno, int memberno) {
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("basketno", basketno);
+    map.put("memberno", memberno);
+    
+    ArrayList<ShoesAllVO> list = this.basketDAO.getBasket(map);
     return list;
   }
-
   
   
 }

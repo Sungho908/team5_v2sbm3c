@@ -17,52 +17,27 @@
   <div id='panel_delete'
     style='padding: 10px 0px 10px 0px; background-color: #F9F9F9; width: 100%; text-align: center;'>
 
-      <script src="/js/basket.js"></script>
       <p style="font-size: 20px;">장바구니 담은 메뉴</p>
       <div class="basket">
         <img src="/images/crocs.jpg" alt="장바구니1">
-        <div class="description">
-          <p>설명</p>
-          <p>크록스</p>
+        <div class="list" th:each="basketVO, status:${list}">
+          <p><span th:text="${ShoesAllVO.basketVO.basketno}"></span></p>
+          <p><span th:text="${ShoesAllVO.optionVO.sizes}"></span></p>
+          <p><span th:text="${ShoesAllVO.optionVO.color}"></span></p>
+          <p><span th:text="${ShoesAllVO.shoesVO.title}"></span></p>
+          <p><span th:text="${ShoesAllVO.shoesVO.brand}"></span></p>
+          <p><span th:text="${ShoesAllVO.shoesVO.discount}"></span></p>
+          <p><span th:text="${ShoesAllVO.shoesVO.contents}"></span></p>
           <div class="quantity-control">
             <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
-            <span id="product1_quantity" class="quantity">1</span>
+            <span id="product1_quantity" class="quantity"  th:text="${ShoesAllVO.basketVO.amount}"></span>
             <button class="quantity-btn" onclick="increaseQuantity()">+</button>
           </div>
-          <p>가격</p>
+         <p>금액:<span th:text="${ShoesAllVO.shoesVO.price}"></span></p>
           <button style="width:300px;">장바구니 취소</button>
         </div>
       </div>
 
-      <div class="basket">
-        <img src="/images/crocs.jpg" alt="장바구니2">
-        <div class="description">
-          <p>설명</p>
-          <p>크록스</p>
-          <div class="quantity-control">
-            <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
-            <span id="product1_quantity" class="quantity">1</span>
-            <button class="quantity-btn" onclick="increaseQuantity()">+</button>
-          </div>
-          <p>가격</p>
-          <button style="width:300px;">장바구니 취소</button>
-        </div>
-      </div>
-
-      <div class="basket">
-        <img src="/images/crocs.jpg" alt="장바구니3">
-        <div class="description">
-          <p>설명</p>
-          <p>크록스</p>
-          <div class="quantity-control">
-            <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
-            <span class="quantity">1</span>
-            <button class="quantity-btn" onclick="increaseQuantity()">+</button>
-          </div>
-          <p>가격</p>
-          <button style="width:300px;">장바구니 취소</button>
-        </div>
-      </div>
 
   </div>
 
