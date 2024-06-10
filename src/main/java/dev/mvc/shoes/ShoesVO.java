@@ -4,49 +4,35 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-
-//CREATE TABLE SHOES(
-//    S_NO                              NUMBER(9)    NOT NULL    PRIMARY KEY,
-//    C_NO                              NUMBER(9)    NOT NULL,
-//    M_NO                              NUMBER(9)    NOT NULL,
-//    S_TITLE                           VARCHAR2(100)    NOT NULL,
-//    S_BRAND                           VARCHAR2(100)    NOT NULL,
-//    S_RATING                          NUMBER     NOT NULL,
-//    S_PRICE                           NUMBER     NOT NULL,
-//    S_DISCOUNT                        NUMBER     NOT NULL,
-//    S_CONTENTS                        VARCHAR2(1000)     NOT NULL,
-//    S_VISIBLE                         CHAR(1)    NOT NULL,
-//  FOREIGN KEY (M_NO) REFERENCES MEMBER (M_NO),
-//  FOREIGN KEY (C_NO) REFERENCES CATEGORY (C_NO)
-//);
 @Getter @Setter
 public class ShoesVO {
   /** 신발 번호 */
-  private Integer shoesno;
+  private Integer shoesno = 0;
   
   /** 신발명 */
-  private String title;
+  private String title = "";
   
   /** 신발 브랜드명 */
-  private String brand;
+  private String brand = "";
   
   /** 신발 평점*/
-  private Double rating;
+  private Double rating = (double) 0;
   
   /** 신발 가격*/
-  private Integer price;
+  private Integer price = 0;
   
   /** 신발 할인율 */
-  private Double discount;
+  private Double discount = (double) 0;
   
   /** 신발 설명 */
-  private String contents;
+  private String contents = "";
   
   /** 신발 판매 여부 */
   private char visible = 'Y';
   
   /** 유저 번호 */
+  private Integer memberno = 0;
   
   /** 카테고리 번호 */
-  private Integer categoryno;
+  private Integer categoryno = 0;
 }

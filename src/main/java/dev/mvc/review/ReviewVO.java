@@ -36,7 +36,7 @@ public class ReviewVO {
   
   
   /** 후기 작성일 */
-  private Date rDate;
+  private Date rdate;
   
   
   /** 신발 번호*/
@@ -48,6 +48,6 @@ public class ReviewVO {
   
   
   /** 좋아요 번호*/
-  private Integer likeNo;
+  private Integer likeno;
   
 }

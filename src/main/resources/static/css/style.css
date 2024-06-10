@@ -500,11 +500,8 @@
 }
 
 .shoes {
-    flex: 0 1 calc((60% / 5) - 100px); /* 한 줄에 6개씩 배치 */
     box-sizing: border-box;
-    padding: 10px;
     border: 1px solid #ddd;
-    margin:20px;
 }
 
 

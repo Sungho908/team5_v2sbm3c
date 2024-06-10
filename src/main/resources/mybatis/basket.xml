@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dev.mvc.basket.BasketDAOInter">
+  
+  <select id="getBasket" resultType="dev.mvc.basket.BasketVO">
+      SELECT b.basketno, b.amount, b.memberno, b.optionno,
+    o.sizes, o.amount AS option_amount, o.color,
+    s.shoesno, s.title, s.brand, s.rating, s.price, s.discount, s.contents
+    FROM basket b
+    JOIN options o ON b.optionno = o.optionno
+    JOIN shoes s ON o.shoesno = s.shoesno
+    WHERE b.memberno = ${memberno}
+</select>
+
+</mapper>
+

@@ -2,20 +2,52 @@ package dev.mvc.option;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
-//CREATE TABLE OPTION(
-//    O_NO                              NUMBER(9)    NULL      PRIMARY KEY,
-//    O_SIZE                            NUMBER(4)    NOT NULL,
-//    O_AMOUNT                          NUMBER(9)    NOT NULL,
-//    O_COLOR                           VARCHAR2(30)     NOT NULL,
-//    S_NO                              NUMBER(9)    NOT NULL,
-//  FOREIGN KEY (S_NO) REFERENCES SHOSE (S_NO)
-//);
 public class OptionVO {
+  
+  
+  /** 신발 번호 */
+  private Integer shoesno;
+  
+  /** 신발명 */
+  private String title;
+  
+  /** 신발 브랜드명 */
+  private String brand;
+  
+  
+  /** 신발 평점*/
+  private Double rating;
+  
+  
+  /** 신발 가격*/
+  private Double price;
+  
+  
+  /** 신발 할인율 */
+  private Double discount;
+  
+  
+  /** 신발 설명 */
+  private String contents;
+  
+  
+  /** 신발 판매 여부 */
+  private char visible = 'Y';
+  
+  
+  /** 유저 번호 */
+  private Integer memberno;
+  
+  
+  /** 카테고리 번호 */
+  private Integer categoryno;
+  
+  //---------------------------------------------
+  
+  
   /** 옵션 번호 */
   private Integer optionno;
   
@@ -31,6 +63,6 @@ public class OptionVO {
   /** 신발 색상 */
   private String color;
   
-  /** 신발 번호 */
-  private Integer shoesno;
+  
+
 }
