@@ -53,6 +53,7 @@ public class SecurityConfig {
 	            //.requestMatchers("/admin/**").hasAuthority(MemberRole.ADMIN.name())
 	            //.requestMatchers("/business/**").hasAuthority(MemberRole.BUSINESS.name())
 	            .requestMatchers("/member/**").authenticated()
+	            .requestMatchers("delivery/**").authenticated()
 	            .anyRequest().permitAll()
 	            )
 	            

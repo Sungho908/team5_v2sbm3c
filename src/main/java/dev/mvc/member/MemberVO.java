@@ -2,16 +2,15 @@ package dev.mvc.member;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Date;
-import java.util.function.Supplier;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+
 
 @Getter
 @Setter
@@ -112,5 +111,6 @@ public class MemberVO {
   
   /** 썸네일파일 업로드를 위한 MultipartFile*/
   private MultipartFile mf;
+  
 
 }

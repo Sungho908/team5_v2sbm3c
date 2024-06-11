@@ -8,6 +8,13 @@
 	font-style: normal;
 }
 
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* 모든 태그에 적용 */
 * {
 	font-family: TTHakgyoansimMonggeulmonggeulR;
@@ -74,7 +81,6 @@
 /* 이미지 사용시 경로 지정
   /static/css/images/top_1920_400.jpg
   */
-<<<<<<< HEAD
 .top_menu_img {
 	width: 300px;
 	height: 400px;
@@ -565,8 +571,7 @@
 	width: 100%;
 }
 
-/* 1em 기본값 : 16px, 주변 태그의 글자크기를 1em으로 인식
-=======
+/* 1em 기본값 : 16px, 주변 태그의 글자크기를 1em으로 인식 */
   .top_menu_img {
     width: 300px;
     height: 400px;
@@ -1471,12 +1476,10 @@
   }
 
   /* 1em 기본값 : 16px, 주변 태그의 글자크기를 1em으로 인식
->>>>>>> d7948908c70e63f23c827e0c7dfea86249d455c0
       DIV 태그가 20px 일경우 자식태그가 0.5em이면 최종적으로 10px이 적용됨.
       DIV 태그가 20px 일경우 자식태그가 1em이면 최종적으로 20px이 적용됨.
       DIV 태그가 20px 일경우 자식태그가 1.5em이면 최종적으로 30px이 적용됨.
   */
-<<<<<<< HEAD
 .th_basic {
 	font-size: 0.8em;
 	border-bottom: solid 3px #DDDDDD;
@@ -1778,10 +1781,9 @@ a:active {
 
 .float-reset::after {
 	content: "";
-	dispaly: block;
+	display: block;
 	clear: both;
 }
-=======
 
   .th_bs {
     text-align: center;
@@ -2090,4 +2092,3 @@ a:active {
     display: table-cell;
     vertical-align: middle;
   }
->>>>>>> d7948908c70e63f23c827e0c7dfea86249d455c0

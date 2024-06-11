@@ -85,13 +85,15 @@ public class LoginCont {
     MultipartFile mf = memberVO.getMf();
     String file = mf.getOriginalFilename();
     String filename = "";
+    
+    System.out.println("file:" + file);
 
     memberVO.setPw(pe.encode(memberVO.getPw()));
 
-    if (file != null && !Tool.isImage(file)) {// 업로드 가능한 파일인지 검사
+    if (file != "" && !Tool.isImage(file)) {// 업로드 가능한 파일인지 검사
       Alert message = new Alert("업로드가 불가능한 파일입니다. 이미지 파일을 등록해주세요.", "signup", RequestMethod.GET, null);
       return DefaultCont.showMessageAndRedirect(message, model);
-    } else if (file != null && Tool.isImage(file)) {
+    } else if (file != "" && Tool.isImage(file)) {
       filename = Tool.saveFileSpring(memberVO.getMf());
       memberVO.setThumb(filename);
     }

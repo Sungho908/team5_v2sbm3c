@@ -63,7 +63,7 @@
 	<!-- 일반 회원 삭제처리(등급 탈퇴회원인 99로 지정) -->
 	<update id="delete" parameterType="int">
 		UPDATE member
-		SET grade=99
+		SET grade=99, role='DELETE'
 		WHERE memberno=#{memberno}
 	</update>
 	
