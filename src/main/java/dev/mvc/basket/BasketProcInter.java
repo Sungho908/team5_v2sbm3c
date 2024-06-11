@@ -6,6 +6,6 @@ import dev.mvc.shoes.ShoesAllVO;
 
 public interface BasketProcInter {
 
-  public ArrayList<ShoesAllVO> getBasket(int basketno, int memberno);
+  public ArrayList<ShoesAllVO> getBasket(int memberno);
   
 }

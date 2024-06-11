@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html layout:decorate="~{admin/layout}">
+<!-- layout.html 상속-->
+<div layout:fragment="content">
+  <div class="title_line">신발 등록</div>
+  <aside class="aside_right">
+    <a href="/shoes/list_all?now_page=1">목록</a>
+    <span class="menu_devide">│</span>
+    <a href="javascript: location.reload();">새로 고침</a>
+  </aside>
+  <div class="top_menu_line"></div>
+    <form th:object="${shoesVO}" method="post" action="/admin/shoes/admin_create">
+
+  <div>
+    <label for="title">제목</label>
+    <input type="text" name="title" id="title" value="" class="form-control fom-control-sm" placeholder="제목을 입력하세요."
+      style="width: 20%; margin: 0 auto; text-align: center;">
+  </div>
+
+  <div>
+    <label for="brand">브랜드명</label>
+    <input type="text" name="brand" id="brand" value="" class="form-control fom-control-sm" placeholder="브랜드명을 입력하세요."
+      style="width: 20%; margin: 0 auto; text-align: center;" >
+  </div>
+
+  <div>
+    <label for="rating">평점</label>
+    <input type="text" name="rating" id="rating" value="" class="form-control fom-control-sm" placeholder="평점을 입력하세요."
+      style="width: 20%; margin: 0 auto; text-align: center;">
+  </div>
+  
+  <div>
+    <label for="price">금액</label>
+    <input type="text" name="price" id="price" value="" class="form-control fom-control-sm" placeholder="금액을 입력하세요."
+      style="width: 20%; margin: 0 auto; text-align: center;">
+  </div>
+
+  <div>
+    <label for="price">할인</label>
+    <input type="text" name="discount" id="discount" value="" class="form-control fom-control-sm" placeholder="할인(%)을 입력하세요."
+      style="width: 20%; margin: 0 auto; text-align: center;" >
+  </div>
+
+  <div>
+    <label for="price">내용</label>
+    <input type="text" name="contents" id="contents" value="" class="form-control fom-control-sm" placeholder="내용을 입력하세요."
+      style="width: 20%; margin: 0 auto; text-align: center;">
+  </div>
+
+  <div>
+    <label>판매여부</label>
+    <input type="text" name="visible" value="Y" autofocus="autofocus" class="form-control fom-control-sm"
+      style="width: 20%; margin: 0 auto; text-align: center;">
+  </div>
+
+  <button type="submit" class="btn btn-secondary btn-sm">등록</button>
+  <button type="button" onclick="location.href='./admin_list_all'" class="btn btn-secondary btn-sm">목록</button>
+  </form>
+
+</html>

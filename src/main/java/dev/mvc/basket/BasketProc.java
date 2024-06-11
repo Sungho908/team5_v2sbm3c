@@ -20,9 +20,8 @@ public class BasketProc implements BasketProcInter {
   }
 
   @Override
-  public ArrayList<ShoesAllVO>getBasket(int basketno, int memberno) {
+  public ArrayList<ShoesAllVO>getBasket(int memberno) {
     Map<String, Object> map = new HashMap<String, Object>();
-    map.put("basketno", basketno);
     map.put("memberno", memberno);
     
     ArrayList<ShoesAllVO> list = this.basketDAO.getBasket(map);

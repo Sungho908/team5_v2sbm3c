@@ -65,19 +65,15 @@ public class BasketCont {
    * @param now_page
    * @return
    */
-  @GetMapping(value = "/basket/{memberno}")
-  public String basket(HttpSession session, Model model, 
-      @PathVariable("basketno") Integer basketno,
-      @RequestParam(name = "memberno") int memberno,
-      @RequestParam(name = "word", defaultValue = "") String word,
-      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+  @GetMapping(value = "/basket_list/{memberno}")
+  public String basket_list(HttpSession session, Model model, 
+      @PathVariable("memberno") Integer memberno) {
 
-    
-    ArrayList<ShoesAllVO> list = this.basketProc.getBasket(basketno, memberno);
+   
+    ArrayList<ShoesAllVO> list = this.basketProc.getBasket(memberno);
     model.addAttribute("list", list);
     
-    table_paging(model, memberno, word, now_page);
-    return "basket/basket"; // /templates/basket/basket.html
+    return "basket/basket_list"; // /templates/basket/basket.html
   }
 
 }

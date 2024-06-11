@@ -7,10 +7,6 @@
     FROM category
   </select>
 
-  <select id="parent_count" parameterType="Integer">
-    SELECT count(*) as cnt FROM CATEGORY  WHERE PARENTNO = #{categoryno}
-  </select>
-
   <select id="parent_categoryno" parameterType="String" resultType="Integer">
     SELECT categoryno
     FROM category

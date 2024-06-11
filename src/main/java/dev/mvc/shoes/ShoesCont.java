@@ -91,7 +91,8 @@ public class ShoesCont {
   public String details(HttpSession session, Model model, 
       @PathVariable("shoesno") Integer shoesno,
       @RequestParam(name = "categoryno") int categoryno) {
-    
+    System.out.println(session.getAttribute("ck_pw"));
+    System.out.println(session.getAttribute("ck_save"));
     ShoesAllVO shoesAllVO = this.shoesProc.read(shoesno, categoryno);
     model.addAttribute("shoesAllVO", shoesAllVO);
     

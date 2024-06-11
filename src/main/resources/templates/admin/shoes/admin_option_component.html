@@ -1,0 +1,41 @@
+<div th:fragment="admin_option_component">
+  <!-- <div th:replace=... -->
+  <table class="table table-hover">
+    <colgroup>
+      <col style='width: 10%;' />
+      <col style='width: 25%;' />
+      <col style='width: 25%;' />
+      <col style='width: 10%;' />
+      <col style='width: 10%;' />
+    </colgroup>
+    <thead>
+      <tr>
+        <th class="th_bs">옵션 번호</th>
+        <th class="th_bs">사이즈</th>
+        <th class="th_bs">재고</th>
+        <th class="th_bs">색상</th>
+        <th class="th_bs">수정/삭제</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="optionVO, status:${list}">
+        <td class="td_bs" th:text="${optionVO.optionno}"></td>
+        <td class="td_bs" th:text="${optionVO.sizes}"></td>
+        <td class="td_bs" th:text="${optionVO.amount}"></td>
+        <td class="td_bs" th:text="${optionVO.color}"></td>
+        <td class="td_bs">
+          <a
+            th:href="@{|/admin/shoes/option_update/${optionVO.optionno}?&shoesno=${optionVO.shoesno}&word=${word}&now_page=${now_page}|}"><img
+              src="/cate/images/update.png" class="icon"></a>
+          <a
+            th:href="@{|/admin/shoes/option_delete/${optionVO.optionno}?&shoesno=${optionVO.shoesno}&word=${word}&now_page=${now_page}|}"><img
+              src="/cate/images/delete.png" class="icon"></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 페이지 버튼 목록 출력 시작 -->
+  <div class="bottom_menu" th:utext="${paging}"></div>
+  <!-- 페이지 버튼 목록 출력 종료 -->
+</div>
