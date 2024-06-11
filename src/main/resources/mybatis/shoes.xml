@@ -89,7 +89,7 @@
 
   <!-- 신발 상세 -->
   <select id="read" resultMap="shoesRead" parameterType="Map">
-    SELECT s.shoesno, s.title, s.brand, s.contents, s.price, s.discount, s.rating, c.subname, s.visible
+    SELECT s.shoesno, c.categoryno, s.title, s.brand, s.contents, s.price, s.discount, s.rating, c.subname, s.visible
     FROM shoes s
     JOIN category_list cl ON s.shoesno = cl.shoesno
     JOIN category c ON cl.categoryno = c.categoryno
@@ -109,6 +109,7 @@
     </association>
 
     <association property="categoryVO" javaType="dev.mvc.category.CategoryVO">
+      <id property="categoryno" column="categoryno" />
       <result property="subname" column="subname" />
     </association>
   </resultMap>

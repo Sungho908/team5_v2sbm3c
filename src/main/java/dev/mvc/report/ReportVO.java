@@ -50,7 +50,7 @@ public class ReportVO {
   
   
   /** 멤버 번호 */
-  private Integer membero;
+  private Integer memberno;
   
   
   /** 후기 번호 */

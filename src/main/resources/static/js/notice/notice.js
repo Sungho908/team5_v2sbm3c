@@ -4,15 +4,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
   zoom.forEach(function(button) {
     button.addEventListener('click', function() {
-      var tr = this.closest('tr'); // 현재 클릭된 버튼의 가장 가까운 tr 요소를 찾습니다.
+      var tr = this.closest('tr');
       var noticeno = tr.querySelector('input[id="noticeno"]').value;
-      var content = tr.nextElementSibling; // tr 요소의 다음 형제 요소를 가져옵니다.
-      $.ajax({
-        type: 'POST',
-        url: '/notice/increased_views',
-        contentType: 'application/json',
-        data: JSON.stringify({ noticeno: noticeno, zoom: button.innerText }),
-        success: function(response) {
+      var content = tr.nextElementSibling; 
+      fetch('/notice/increased_views', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ noticeno: noticeno, zoom: button.innerText })
+      })
+        .then(response => response.json())
+        .then(response => {
           tr.querySelector('#views').textContent = response.views;
           if (response.status == 'increased') {
             button.innerText = "-";
@@ -22,8 +25,8 @@ document.addEventListener("DOMContentLoaded", function() {
           if (content) {
             content.classList.toggle('contents');
           }
-        }
-      });
+        })
+        .catch(error => console.error('Error:', error));
     });
   });
 
@@ -35,19 +38,22 @@ document.addEventListener("DOMContentLoaded", function() {
       alert('검색어를 입력해주세요.');
       return;
     }
-    $.ajax({
-      type: 'POST',
-      url: '/notice/search', // 서버에 요청을 보낼 URL
-      contentType: 'application/json',
-      data: JSON.stringify({ word: word }),
-      success: function(size) {
+    fetch('/notice/search', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ word: word })
+    })
+      .then(response => response.json())
+      .then(size => {
         if (parseInt(size) == null || parseInt(size) === 0) {
           alert('검색 결과가 없습니다.');
         } else {
           frm_search.submit();
         }
-      },
-    });
+      })
+      .catch(error => console.error('Error:', error));
   });
 
 });

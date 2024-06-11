@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import dev.mvc.member.MemberProcInter;
 import dev.mvc.option.OptionProcInter;
+import dev.mvc.reportType.ReportTypeProcInter;
+import dev.mvc.reportType.ReportTypeVO;
 import dev.mvc.review.ReviewProcInter;
-import dev.mvc.review.ReviewVO;
 import jakarta.servlet.http.HttpSession;
 
 @RequestMapping("/shoes")
@@ -27,14 +28,18 @@ public class ShoesCont {
   @Autowired
   @Qualifier("dev.mvc.option.OptionProc")
   private OptionProcInter optionProc;
-  
+
   @Autowired
-  @Qualifier("dev.mvc.member.MemberProc") // @Service("dev.mvc.member.MemberProc")
+  @Qualifier("dev.mvc.member.MemberProc")
   private MemberProcInter memberProc;
-  
+
   @Autowired
   @Qualifier("dev.mvc.review.ReviewProc")
   private ReviewProcInter reviewProc;
+
+  @Autowired
+  @Qualifier("dev.mvc.reportType.ReportTypeProc")
+  private ReportTypeProcInter reportTypeProc;
 
   /** 페이지당 출력할 레코드 갯수, nowPage는 1부터 시작 */
   public int record_per_page = 5;
@@ -47,11 +52,11 @@ public class ShoesCont {
   }
 
   private void table_paging(Model model, int categoryno, String word, int now_page) {
-    
+
     ArrayList<ShoesVO> list = this.shoesProc.list_search_paging(categoryno, word);
     model.addAttribute("list", list);
     int search_count = this.shoesProc.list_search_count(categoryno, word);
-    
+
     int no = search_count - ((now_page - 1) * this.record_per_page);
 
     model.addAttribute("now_page", now_page);
@@ -72,12 +77,12 @@ public class ShoesCont {
       @RequestParam(name = "categoryno", defaultValue = "") int categoryno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
+
     table_paging(model, categoryno, word, now_page);
-    
+
     return "shoes/list";
   }
-  
+
   /**
    * 제품 상세
    * 
@@ -88,22 +93,24 @@ public class ShoesCont {
    * @return
    */
   @GetMapping(value = "/{shoesno}")
-  public String details(HttpSession session, Model model, 
-      @PathVariable("shoesno") Integer shoesno,
+  public String details(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
       @RequestParam(name = "categoryno") int categoryno) {
-    
+
     ShoesAllVO shoesAllVO = this.shoesProc.read(shoesno, categoryno);
     model.addAttribute("shoesAllVO", shoesAllVO);
-    
+
     ArrayList<Integer> sizes = this.optionProc.option_sizes(shoesno, categoryno);
     model.addAttribute("sizes", sizes);
-    
+
     ArrayList<String> color = this.optionProc.option_color(shoesno, categoryno);
     model.addAttribute("color", color);
-    
+
     ArrayList<ShoesAllVO> review = this.reviewProc.review_list(shoesno);
     model.addAttribute("review", review);
-    
+
+    ArrayList<ReportTypeVO> reportType = this.reportTypeProc.search_type();
+    model.addAttribute("reportType", reportType);
+
     return "shoes/detail"; // /templates/shoes/read.html
 
   }

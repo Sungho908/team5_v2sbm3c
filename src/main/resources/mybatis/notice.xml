@@ -41,7 +41,6 @@
         FROM (
             SELECT noticeno, title, contents, rdate, views, memberno, rownum as r
             FROM notice
-            ORDER BY noticeno DESC
         ) n
         JOIN member m ON n.memberno = m.memberno
         LEFT JOIN notice_file nf ON n.noticeno = nf.noticeno
@@ -55,6 +54,7 @@
     </if>
     AND
         r &gt; = #{start_num} AND r &lt; = #{end_num}
+    ORDER BY n.rdate desc, noticeno desc
   </select>
 
   <!-- 공지사항의 파일 유무 확인 -->
