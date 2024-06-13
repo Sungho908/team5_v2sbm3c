@@ -19,15 +19,20 @@ public class BasketVO {
   /** 장바구니 번호 */
   private Integer basketno;
   
-  
   /** 신발 수량 */
   private Integer amount;
-  
   
   /** 멤버 번호 */
   private Integer memberno;
   
-  
   /** 옵션 번호 */
   private Integer optionno;
+  
+  private Integer shoesno;
+  
+  private Integer sizes;
+  
+  private String color;
+  
+  
 }

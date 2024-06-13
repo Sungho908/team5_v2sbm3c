@@ -35,6 +35,13 @@ public class ShoesVO {
   
   /** 카테고리 번호 */
   private Integer categoryno = 0;
+  
+  /** 색상 */
+  private String color;
 
+  /** sizes */
+  private String sizes;
 
+  
+  
 }

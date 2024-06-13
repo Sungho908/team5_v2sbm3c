@@ -27,4 +27,11 @@
     </association>
   </resultMap>
   
+   <select id="review_list_all" resultType="dev.mvc.review.ReviewVO">
+    SELECT r.reviewno, r.contents, r.grade, r.rdate, m.nickname
+    FROM review r
+    JOIN member m ON r.memberno = m.memberno
+    WHERE r.shoesno = #{shoesno}
+    ORDER BY r.rdate DESC
+  </select>
 </mapper>

@@ -27,6 +27,6 @@ function closeModal() {
 function search() {
   var search = document.getElementById('search-input').value;
   // 검색어를 저장해
-  var url = '/shoes/list_all?word=' + encodeURIComponent(search);
+  var url = '/shoes/list?word=' + encodeURIComponent(search);
   window.location.href = url;
   }

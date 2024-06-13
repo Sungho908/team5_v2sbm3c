@@ -1,6 +1,9 @@
 package dev.mvc.basket;
 
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,10 +11,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import dev.mvc.member.MemberProcInter;
+import dev.mvc.option.OptionVO;
 import dev.mvc.shoes.ShoesAllVO;
 import dev.mvc.shoes.ShoesProcInter;
 import dev.mvc.shoes.ShoesVO;
@@ -66,14 +73,91 @@ public class BasketCont {
    * @return
    */
   @GetMapping(value = "/basket_list/{memberno}")
-  public String basket_list(HttpSession session, Model model, 
-      @PathVariable("memberno") Integer memberno) {
+  public String basket_list(HttpSession session, Model model, @PathVariable("memberno") Integer memberno) {
 
-   
-    ArrayList<ShoesAllVO> list = this.basketProc.getBasket(memberno);
+    ArrayList<ShoesAllVO> list = this.basketProc.list(memberno);
     model.addAttribute("list", list);
-    
+
     return "basket/basket_list"; // /templates/basket/basket.html
   }
 
+
+    @PostMapping(value = "/create")
+    @ResponseBody
+    public Map<String, Object> create(@RequestBody BasketVO basketVO, HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+
+        Integer memberno = 1; // 임시로 하드코딩
+
+        // Integer memberno = (Integer) session.getAttribute("memberno");
+        // if (memberno == null) {
+        // response.put("message", "로그인이 필요합니다.");
+        // }
+        
+        basketVO.setMemberno(memberno);
+
+        int result = basketProc.create(basketVO.getMemberno(), basketVO.getColor(), basketVO.getSizes());
+        if (result > 0) {
+            response.put("success", true);
+        } else {
+            response.put("message", "장바구니에 추가하는데 실패했습니다.");
+        }
+
+        return response;
+    }
+    
+    @PostMapping(value = "/update")
+    @ResponseBody
+    public Map<String, Object> update(@RequestBody Map<String, Object> map, HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+
+        Integer memberno = 1; // 임시로 하드코딩된 멤버 번호
+        Integer basketno = (Integer) map.get("basketno");
+        Integer amount = (Integer) map.get("amount");
+
+        BasketVO basketVO = new BasketVO();
+        basketVO.setMemberno(memberno);
+        basketVO.setBasketno(basketno);
+        basketVO.setAmount(amount);
+
+        int result = basketProc.update(basketVO);
+
+        if (result > 0) {
+            response.put("success", true);
+        } else {
+            response.put("success", false);
+            response.put("message", "수량 변경에 실패했습니다.");
+        }
+
+        return response;
+    }
+
+  @PostMapping(value= "/delete")
+  @ResponseBody
+  public Map<String, Object> delete(@RequestBody BasketVO basketVO, HttpSession session) {
+    Map<String, Object> response = new HashMap<>();
+
+    // 세션에서 멤버 번호 가져오기
+
+    // Integer memberno = (Integer) session.getAttribute("memberno");
+    // if (memberno == null) {
+    //  response.put("message", "세션이 만료되었거나 로그인 되어 있지 않습니다.");
+    //  return response;
+    // }
+
+    Integer memberno = 1;
+
+    basketVO.setMemberno(memberno);
+
+    // 장바구니 삭제 처리
+    int result = basketProc.delete(basketVO.getMemberno(), basketVO.getBasketno());
+
+    if (result > 0) {
+      response.put("success", true);
+    } else {
+      response.put("message", "장바구니 제품 삭제에 실패했습니다.");
+    }
+
+    return response;
+  }
 }

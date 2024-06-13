@@ -1,7 +1,9 @@
 package dev.mvc.shoes;
 
 import java.util.ArrayList;
+import java.util.Map;
 
+import dev.mvc.basket.BasketVO;
 import dev.mvc.option.OptionVO;
 
 public interface ShoesProcInter {
@@ -92,5 +94,5 @@ public interface ShoesProcInter {
   public OptionVO shoes_option(int optionno, int shoesno); // 단일 read
   
   public int option_delete(int shoesno, int optionno);
-  
+
 }

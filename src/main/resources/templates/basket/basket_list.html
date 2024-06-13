@@ -6,6 +6,8 @@
   <div class="title_line">
     <span class="nav-link" onclick="history.back()"> &lt; </span> 장바구니
   </div>
+  <script src="/js/basket.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <aside class="aside_right">
     <a href="/shoes/list_all?now_page=1">목록</a>
     <span class="menu_devide">│</span>
@@ -17,28 +19,25 @@
   <div id='panel_delete'
     style='padding: 10px 0px 10px 0px; background-color: #F9F9F9; width: 100%; text-align: center;'>
 
-      <p style="font-size: 20px;">장바구니 담은 메뉴</p>
-      <div class="basket" th:each="ShoesAllVO, status:${list}">
-        <img class ="basket_img" src="/images/crocs.jpg" alt="장바구니1">
-        <div class="list" >
-          <p><span th:text="${ShoesAllVO.basketVO.basketno}"></span></p>
-          <p><span th:text="${ShoesAllVO.optionVO.sizes}"></span></p>
-          <p><span th:text="${ShoesAllVO.optionVO.color}"></span></p>
-          <p><span th:text="${ShoesAllVO.shoesVO.title}"></span></p>
-          <p><span th:text="${ShoesAllVO.shoesVO.brand}"></span></p>
-          <p><span th:text="${ShoesAllVO.shoesVO.discount}"></span></p>
-          <p><span th:text="${ShoesAllVO.shoesVO.contents}"></span></p>
-          <div class="quantity-control">
-            <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
-            <span id="product1_quantity" class="quantity"  th:text="${ShoesAllVO.basketVO.amount}"></span>
-            <button class="quantity-btn" onclick="increaseQuantity()">+</button>
-          </div>
-         <p>금액:<span th:text="${ShoesAllVO.shoesVO.price}"></span></p>
-          <button class= "basket_btn"style="width:300px;">장바구니 취소</button>
-        </div>  
-
+    <p style="font-size: 20px;">장바구니 담은 메뉴</p>
+    <div class="basket" th:each="ShoesAllVO, status:${list}">
+      <img class="basket_img" src="/images/crocs.jpg" alt="장바구니1">
+      <div class="list">
+        <p><span th:text="${ShoesAllVO.basketVO.basketno}"></span></p>
+        <p><span th:text="${ShoesAllVO.optionVO.sizes}"></span></p>
+        <p><span th:text="${ShoesAllVO.optionVO.color}"></span></p>
+        <p><span th:text="${ShoesAllVO.shoesVO.title}"></span></p>
+        <div class="quantity-control">
+          <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
+          <span class="quantity" th:text="${ShoesAllVO.basketVO.amount}"></span>
+          <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+        </div>
+        <p>금액:<span th:text="${ShoesAllVO.shoesVO.price}"></span></p>
+        <button class="basket_btn" style="width:300px;">장바구니 취소</button>
       </div>
-      
+
+    </div>
+
 
 
   </div>

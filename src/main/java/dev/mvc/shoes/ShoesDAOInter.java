@@ -3,6 +3,7 @@ package dev.mvc.shoes;
 import java.util.ArrayList;
 import java.util.Map;
 
+import dev.mvc.basket.BasketVO;
 import dev.mvc.option.OptionVO;
 
 public interface ShoesDAOInter {
@@ -61,8 +62,6 @@ public interface ShoesDAOInter {
   
   public ShoesAllVO read_option(Map<String, Object> map);
   
-  
-  
   public ShoesVO admin_read(int shoesno);
   
   public int admin_list_search_count(String word);
@@ -95,4 +94,6 @@ public interface ShoesDAOInter {
   
   
   public int option_delete(Map<String, Object> map);
+  
+
 }

@@ -7,6 +7,9 @@
 <div layout:fragment="content">
 
   <body>
+    <script src="/js/basket.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <div class="detail_container">
       <h1 class="title" th:text="${shoesAllVO.shoesVO.title}"></h1>
       <div id="wrap" class="product">
@@ -34,7 +37,7 @@
               <option value="">사이즈를 선택하세요</option>
               <option th:each="color : ${color}" th:value="${color}" th:text="${color}"></option>
             </select>
-            
+
             <div class="content">
               <button class="detail_btnl">장바구니</button>
               <button class="detail_btnr">구매하기</button>
@@ -49,7 +52,7 @@
       <!-- //상품구매안내 -->
       <!-- 상품사용후기 -->
       <h2 class="title">상품후기<span class="all">
-          <a href="/shoes/review_list_all?shoesno=1">
+          <a th:href="@{/review/list(shoesno=1)}">
             상품 후기 모두보기
           </a>
           <i class="bi bi-chevron-right"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -59,7 +62,7 @@
             </svg></i>
         </span>
       </h2>
-      
+
       <div class="review" th:each="ShoesAllVO : ${review}">
         <div class="rating">평점: <span class="stars" th:text="${ShoesAllVO.reviewVO.grade}"></span></div>
         <div class="username">닉네임: <span th:text="${ShoesAllVO.memberVO.nickname}"></span></div>
@@ -80,7 +83,7 @@
       </div>
       <div class="between_line"></div>
       <!-- 후기 답글 끝-->
-      
+
     </div>
   </body>
 

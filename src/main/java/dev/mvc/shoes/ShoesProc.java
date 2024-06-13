@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import dev.mvc.basket.BasketVO;
 import dev.mvc.option.OptionVO;
 
 //@Component("dev.mvc.shoes.ShoesProc")
@@ -172,14 +173,14 @@ public class ShoesProc implements ShoesProcInter {
 
   @Override
   public int parent_count(int shoesno) {
-      int cnt = this.shoesDAO.parent_count(shoesno);
-      return cnt;
+    int cnt = this.shoesDAO.parent_count(shoesno);
+    return cnt;
   }
 
   @Override
   public ArrayList<OptionVO> option_paging(int shoesno, String word, int now_page, int record_per_page) {
-  int begin_of_page = (now_page - 1) * record_per_page;
-    
+    int begin_of_page = (now_page - 1) * record_per_page;
+
     int start_num = begin_of_page + 1;
 
     int end_num = begin_of_page + record_per_page;
@@ -189,17 +190,17 @@ public class ShoesProc implements ShoesProcInter {
     map.put("word", word);
     map.put("start_num", start_num);
     map.put("end_num", end_num);
-    
+
     ArrayList<OptionVO> list = this.shoesDAO.option_paging(map);
-    return list; 
-    
+    return list;
+
   }
 
   @Override
   public int option_search_count(int shoesno) {
-      int cnt = this.shoesDAO.option_search_count(shoesno);
-      return cnt;
-    }
+    int cnt = this.shoesDAO.option_search_count(shoesno);
+    return cnt;
+  }
 
   @Override
   public int option_create(OptionVO optionVO) {
@@ -218,7 +219,7 @@ public class ShoesProc implements ShoesProcInter {
     Map<String, Object> map = new HashMap<String, Object>();
     map.put("optionno", optionno);
     map.put("shoesno", shoesno);
-    
+
     OptionVO list = this.shoesDAO.shoes_option(map);
     return list;
   }
@@ -231,7 +232,7 @@ public class ShoesProc implements ShoesProcInter {
     int cnt = this.shoesDAO.option_delete(map);
     return cnt;
   }
-  
-  
+
+
   
 }

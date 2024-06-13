@@ -1,32 +1,32 @@
-<div th:fragment="review_list_all_fragment">
+<div th:fragment="list_all_fragment">
   <!-- <div th:replace=... -->
   
     <h1 class="title">후기 모두보기</h1>
   <div class="review-list">
-  <div class="review-item" th:each="shoesreviewVO, status:${list}">
+  <div class="review-item" th:each="reviewVO, status:${list}">
     <div class="review-info">
       <span class="review-label">후기 번호:</span>
-      <span class="review-value" th:text="${shoesreviewVO.reviewno}"></span>
+      <span class="review-value" th:text="${reviewVO.reviewno}"></span>
     </div>
     <div class="review-info">
       <span class="review-label">후기 내용:</span>
-      <span class="review-value" th:text="${shoesreviewVO.contents}"></span>
+      <span class="review-value" th:text="${reviewVO.contents}"></span>
     </div>
     <div class="review-info">
       <span class="review-label">후기 점수:</span>
-      <span class="review-value" th:text="${shoesreviewVO.grade}"></span>
+      <span class="review-value" th:text="${reviewVO.grade}"></span>
     </div>
     <div class="review-info">
       <span class="review-label">신발 번호:</span>
-      <span class="review-value" th:text="${shoesreviewVO.shoesno}"></span>
+      <span class="review-value" th:text="${reviewVO.shoesno}"></span>
     </div>
     <div class="review-info">
       <span class="review-label">멤버 번호:</span>
-      <span class="review-value" th:text="${shoesreviewVO.memberno}"></span>
+      <span class="review-value" th:text="${reviewVO.memberno}"></span>
     </div>
     <div class="review-info">
       <span class="review-label">후기 작성일:</span>
-      <span class="review-value" th:text="${shoesreviewVO.rdate}"></span>
+      <span class="review-value" th:text="${reviewVO.rdate}"></span>
     </div>
     
   </div>

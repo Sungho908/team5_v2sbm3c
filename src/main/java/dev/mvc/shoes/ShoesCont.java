@@ -1,6 +1,8 @@
 package dev.mvc.shoes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,13 +10,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import dev.mvc.member.MemberProcInter;
 import dev.mvc.option.OptionProcInter;
+import dev.mvc.option.OptionVO;
 import dev.mvc.review.ReviewProcInter;
-import dev.mvc.review.ReviewVO;
 import jakarta.servlet.http.HttpSession;
 
 @RequestMapping("/shoes")
@@ -27,11 +32,11 @@ public class ShoesCont {
   @Autowired
   @Qualifier("dev.mvc.option.OptionProc")
   private OptionProcInter optionProc;
-  
+
   @Autowired
   @Qualifier("dev.mvc.member.MemberProc") // @Service("dev.mvc.member.MemberProc")
   private MemberProcInter memberProc;
-  
+
   @Autowired
   @Qualifier("dev.mvc.review.ReviewProc")
   private ReviewProcInter reviewProc;
@@ -47,11 +52,11 @@ public class ShoesCont {
   }
 
   private void table_paging(Model model, int categoryno, String word, int now_page) {
-    
+
     ArrayList<ShoesVO> list = this.shoesProc.list_search_paging(categoryno, word);
     model.addAttribute("list", list);
     int search_count = this.shoesProc.list_search_count(categoryno, word);
-    
+
     int no = search_count - ((now_page - 1) * this.record_per_page);
 
     model.addAttribute("now_page", now_page);
@@ -72,12 +77,12 @@ public class ShoesCont {
       @RequestParam(name = "categoryno", defaultValue = "") int categoryno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
+
     table_paging(model, categoryno, word, now_page);
-    
+
     return "shoes/list";
   }
-  
+
   /**
    * 제품 상세
    * 
@@ -88,25 +93,39 @@ public class ShoesCont {
    * @return
    */
   @GetMapping(value = "/{shoesno}")
-  public String details(HttpSession session, Model model, 
-      @PathVariable("shoesno") Integer shoesno,
+  public String details(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
       @RequestParam(name = "categoryno") int categoryno) {
     System.out.println(session.getAttribute("ck_pw"));
     System.out.println(session.getAttribute("ck_save"));
     ShoesAllVO shoesAllVO = this.shoesProc.read(shoesno, categoryno);
     model.addAttribute("shoesAllVO", shoesAllVO);
-    
+
     ArrayList<Integer> sizes = this.optionProc.option_sizes(shoesno, categoryno);
     model.addAttribute("sizes", sizes);
-    
+
     ArrayList<String> color = this.optionProc.option_color(shoesno, categoryno);
     model.addAttribute("color", color);
-    
+
     ArrayList<ShoesAllVO> review = this.reviewProc.review_list(shoesno);
     model.addAttribute("review", review);
-    
+
     return "shoes/detail"; // /templates/shoes/read.html
 
   }
 
+  /**
+   * 제품 상세
+   * 
+   * @param session
+   * @param model
+   * @param word
+   * @param now_page
+   * @return
+   */
+  @GetMapping(value = "/brand")
+  public String details(HttpSession session, Model model) {
+
+    return "shoes/brand"; // /templates/shoes/read.html
+
+  }
 }
