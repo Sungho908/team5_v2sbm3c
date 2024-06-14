@@ -120,10 +120,10 @@
       <table>
 
         <colgroup>
-          <col width="20%">
+          <col width="25%">
           <col width="50%">
           <col width="10%">
-          <col width="10%">
+          <col width="15%">
         </colgroup>
         <thead>
           <tr>
@@ -186,9 +186,9 @@
               
             </td>
             <!-- 주문상태 -->
-            <td style="width: 30px; text-align:center">
+            <td style="width: 30px; text-align:center; padding:0px auto;">
               <div>
-                <span style="font-size: 0.8rem;" th:text="|(${list.payment_status})|">결제 상태</span><br>
+                <span style="font-size: 0.8rem;" th:text="|(${(list.payment_status == '입금완료(수동)' || list.payment_status == '입금완료(자동)') ? '입금완료' : list.payment_status })|">결제 상태</span><br>
                 <span th:text="${list.status}">주문상태/CS상태</span>
               </div>
             </td>
