@@ -5,18 +5,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-/*
-  CREATE TABLE CATEGORY(
-    C_NO                              NUMBER(9)    NOT NULL    PRIMARY KEY,
-    C_NAME                            VARCHAR2(100)    NOT NULL,
-    C_SUBNAME                         VARCHAR2(100)    NOT NULL,
-    C_SEQ                             NUMBER(9)    NULL ,
-    C_CNT                             NUMBER(9)    NOT NULL,
-    C_PARENT                          NUMBER(9),
-  FOREIGN KEY (C_PARENT) REFERENCES CATEGORY (C_NO)
-);
-*/
-
 @Setter @Getter
 public class CategoryVO {
   /** 카테고리 번호 */
@@ -35,7 +23,8 @@ public class CategoryVO {
   /** 출력순서 */
   private Integer seq;
   
-  /** 항목 수 */
+  
+  /** 항목수 */
   private Integer cnt;
   
   /** 카테고리 부모 번호 */

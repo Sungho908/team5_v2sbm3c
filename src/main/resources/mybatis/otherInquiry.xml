@@ -64,7 +64,13 @@
     </association>
   </resultMap>
 
-  <select id="read" resultMap="InquiryResult" parameterType="Integer">
+  <update id="answer" parameterType="Map">
+    UPDATE other_inquiry
+    SET answer_visible = #{answer_visible}, answer_contents = #{answer_contents}
+    WHERE other_inquiry_no = #{other_inquiry_no}
+  </update>
+  
+    <select id="read" resultMap="InquiryResult" parameterType="Integer">
     SELECT oi.other_inquiry_no as other_inquiry_no, oi.title as title, oi.contents as contents, 
     oi.rdate as rdate, oi.answer_visible as answer_visible, m.nickname as nickname, oi.answer_contents as answer_contents
     FROM other_inquiry oi
@@ -72,10 +78,5 @@
     WHERE other_inquiry_no = ${other_inquiry_no}
   </select>
 
-  <update id="answer" parameterType="Map">
-    UPDATE other_inquiry
-    SET answer_visible = #{answer_visible}, answer_contents = #{answer_contents}
-    WHERE other_inquiry_no = #{other_inquiry_no}
-  </update>
 
 </mapper>

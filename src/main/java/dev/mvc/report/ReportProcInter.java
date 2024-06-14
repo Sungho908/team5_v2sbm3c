@@ -6,6 +6,8 @@ public interface ReportProcInter {
   
   public int create(ReportVO reportVO);
 
+  public int report_count(int memberno, int reviewno);
+  
   public int list_search_count(String word);
 
   public ArrayList<ReportInfoVO> list_search_paging(String word, int now_page, int record_per_page);

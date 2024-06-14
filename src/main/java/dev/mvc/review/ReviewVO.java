@@ -36,18 +36,17 @@ public class ReviewVO {
   
   
   /** 후기 작성일 */
-  private Date rDate;
+  private Date rdate;
   
   
-  /** 신발 번호*/
+  /** 신발 번호 */
   private Integer shoesno;
   
   
-  /** 멤버 번호*/
+  /** 멤버 번호 */
   private Integer memberno;
   
-  
-  /** 좋아요 번호*/
-  private Integer likeNo;
+  /** 좋아요 번호 */
+  private Integer likeno;
   
 }

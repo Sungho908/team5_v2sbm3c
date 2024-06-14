@@ -7,69 +7,51 @@ public interface ShoesProcInter {
    * 등록 insert id="create" parameterType="dev.mvc.shoes.ShoesVO"
    * 
    * @param shoesVO
-   * @return 등록한 레코드 갯수
+   * @return 등록 성공 여부
    */
   public int create(ShoesVO shoesVO);
 
-  
-  public int option_create(ShoesOptionVO shoesoptionVO);
-  
   /**
-   * 전체 목록 select id="list_all" resultType="dev.mvc.shoes.ShoesVO"
+   * 수정 update id="update" parameterType="dev.mvc.shoes.ShoesVO"
    * 
-   * @return 레코드 목록
+   * @param shoesVO
+   * @return 수정 성공 여부
    */
-  public ArrayList<ShoesVO> list_all();
-
-//  /**
-//   * 조회 select id="read" resultType="dev.mvc.shoes.ShoesVO" parameterType="int"
-//   * 
-//   * @param shoesno
-//   * @return
-//   */
-//  public ShoesVO read(int shoesno);
-
-//  /**
-//   * 수정 update id="update" parameterType="dev.mvc.shoes.ShoesVO"
-//   * 
-//   * @param shoesVO
-//   * @return 수정된 레코드 갯수
-//   */
-//  public int update(ShoesVO shoesVO);
+  public int update(ShoesVO shoesVO);
 
   /**
-   * 조회
-   * select id="read" resultType="dev.mvc.cate.CateVO" parameterType="int"
-   * @param cateno
-   * @return
+   * 삭제 delete id="delete" parameterType="Integer"
+   * 
+   * @param Integer
+   * @return 삭제 성공 여부
    */
-  public ShoesVO read(int shoesno);
-  
-  public ShoesOptionVO read_option(int optionno, int shoesno); // 단일 read
-  
-  // read했을때 옵션 리스트
-  public ArrayList<ShoesOptionVO> option_paging(int shoesno, String word, int now_page, int record_per_page);
-  
-  public ArrayList<ShoesVO> list_search(String word);
-
-  public ArrayList<ShoesVO> list_search_paging(String word, int now_page, int record_per_page);
-
-  public String pagingBox(int now_page, String word, String list_file, int search_count, int record_per_page,
-      int page_per_block);
-
-  public int list_search_count(String word);
-  
-  public int option_search_count(int shoesno);
-
-  public int update(ShoesVO shoesVO);  // 신발 카테고리 수정
-
-  public int option_update(ShoesOptionVO shoesoptionVO);   // 신발 옵션 수정
-
   public int delete(int shoesno);
+
+  /**
+   * 검색된 레코드 수 id="list_search_count" resultType="int" parameterType="Map"
+   * 
+   * @param map
+   * @return 검색된 레코드 수
+   */
+  public int list_search_count(int categoryno, String word);
+
+  /**
+   * 신발 목록 정보 id="list_search_paging" resultType="dev.mvc.shoes.ShoesVO"
+   * parameterType="Map"
+   * 
+   * @param map
+   * @return 신발 목록 정보
+   */
+  public ArrayList<ShoesVO> list_search_paging(int categoryno, String word);
   
-  public int option_delete(int shoesno, int optionno);
-
-  public int parent_count(int shoesno);
-
-
+  public String pagingBox(int now_page, String word, String list_file, int search_count, 
+      int record_per_page, int page_per_block);
+  
+  /**
+   * 조회 id="read" resultMap="shoesRead" parameterType="Integer"
+   * 
+   * @param shoesno
+   * @return ShoesAllVO
+   */
+  public ShoesAllVO read(int shoesno, int categoryno);
 }
