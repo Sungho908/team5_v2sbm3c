@@ -121,12 +121,12 @@ function send() { // 회원 가입 처리
   let pw1 = document.querySelector('#pw1');
   let pw2 = document.querySelector('#pw2');
   let pwText = document.querySelector('#checkPwText');
-  if (pw1.value.trim().length == 0) {
+  /*if (pw1.value.trim().length == 0) {
     pwText.innerHTML = '비밀번호가 누락됬습니다.';
     pwText.style.color = 'red';
     pw1.focus();
     return false;  // 회원 가입 진행 중지
-  }
+  }*/
 
   if (pw1.value != pw2.value) {
     pwText.innerHTML = '서로 일치하지 않는 비밀번호입니다.';

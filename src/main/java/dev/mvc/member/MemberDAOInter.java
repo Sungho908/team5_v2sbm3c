@@ -6,13 +6,6 @@ import java.util.Map;
 
 public interface MemberDAOInter {
   /**
-   * 중복 아이디 검사
-   * @param id
-   * @return 중복 아이디 갯수
-   */
-  public int checkID(String id);
-  
-  /**
    * 멤버 생성 <br>
    * id="create" parameterType="dev.mvc.member.MemberVO" <br>
    * 
@@ -22,58 +15,33 @@ public interface MemberDAOInter {
   public int create(MemberVO memberVO);
 
   /**
-   * 회원 전체 목록
-   * @return
-   */
-  public ArrayList<MemberVO> list();
-
-  /**
-   * memberno로 회원 정보 조회
-   * @param memberno
-   * @return
-   */
-  public MemberVO read(int memberno);
-  
-  /**
-   * id로 회원 정보 조회
-   * @param id
-   * @return
-   */
-  public MemberVO readById(String id);
-
-  /**
-   * 현재 패스워드 검사
-   * @param map
-   * @return 0: 일치하지 않음, 1: 일치함
-   */
-  public int passwd_check(HashMap<String, Object> map);
-  
-  /**
-   * 패스워드 변경
-   * @param map
-   * @return 변경된 패스워드 갯수
-   */
-  public int passwd_update(HashMap<String, Object> map);
-  
-  /**
-   * 로그인 처리
-   */
-  public int login(HashMap<String, Object> map);
-  
- 
-
-   /* 중복 아이디 검사<br>
+   * 중복 아이디 검사<br>
    * id="checkId" parameterType="String" resultType="int"<br>
    * 
    * @param 검색할 Id
    * @return 검색된 쿼리 갯수
    */
   public int checkId(String id);
+  
+  /**
+   * Master 권한 체크
+   * id="checkRoleMaster" resultType="int"<br>
+   * @return 검색된 쿼리 갯수
+   * */
+  public int checkRoleMaster();
+
+  /**
+   * 아이디로 회원 찾기<br>
+   * id="readById" parameterType="String" resultType="dev.mvc.member.MemberVO"<br>
+   * 
+   * @param 검색할 id명
+   * @return MemberVO 객체
+   */
+  public MemberVO readById(String id);
 
   /**
    * Memberno로 회원 찾기<br>
-   * id="readByMemberno" parameterType="int"
-   * resultType="dev.mvc.member.MemberVO"<br>
+   * id="readByMemberno" parameterType="int" resultType="dev.mvc.member.MemberVO"<br>
    * 
    * @param 검색할 id명
    * @return MemberVO 객체
@@ -104,8 +72,16 @@ public interface MemberDAOInter {
    * @param memberno
    * @return 성공한 쿼리 갯수
    * */
-  public int deleteByMember(int memberno);
+  public int delete(int memberno);
   
+  /**
+   * 관리자가 탈퇴처리<br>
+   * id="deleteByAdmin" parameterType="int"
+   * 
+   * @param memberno
+   * @return 성공한 쿼리 갯수
+   * */
+  public int deleteAdmin(int memberno);
   
   /**
    * 회원 목록 출력
@@ -113,14 +89,6 @@ public interface MemberDAOInter {
    * @return MemberVO 객체
    * */
   public ArrayList<MemberVO> list_all();
-  
-  /**
-   * 회원 삭제
-   * id="delete" parameterType="int"
-   * @param memberno
-   * @return 성공한 쿼리 갯수
-   * */
-  public int delete(int memberno);
   
   /**
    * 선택 항목 검색된 레코드 수
@@ -148,9 +116,17 @@ public interface MemberDAOInter {
   
   /**
    * 비밀번호 찾기(변경) id, email이 일치하는 pw 변경하기
-   * id="findpw" parameterType="Map"
-   * @param Map
+   * id="findpw" parameterType="String"
+   * @param email
    * @return 성공한 쿼리 갯수
    * */
   public int findpw(HashMap<String, Object> map);
+  
+  /**
+   * Role 변경 아이콘 클릭
+   * id="changeRole" parameterType="Map"
+   * @param Map memberno, role
+   * @return 성공한 쿼리 갯수
+   * */
+  public int changeRole(HashMap<String, Object> map);
 }

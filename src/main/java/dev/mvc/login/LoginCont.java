@@ -77,16 +77,16 @@ public class LoginCont {
   @ResponseBody
   @GetMapping("checkId")
   public int checkId(@RequestParam("id") String id) {
-    return this.memberProc.checkID(id);
+    return this.memberProc.checkId(id);
   }
 
   @PostMapping("signup")
   public String signUpProc(MemberVO memberVO, Model model) {
-    String file = "";
-    String filename = "";
-    String upDir = Tool.getUploadDir();
     MultipartFile mf = memberVO.getMf();
-    file = mf.getOriginalFilename();
+    String file = mf.getOriginalFilename();
+    String filename = "";
+    
+    System.out.println("file:" + file);
 
     memberVO.setPw(pe.encode(memberVO.getPw()));
 
@@ -94,7 +94,7 @@ public class LoginCont {
       Alert message = new Alert("업로드가 불가능한 파일입니다. 이미지 파일을 등록해주세요.", "signup", RequestMethod.GET, null);
       return DefaultCont.showMessageAndRedirect(message, model);
     } else if (file != "" && Tool.isImage(file)) {
-      filename = Tool.saveFileSpring(memberVO.getMf(), upDir);
+      filename = Tool.saveFileSpring(memberVO.getMf());
       memberVO.setThumb(filename);
     }
 
@@ -138,7 +138,9 @@ public class LoginCont {
       return "redirect:/login/finddone";
     }else {
       try {
-        this.emailProc.send_pw(email, map.get("originpw").toString());
+        if(!email.equals("pass")) {
+          this.emailProc.send_pw(email, map.get("originpw").toString());
+        } 
       } catch (Exception e) {
         e.printStackTrace();
       }

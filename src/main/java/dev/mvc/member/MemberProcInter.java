@@ -3,77 +3,44 @@ package dev.mvc.member;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import jakarta.servlet.http.HttpSession; //  Spring Boot 3.0~
 
 public interface MemberProcInter {
   /**
-   * 중복 아이디 검사
-   * @param id
-   * @return 중복 아이디 갯수, 1: 중복, 0: 중복 없음
-   */
-  public int checkID(String id);
-  
-  /**
-   * 회원 가입
-   * @param memberVO
-   * @return
+   * 멤버 생성 <br>
+   * id="create" parameterType="dev.mvc.member.MemberVO" <br>
+   * 
+   * @param memberVO 객체
+   * @return 성공한 쿼리 갯수
    */
   public int create(MemberVO memberVO);
-  
-  /**
-   * 회원 전체 목록
-   * @return
-   */
-  public ArrayList<MemberVO> list();
 
   /**
-   * memberno로 회원 정보 조회
-   * @param memberno
-   * @return
+   * 중복 아이디 검사<br>
+   * id="checkId" parameterType="String" resultType="int"<br>
+   * 
+   * @param 검색할 Id
+   * @return 검색된 쿼리 갯수
    */
-  public MemberVO read(int memberno);
+  public int checkId(String id);
   
   /**
-   * id로 회원 정보 조회
-   * @param id
-   * @return
-   */
+   * Master 권한 체크
+   * id="checkRoleMaster" resultType="int"<br>
+   * @return 검색된 쿼리 갯수
+   * */
+  public int checkRoleMaster();
+  
+  /**
+   * 아이디로 회원 찾기<br>
+   * id="readById" parameterType="String" resultType="dev.mvc.member.MemberVO"<br>
+   * 
+   * @param 검색할 id명
+   * @return MemberVO 객체
+   * */
   public MemberVO readById(String id);
   
   /**
-   * 로그인된 회원 계정인지 검사합니다.
-   * @param session
-   * @return true: 사용자
-   */
-  public boolean isMember(HttpSession session);
-
-  /**
-   * 로그인된 회원 관리자 계정인지 검사합니다.
-   * @param session
-   * @return true: 사용자
-   */
-  public boolean isMemberAdmin(HttpSession session);
-  
-  /**
-   * 현재 패스워드 검사
-   * @param map
-   * @return 0: 일치하지 않음, 1: 일치함
-   */
-  public int passwd_check(HashMap<String, Object> map);
-  
-  /**
-   * 패스워드 변경
-   * @param map
-   * @return 변경된 패스워드 갯수
-   */
-  public int passwd_update(HashMap<String, Object> map);
-  
-  /**
-   * 로그인 처리
-   */
-  public int login(HashMap<String, Object> map);
-  
-  /* Memberno로 회원 찾기<br>
+   * Memberno로 회원 찾기<br>
    * id="readByMemberno" parameterType="int"
    * resultType="dev.mvc.member.MemberVO"<br>
    * 
@@ -100,15 +67,6 @@ public interface MemberProcInter {
   public int updateAdmin(MemberVO memberVO);
   
   /**
-   * 회원이 탈퇴처리<br>
-   * id="deleteByMember" parameterType="int"
-   * 
-   * @param memberno
-   * @return 성공한 쿼리 갯수
-   * */
-  public int deleteByMember(int memberno);
-  
-  /**
    * 회원 목록 출력
    * id="list_all" resultType="dev.mvc.member.memberVO"
    * @return MemberVO 객체
@@ -116,12 +74,20 @@ public interface MemberProcInter {
   public ArrayList<MemberVO> list_all();
   
   /**
-   * 회원 삭제
+   * 일반 회원이 회원 삭제
    * id="delete" parameterType="int"
    * @param memberno
    * @return 성공한 쿼리 갯수
    * */
   public int delete(int memberno);
+  
+  /**
+   * 관리자가 회원 삭제
+   * id="deleteAdmin" parameterType="int"
+   * @param memberno
+   * @return 성공한 쿼리 갯수
+   * */
+  public int deleteAdmin(int memberno);
   
   /**
    * 선택 항목 검색된 레코드 수
@@ -137,7 +103,7 @@ public interface MemberProcInter {
    * @param map
    * @return 조회한 레코드 목록
    */
-  public ArrayList<MemberVO> list_search_paging(String word, int now_page, int record_per_page);
+  public ArrayList<MemberVO> list_search_paging(String word, String key, int now_page, int record_per_page);
   
   /** 
    * SPAN태그를 이용한 박스 모델의 지원, 1 페이지부터 시작 
@@ -150,7 +116,7 @@ public interface MemberProcInter {
    * @param search_count 검색 레코드수    
    * @return 페이징 생성 문자열
    */
-  String pagingBox(int memberno, int now_page, String word, String list_file, int search_count);
+  String pagingBox(int memberno, int now_page, String word, String key, String list_file, int search_count);
 
   /**
    * 아이디 찾기 email이 일치하는 id 찾기
@@ -168,5 +134,13 @@ public interface MemberProcInter {
    * */
   public HashMap<String, Object> findpw(HashMap<String, Object> map);
   
+  /**
+   * Role 변경 아이콘 클릭
+   * id="changeRole" parameterType="Map"
+   * @param MemberVO 객체
+   * @param isIncrease 1:UP, 0:DOWN
+   * @return 성공한 쿼리 갯수
+   * */
+  public int changeRole(MemberVO memberVO, Boolean isIncrease);
+  
 }
-

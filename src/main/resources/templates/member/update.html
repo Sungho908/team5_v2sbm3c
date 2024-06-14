@@ -104,11 +104,18 @@
 
 
 
-      <div class="col-4">
+      <div class="col-4" >
         <input id="thumb" type="hidden" th:field="*{thumb}">
-        <a th:href="@{|/file/storage/*{thumb}|}" target="_blank">
-          <img id="thumbimg" th:src="@{|/file/storage/*{thumb}|}" style="width:150px"></a><br>
-        <button class="btn btn-secondary btn-sm" onclick="thumbDelete()">썸네일 삭제</button>
+        <th:block th:if="*{not #strings.isEmpty(thumb)}">
+          <a th:href="@{|/file/storage/${thumb}|}" target="_blank">
+            <img id="thumbimg" th:src="@{|/file/storage/${thumb}|}" style="width:150px"></a><br>
+          <button class="btn btn-secondary btn-sm" onclick="thumbDelete()">썸네일 삭제</button>
+        </th:block>
+        <th:block th:if="*{#strings.isEmpty(thumb)}">
+          <a th:href="@{/images/none.png}" target="_blank">
+            <img id="thumbimg" th:src="@{/images/none.png}" style="width:150px"></a><br>
+          <button class="btn btn-secondary btn-sm" onclick="thumbDelete()">썸네일 삭제</button>
+        </th:block>
       </div>
 
       <div class="col-4">

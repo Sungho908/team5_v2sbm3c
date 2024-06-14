@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import dev.mvc.delivery.DeliveryProcInter;
+import dev.mvc.loginHistory.LoginHistoryProcInter;
 import dev.mvc.member.MemberProcInter;
+import dev.mvc.member.MemberRole;
 import dev.mvc.member.MemberVO;
 import dev.mvc.team5.DefaultCont;
 import dev.mvc.tool.Alert;
@@ -35,234 +38,280 @@ public class AdminMemberCont {
   @Qualifier("dev.mvc.member.MemberProc")
   private MemberProcInter memberProc;
 
-  @Autowired
-  private PasswordEncoder pe;
-
-  @GetMapping("signin")
-  public String login(HttpServletRequest request, Model model,
-      @RequestParam(value = "error", required = false) String error) {
-    if ("disabled".equals(error)) {
-      Alert message = new Alert("회원탈퇴처리된 회원입니다.", "admin/signin", RequestMethod.GET, null);
-      return DefaultCont.showMessageAndRedirect(message, model);
-    }
-
-    Cookie[] cookies = request.getCookies();
-    if (cookies != null) {
-      for (Cookie cookie : cookies) {
-        if (cookie.getName().equals("ck_id")) {
-          model.addAttribute("ck_id", cookie.getValue());
-        } else if (cookie.getName().equals("ck_pw")) {
-          model.addAttribute("ck_pw", cookie.getValue());
-        } else if (cookie.getName().equals("save")) {
-          model.addAttribute("save", cookie.getValue());
-        }
-      }
-    }
-    return "admin/login/signin";
-  }
-
-  @PostMapping("login")
-  public String loginProc() {
-    // Spring Security 에서 처리
-    return "";
-  }
-
-  @GetMapping("signup")
-  public String signUp(MemberVO memberVO) {
-    return "admin/login/signup";
-  }
-
-  @ResponseBody
-  @GetMapping("checkId")
-  public int checkId(@RequestParam("id") String id) {
-    return this.memberProc.checkID(id);
-  }
-
-  @PostMapping("signup")
-  public String signUpProc(MemberVO memberVO, Model model) {
-    String file = "";
-    String filename = "";
-    String upDir = Tool.getUploadDir();
-    MultipartFile mf = memberVO.getMf();
-    file = mf.getOriginalFilename();
-
-    memberVO.setPw(pe.encode(memberVO.getPw()));
-
-    if (file != "" && !Tool.isImage(file)) {// 업로드 가능한 파일인지 검사
-      Alert message = new Alert("업로드가 불가능한 파일입니다. 이미지 파일을 등록해주세요.", "admin/signup", RequestMethod.GET, null);
-      return DefaultCont.showMessageAndRedirect(message, model);
-    } else if (file != "" && Tool.isImage(file)) {
-      filename = Tool.saveFileSpring(memberVO.getMf(), upDir);
-      memberVO.setThumb(filename);
-    }
-
-    if (memberProc.create(memberVO) == 0) {
-      Alert message = new Alert("이미 존재하는 아이디입니다.", "admin/signup", RequestMethod.GET, null);
-      return DefaultCont.showMessageAndRedirect(message, model);
-    }
-    Alert message = new Alert("회원가입 성공.", "/", RequestMethod.GET, null);
-    return DefaultCont.showMessageAndRedirect(message, model);
-  }
-
-  @GetMapping("member/checkpw")
-  public String checkpw() {
-    return "admin/member/checkpw";
-  }
-
-  @PostMapping("member/checkpw")
-  public String checkpwProc(RedirectAttributes ra, HttpSession session, Model model, @RequestParam("pw") String pw) {
-    MemberVO memberVO = (MemberVO) session.getAttribute("admin/login");
-    memberVO = memberProc.readById(memberVO.getId());
-
-    if (!pe.matches(pw, memberVO.getPw())) {
-      Alert message = new Alert("틀린 비밀번호입니다.", "admin//member/checkpw", RequestMethod.GET, null);
-      return DefaultCont.showMessageAndRedirect(message, model);
-    }
-
-    ra.addFlashAttribute("auth", "success");
-    return "redirect:/admin/member/update";
-  }
-
-  @GetMapping("member/update")
-  public String update(HttpSession session, Model model, @ModelAttribute("auth") String auth) {
-    if (auth == null || auth != "success") {
-      Alert message = new Alert("잘못된 접근입니다. 다시 접속하세요.", "admin/member/checkpw", RequestMethod.GET, null);
-      return DefaultCont.showMessageAndRedirect(message, model);
-    }
-    MemberVO memberVO = (MemberVO) session.getAttribute("login");
-    memberVO = memberProc.readById(memberVO.getId());
-    model.addAttribute("memberVO", memberVO);
-    return "admin/member/update";
-  }
-
-  @PostMapping("member/update")
-  public String updateProc(MemberVO memberVO, Model model) {
-    String file = "";
-    String filename = "";
-    String upDir = Tool.getUploadDir();
-    MultipartFile mf = memberVO.getMf();
-
-    // MultipartFile 객체가 null인지 확인
-    if (mf != null && !mf.isEmpty()) {
-      file = mf.getOriginalFilename();
-    }
-
-    // 비밀번호 암호화
-    memberVO.setPw(pe.encode(memberVO.getPw()));
-    System.out.println(memberVO.toString());
-
-    // 파일 검사 및 저장
-    if (!file.isEmpty() && !Tool.isImage(file)) {
-      Alert message = new Alert("업로드가 불가능한 파일입니다. 이미지 파일을 등록해주세요.", "admin/signup", RequestMethod.GET, null);
-      return DefaultCont.showMessageAndRedirect(message, model);
-    } else if (!file.isEmpty() && Tool.isImage(file)) {
-      filename = Tool.saveFileSpring(mf, upDir);
-      memberVO.setThumb(filename); // 새로운 파일이 저장된 경우에만 thumb 값을 설정
-    }
-
-    // 회원 생성 처리
-    if (memberProc.update(memberVO) == 0) {
-      Alert message = new Alert("알 수 없는 에러", "admin/member/update", RequestMethod.GET, null);
-      return DefaultCont.showMessageAndRedirect(message, model);
-    }
-
-    // 성공 메시지
-    Alert message = new Alert("회원정보 수정 성공.", "/", RequestMethod.GET, null);
-    return DefaultCont.showMessageAndRedirect(message, model);
-  }
-
-  @GetMapping("member/info")
-  public String info() {
-    return "admin/member/info";
-  }
-
-  @GetMapping("member/delete")
-  public String delete() {
-    return "admin/member/delete";
-  }
-
-  @PostMapping("member/delete")
-  public String deleteProc(Model model, @RequestParam("pw") String pw, HttpSession session, RedirectAttributes ra) {
-    MemberVO memberVO = (MemberVO) session.getAttribute("login");
-    int memberno = memberVO.getMemberno();
-    if (pe.matches(pw, memberVO.getPw())) {
-      if (this.memberProc.deleteByMember(memberno) == 0) {
-        Alert message = new Alert("알 수 없는 에러", "admin/member/delete", RequestMethod.GET, null);
-        return DefaultCont.showMessageAndRedirect(message, model);
-      }
-    } else {
-      ra.addFlashAttribute("code", 0);
-      return "redirect:/admin/member/delete";
-    }
-    session.invalidate();
-    Alert message = new Alert("회원탈퇴처리가 완료되었습니다.", "admin/", RequestMethod.GET, null);
-    return DefaultCont.showMessageAndRedirect(message, model);
-  }
-
+  /* =========================================== ModelAttribute START =========================================== */
+  /**
+   * 목록(List) 출력 <br>
+   * http://localhost:9093/admin/member/** <br>
+   * http://54.180.175.50:9093/admin/member/**
+   * 
+   * @param now_page 현재 페이지
+   * @param word     검색어
+   * @param key      키워드 선택
+   */
   @ModelAttribute("list")
-  public ArrayList<MemberVO> list(
-      @RequestParam(name = "now_page", required = false, defaultValue = "1") Integer now_page,
-      @RequestParam(name = "word", required = false, defaultValue = "") String word) {
-    ArrayList<MemberVO> list = this.memberProc.list_search_paging(word, now_page, MemberVO.RECORD_PER_PAGE);
-
+  public ArrayList<MemberVO> list(@RequestParam(name = "now_page", required = false, defaultValue = "1") Integer now_page, 
+                                  @RequestParam(name = "word",     required = false, defaultValue = "")  String word, 
+                                  @RequestParam(name = "key",      required = false, defaultValue = "")  String key) {
+    
+    ArrayList<MemberVO> list = this.memberProc.list_search_paging(word, key, now_page, MemberVO.RECORD_PER_PAGE);
     return list;
   }
 
+  
+  
+  /**
+   * 페이징(Pagination) 출력 <br> 
+   * http://localhost:9093/admin/member/** <br>
+   * http://54.180.175.50:9093/admin/member/**
+   * 
+   * @param request  HttpServletRequest 객체
+   * @param now_page 현재 페이지
+   * @param word     검색어
+   * @param key      키워드 선택
+   * @param memberno 선택된 회원의 memberno 번호
+   */
   @ModelAttribute("paging")
-  public String paging(HttpServletRequest request,
-      @RequestParam(name = "now_page", required = false, defaultValue = "1") Integer now_page,
-      @RequestParam(name = "word", required = false, defaultValue = "") String word,
-      @RequestParam(name = "key", required = false, defaultValue = "") String key,
-      @RequestParam(name = "memberno", required = false, defaultValue = "0") Integer memberno) {
+  public String paging(HttpServletRequest request, 
+                       @RequestParam(name = "now_page", required = false, defaultValue = "1") Integer now_page,
+                       @RequestParam(name = "word",     required = false, defaultValue = "")  String word, 
+                       @RequestParam(name = "key",      required = false, defaultValue = "")  String key, 
+                       @RequestParam(name = "memberno", required = false, defaultValue = "0") Integer memberno) {
+    
     HashMap<String, Object> map = new HashMap<String, Object>();
+    String path = request.getServletPath();
+    
     map.put("word", word);
     map.put("key", key);
+    
     int search_count = this.memberProc.list_search_count(map);
-    String path = request.getServletPath();
-    String paging = this.memberProc.pagingBox(memberno, now_page, word, path, search_count);
-    return paging;
+    return this.memberProc.pagingBox(memberno, now_page, word, key, path, search_count);
   }
 
+  
+  
+  /**
+   * 검색어 검색 갯수 조회 <br>
+   * http://localhost:9093/admin/member/** <br>
+   * http://54.180.175.50:9093/admin/member/**
+   * 
+   * @param now_page 현재 페이지
+   * @param word     검색어
+   * @param key      키워드 선택
+   */
+  @ModelAttribute("count")
+  public int count(@RequestParam(name = "now_page", required = false, defaultValue = "1") Integer now_page, 
+                   @RequestParam(name = "word",     required = false, defaultValue = "")  String word, 
+                   @RequestParam(name = "key",      required = false, defaultValue = "")  String key) {
+
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    
+    map.put("word", word);
+    map.put("key", key);
+    
+    return this.memberProc.list_search_count(map);
+  }
+  /* =========================================== ModelAttribute END =========================================== */
+  /**
+   * 목록 출력 <br>
+   * http://localhost:9093/admin/member/list <br>
+   * http://54.180.175.50:9093/admin/member/list
+   */
   @GetMapping("list")
-  public String list(Model model) {
+  public String list() {
     return "admin/member/list";
   }
-
+  
+  
+  
+  /**
+   * 회원 정보 출력 <br>
+   * http://localhost:9093/admin/member/read?memberno= <br>
+   * http://54.180.175.50:9093/admin/member/read?memberno=
+   * 
+   * @param model    org.springframework.ui.Model 객체
+   * @param memberno 선택된 회원의 memberno 번호
+   */
   @GetMapping("read")
-  public String read(@RequestParam("memberno") Integer memberno, Model model) {
+  public String read(Model model, @RequestParam("memberno") Integer memberno) {
     MemberVO memberVO = this.memberProc.readByMemberno(memberno);
     model.addAttribute("memberVO", memberVO);
     return "admin/member/read";
   }
-
+  
+  
+  
+  /**
+   * 회원 정보 출력 <br>
+   * http://localhost:9093/admin/member/update?memberno= <br>
+   * http://54.180.175.50:9093/admin/member/update?memberno=
+   * 
+   * @param model    org.springframework.ui.Model 객체
+   * @param memberno 선택된 회원의 memberno 번호
+   */
   @GetMapping("update")
-  public String update(@RequestParam("memberno") Integer memberno, Model model) {
+  public String update(Model model, @RequestParam("memberno") Integer memberno) {
     MemberVO memberVO = this.memberProc.readByMemberno(memberno);
     model.addAttribute("memberVO", memberVO);
     return "admin/member/update";
   }
-
+  
+  
+  
+  /**
+   * 회원 정보 출력 Proc <br>
+   * 
+   * @param request HttpServletRequest 객체
+   * @param model   org.springframework.ui.Model 객체
+   * @param memberno 선택된 회원의 memberno 번호
+   */
   @PostMapping("update")
-  public String update(HttpServletRequest request, MemberVO memberVO) {
-    System.out.println("updateProc:  " + memberVO.toString());
-    this.memberProc.updateAdmin(memberVO);
-
+  public String update(HttpServletRequest request, Model model, MemberVO memberVO) {
+    MemberVO memberVOorigin = this.memberProc.readByMemberno(memberVO.getMemberno());
     String referer = request.getHeader("Referer");
+    MultipartFile mf = memberVO.getMf();
+    String file = mf.getOriginalFilename();
+    String filename = "";
+    
+    if(memberVOorigin.getRole() == MemberRole.MASTER && memberVO.getRole() != MemberRole.MASTER) {
+      if(this.memberProc.checkRoleMaster() <= 1) {
+        Alert message = new Alert("MASTER 권한을 가진 계정은 최소 1개이상 존재해야 합니다.", referer, RequestMethod.GET, null);
+        return DefaultCont.showMessageAndRedirect(message, model);
+      }
+    }
+    
+    if (!file.isEmpty() && !Tool.isImage(file)) {
+      Alert message = new Alert("업로드가 불가능한 파일입니다. 이미지 파일을 등록해주세요.", referer, RequestMethod.GET, null);
+      return DefaultCont.showMessageAndRedirect(message, model);
+    } else if (!file.isEmpty() && Tool.isImage(file)) {
+      filename = Tool.saveFileSpring(mf);
+      memberVO.setThumb(filename); // 새로운 파일이 저장된 경우에만 thumb 값을 설정
+    }
+    
+    if(this.memberProc.updateAdmin(memberVO) == 0) {
+      Alert message = new Alert("알 수 없는 오류입니다.\n다시 시도해주세요.", referer, RequestMethod.GET, null);
+      return DefaultCont.showMessageAndRedirect(message, model);
+    }
+
     return "redirect:" + referer;
   }
 
+  
+  
+  /**
+   * 회원 정보 삭제 <br>
+   * http://localhost:9093/admin/member/delete?memberno= <br>
+   * http://54.180.175.50:9093/admin/member/delete?memberno=
+   * 
+   * @param model    org.springframework.ui.Model 객체
+   * @param memberno 선택된 회원의 memberno 번호
+   */
   @GetMapping("delete")
-  public String delete(@RequestParam("memberno") Integer memberno, Model model) {
+  public String delete(Model model, @RequestParam("memberno") Integer memberno) {
     MemberVO memberVO = this.memberProc.readByMemberno(memberno);
     model.addAttribute("memberVO", memberVO);
     return "admin/member/delete";
   }
 
+  
+  
+  /**
+   * 회원 정보 삭제 Proc<br>
+   * 
+   * @param request  HttpServletRequest 객체
+   * @param session  HttpSession session 객체
+   * @param model    org.springframework.ui.Model 객체
+   * @param memberno 선택된 회원의 memberno 번호
+   */
   @PostMapping("delete")
-  public String deleteProc(@RequestParam("memberno") Integer memberno, Model model) {
-    if (this.memberProc.delete(memberno) != 0) {
-      return "redirect:/admin/member/list";
+  public String deleteProc(HttpServletRequest request, HttpSession session, Model model, 
+                           @RequestParam("memberno") Integer memberno) {
+    
+    MemberVO memberVOlogin = (MemberVO) session.getAttribute("login");
+    MemberVO memberVO = this.memberProc.readByMemberno(memberno);
+    String referer = request.getHeader("Referer");
+    
+    //회원정보를 가져오지 못한경우
+    if (memberVO == null) {
+      Alert message = new Alert("알 수 없는 오류입니다.\n다시 시도해주세요.", referer, RequestMethod.GET, null);
+      return DefaultCont.showMessageAndRedirect(message, model);
     }
-    return "redirect:/admin";
+    
+    //회원이 MASTER Role를 가지고 있을 경우
+    if (memberVO.getRole() == MemberRole.MASTER) {
+      if (this.memberProc.checkRoleMaster() <= 1) {
+        Alert message = new Alert("MASTER 권한을 가진 계정은 최소 1개이상 존재해야 합니다.", referer, RequestMethod.GET, null);
+        return DefaultCont.showMessageAndRedirect(message, model);
+      }
+    }
+    
+    //회원이 자신의 로그인 정보와 같을 경우
+    if (memberVOlogin.getMemberno() == memberno) {
+      Alert message = new Alert("자신의 계정은 삭제할 수 없습니다.\nMASTER계정 또는 다른 ADMIN 계정을 이용하세요.", referer, RequestMethod.GET, null);
+      return DefaultCont.showMessageAndRedirect(message, model);
+    }
+    
+    //삭제 쿼리가 실패한 경우
+    if (this.memberProc.deleteAdmin(memberno) == 0) {
+      Alert message = new Alert("삭제 실패!\n다시 시도해주세요.", referer, RequestMethod.GET, null);
+      return DefaultCont.showMessageAndRedirect(message, model);
+    }
+    
+    //삭제 성공
+    Alert message = new Alert("삭제 성공!\n삭제된 회원ID: " + memberVO.getId(), "/admin/member/list", RequestMethod.GET, null);
+    return DefaultCont.showMessageAndRedirect(message, model);
+  }
+  
+  
+
+  /**
+   * 회원 권한 상승 <br>
+   * http://localhost:9093/admin/member/decrease?memberno=
+   * http://54.180.175.50:9093/admin/member/decrease?memberno=
+   * 
+   * @param request  HttpServletRequest 객체
+   * @param model    org.springframework.ui.Model 객체
+   * @param memberno 선택된 회원의 memberno 번호
+   */
+  @GetMapping("decrease")
+  public String decrease(HttpServletRequest request, Model model, @RequestParam("memberno") Integer memberno) {
+    String referer = request.getHeader("Referer");
+    MemberVO memberVO = this.memberProc.readByMemberno(memberno);
+    
+    
+    if (memberVO == null) {
+      Alert message = new Alert("알 수 없는 오류입니다.\n다시 시도해주세요.", referer, RequestMethod.GET, null);
+      return DefaultCont.showMessageAndRedirect(message, model);
+    }
+    
+    
+    this.memberProc.changeRole(memberVO, true);
+    return "redirect:" + referer;
+  }
+
+  
+  
+  /**
+   * 회원 권한 하락 <br>
+   * http://localhost:9093/admin/member/increase?memberno=
+   * http://54.180.175.50:9093/admin/member/increase?memberno=
+   * 
+   * @param request  HttpServletRequest 객체
+   * @param model    org.springframework.ui.Model 객체
+   * @param memberno 선택된 회원의 memberno 번호
+   */
+  @GetMapping("increase")
+  public String increase(HttpServletRequest request, Model model, @RequestParam("memberno") Integer memberno) {
+    String referer = request.getHeader("Referer");
+    MemberVO memberVO = this.memberProc.readByMemberno(memberno);
+    
+    
+    if (memberVO == null) {
+      Alert message = new Alert("알 수 없는 오류입니다.\n다시 시도해주세요.", referer, RequestMethod.GET, null);
+      return DefaultCont.showMessageAndRedirect(message, model);
+    }
+    
+    
+    this.memberProc.changeRole(memberVO, false);
+    return "redirect:" + referer;
   }
 }

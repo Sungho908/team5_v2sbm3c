@@ -2,12 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.mvc.report.ReportDAOInter">
 
-  <!-- 생성 -->
+  <!-- 신고 작성 -->
   <insert id="create" parameterType="dev.mvc.report.ReportVO">
     INSERT INTO report(reportno, title, contents, rdate, typeno, memberno, reviewno)
     VALUES(REPORT_SEQ.nextval, #{title}, #{contents}, sysdate, #{typeno}, #{memberno}, #{reviewno})
   </insert>
 
+  <select id="report_count" parameterType="Map">
+    SELECT count(*) FROM report WHERE memberno = #{memberno} AND reviewno = #{reviewno}
+  </select>
   <!-- 검색된 레코드 수 -->
   <select id="list_search_count" resultType="int" parameterType="String">
     SELECT COUNT(*) as cnt

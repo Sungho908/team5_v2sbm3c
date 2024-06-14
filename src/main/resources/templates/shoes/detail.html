@@ -3,14 +3,15 @@
 <html layout:decorate="~{layout}">
 <!-- layout.html 상속-->
 
-
 <div layout:fragment="content">
+
 
   <body>
     <script src="/js/basket.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
     <div class="detail_container">
+      <input type="hidden" id="memberno" th:data-mymemberno="${memberno}">
+      <input type="hidden" id="shoesno" th:data-shoesno="${shoesAllVO.shoesVO.shoesno}">
+
       <h1 class="title" th:text="${shoesAllVO.shoesVO.title}"></h1>
       <div id="wrap" class="product">
         <img src="/images/nike.jpg" alt="스니커즈1">
@@ -47,31 +48,8 @@
         </td>
       </div>
 
-
-      <!-- //상품상세정보 -->
-      <!-- //상품구매안내 -->
-      <!-- 상품사용후기 -->
-      <h2 class="title">상품후기<span class="all">
-          <a th:href="@{/review/list(shoesno=1)}">
-            상품 후기 모두보기
-          </a>
-          <i class="bi bi-chevron-right"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-              fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-              <path fill-rule="evenodd"
-                d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
-            </svg></i>
-        </span>
-      </h2>
-
-      <div class="review" th:each="ShoesAllVO : ${review}">
-        <div class="rating">평점: <span class="stars" th:text="${ShoesAllVO.reviewVO.grade}"></span></div>
-        <div class="username">닉네임: <span th:text="${ShoesAllVO.memberVO.nickname}"></span></div>
-        <div class="content" th:text="${ShoesAllVO.reviewVO.contents}"></div>
-        <div class="date" th:text="${#dates.format(ShoesAllVO.reviewVO.rdate, 'yy/MM/dd')}"></div>
-        <div class="like-btn">
-          <button>좋아요</button> <!-- 좋아요 버튼 추가 -->
-        </div>
-      </div>
+      <div th:replace="~{review/review_component::review_fragment}"></div>
+      <div th:replace="~{report/report_component::report_fragment}"></div>
 
       <!-- 후기 답글 -->
       <div class="widget_item_comment_container">
@@ -85,7 +63,7 @@
       <!-- 후기 답글 끝-->
 
     </div>
-  </body>
 
+  </body>
 
 </html>

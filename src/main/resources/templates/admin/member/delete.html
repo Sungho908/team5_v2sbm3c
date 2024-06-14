@@ -29,14 +29,12 @@
     <form name="frm" th:object="${memberVO}" method="post" action="/admin/member/delete">
       <input type="hidden" name="categoryno" th:field="*{memberno}">
 
-      <div class="msg_warning">카테고리를 삭제하면 복구 할 수 없습니다.</div>
+      <div class="msg_warning">회원을 삭제하면 복구 할 수 없습니다.</div>
       <span th:text="|회원 ID: *{id}(*{nickname})|"></span>
 
       <div class="content_body_bottom">
         <button type="submit" class="btn btn-secondary btn-sm">삭제</button>
-        <button type="button"
-          th:onclick="location.href='/admin/member/read(memberno=${param.memberno})'"
-          class="btn btn-secondary btn-sm">취소</button>
+        <button type="button" th:onclick="|location.href='@{/admin/member/read(memberno=${param.memberno}, word=${param.word}, key=${param.key}, now_page=${param.now_page})}'|" class="btn btn-secondary btn-sm">취소</button>
       </div>
     </form>
 

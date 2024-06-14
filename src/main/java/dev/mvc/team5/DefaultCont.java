@@ -10,14 +10,19 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class DefaultCont {
   
-  /** Alert 창 띄우기 */
+  /** Alert 창 띄우기 
+   * 
+   * @param params alert에 띄울 데이터들
+   * @param model  org.springframework.ui.Model 객체
+   * */
   public static String showMessageAndRedirect(final Alert params, Model model) {
     model.addAttribute("params", params);
     return "alert";
   }
+
   
   
-  @GetMapping({"/"}) // http://localhost:9091/
+  @GetMapping({"", "/"}) // http://localhost:9091/
   public String index(HttpSession session, Model model) {
     return "index"; // /templates/index.html
   }

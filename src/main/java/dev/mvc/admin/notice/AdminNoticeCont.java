@@ -93,17 +93,16 @@ public class AdminNoticeCont {
   @PostMapping(value = "/create")
   public String create_process(HttpServletRequest request, HttpSession session, Model model, NoticeFileVO noticefileVO,
       RedirectAttributes ra) {
-    // 파일
     MultipartFile mf = noticefileVO.getFileSelect();
     String file = mf.getOriginalFilename();
-
     if (file != null && !file.trim().isEmpty()) {
       noticefileVO.setName(file);
-      noticefileVO.setEx(file.substring(file.length() - 3));
+      noticefileVO.setEx(Tool.getFileExtension(file).substring(1));
       noticefileVO.setSizes(mf.getSize());
-      noticefileVO.setSrc(Tool.saveFileSpring(mf, absPath));
+      noticefileVO.setSrc(Tool.saveFileSpring(mf));
     }
     // 생성
+    System.out.println("noticefilevo: "+ noticefileVO.toString());
     this.noticeProc.create(noticefileVO);
     return "redirect:/admin/notice/list?now_page=1";
   }
@@ -163,9 +162,9 @@ public class AdminNoticeCont {
     String file = mf.getOriginalFilename();
     if (file != null && !file.trim().isEmpty()) {
       noticememberfileVO.setName(file);
-      noticememberfileVO.setEx(file.substring(file.length() - 3));
+      noticememberfileVO.setEx(Tool.getFileExtension(file).substring(1));
       noticememberfileVO.setSizes(mf.getSize());
-      noticememberfileVO.setSrc(Tool.saveFileSpring(mf, absPath));
+      noticememberfileVO.setSrc(Tool.saveFileSpring(mf));
     }
 
     this.noticeProc.update(noticememberfileVO);
