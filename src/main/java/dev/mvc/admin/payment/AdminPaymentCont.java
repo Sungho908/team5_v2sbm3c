@@ -34,6 +34,7 @@ public class AdminPaymentCont {
   public String list(Model model) {
     ArrayList<PaymentTotalVO> list = this.paymentTotalProc.listAdmin();
     Map<String, List<PaymentTotalVO>> groupedByMemberno = list.stream().collect(Collectors.groupingBy(PaymentTotalVO::getMemberid));
+    System.out.println(groupedByMemberno.size());
     model.addAttribute("paymentTotalLists", groupedByMemberno);
     return "admin/payment/list";
   }
