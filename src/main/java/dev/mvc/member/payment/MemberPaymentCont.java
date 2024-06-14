@@ -1,6 +1,7 @@
 package dev.mvc.member.payment;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import dev.mvc.payment.PaymentVO;
 import dev.mvc.paymentDetails.PaymentDetailsProcInter;
 import dev.mvc.paymentTotal.PaymentTotalProcInter;
 import dev.mvc.paymentTotal.PaymentTotalVO;
+import dev.mvc.tool.Tool;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -39,9 +41,14 @@ public class MemberPaymentCont {
   private PaymentTotalProcInter paymentTotalProc;
   
   @GetMapping("order")
-  public String order(HttpSession session, Model model) {
+  public String order(HttpSession session, Model model, 
+                      @RequestParam(required = false, defaultValue = "7", name = "dates")Integer dates,
+                      @RequestParam(required = false, name="search")String search ) {
     MemberVO memberVO = (MemberVO) session.getAttribute("login");
-    ArrayList<PaymentTotalVO> list = this.paymentTotalProc.list(memberVO.getMemberno());
+    ArrayList<PaymentTotalVO> list = this.paymentTotalProc.list(memberVO.getMemberno(), dates, search);
+    System.out.println(list.toString());
+    model.addAttribute("cnt", list.size());
+    model.addAttribute("startDates",Tool.addDays(new Date(),-(dates)));
     model.addAttribute("paymentsList", list);
     
     return "member/payment/order";

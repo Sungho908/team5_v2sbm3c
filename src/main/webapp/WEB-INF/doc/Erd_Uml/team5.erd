@@ -1936,10 +1936,10 @@
                       <columnName>ZIPCODE</columnName>
                       <logicalName>우편번호</logicalName>
                       <columnType class="net.java.amateras.db.dialect.ColumnType">
-                        <name>INTEGER</name>
-                        <logicalName>Integer</logicalName>
+                        <name>VARCHAR2</name>
+                        <logicalName>String</logicalName>
                         <supportSize>true</supportSize>
-                        <type>4</type>
+                        <type>12</type>
                       </columnType>
                       <size>1000</size>
                       <notNull>true</notNull>
@@ -2744,7 +2744,7 @@
   </children>
   <dommains/>
   <dialectName>Oracle</dialectName>
-  <logicalMode>false</logicalMode>
+  <logicalMode>true</logicalMode>
   <jarFile>D:\kd\ojdbc11-23.3.0.23.09.jar</jarFile>
   <jdbcDriver>oracle.jdbc.driver.OracleDriver</jdbcDriver>
   <jdbcUrl>jdbc:oracle:thin:@54.180.175.50:1521:xe</jdbcUrl>

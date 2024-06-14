@@ -138,7 +138,9 @@ public class LoginCont {
       return "redirect:/login/finddone";
     }else {
       try {
-        this.emailProc.send_pw(email, map.get("originpw").toString());
+        if(!email.equals("pass")) {
+          this.emailProc.send_pw(email, map.get("originpw").toString());
+        } 
       } catch (Exception e) {
         e.printStackTrace();
       }

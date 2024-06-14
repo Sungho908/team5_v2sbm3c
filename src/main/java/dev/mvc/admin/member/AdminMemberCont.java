@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import dev.mvc.delivery.DeliveryProcInter;
+import dev.mvc.loginHistory.LoginHistoryProcInter;
 import dev.mvc.member.MemberProcInter;
 import dev.mvc.member.MemberRole;
 import dev.mvc.member.MemberVO;

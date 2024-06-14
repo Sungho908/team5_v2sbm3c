@@ -39,5 +39,13 @@ VALUES (PAYMENT_DETAILS_SEQ.nextval, 3, 3, 2);
 INSERT INTO PAYMENT_DETAILS(payment_details_no, payment_amount, optionno, paymentno)
 VALUES (PAYMENT_DETAILS_SEQ.nextval, 5, 2, 3);
 
+INSERT INTO PAYMENT_DETAILS(payment_details_no, payment_amount, optionno, paymentno)
+VALUES (PAYMENT_DETAILS_SEQ.nextval, 1, 11, 3);
+
+INSERT INTO PAYMENT_DETAILS(payment_details_no, payment_amount, optionno, paymentno)
+VALUES (PAYMENT_DETAILS_SEQ.nextval, 1, 11, 1);
+
 SELECT payment_details_no, payment_amount, optionno, paymentno
 FROM PAYMENT_DETAILS;
+
+commit;

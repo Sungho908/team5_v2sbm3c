@@ -18,5 +18,11 @@
     where paymentno = #{paymentno}
   </delete>
   
+  <update id="update" parameterType="Map">
+  UPDATE payment
+  SET payment_status=#{payment_status}, status=#{status}, cs_status=#{cs_status}
+  WHERE paymentno = #{paymentno}
+  </update>
+  
   
 </mapper>

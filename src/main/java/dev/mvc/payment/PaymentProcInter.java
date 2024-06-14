@@ -1,6 +1,7 @@
 package dev.mvc.payment;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface PaymentProcInter {
   /**
@@ -18,5 +19,11 @@ public interface PaymentProcInter {
    * @return 삭제 성공한 쿼리 갯수
    * */
   public int delete(int paymentno);
+  
+  /**
+   * 주문내역 수정
+   * id="update" parameterType="Map"
+   * */
+  public int update(Map<String, Object> map);
 }
 

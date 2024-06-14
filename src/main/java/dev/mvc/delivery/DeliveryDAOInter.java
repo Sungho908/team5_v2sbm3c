@@ -51,4 +51,12 @@ public interface DeliveryDAOInter {
    * */
   public int update(DeliveryVO deliveryVO);
   
+  /**
+   * 어드민이 회원 삭제 처리
+   * id="deleteAdmin" parameterType="int"
+   * @param memberno 삭제할 회원의 memberno 기본키
+   * @return 삭제된 쿼리 갯수
+   * */
+  public int deleteAdmin(int memberno);
+  
 }

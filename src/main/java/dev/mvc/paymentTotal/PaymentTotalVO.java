@@ -17,6 +17,8 @@ import dev.mvc.option.OptionVO;
 @Getter @Setter @ToString
 public class PaymentTotalVO {
   private Integer memberno;
+  private String memberid;
+  private String nickname;
   
   private Integer paymentno;
   private Date rdate;
@@ -27,20 +29,5 @@ public class PaymentTotalVO {
   private Double delivery;
   private Double total_payment;
   
-  private ArrayList<PaymentDetailsOptionVO> payment_details_option;
-  
-  private Integer shoesno;
-  private String title;
-  private String brand;
-  private Double rating;
-  private Double price;
-  private Double discount;
-  private String contents;
-  private char visible;
-  
-  private Integer shoes_file_no;
-  private String name;
-  private Long shoes_file_sizes;
-  private String ex;
-  private String src;
+  private ArrayList<PaymentDetailsOptionVO> payment_details_option; 
 }

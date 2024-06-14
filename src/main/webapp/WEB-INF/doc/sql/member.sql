@@ -146,6 +146,9 @@ select count(role) as cnt
 from member
 where UPPER(role)= UPPER('master');
 
+DELETE FROM member
+WHERE memberno = 13;
+
 commit;
 
 rollback;
@@ -153,3 +156,7 @@ rollback;
 savepoint test1;
 
 rollback savepoint to test1;
+
+
+
+

@@ -134,7 +134,13 @@
 	<update id="findpw" parameterType="Map">
 		UPDATE MEMBER
 		SET pw=#{pw}
-		WHERE id=#{id} and email=#{email}
+		<if test="email != 'pass'">
+		  WHERE id=#{id} and email=#{email}
+		</if>
+		<if test="email == 'pass'">
+		  WHERE id=#{id}
+		</if>
+		
 	</update>
 	
 	<!-- ROLE 변경 -->

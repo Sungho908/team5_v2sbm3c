@@ -183,3 +183,76 @@ SELECT m.memberno,
 
 commit;
 
+
+  SELECT DISTINCT
+    m.memberno,
+    p.paymentno, 
+    p.rdate, 
+    p.status, 
+    p.payment_status, 
+    p.cs_status, 
+    p.total_price, 
+    p.delivery, 
+    p.total_payment,
+    o.shoesno, 
+    s.title, 
+    s.brand, 
+    s.rating, 
+    s.price, 
+    s.discount, 
+    s.contents, 
+    s.visible,
+    sf.shoes_file_no, 
+    sf.name, 
+    sf.sizes as shoes_file_sizes, 
+    sf.ex, 
+    sf.src
+  FROM 
+    member m 
+    INNER JOIN payment p ON m.memberno = p.memberno
+    INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
+    INNER JOIN options o ON pd.optionno = o.optionno
+    INNER JOIN shoes s ON o.shoesno = s.shoesno
+    LEFT JOIN shoes_file sf ON s.shoesno = sf.shoesno
+  WHERE 
+    m.memberno = 1
+  ORDER BY 
+    p.rdate ASC;
+    
+    
+    
+    SELECT DISTINCT
+    m.memberno,
+    m.id,
+    m.name,
+    p.paymentno, 
+    p.rdate, 
+    p.status, 
+    p.payment_status, 
+    p.cs_status, 
+    p.total_price, 
+    p.delivery, 
+    p.total_payment,
+    o.shoesno, 
+    s.title, 
+    s.brand, 
+    s.rating, 
+    s.price, 
+    s.discount, 
+    s.contents, 
+    s.visible,
+    sf.shoes_file_no, 
+    sf.name, 
+    sf.sizes as shoes_file_sizes, 
+    sf.ex, 
+    sf.src
+  FROM 
+    member m 
+    INNER JOIN payment p ON m.memberno = p.memberno
+    INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
+    INNER JOIN options o ON pd.optionno = o.optionno
+    INNER JOIN shoes s ON o.shoesno = s.shoesno
+    LEFT JOIN shoes_file sf ON s.shoesno = sf.shoesno
+
+  ORDER BY 
+    p.rdate ASC;

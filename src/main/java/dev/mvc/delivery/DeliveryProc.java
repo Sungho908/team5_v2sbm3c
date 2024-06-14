@@ -42,5 +42,10 @@ public class DeliveryProc implements DeliveryProcInter {
     return this.deliveryDAO.update(deliveryVO);
   }
 
+  @Override
+  public int deleteAdmin(int memberno) {
+    return this.deliveryDAO.deleteAdmin(memberno);
+  }
+
   
 }

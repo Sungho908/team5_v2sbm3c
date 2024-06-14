@@ -36,5 +36,10 @@
   SET title=#{title}, recipient=#{recipient}, phone=#{phone}, zipcode=#{zipcode}, addr1=#{addr1}, addr2=#{addr2}, requests=#{requests}
   WHERE memberno=#{memberno} AND deliveryno = #{deliveryno}
   </update>
+  
+  <delete id="deleteAdmin" parameterType="int">
+    DELETE FROM delivery
+    WHERE memberno = #{memberno}
+  </delete>
 
 </mapper>

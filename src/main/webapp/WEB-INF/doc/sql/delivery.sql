@@ -33,7 +33,7 @@ CREATE SEQUENCE delivery_seq
   MAXVALUE 9999999999 -- 최대값: 9999999 --> NUMBER(7) 대응
   CACHE 2                       -- 2번은 메모리에서만 계산
   NOCYCLE;                     -- 다시 1부터 생성되는 것을 방지
-
+--C
 INSERT INTO delivery(deliveryno, title, recipient, phone, zipcode, addr1, addr2, requests, memberno)
 VALUES (delivery_seq.nextval, '집', '아무개', '010-1234-1234', '12345', '서울시', '종로구', '택배함에 넣어주세요.', 1);
 
@@ -46,6 +46,7 @@ VALUES (delivery_seq.nextval, '학교', '김길동', '010-1234-1234', '12345', '
 INSERT INTO delivery(deliveryno, title, recipient, phone, zipcode, addr1, addr2, requests, memberno)
 VALUES (delivery_seq.nextval, '등록1', '나길동', '010-1234-1234', '12345', '서울시', '종로구', '택배함에 넣어주세요.', 1);
 
+--R
 select deliveryno, title, recipient, phone, zipcode, addr1, addr2, requests, memberno
 from delivery
 where memberno = 1
@@ -55,7 +56,16 @@ select COUNT(*) as cnt
 from delivery
 where memberno = 1;
 
+--U
+UPDATE delivery
+SET title=#{title}, recipient=#{recipient}, phone=#{phone}, zipcode=#{zipcode}, addr1=#{addr1}, addr2=#{addr2}, requests=#{requests}
+WHERE memberno=#{memberno} AND deliveryno = #{deliveryno}
+
+--D
 DELETE FROM delivery
 WHERE deliveryno = 2;
+
+DELETE FROM delivery
+WHERE memberno = 1;
 
 commit;

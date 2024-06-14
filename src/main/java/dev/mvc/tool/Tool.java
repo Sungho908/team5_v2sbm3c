@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -625,5 +626,13 @@ public class Tool {
 
     return null;
   }
+  
+  //날짜에 특정 일수를 더하거나 빼는 메서드
+   public static Date addDays(Date date, int days) {
+     Calendar calendar = Calendar.getInstance();
+     calendar.setTime(date);
+     calendar.add(Calendar.DAY_OF_MONTH, days);
+     return calendar.getTime();
+   }
 
 }
