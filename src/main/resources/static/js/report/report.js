@@ -12,29 +12,29 @@ document.addEventListener("DOMContentLoaded", function() {
   report.forEach(function(link) {
     link.addEventListener("click", function(event) {
       event.preventDefault();
-      var reviewno = link.getAttribute("data-reviewno");
-      var nickname = link.getAttribute("data-nickname");
-
-      fetch('/report/report_count', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          reviewno: reviewno
+      var reviewno = link.closest(".review").querySelector(".reviewno").value;
+      var nickname = link.closest(".review").querySelector(".nickname").value;
+      
+        fetch('/report/report_count', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            reviewno: reviewno
+          })
         })
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data === 0) {
-            popupreviewno.value = reviewno;
-            popupnickname.textContent = "신고 대상: " + nickname;
-            popup.style.display = "block";
-          } else {
-            alert("해당 댓글을 이미 신고하셨습니다.");
-          }
-        })
-        .catch(error => console.error('Error:', error));
+          .then(response => response.json())
+          .then(data => {
+            if (data === 0) {
+              popupreviewno.value = reviewno;
+              popupnickname.textContent = "신고 대상: " + nickname;
+              popup.style.display = "block";
+            } else {
+              alert("해당 댓글을 이미 신고하셨습니다.");
+            }
+          })
+          .catch(error => console.error('Error:', error));
     });
   });
 

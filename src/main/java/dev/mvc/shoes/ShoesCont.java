@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import dev.mvc.member.MemberProcInter;
+import dev.mvc.member.MemberVO;
 import dev.mvc.option.OptionProcInter;
 import dev.mvc.reportType.ReportTypeProcInter;
 import dev.mvc.reportType.ReportTypeVO;
@@ -96,9 +97,16 @@ public class ShoesCont {
   public String details(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
       @RequestParam(name = "categoryno") int categoryno) {
 
+    // 로그인 사용자 이름 넣기
+    // int memberno = session.getMemberno();
+    model.addAttribute("memberno", 1);
+    
+    MemberVO memberVO = this.memberProc.readByMemberno(1);
+    model.addAttribute("nickname", memberVO.getNickname());
+    
     ShoesAllVO shoesAllVO = this.shoesProc.read(shoesno, categoryno);
     model.addAttribute("shoesAllVO", shoesAllVO);
-
+    
     ArrayList<Integer> sizes = this.optionProc.option_sizes(shoesno, categoryno);
     model.addAttribute("sizes", sizes);
 
@@ -106,6 +114,9 @@ public class ShoesCont {
     model.addAttribute("color", color);
 
     ArrayList<ShoesAllVO> review = this.reviewProc.review_list(shoesno);
+    if(review.size() == 0) {
+      model.addAttribute("no_review", true);
+    }
     model.addAttribute("review", review);
 
     ArrayList<ReportTypeVO> reportType = this.reportTypeProc.search_type();

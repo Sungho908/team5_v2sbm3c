@@ -26,6 +26,7 @@ import com.zaxxer.hikari.HikariDataSource;
                             "dev.mvc.review",
                             "dev.mvc.report",
                             "dev.mvc.reportType",
+                            "dev.mvc.likes",
                             "dev.mvc.basket",
                             "dev.mvc.shoesInquiry",
                             "dev.mvc.paymentInquiry",
