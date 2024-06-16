@@ -6,64 +6,66 @@
 <div layout:fragment="content">
 
 
-  <body>
-    <script src="/js/basket.js"></script>
-    <div class="detail_container">
-      <input type="hidden" id="memberno" th:data-mymemberno="${memberno}">
-      <input type="hidden" id="shoesno" th:data-shoesno="${shoesAllVO.shoesVO.shoesno}">
+  <script src="/js/basket.js"></script>
+  <div class="detail_container">
+    <input type="hidden" id="memberno" th:data-mymemberno="${memberno}">
+    <input type="hidden" id="shoesno" th:data-shoesno="${shoesAllVO.shoesVO.shoesno}">
 
-      <h1 class="title" th:text="${shoesAllVO.shoesVO.title}"></h1>
-      <div id="wrap" class="product">
-        <img src="/images/nike.jpg" alt="스니커즈1">
+    <h1 class="title" th:text="${shoesAllVO.shoesVO.title}"></h1>
+    <div id="wrap" class="product">
+      <img src="/images/nike.jpg" alt="스니커즈1">
+      <div class="content">
+        <p>상품 설명 </p>
+        <p>가격:</p>
+      </div>
+      <div class="content">
+        <h3 for="sizes" style="text-align: center;">SIZE</h3>
+        <p style="text-align: center; text-align: center;">[필수] 옵션을 선택해주세요</p>
+
+        <select name="sizes" id="sizes" class="form-control form-control-sm"
+          style="width: 50%; margin: 0 auto; margin-top: 20px; margin-bottom: 20px; text-align: center; ">
+          <option value="">사이즈를 선택하세요</option>
+          <option th:each="size : ${sizes}" th:value="${size}" th:text="${size}"></option>
+        </select>
+        <br>
+        <h3 for="sizes" style="text-align: center;">색상</h3>
+        <p style="text-align: center; text-align: center;">[필수] 옵션을 선택해주세요</p>
+
+        <select name="color" id="color" class="form-control form-control-sm"
+          style="width: 50%; margin: 0 auto; margin-top: 20px; margin-bottom: 20px; text-align: center;">
+          <option value="">사이즈를 선택하세요</option>
+          <option th:each="color : ${color}" th:value="${color}" th:text="${color}"></option>
+        </select>
+
         <div class="content">
-          <p>상품 설명 </p>
-          <p>가격:</p>
+          <button class="detail_btnl">장바구니</button>
+          <button class="detail_btnr" onclick="send()">구매하기</button>
         </div>
-        <td>
-          <div class="content">
-            <h3 for="sizes" style="text-align: center;">SIZE</h3>
-            <p style="text-align: center; text-align: center;">[필수] 옵션을 선택해주세요</p>
 
-            <select name="sizes" id="sizes" class="form-control form-control-sm"
-              style="width: 50%; margin: 0 auto; margin-top: 20px; margin-bottom: 20px; text-align: center; ">
-              <option value="">사이즈를 선택하세요</option>
-              <option th:each="size : ${sizes}" th:value="${size}" th:text="${size}"></option>
-            </select>
-            <br>
-            <h3 for="sizes" style="text-align: center;">색상</h3>
-            <p style="text-align: center; text-align: center;">[필수] 옵션을 선택해주세요</p>
-
-            <select name="color" id="color" class="form-control form-control-sm"
-              style="width: 50%; margin: 0 auto; margin-top: 20px; margin-bottom: 20px; text-align: center;">
-              <option value="">사이즈를 선택하세요</option>
-              <option th:each="color : ${color}" th:value="${color}" th:text="${color}"></option>
-            </select>
-
-            <div class="content">
-              <button class="detail_btnl">장바구니</button>
-              <button class="detail_btnr">구매하기</button>
-            </div>
-
-          </div>
-        </td>
       </div>
-
-      <div th:replace="~{review/review_component::review_fragment}"></div>
-      <div th:replace="~{report/report_component::report_fragment}"></div>
-
-      <!-- 후기 답글 -->
-      <div class="widget_item_comment_container">
-        <div class="widget_answer_img"></div>
-        <div class="widget_item_comment_content">
-          <p>내용<br></p>
-          <div class="widget_item_comment_content_1">운영자</div>
-        </div>
-      </div>
-      <div class="between_line"></div>
-      <!-- 후기 답글 끝-->
-
     </div>
 
-  </body>
+    <div th:replace="~{review/review_component::review_fragment}"></div>
+    <div th:replace="~{report/report_component::report_fragment}"></div>
+
+    <!-- 후기 답글 -->
+    <div class="widget_item_comment_container">
+      <div class="widget_answer_img"></div>
+      <div class="widget_item_comment_content">
+        <p>내용<br></p>
+        <div class="widget_item_comment_content_1">운영자</div>
+      </div>
+    </div>
+    <div class="between_line"></div>
+    <!-- 후기 답글 끝-->
+
+  </div>
+  <script>
+    function send(){
+      
+    }
+  </script>
+</div>
+
 
 </html>

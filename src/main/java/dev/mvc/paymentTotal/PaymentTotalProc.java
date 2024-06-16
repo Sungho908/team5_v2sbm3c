@@ -60,13 +60,15 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
     return (ArrayList<PaymentTotalVO>) paymentTotalList;
   }
 
-  public ArrayList<PaymentTotalVO> listAdmin() {
+  public ArrayList<PaymentTotalVO> listAdmin(String word) {
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    map.put("word", word);
 
     // PaymentTotalVO 리스트를 담을 리스트 초기화
     List<PaymentTotalVO> paymentTotalList = new ArrayList<>();
 
     // 결과를 처리할 핸들러 정의
-    sqlsession.select("dev.mvc.paymentTotal.PaymentTotalDAOInter.listAdmin", (ResultHandler<PaymentTotalVO>) context -> {
+    sqlsession.select("dev.mvc.paymentTotal.PaymentTotalDAOInter.listAdmin", map, (ResultHandler<PaymentTotalVO>) context -> {
       PaymentTotalVO paymentTotal = context.getResultObject();
 
       // 자식 쿼리 호출

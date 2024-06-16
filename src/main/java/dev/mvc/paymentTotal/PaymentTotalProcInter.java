@@ -19,5 +19,5 @@ public interface PaymentTotalProcInter {
    * @param
    * @return 
    * */
-  public ArrayList<PaymentTotalVO> listAdmin();
+  public ArrayList<PaymentTotalVO> listAdmin(String word);
 }

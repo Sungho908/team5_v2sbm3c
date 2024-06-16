@@ -103,7 +103,7 @@
       pd.payment_details_no
   </select>
 
-  <select id="listAdmin" resultMap="PaymentTotalMap">
+  <select id="listAdmin" parameterType="Map" resultMap="PaymentTotalMap">
     SELECT DISTINCT
       m.memberno,
       m.id AS memberid,
@@ -120,6 +120,9 @@
       member m 
       INNER JOIN payment p ON m.memberno = p.memberno
       INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
+    <if test=" word !=null and word !='' ">
+      WHERE UPPER(m.id) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(m.nickname) LIKE '%' || UPPER(#{word}) || '%'
+    </if>
     ORDER BY 
       p.rdate DESC
   </select>

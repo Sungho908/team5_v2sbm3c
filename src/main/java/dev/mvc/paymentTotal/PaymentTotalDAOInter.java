@@ -22,5 +22,5 @@ public interface PaymentTotalDAOInter {
    * @param
    * @return 
    * */
-  public ArrayList<PaymentTotalVO> listAdmin();
+  public ArrayList<PaymentTotalVO> listAdmin(Map<String, Object> map);
 }

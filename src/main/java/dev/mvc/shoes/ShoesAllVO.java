@@ -9,8 +9,9 @@ import dev.mvc.option.OptionVO;
 import dev.mvc.review.ReviewVO;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
-@Getter @Setter
+@Getter @Setter @ToString
 public class ShoesAllVO {
   private ShoesVO shoesVO;
   private CategoryVO categoryVO;

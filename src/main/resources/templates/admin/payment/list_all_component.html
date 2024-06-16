@@ -43,7 +43,7 @@
     }
   </style>
   <!--/*■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■*/-->
-  <th:block th:each="paymentTotalList : ${paymentTotalLists}">
+  <th:block th:each="paymentTotalList : ${list}">
     <div>
       <button type="button" class="collapsible" onclick="collapse(this);">
         <div style="display: flex; justify-content: space-around;" th:with="paymentTotalone=${paymentTotalList.value[0]}">
@@ -198,6 +198,9 @@
     </div>
   </th:block>
   <!--/*■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■*/-->
+  
+  <div class="bottom_menu" th:utext="${paging}"></div>
+  
   <script>
     function collapse(element) {
       let before = document.querySelector(".active")               // 기존에 활성화된 버튼
