@@ -39,15 +39,14 @@ public class ReviewVO {
   private Date rdate;
   
   
-  /** 신발 번호*/
+  /** 신발 번호 */
   private Integer shoesno;
   
   
-  /** 멤버 번호*/
+  /** 멤버 번호 */
   private Integer memberno;
   
-  
-  /** 좋아요 번호*/
+  /** 좋아요 번호 */
   private Integer likeno;
   
 }

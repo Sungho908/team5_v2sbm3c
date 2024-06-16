@@ -13,6 +13,16 @@ public interface ReportDAOInter {
   public int create(ReportVO reportVO);
 
   /**
+   * id="report_count" parameterType="int"
+   */
+  
+  /**
+   * 회원, 댓글 별 신고 횟수 id="report_count" parameterType="Map"
+   * @param memberno
+   * @return
+   */
+  public int report_count(Map<String, Object> map);
+  /**
    * 검색된 레코드 수 id="list_search_count" resultType="int" parameterType="String"
    * 
    * @param word 검색어

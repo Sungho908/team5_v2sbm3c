@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -401,14 +402,14 @@ public class Tool {
     String path = "";
     if (File.separator.equals("\\")) {
       // Windows 개발시 사용 폴더
-      path = "D:/kd/deploy/resort_v4sbm3c";
+      path = "D:/kd/deploy/team5_v2sbm3c";
 
     } else {
       // Linux 배포
       // 기본 명령어
       // pwd: 현재 경로 확인, mkdir deploy: 폴더 생성, cd deploy: 폴더 이동, rmdir resort_v2sbm3c:
       // 폴더 삭제, cd ..: 상위 폴더로 이동
-      path = "/home/ubuntu/deploy/resort_v4sbm3c";
+      path = "/home/ubuntu/deploy/team5_v2sbm3c";
     }
     // System.out.println("path: " + path);
 
@@ -466,43 +467,44 @@ public class Tool {
   public static String getClientIp(HttpServletRequest request) throws UnknownHostException {
     String ip = request.getHeader("X-Forwarded-For");
 
-    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
-        ip = request.getHeader("Proxy-Client-IP"); 
-    } 
-    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
-        ip = request.getHeader("WL-Proxy-Client-IP"); 
-    } 
-    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
-        ip = request.getHeader("HTTP_CLIENT_IP"); 
-    } 
-    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
-        ip = request.getHeader("HTTP_X_FORWARDED_FOR"); 
+    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+      ip = request.getHeader("Proxy-Client-IP");
     }
-    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
-        ip = request.getHeader("X-Real-IP");
+    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+      ip = request.getHeader("WL-Proxy-Client-IP");
     }
-    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
-        ip = request.getHeader("X-RealIP"); 
+    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+      ip = request.getHeader("HTTP_CLIENT_IP");
     }
-    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
-        ip = request.getHeader("REMOTE_ADDR");
+    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+      ip = request.getHeader("HTTP_X_FORWARDED_FOR");
     }
-    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
-        ip = request.getRemoteAddr(); 
+    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+      ip = request.getHeader("X-Real-IP");
+    }
+    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+      ip = request.getHeader("X-RealIP");
+    }
+    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+      ip = request.getHeader("REMOTE_ADDR");
+    }
+    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+      ip = request.getRemoteAddr();
     }
 
-    if(ip.equals("0:0:0:0:0:0:0:1") || ip.equals("127.0.0.1")) 
-    {
-        InetAddress address = InetAddress.getLocalHost();
-        ip = address.getHostName() + "/" + address.getHostAddress();
+    if (ip.equals("0:0:0:0:0:0:0:1") || ip.equals("127.0.0.1")) {
+      InetAddress address = InetAddress.getLocalHost();
+      ip = address.getHostName() + "/" + address.getHostAddress();
     }
 
     return ip;
-}
+  }
+
   /**
    * 파일 저장위치 설정 가져오기
+   * 
    * @return 저장경로
-   * */
+   */
   public static synchronized String getUploadDir() {
     String path = "";
     if (File.separator.equals("\\")) { // windows, 개발 환경의 파일 업로드 폴더
@@ -517,69 +519,72 @@ public class Tool {
 
     return path;
   }
-  
 
-  public static String saveFileSpring(MultipartFile multipartFile, String absPath) {
+  public static String saveFileSpring(MultipartFile multipartFile) {
     String relativePath = "";
     String originalFileName = multipartFile.getOriginalFilename();
     long fileSize = multipartFile.getSize();
 
     if (originalFileName == null || fileSize == 0) {
-        return relativePath; // 파일이 없거나 사이즈가 0이면 저장하지 않음
+      return relativePath; // 파일이 없거나 사이즈가 0이면 저장하지 않음
     }
 
-    int extIndex = originalFileName.lastIndexOf(".");
-    String extFilename = originalFileName.substring(extIndex).toLowerCase(); // 확장자를 소문자로 변환
+    String extFilename = getFileExtension(originalFileName);
 
     try {
-        byte[] fileBytes = multipartFile.getBytes();
-        String checksum = calculateChecksum(fileBytes);
-        System.out.println(checksum);
+      byte[] fileBytes = multipartFile.getBytes();
+      String checksum = calculateChecksum(fileBytes);
+      System.out.println(checksum);
 
-        // Check for existing files with the same checksum
-        File existingFile = findFileByChecksum(absPath, extFilename, checksum);
-        if (existingFile != null) {
-            System.out.println("-> 같은 체크섬을 가진 파일이 이미 존재합니다: " + existingFile.getName());
-            // 반환 경로를 절대 경로에서 상대 경로로 변환
-            String existingFilePath = existingFile.getAbsolutePath();
-            relativePath = existingFilePath.substring(absPath.length()).replace("\\", "/");
-            if (relativePath.startsWith("/")) {
-                relativePath = relativePath.substring(1);
-            }
-            return relativePath;
-        }
-
-        String extension = extFilename.substring(1); // Remove the dot from the extension
-
-        // Create directory based on the file extension
-        File directory = new File(absPath, extension);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
-
-        File newFile = new File(directory, checksum + extFilename);
-
-        String serverFullPath = newFile.getAbsolutePath();
-
-        try (FileOutputStream outputStream = new FileOutputStream(serverFullPath)) {
-            outputStream.write(fileBytes);
-        }
-
+      // Check for existing files with the same checksum
+      File existingFile = findFileByChecksum(Tool.getUploadDir(), extFilename, checksum);
+      if (existingFile != null) {
+        System.out.println("-> 같은 체크섬을 가진 파일이 이미 존재합니다: " + existingFile.getName());
         // 반환 경로를 절대 경로에서 상대 경로로 변환
-        relativePath = serverFullPath.substring(absPath.length()).replace("\\", "/");
+        String existingFilePath = existingFile.getAbsolutePath();
+        relativePath = existingFilePath.substring(Tool.getUploadDir().length()).replace("\\", "/");
         if (relativePath.startsWith("/")) {
-            relativePath = relativePath.substring(1);
+          relativePath = relativePath.substring(1);
         }
+        return relativePath;
+      }
+
+      String extension = extFilename.substring(1); // Remove the dot from the extension
+
+      // Create directory based on the file extension
+      File directory = new File(Tool.getUploadDir(), extension);
+      if (!directory.exists()) {
+        directory.mkdirs();
+      }
+
+      File newFile = new File(directory, checksum + extFilename);
+
+      String serverFullPath = newFile.getAbsolutePath();
+
+      try (FileOutputStream outputStream = new FileOutputStream(serverFullPath)) {
+        outputStream.write(fileBytes);
+      }
+
+      // 반환 경로를 절대 경로에서 상대 경로로 변환
+      relativePath = serverFullPath.substring(Tool.getUploadDir().length()).replace("\\", "/");
+      if (relativePath.startsWith("/")) {
+        relativePath = relativePath.substring(1);
+      }
 
     } catch (Exception e) {
-        e.printStackTrace();
+      e.printStackTrace();
     }
 
     return relativePath; // 서버에 저장된 파일의 상대 경로 반환
-}
+  }
 
-
-
+  public static String getFileExtension(String fileName) {
+    int extIndex = fileName.lastIndexOf(".");
+    if (extIndex == -1) {
+      return ""; // 확장자가 없으면 빈 문자열 반환
+    }
+    return fileName.substring(extIndex).toLowerCase(); // 확장자를 소문자로 변환하여 반환
+  }
 
   private static String calculateChecksum(byte[] fileBytes) {
     try {
@@ -595,7 +600,7 @@ public class Tool {
     }
   }
 
-  private static File findFileByChecksum(String directory, String ext,String checksum) {
+  private static File findFileByChecksum(String directory, String ext, String checksum) {
     String path = "";
     if (File.separator.equals("\\")) {
       path = directory + "\\" + ext.substring(1);
@@ -605,23 +610,29 @@ public class Tool {
     File dir = new File(path);
 
     if (!dir.exists() || !dir.isDirectory()) {
-        return null;
+      return null;
     }
 
     File[] files = dir.listFiles((dir1, name) -> {
-        int extIndex = name.lastIndexOf(".");
-        String nameWithoutExt = name.substring(0, extIndex);
-        return nameWithoutExt.startsWith(checksum) && (nameWithoutExt.length() == checksum.length());
+      int extIndex = name.lastIndexOf(".");
+      String nameWithoutExt = name.substring(0, extIndex);
+      return nameWithoutExt.startsWith(checksum) && (nameWithoutExt.length() == checksum.length());
     });
 
     // 해당 파일이 존재하면 첫 번째 파일을 반환, 그렇지 않으면 null 반환
     if (files != null && files.length > 0) {
-        return files[0];
+      return files[0];
     }
 
     return null;
-}
-
-
+  }
+  
+  //날짜에 특정 일수를 더하거나 빼는 메서드
+   public static Date addDays(Date date, int days) {
+     Calendar calendar = Calendar.getInstance();
+     calendar.setTime(date);
+     calendar.add(Calendar.DAY_OF_MONTH, days);
+     return calendar.getTime();
+   }
 
 }

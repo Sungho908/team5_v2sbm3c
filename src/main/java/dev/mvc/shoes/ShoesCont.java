@@ -1,8 +1,6 @@
 package dev.mvc.shoes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -10,15 +8,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import dev.mvc.member.MemberProcInter;
+import dev.mvc.member.MemberVO;
 import dev.mvc.option.OptionProcInter;
-import dev.mvc.option.OptionVO;
+import dev.mvc.reportType.ReportTypeProcInter;
+import dev.mvc.reportType.ReportTypeVO;
 import dev.mvc.review.ReviewProcInter;
 import jakarta.servlet.http.HttpSession;
 
@@ -34,12 +31,16 @@ public class ShoesCont {
   private OptionProcInter optionProc;
 
   @Autowired
-  @Qualifier("dev.mvc.member.MemberProc") // @Service("dev.mvc.member.MemberProc")
+  @Qualifier("dev.mvc.member.MemberProc")
   private MemberProcInter memberProc;
 
   @Autowired
   @Qualifier("dev.mvc.review.ReviewProc")
   private ReviewProcInter reviewProc;
+
+  @Autowired
+  @Qualifier("dev.mvc.reportType.ReportTypeProc")
+  private ReportTypeProcInter reportTypeProc;
 
   /** 페이지당 출력할 레코드 갯수, nowPage는 1부터 시작 */
   public int record_per_page = 5;
@@ -97,6 +98,14 @@ public class ShoesCont {
       @RequestParam(name = "categoryno") int categoryno) {
     System.out.println(session.getAttribute("ck_pw"));
     System.out.println(session.getAttribute("ck_save"));
+
+    // 로그인 사용자 이름 넣기
+    // int memberno = session.getMemberno();
+    model.addAttribute("memberno", 1);
+    
+    MemberVO memberVO = this.memberProc.readByMemberno(1);
+    model.addAttribute("nickname", memberVO.getNickname());
+    
     ShoesAllVO shoesAllVO = this.shoesProc.read(shoesno, categoryno);
     model.addAttribute("shoesAllVO", shoesAllVO);
 
@@ -107,7 +116,13 @@ public class ShoesCont {
     model.addAttribute("color", color);
 
     ArrayList<ShoesAllVO> review = this.reviewProc.review_list(shoesno);
+    if(review.size() == 0) {
+      model.addAttribute("no_review", true);
+    }
     model.addAttribute("review", review);
+
+    ArrayList<ReportTypeVO> reportType = this.reportTypeProc.search_type();
+    model.addAttribute("reportType", reportType);
 
     return "shoes/detail"; // /templates/shoes/read.html
 

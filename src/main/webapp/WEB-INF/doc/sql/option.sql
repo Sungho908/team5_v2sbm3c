@@ -1,8 +1,10 @@
 /**********************************/
 /* Table Name: 신발옵션 */
 /**********************************/
+DROP TABLE OPTIONS;
+
 CREATE TABLE OPTION(
-		OPTIONNO                      		NUMBER(9)		 NULL 		 PRIMARY KEY,
+		OPTIONNO                      		NUMBER(9)		 NOT NULL 		 PRIMARY KEY,
 		SIZE                          		NUMBER(4)		 NOT NULL,
 		AMOUNT                        		NUMBER(9)		 NOT NULL,
 		COLOR                         		VARCHAR2(30)		 NOT NULL,

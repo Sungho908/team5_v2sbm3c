@@ -20,6 +20,15 @@ public class ReportProc implements ReportProcInter {
   }
 
   @Override
+  public int report_count(int memberno, int reviewno) {
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("memberno", memberno);
+    map.put("reviewno", reviewno);
+    int cnt = this.reportDAO.report_count(map);
+    return cnt;
+  }
+  
+  @Override
   public int list_search_count(String word) {
     int cnt = this.reportDAO.list_search_count(word);
     return cnt;

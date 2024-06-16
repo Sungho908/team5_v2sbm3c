@@ -8,7 +8,6 @@
 		<span th:text="|${memberVO.name}(${memberVO.nickname})|" class="title_line_text"></span>
 	</div>
 
-
 	<aside class="aside_right">
 		<a th:href="@{/admin/member/list(memberno=${memberVO.memberno}, now_page=${param.now_page}, word=${word})}">회원 목록</a>
 		<span class="menu_devide">│</span>
@@ -19,6 +18,7 @@
 		<a href="javascript: location.reload();">새로 고침</a>
 	</aside>
 	
+	<div th:replace="~{admin/member/list_search_component::list_search_fragment}"></div> 
 	
 	<div class="menu_line"></div>
 

@@ -37,7 +37,7 @@ public class MemberLoginHistoryCont {
     if(this.lhProc.deleteOld(memberVO.getMemberno()) == 1) {
       System.out.println("delete ok");
     }
-    ArrayList<LoginHistoryVO> lhList = this.lhProc.readBymembernoRdateDesc(memberVO.getMemberno());
+    ArrayList<LoginHistoryVO> lhList = this.lhProc.readByMembernoRdateDesc(memberVO.getMemberno());
     model.addAttribute("list", lhList);
 
     return "member/history";
