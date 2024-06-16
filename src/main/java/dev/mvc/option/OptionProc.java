@@ -41,12 +41,12 @@ public class OptionProc implements OptionProcInter {
   }
 
   @Override
-  public ArrayList<Integer> option_sizes(int shoesno, int categoryno) {
+  public ArrayList<OptionVO> option_sizes(int shoesno, int categoryno) {
     Map<String, Object> map = new HashMap<String, Object>();
     map.put("shoesno", shoesno);
     map.put("categoryno", categoryno);
 
-    ArrayList<Integer> sizes = this.optionDAO.option_sizes(map);
+    ArrayList<OptionVO> sizes = this.optionDAO.option_sizes(map);
     return sizes;
   }
 
@@ -59,5 +59,6 @@ public class OptionProc implements OptionProcInter {
     ArrayList<String> color = this.optionDAO.option_color(map);
     return color;
   }
+
 
 }

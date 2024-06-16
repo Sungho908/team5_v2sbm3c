@@ -95,4 +95,5 @@ public interface ShoesProcInter {
   
   public int option_delete(int shoesno, int optionno);
 
+  
 }

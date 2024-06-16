@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.mvc.shoes.ShoesDAOInter">
   <insert id="admin_create" parameterType="dev.mvc.shoes.ShoesVO">
-    INSERT INTO SHOES (SHOESNO, MEMBERNO, TITLE, BRAND, PRICE, DISCOUNT,
+    INSERT INTO SHOES (SHOESNO, MEMBERNO, TITLE, BRAND, RATING, PRICE, DISCOUNT,
     CONTENTS)
-    VALUES (SHOES_SEQ.nextval, #{memberno}, #{title}, #{brand}, #{price},
+    VALUES (SHOES_SEQ.nextval, #{memberno}, #{title}, #{brand}, #{rating}, #{price},
     #{discount}, #{contents})  </insert>
 
   <update id="admin_update" parameterType="dev.mvc.shoes.ShoesVO">
@@ -178,8 +178,8 @@
 
 
   <insert id="option_create" parameterType="dev.mvc.option.OptionVO">
-    INSERT INTO OPTIONS (OPTIONNO, SIZES, COLOR, SHOESNO)
-    VALUES (OPTION_SEQ.nextval, #{sizes}, #{color}, #{shoesno})
+    INSERT INTO OPTIONS (OPTIONNO, AMOUNT, SIZES, COLOR, SHOESNO)
+    VALUES (OPTION_SEQ.nextval, #{amount}, #{sizes}, #{color}, #{shoesno})
   </insert>
 
   <update id="option_update" parameterType="dev.mvc.option.OptionVO">
@@ -197,6 +197,15 @@
   <delete id="option_delete" parameterType="Integer">
     DELETE FROM OPTIONS WHERE OPTIONNO = #{optionno}
   </delete>
+
+
+    <update id="decrease">
+        UPDATE options SET AMOUNT = AMOUNT - 1 WHERE OPTIONNO = #{optionNo}
+    </update>
+
+    <update id="increase">
+        UPDATE options SET AMOUNT = AMOUNT + 1 WHERE OPTIONNO = #{optionNo}
+    </update>
 
   
 </mapper>

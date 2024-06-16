@@ -160,4 +160,29 @@ public class BasketCont {
 
     return response;
   }
+  
+  @PostMapping("/decrease")
+  @ResponseBody
+  public String decrease(@RequestBody OptionVO optionVO) {
+      int result = basketProc.decrease(optionVO);
+      if (result == 1) {
+          return "Decreased successfully";
+      } else {
+          return "Failed to decrease";
+      }
+  }
+
+  @PostMapping("/increase")
+  @ResponseBody
+  public String increase(@RequestBody OptionVO optionVO) {
+      int result = basketProc.increase(optionVO);
+      if (result == 1) {
+          return "Increased successfully";
+      } else {
+          return "Failed to increase";
+      }
+  }
+  
+  
+  
 }

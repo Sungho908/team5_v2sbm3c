@@ -26,7 +26,10 @@
             <select name="sizes" id="sizes" class="form-control form-control-sm"
               style="width: 50%; margin: 0 auto; margin-top: 20px; margin-bottom: 20px; text-align: center; ">
               <option value="">사이즈를 선택하세요</option>
-              <option th:each="size : ${sizes}" th:value="${size}" th:text="${size}"></option>
+<option th:each="option : ${sizes}" 
+        th:value="${option.sizes}" 
+        th:text="${option.amount == 0} ? ${option.sizes + ' (품절)'} : ${option.sizes}"></option>
+
             </select>
             <br>
             <h3 for="sizes" style="text-align: center;">색상</h3>
@@ -73,16 +76,6 @@
         </div>
       </div>
 
-      <!-- 후기 답글 -->
-      <div class="widget_item_comment_container">
-        <div class="widget_answer_img"></div>
-        <div class="widget_item_comment_content">
-          <p>내용<br></p>
-          <div class="widget_item_comment_content_1">운영자</div>
-        </div>
-      </div>
-      <div class="between_line"></div>
-      <!-- 후기 답글 끝-->
 
     </div>
   </body>

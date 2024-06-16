@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import dev.mvc.member.MemberProcInter;
 import dev.mvc.option.OptionVO;
@@ -62,15 +64,19 @@ public class AdminShoesCont {
   private void table_paging_option(Model model, int shoesno, String word, int now_page) {
     ArrayList<OptionVO> list = this.shoesProc.option_paging(shoesno, word, now_page, this.record_per_page);
     model.addAttribute("list", list);
-
     
     int search_count = this.shoesProc.option_search_count(shoesno);
-    System.out.println(search_count);
+    System.out.println("search_count: " + search_count); 
+    
     String paging = this.shoesProc.pagingBox(now_page, word, "/admin/shoes/admin_read/" + shoesno, search_count,
         this.record_per_page, this.page_per_block); // 2, '',
 
+    System.out.println("paging: " + paging);
+    
     int no = search_count - ((now_page - 1) * this.record_per_page);
-
+    
+    System.out.println("no: " + no);
+    
     model.addAttribute("paging", paging);
     model.addAttribute("now_page", now_page);
     model.addAttribute("word", word);
@@ -145,7 +151,9 @@ public class AdminShoesCont {
   @GetMapping(value = "/admin_read/{shoesno}")
   public String admin_read(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
       @RequestParam(name = "word", defaultValue = "") String word,
-      @RequestParam(name = "now_page", defaultValue = "") int now_page) {
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    
+    System.out.println("Received now_page: " + now_page);
     
     ShoesVO shoesVO = this.shoesProc.admin_read(shoesno);
     model.addAttribute("shoesVO", shoesVO);
@@ -365,6 +373,6 @@ public class AdminShoesCont {
       return "admin/shoes/msg";
     }
   }
-  
+
   
 }

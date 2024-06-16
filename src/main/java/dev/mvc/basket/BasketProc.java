@@ -32,7 +32,6 @@ public class BasketProc implements BasketProcInter {
   @Override
   public int create(int memberno, String color, int sizes) {
     Map<String, Object> map = new HashMap<>();
-    
     map.put("memberno", memberno);
     map.put("color", color);
     map.put("sizes", sizes);
@@ -57,7 +56,17 @@ public class BasketProc implements BasketProcInter {
     int cnt = this.basketDAO.delete(map);
     return cnt;
   }
-
+  @Override
+  public int decrease(OptionVO optionVO) {
+    int cnt = this.basketDAO.decrease(optionVO);
+    return cnt;
+  }
+  
+  @Override
+  public int increase(OptionVO optionVO) {
+    int cnt = this.basketDAO.increase(optionVO);
+    return cnt;
+  }
 
   
 }

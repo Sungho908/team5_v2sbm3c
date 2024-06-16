@@ -7,8 +7,8 @@
     VALUES (OPTION_SEQ.nextval, #{sizes}, #{color}, #{shoesno})
   </insert>
 
-  <select id="option_sizes" resultType="int" parameterType="Map">
-    SELECT distinct o.sizes
+  <select id="option_sizes" resultType="dev.mvc.option.OptionVO" parameterType="map">
+    SELECT DISTINCT o.sizes, o.amount
     FROM shoes s
     JOIN category_list cl ON s.shoesno = cl.shoesno
     JOIN category c ON cl.categoryno = c.categoryno
@@ -25,7 +25,7 @@
     JOIN options o ON s.shoesno = o.shoesno
     WHERE s.shoesno = #{shoesno} and cl.categoryno = #{categoryno}
   </select>
-  
+
   <update id="option_update" parameterType="dev.mvc.option.OptionVO">
     UPDATE OPTIONS
     SET SIZES = #{sizes}, AMOUNT = #{amount}, COLOR = #{color}
@@ -45,7 +45,8 @@
   </select>
 
 
-  <select id="option_paging" resultType="dev.mvc.option.OptionVO" parameterType="Map">
+  <select id="option_paging" resultType="dev.mvc.option.OptionVO"
+    parameterType="Map">
     SELECT o.optionno, o.shoesno, o.sizes, o.amount, o.color, r
     FROM (
     SELECT optionno, shoesno, sizes, amount, color, rownum as r
@@ -55,9 +56,9 @@
     JOIN shoes s ON o.shoesno = s.shoesno
     WHERE r &gt; = #{start_num} AND r &lt; = #{end_num}
   </select>
-  
+
   <select id="parent_count" parameterType="Integer">
-     SELECT COUNT(*) FROM options WHERE shoesno = #{shoesno}
+    SELECT COUNT(*) FROM options WHERE shoesno = #{shoesno}
   </select>
 
 

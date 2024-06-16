@@ -4,11 +4,6 @@
 <!-- layout.html 상속-->
 <div layout:fragment="content">
   <div class="title_line">신발 등록</div>
-  <aside class="aside_right">
-    <a href="/shoes/list_all?now_page=1">목록</a>
-    <span class="menu_devide">│</span>
-    <a href="javascript: location.reload();">새로 고침</a>
-  </aside>
   <div class="top_menu_line"></div>
     <form th:object="${shoesVO}" method="post" action="/admin/shoes/admin_create">
 

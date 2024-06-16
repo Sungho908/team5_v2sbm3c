@@ -67,6 +67,7 @@ public class ShoesProc implements ShoesProcInter {
     int now_grp = (int) (Math.ceil((double) now_page / page_per_block));
     int start_page = ((now_grp - 1) * page_per_block) + 1;
     int end_page = (now_grp * page_per_block);
+    
     StringBuffer str = new StringBuffer();
 
     str.append("<style type='text/css'>");
@@ -232,6 +233,7 @@ public class ShoesProc implements ShoesProcInter {
     int cnt = this.shoesDAO.option_delete(map);
     return cnt;
   }
+
 
 
   

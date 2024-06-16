@@ -17,5 +17,8 @@ public interface BasketDAOInter {
   public int update(BasketVO basketVO);
   
   public int delete(Map<String, Object> map);
+ 
+  public int decrease(OptionVO optionVO);
   
+  public int increase(OptionVO optionVO);
 }
