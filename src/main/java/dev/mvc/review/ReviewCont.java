@@ -60,14 +60,13 @@ public class ReviewCont {
 
     ReviewVO reviewVO = new ReviewVO();
     reviewVO.setContents(map.get("contents"));
-    reviewVO.setGrade(Double.valueOf(map.get("grade")));
+    reviewVO.setRating(Double.valueOf(map.get("rating")));
     reviewVO.setShoesno(Integer.parseInt(map.get("shoesno")));
     reviewVO.setMemberno(1);
     
     int cnt = this.reviewProc.create(reviewVO);
-    cnt = cnt + this.likesProc.create();
     Map<String, Object> response = new HashMap<>();
-    if (cnt == 2) {
+    if (cnt == 1) {
       ArrayList<ShoesAllVO> review = this.reviewProc.review_list(Integer.parseInt(map.get("shoesno")));
       response.put("review", review);
       response.put("success", true);
@@ -101,7 +100,7 @@ public class ReviewCont {
     
     ReviewVO reviewVO = new ReviewVO();
     reviewVO.setContents(map.get("contents"));
-    reviewVO.setGrade(Double.valueOf(map.get("grade")));
+    reviewVO.setRating(Double.valueOf(map.get("rating")));
     reviewVO.setReviewno(Integer.parseInt(map.get("reviewno")));
 
     int cnt = this.reviewProc.update(reviewVO);

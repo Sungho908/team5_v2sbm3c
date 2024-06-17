@@ -1,5 +1,6 @@
 package dev.mvc.report;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,7 +59,10 @@ public class ReportCont {
   
   @GetMapping("/myReport")
   public String myReport(HttpSession session, Model model) {
-    
+    // int memberno = session.getMemberno();
+    int memberno = 1;
+    ArrayList<ReportInfoVO> list = this.reportProc.myReport(memberno);
+    model.addAttribute("list", list);
     return "report/myReport";
   }
 }

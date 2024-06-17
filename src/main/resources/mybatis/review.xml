@@ -3,20 +3,25 @@
 <mapper namespace="dev.mvc.review.ReviewDAOInter">
 
   <select id="review_list" resultMap="reviewRead">
-    SELECT r.reviewno, r.contents, r.grade, r.rdate, s.title, m.memberno, m.nickname, l.likes, l.hates
-    FROM review r
-    JOIN shoes s ON r.shoesno = s.shoesno
-    JOIN member m ON r.memberno = m.memberno
-    JOIN likes l ON r.reviewno = l.reviewno
-    WHERE r.shoesno = #{shoesno}
+    SELECT r.reviewno, r.contents, r.rating, r.rdate, s.title, m.memberno, m.nickname, 
+       COUNT(l.likesno) AS likes, COUNT(h.hatesno) AS hates
+      FROM review r
+      JOIN shoes s ON r.shoesno = s.shoesno
+      JOIN member m ON r.memberno = m.memberno
+      LEFT JOIN likes l ON r.reviewno = l.reviewno
+      LEFT JOIN hates h ON r.reviewno = h.reviewno
+      WHERE r.shoesno = #{shoesno}
+      GROUP BY r.reviewno, r.contents, r.rating, r.rdate, s.title, m.memberno, m.nickname
   </select>
 
   <resultMap id="reviewRead" type="dev.mvc.shoes.ShoesAllVO">
     <association property="reviewVO" javaType="dev.mvc.review.ReviewVO">
       <id property="reviewno" column="reviewno" />
       <result property="contents" column="contents" />
-      <result property="grade" column="grade" />
+      <result property="rating" column="rating" />
       <result property="rdate" column="rdate" />
+      <result property="likes" column="likes" />
+      <result property="hates" column="hates" />
     </association>
 
     <association property="shoesVO" javaType="dev.mvc.shoes.ShoesVO">
@@ -27,15 +32,10 @@
       <id property="memberno" column="memberno" />
       <result property="nickname" column="nickname" />
     </association>
-
-    <association property="likesVO" javaType="dev.mvc.likes.LikesVO">
-      <result property="likes" column="likes" />
-      <result property="hates" column="hates" />
-    </association>
   </resultMap>
 
   <select id="review_list_all" resultType="dev.mvc.review.ReviewVO">
-    SELECT r.reviewno, r.contents, r.grade, r.rdate, m.nickname
+    SELECT r.reviewno, r.contents, r.rating, r.rdate, m.nickname
     FROM review r
     JOIN member m ON r.memberno = m.memberno
     WHERE r.shoesno = #{shoesno}
@@ -43,13 +43,13 @@
   </select>
 
   <insert id="create" parameterType="dev.mvc.review.ReviewVO">
-    INSERT INTO review(reviewno, contents, grade, rdate, shoesno, memberno)
-    VALUES(review_seq.nextval, #{contents}, #{grade}, sysdate, #{shoesno}, #{memberno})
+    INSERT INTO review(reviewno, contents, rating, rdate, shoesno, memberno)
+    VALUES(review_seq.nextval, #{contents}, #{rating}, sysdate, #{shoesno}, #{memberno})
   </insert>
 
   <update id="update" parameterType="dev.mvc.review.ReviewVO">
     UPDATE review
-    SET contents = #{contents}, grade = #{grade}
+    SET contents = #{contents}, rating = #{rating}
     WHERE reviewno = #{reviewno}
   </update>
 
@@ -57,4 +57,5 @@
     DELETE FROM review
     WHERE reviewno = #{reviewno}
   </delete>
+  
 </mapper>

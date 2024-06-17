@@ -1,8 +1,4 @@
 <div th:fragment="review_fragment">
-  <script src="/js/review/create.js"></script>
-  <script src="/js/review/update.js"></script>
-  <script src="/js/review/delete.js"></script>
-  <script src="/js/likes/likes.js"></script>
   <link rel="stylesheet" href="/css/review/style.css">
   <h2 class="title">상품후기<span class="all">
       <a href="/shoes/review_list_all?shoesno=1">
@@ -22,13 +18,13 @@
     <input type="hidden" class="nickname" th:value="${review.memberVO.nickname}">
     <input type="hidden" class="memberno" th:value="${review.memberVO.memberno}">
     <input type="hidden" class="reviewno" th:value="${review.reviewVO.reviewno}">
-    <div class="rating">평점: <span class="stars" id="stars" th:text="${review.reviewVO.grade}"></span></div>
+    <div class="rating">평점: <span class="stars" id="stars" th:text="${review.reviewVO.rating}"></span></div>
     <div class="username">닉네임: <span th:text="${review.memberVO.nickname}"></span></div>
     <div class="date" th:text="${#dates.format(review.reviewVO.rdate, 'yy/MM/dd')}"></div>
     <div class="contents" th:text="${review.reviewVO.contents}"></div>
-    <a href="#" class="btn btn-link likes">좋아요 <span class="likes_count" th:text="${review.likesVO.likes}"></span></a>
+    <a href="#" class="btn btn-link likes">좋아요 <span class="likes_count" th:text="${review.reviewVO.likes}"></span></a>
     <span class="menu_devide">│</span>
-    <a href="#" class="btn btn-link hates">싫어요 <span class="hates_count" th:text="${review.likesVO.hates}"></span></a>
+    <a href="#" class="btn btn-link hates">싫어요 <span class="hates_count" th:text="${review.reviewVO.hates}"></span></a>
     <span class="menu_devide">│</span>
     <a href="#" class="btn btn-link report">신고</a>
     <span th:if="${memberno == review.memberVO.memberno}">
@@ -39,7 +35,7 @@
     </span>
     <div id="updateForm" style="display: none;">
       <span class="update_star-rating">
-        <span class="update_grade" id="update_grade"></span>
+        <span class="update_rating" id="update_rating"></span>
         <span class="update_star" update-data-value="1.0">★</span>
         <span class="update_star" update-data-value="2.0">★</span>
         <span class="update_star" update-data-value="3.0">★</span>
@@ -60,21 +56,21 @@
     <div style="font-size: 20px;">후기 작성</div>
     <div class="member">닉네임: <span th:text="${nickname}"></span></div>
     <span class="star-rating">
-      <span class="grade" id="grade"></span>
+      <span class="rating" id="rating"></span>
       <span class="star" data-value="1.0">★</span>
       <span class="star" data-value="2.0">★</span>
       <span class="star" data-value="3.0">★</span>
       <span class="star" data-value="4.0">★</span>
       <span class="star" data-value="5.0">★</span>
     </span>
-
-
     <textarea class="form-control" id="reviewContents" name="reviewContents" rows="4" required="required"></textarea>
     <div style="text-align: right; margin-top: 10px;">
       <button class="btn btn-secondary" id="createReview">작성하기</button>
     </div>
   </div>
-
-
-
+  <script src="/js/review/create.js"></script>
+  <script src="/js/review/update.js"></script>
+  <script src="/js/review/delete.js"></script>
+  <script src="/js/likes/likes.js"></script>
+  <script src="/js/hates/hates.js"></script>
 </div>

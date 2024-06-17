@@ -4,15 +4,15 @@ document.addEventListener("DOMContentLoaded", function() {
   var shoesno = document.getElementById("shoesno").getAttribute("data-shoesno");
   var stars = document.querySelectorAll('.stars');
   var update_star = document.querySelectorAll('.update_star');
-  var update_grade = document.getElementById('update_grade');
-  update_grade.textContent = "5.0";
+  var update_rating = document.getElementById('update_rating');
+  update_rating.textContent = "5.0";
   reviewStars(parseFloat("5.0"));
 
   update_star.forEach(update_star => {
     update_star.addEventListener('click', function() {
       var value = this.getAttribute('update-data-value');
-      update_grade.textContent = value;
-      reviewStars(update_grade.textContent);
+      update_rating.textContent = value;
+      reviewStars(update_rating.textContent);
     });
   });
 
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function() {
             body: JSON.stringify({
               reviewno: reviewno,
               contents: contents,
-              grade: update_grade.textContent
+              rating: update_rating.textContent
             })
           })
           .then(response => response.json())

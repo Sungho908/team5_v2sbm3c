@@ -27,7 +27,7 @@ public class ReportProc implements ReportProcInter {
     int cnt = this.reportDAO.report_count(map);
     return cnt;
   }
-  
+
   @Override
   public int list_search_count(String word) {
     int cnt = this.reportDAO.list_search_count(word);
@@ -115,7 +115,7 @@ public class ReportProc implements ReportProcInter {
 
     return str.toString();
   }
-  
+
   @Override
   public ReportInfoVO read(int reportno) {
     ReportInfoVO reportInfoVO = this.reportDAO.read(reportno);
@@ -128,9 +128,15 @@ public class ReportProc implements ReportProcInter {
     map.put("reportno", reportno);
     map.put("report_visible", report_visible);
     map.put("report_contents", report_contents);
-    
+
     int cnt = this.reportDAO.answer(map);
     return cnt;
+  }
+
+  @Override
+  public ArrayList<ReportInfoVO> myReport(int memberno) {
+    ArrayList<ReportInfoVO> reportInfoVO = this.reportDAO.myReport(memberno);
+    return reportInfoVO;
   }
 
 }

@@ -14,7 +14,7 @@
             color: gold;
 }
 
-.grade {
+.rating {
             margin-right:5px;
             font-size: 2rem;
 }
@@ -35,7 +35,7 @@
             color: gold;
 }
 
-.update_grade {
+.update_rating {
             margin-right:5px;
             font-size: 2rem;
 }

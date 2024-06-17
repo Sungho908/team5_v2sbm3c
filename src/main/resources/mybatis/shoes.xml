@@ -195,4 +195,14 @@
     DELETE FROM OPTIONS WHERE OPTIONNO = #{optionno}
   </delete>
 
+  <update id="review_grade" parameterType="Integer">
+    UPDATE shoes
+    SET rating = (
+      SELECT AVG(rating)
+      FROM review
+      WHERE shoesno = #{shoesno}
+    )
+      WHERE shoesno = #{shoesno};
+  </update>
+
 </mapper>

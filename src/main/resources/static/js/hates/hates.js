@@ -1,30 +1,30 @@
 document.addEventListener("DOMContentLoaded", function() {
-  var likes = document.querySelectorAll(".likes");
-  likes.forEach(function(like) {
-    like.addEventListener('click', function(event) {
+  var hates = document.querySelectorAll(".hates");
+  hates.forEach(function(hate) {
+    hate.addEventListener('click', function(event) {
       event.preventDefault();
 
-      var review = like.closest('.review');
+      var review = hate.closest('.review');
       var reviewno = review.querySelector(".reviewno").value;
-      var likes_count = review.querySelector('.likes_count');
+      var hates_count = review.querySelector('.hates_count');
       
-      fetch('/likes/likes', {
+      fetch('/hates/hates', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           reviewno: reviewno,
-          liked: likes_count.classList.contains('liked')
+          hated: hates_count.classList.contains('hated')
         })
       })
         .then(response => response.json())
         .then(data => {
-          likes_count.innerText = data.likes_count;
+          hates_count.innerText = data.hates_count;
           if (data.success === 'increase') {
-            likes_count.classList.add('liked');
+            hates_count.classList.add('hated');
           } else if (data.success === 'decrease') {
-            likes_count.classList.remove('liked');
+            hates_count.classList.remove('hated');
           }
         })
         .catch(error => console.error('Error:', error));
