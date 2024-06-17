@@ -12,8 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
       } else {
         button.innerText = "+";
       }
-
+th:href="@{|/admin/category/update/${categoryVO.categoryno}?word=${word}&now_page=${now_page}|}"
     });
   });
-
 });

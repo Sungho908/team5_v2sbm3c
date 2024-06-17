@@ -49,12 +49,12 @@
 
 
   <!-- 신발 상세 -->
-  <select id="read" resultMap="shoesRead" parameterType="Map">
+  <select id="read" resultMap="shoesRead" parameterType="Integer">
     SELECT s.shoesno, c.categoryno, s.title, s.brand, s.contents, s.price, s.discount, s.rating, c.subname, s.visible
     FROM shoes s
     JOIN category_list cl ON s.shoesno = cl.shoesno
     JOIN category c ON cl.categoryno = c.categoryno
-    WHERE s.shoesno = #{shoesno} and cl.categoryno = #{categoryno}
+    WHERE s.shoesno = #{shoesno} AND ROWNUM = 1
   </select>
 
   <resultMap id="shoesRead" type="dev.mvc.shoes.ShoesAllVO">
@@ -106,26 +106,19 @@
     FROM shoes s
     JOIN category_list cl ON s.shoesno = cl.shoesno
     JOIN category c ON cl.categoryno = c.categoryno
-    <if test="categoryno != null and categoryno != ''">
-      WHERE cl.categoryno = #{categoryno}
+    <where>
+      <if test="categoryno != null and categoryno != ''">
+        AND cl.categoryno = #{categoryno}
+      </if>
       <if test="word != null and word != ''">
-      AND (
-      UPPER(s.title) LIKE '%' || UPPER(#{word}) || '%'
-      OR UPPER(s.brand) LIKE '%' || UPPER(#{word}) || '%'
-      OR UPPER(s.contents) LIKE '%' || UPPER(#{word}) || '%'
-      OR UPPER(s.price) LIKE '%' || UPPER(#{word}) || '%'
-      )
-    </if>
-    </if>
-    <if test="word != null and word != '' and (categoryno == null or categoryno == '')">
-    WHERE 
-    (
-    UPPER(s.title) LIKE '%' || UPPER(#{word}) || '%'
-    OR UPPER(s.brand) LIKE '%' || UPPER(#{word}) || '%'
-    OR UPPER(s.contents) LIKE '%' || UPPER(#{word}) || '%'
-    OR UPPER(s.price) LIKE '%' || UPPER(#{word}) || '%'
-    )
-  </if>
+        AND (
+        UPPER(s.title) LIKE '%' || UPPER(#{word}) || '%'
+        OR UPPER(s.brand) LIKE '%' || UPPER(#{word}) || '%'
+        OR UPPER(s.contents) LIKE '%' || UPPER(#{word}) || '%'
+        OR UPPER(s.price) LIKE '%' || UPPER(#{word}) || '%'
+        )
+      </if>
+    </where>
     )
   </select>
 

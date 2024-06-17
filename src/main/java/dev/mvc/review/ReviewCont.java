@@ -63,7 +63,7 @@ public class ReviewCont {
     reviewVO.setRating(Double.valueOf(map.get("rating")));
     reviewVO.setShoesno(Integer.parseInt(map.get("shoesno")));
     reviewVO.setMemberno(1);
-    
+
     int cnt = this.reviewProc.create(reviewVO);
     Map<String, Object> response = new HashMap<>();
     if (cnt == 1) {
@@ -86,10 +86,10 @@ public class ReviewCont {
   @GetMapping(value = "/list/{shoesno}")
   public String list(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
       @RequestParam(name = "categoryno") int categoryno) {
-    
+
     ArrayList<ReviewVO> list = this.reviewProc.review_list_all(shoesno);
     model.addAttribute("list", list);
-    
+
     return "review/list";
   }
 
@@ -97,7 +97,7 @@ public class ReviewCont {
   @ResponseBody
   public Map<String, Object> update(HttpSession session, Model model, @RequestBody Map<String, String> map) {
     Map<String, Object> response = new HashMap<>();
-    
+
     ReviewVO reviewVO = new ReviewVO();
     reviewVO.setContents(map.get("contents"));
     reviewVO.setRating(Double.valueOf(map.get("rating")));
@@ -123,5 +123,14 @@ public class ReviewCont {
 
     response.put("success", true);
     return response;
+  }
+
+  @GetMapping("/myReview")
+  public String myReport(HttpSession session, Model model) {
+    // int memberno = session.getMemberno();
+    int memberno = 1;
+    ArrayList<ShoesAllVO> list = this.reviewProc.myReview(memberno);
+    model.addAttribute("list", list);
+    return "review/myReview";
   }
 }

@@ -15,4 +15,6 @@ public interface ReviewProcInter {
   public int update(ReviewVO reviewVO);
   
   public int delete(int reviewno);
+  
+  public ArrayList<ShoesAllVO> myReview(int memberno);
 }

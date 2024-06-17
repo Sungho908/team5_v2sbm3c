@@ -1,9 +1,6 @@
 package dev.mvc.shoes;
 
 import java.util.ArrayList;
-import java.util.Map;
-
-import dev.mvc.basket.BasketVO;
 import dev.mvc.option.OptionVO;
 
 public interface ShoesProcInter {
@@ -58,7 +55,7 @@ public interface ShoesProcInter {
    * @return ShoesAllVO
    */
   
-  public ShoesAllVO read(int shoesno, int categoryno);
+  public ShoesAllVO read(int shoesno);
 
   
   

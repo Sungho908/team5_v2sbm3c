@@ -23,9 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
           .then(data => {
             if (data.success) {
               alert("후기가 삭제되었습니다.");
-              var url = new URLSearchParams(window.location.search);
-              var categoryno = url.get('categoryno');
-              window.location.href = "/shoes/" + shoesno + "?categoryno=" + categoryno;
+              window.location.href = "/shoes/" + shoesno;
             } else {
               alert("후기 삭제에 실패하였습니다.");
             }

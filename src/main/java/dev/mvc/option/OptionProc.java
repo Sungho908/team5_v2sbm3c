@@ -41,22 +41,14 @@ public class OptionProc implements OptionProcInter {
   }
 
   @Override
-  public ArrayList<Integer> option_sizes(int shoesno, int categoryno) {
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("shoesno", shoesno);
-    map.put("categoryno", categoryno);
-
-    ArrayList<Integer> sizes = this.optionDAO.option_sizes(map);
+  public ArrayList<Integer> option_sizes(int shoesno) {
+    ArrayList<Integer> sizes = this.optionDAO.option_sizes(shoesno);
     return sizes;
   }
 
   @Override
-  public ArrayList<String> option_color(int shoesno, int categoryno) {
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("shoesno", shoesno);
-    map.put("categoryno", categoryno);
-    
-    ArrayList<String> color = this.optionDAO.option_color(map);
+  public ArrayList<String> option_color(int shoesno) {
+    ArrayList<String> color = this.optionDAO.option_color(shoesno);
     return color;
   }
 

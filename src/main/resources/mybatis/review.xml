@@ -57,5 +57,27 @@
     DELETE FROM review
     WHERE reviewno = #{reviewno}
   </delete>
+
+  <select id="myReview" resultMap="myReview" parameterType="Integer">
+    SELECT r.reviewno, r.contents, r.rating, r.rdate, s.shoesno, s.title
+    FROM review r
+    JOIN shoes s ON s.shoesno = r.shoesno
+    WHERE r.memberno = #{memberno}
+    ORDER BY rdate desc
+  </select>
+
+  <resultMap id="myReview" type="dev.mvc.shoes.ShoesAllVO">
+    <association property="reviewVO" javaType="dev.mvc.review.ReviewVO">
+      <id property="reviewno" column="reviewno" />
+      <result property="contents" column="contents" />
+      <result property="rating" column="rating" />
+      <result property="rdate" column="rdate" />
+    </association>
+
+    <association property="shoesVO" javaType="dev.mvc.shoes.ShoesVO">
+      <id property="shoesno" column="shoesno" />
+      <result property="title" column="title" />
+    </association>
+  </resultMap>
   
 </mapper>

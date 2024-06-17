@@ -3,7 +3,6 @@ package dev.mvc.shoes;
 import java.util.ArrayList;
 import java.util.Map;
 
-import dev.mvc.basket.BasketVO;
 import dev.mvc.option.OptionVO;
 
 public interface ShoesDAOInter {
@@ -46,12 +45,12 @@ public interface ShoesDAOInter {
   public ArrayList<ShoesVO> list_search_paging(Map<String, Object> map);
 
   /**
-   * 조회 id="read" resultMap="shoesRead" parameterType="Map"
+   * 조회 id="read" resultMap="shoesRead" parameterType="Integer"
    * 
    * @param cateno
    * @return
    */
-  public ShoesAllVO read(Map<String, Object> map);
+  public ShoesAllVO read(int shoesno);
   
   /**
    * 조회 id="read_option" resultMap="shoesOption" parameterType="Map"
