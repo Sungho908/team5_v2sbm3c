@@ -13,13 +13,6 @@ public interface PaymentTotalProcInter {
    * */
   public ArrayList<PaymentTotalVO> list(int memberno, int dates, String search);
   
-  /**
-   * 어드민 주문정보 가져오기
-   * id="listAdmin" parameterType="int" resultMap="PaymentTotalMap"
-   * @param
-   * @return 
-   * */
-  public ArrayList<PaymentTotalVO> listAdmin(String word);
   
   /**
    * 주문목록 count 가져오기
@@ -28,13 +21,25 @@ public interface PaymentTotalProcInter {
    * */
   public int count(String word);
   
+
   /**
-   * 테스트중
-   * id="test1" resultType="dev.mvc.paymentTotal.PaymentTotalVO" parameterType="String"
+   * 페이징처리를 위한 admin 주문목록
+   * id="listAdminPaging" resultType="dev.mvc.paymentTotal.PaymentTotalVO" parameterType="Map"
+   * @param word             검색할 word
+   * @param now_page         현재 페이지
+   * @param record_per_page  검색할 레코드 갯수
+   * @return ArrayList&lt;PaymentTotalVO&gt; 객체 
    * */
-  public ArrayList<PaymentTotalVO> test1(String word, int now_page, int recode_per_page);
+  public ArrayList<PaymentTotalVO> listAdminPaging(String word, int now_page, int record_per_page);
   
-  public ArrayList<PaymentTotalVO> test2(int memberno);
+  
+  /**
+   * admin 주문목록 상세정보 가져오기 (Ajax)
+   * id="listAdminPDO" parameterType="int" resultMap="PaymentTotalMap"
+   * @param memberno 조회할 memberno
+   * @return ArrayList&lt;PaymentTotalVO&gt; 객체
+   * */
+  public ArrayList<PaymentTotalVO> listAdminPDO(int memberno);
 
   public String ajaxStr(int memberno);
 }

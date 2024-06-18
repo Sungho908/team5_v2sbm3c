@@ -62,47 +62,50 @@
 
   <script>
     function fetchList(button, memberno) {
-      const contentsDiv = button.nextElementSibling;
+  const contentsDiv = button.nextElementSibling;
 
-      // AJAX 요청을 보내기 전에 기존 내용을 초기화합니다.
-      contentsDiv.innerHTML = '';
+  if (button.classList.contains("active")) {
+    // 버튼이 활성화 상태일 경우 내용을 닫습니다.
+    contentsDiv.style.maxHeight = null;
+    button.classList.remove("active");
+  } else {
+    // 버튼이 활성화 상태가 아닐 경우 AJAX 요청을 보냅니다.
+    // AJAX 요청을 보내기 전에 기존 내용을 초기화합니다.
+    contentsDiv.innerHTML = '';
 
-      fetch(`./list/${memberno}`, {
-        method: 'GET',
-        headers: {
-          "Content-Type": "application/json",
-        }
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok' + response.statusText);
-        }
-        return response.text();
-      })
-      .then(data => {
-        console.log(data);
-        contentsDiv.innerHTML = data;
+    fetch(`./list/${memberno}`, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok' + response.statusText);
+      }
+      return response.text();
+    })
+    .then(data => {
+      console.log(data);
+      contentsDiv.innerHTML = data;
 
-        // 버튼을 활성화하고 내용을 확장합니다.
-        if (button.classList.contains("active")) {
-          contentsDiv.style.maxHeight = null;
-          button.classList.remove("active");
-        } else {
-          // 모든 활성화된 버튼과 내용을 축소합니다.
-          document.querySelectorAll('.collapsible.active').forEach(activeButton => {
-            activeButton.classList.remove('active');
-            activeButton.nextElementSibling.style.maxHeight = null;
-          });
-
-          button.classList.add("active");
-          contentsDiv.style.maxHeight = contentsDiv.scrollHeight + "px";
-        }
-      })
-      .catch(error => {
-        alert('리스트를 가져오는 데 실패했습니다.');
-        console.error("ERROR:", error);
+      // 모든 활성화된 버튼과 내용을 축소합니다.
+      document.querySelectorAll('.collapsible.active').forEach(activeButton => {
+        activeButton.classList.remove('active');
+        activeButton.nextElementSibling.style.maxHeight = null;
       });
-    }
+
+      // 버튼을 활성화하고 내용을 확장합니다.
+      button.classList.add("active");
+      contentsDiv.style.maxHeight = contentsDiv.scrollHeight + "px";
+    })
+    .catch(error => {
+      alert('리스트를 가져오는 데 실패했습니다.');
+      console.error("ERROR:", error);
+    });
+  }
+}
+
 
     function collapseChild(element) {
       let before = document.querySelector(".activeChild");

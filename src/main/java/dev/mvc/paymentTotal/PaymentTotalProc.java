@@ -62,32 +62,6 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
     return (ArrayList<PaymentTotalVO>) paymentTotalList;
   }
 
-  public ArrayList<PaymentTotalVO> listAdmin(String word) {
-    HashMap<String, Object> map = new HashMap<String, Object>();
-    map.put("word", word);
-
-    // PaymentTotalVO 리스트를 담을 리스트 초기화
-    List<PaymentTotalVO> paymentTotalList = new ArrayList<>();
-
-    // 결과를 처리할 핸들러 정의
-    sqlsession.select("dev.mvc.paymentTotal.PaymentTotalDAOInter.listAdmin", map, (ResultHandler<PaymentTotalVO>) context -> {
-      PaymentTotalVO paymentTotal = context.getResultObject();
-
-      // 자식 쿼리 호출
-      HashMap<String, Object> childMap = new HashMap<>();
-      childMap.put("paymentno", paymentTotal.getPaymentno());
-
-      ArrayList<PaymentDetailsOptionVO> paymentDetailsList = (ArrayList) sqlsession.selectList("dev.mvc.paymentTotal.PaymentTotalDAOInter.selectPaymentDetailsByPaymentNo", childMap);
-
-      // paymentDetailsList가 비어있지 않으면 paymentTotalList에 추가
-      if (!paymentDetailsList.isEmpty()) {
-        paymentTotal.setPayment_details_option(paymentDetailsList);
-        paymentTotalList.add(paymentTotal);
-      }
-    });
-
-    return (ArrayList<PaymentTotalVO>) paymentTotalList;
-  }
 
   @Override
   public int count(String word) {
@@ -95,7 +69,7 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
   }
 
   @Override
-  public ArrayList<PaymentTotalVO> test1(String word, int now_page, int record_per_page) {
+  public ArrayList<PaymentTotalVO> listAdminPaging(String word, int now_page, int record_per_page) {
     int begin_of_page = (now_page - 1) * record_per_page;
     int start_num = begin_of_page + 1; 
     int end_num = begin_of_page + record_per_page;
@@ -106,20 +80,19 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
     map.put("end_num", end_num);
     
     
-    return this.paymentTotalDAO.test1(map);
+    return this.paymentTotalDAO.listAdminPaging(map);
   }
   
   @Override
-  public ArrayList<PaymentTotalVO> test2(int memberno){
-    return this.paymentTotalDAO.test2(memberno);
+  public ArrayList<PaymentTotalVO> listAdminPDO(int memberno){
+    return this.paymentTotalDAO.listAdminPDO(memberno);
   };
   
   @Override
   public String ajaxStr(int memberno) {
     StringBuffer str = new StringBuffer();
     
-    ArrayList<PaymentTotalVO> list = this.paymentTotalDAO.test2(memberno);
-    System.out.println(list.toString());
+    ArrayList<PaymentTotalVO> list = this.listAdminPDO(memberno);
     
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     DecimalFormat df = new DecimalFormat("###,###원");
@@ -167,7 +140,9 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
       str.append("  <div class=\"contents\">");
       str.append("    <div class=\"clearfix\" style=\"margin-top: 10px;\">");
       str.append("      <div>");
-      str.append("        <span>총 상품가격: " + df.format(payment.getTotal_price()) + " 배송비: " + df.format(payment.getDelivery()) + " 총 주문가격: " + df.format(payment.getTotal_payment()) + "</span>");
+      str.append("        <span>총 상품가격: " + df.format(payment.getTotal_price()) + "&nbsp;&nbsp;&nbsp;&nbsp;"
+                                  + "배송비: " + df.format(payment.getDelivery()) + "&nbsp;&nbsp;&nbsp;&nbsp;"
+                            + " 총 주문가격: " + df.format(payment.getTotal_payment()) + "</span>");
       str.append("      </div>");
       str.append("      <div style=\"float: left;\">");
       str.append("        <div style=\"display: flex; align-items: center;\">");
@@ -323,6 +298,5 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
     return str.toString();
     
   }
-  
 
 }

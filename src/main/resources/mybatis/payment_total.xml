@@ -103,30 +103,6 @@
 		pd.payment_details_no
 	</select>
 
-	<select id="listAdmin" parameterType="Map" resultMap="PaymentTotalMap" >
-		SELECT DISTINCT
-		m.memberno,
-		m.id AS memberid,
-		m.nickname,
-		p.paymentno,
-		p.rdate,
-		p.status,
-		p.payment_status,
-		p.cs_status,
-		p.total_price,
-		p.delivery,
-		p.total_payment
-		FROM
-		member m
-		INNER JOIN payment p ON m.memberno = p.memberno
-		INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
-		<if test=" word !=null and word !='' ">
-			WHERE UPPER(m.id) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(m.nickname) LIKE '%' || UPPER(#{word}) || '%'
-		</if>
-		ORDER BY
-		p.rdate DESC
-	</select>
-
 	<select id="count" resultType="int" parameterType="String">
 		SELECT
 		COUNT(DISTINCT m.memberno) AS member_count
@@ -138,7 +114,7 @@
 		</if>
 	</select>
 
-	<select id="test1" resultType="dev.mvc.paymentTotal.PaymentTotalVO" parameterType="Map">
+	<select id="listAdminPaging" resultType="dev.mvc.paymentTotal.PaymentTotalVO" parameterType="Map">
 		SELECT *
     FROM (
       WITH PaymentRank AS (
@@ -172,7 +148,7 @@
     ORDER BY rdate DESC
 	</select>
 	
-	<select id="test2" parameterType="int" resultMap="PaymentTotalMap">
+	<select id="listAdminPDO" parameterType="int" resultMap="PaymentTotalMap">
 	  SELECT
       m.memberno,
       p.paymentno,

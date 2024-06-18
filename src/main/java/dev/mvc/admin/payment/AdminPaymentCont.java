@@ -50,7 +50,7 @@ public class AdminPaymentCont {
   @ModelAttribute("list")
   public ArrayList<PaymentTotalVO> paymentlist(@RequestParam(name = "now_page", required = false, defaultValue = "1") Integer now_page,
                                                @RequestParam(name = "word", required = false, defaultValue = "") String word) {
-    return this.paymentTotalProc.test1(word, now_page, PaymentTotalVO.RECORD_PER_PAGE);
+    return this.paymentTotalProc.listAdminPaging(word, now_page, PaymentTotalVO.RECORD_PER_PAGE);
   }
   
   
@@ -86,8 +86,8 @@ public class AdminPaymentCont {
   @PostMapping("list")
   public String listProc(@RequestParam(name = "now_page", required = false, defaultValue = "1") Integer now_page,
                          @RequestParam(name = "word",     required = false, defaultValue = "")  String word) {
-    return "redicect:/admin/payment/list?now_page=" + now_page + "&word=" + word;  
-    }
+    return "redirect:/admin/payment/list?now_page=" + now_page + "&word=" + word;  
+  }
   
   @ResponseBody
   @GetMapping("list/{memberno}")
