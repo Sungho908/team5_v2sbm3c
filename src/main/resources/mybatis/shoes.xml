@@ -93,12 +93,12 @@
   </select>
 
   <!-- 신발 상세 -->
-  <select id="read" resultMap="shoesRead" parameterType="Map">
+  <select id="read" resultMap="shoesRead" parameterType="Integer">
     SELECT s.shoesno, c.categoryno, s.title, s.brand, s.contents, s.price, s.discount, s.rating, c.subname, s.visible
     FROM shoes s
     JOIN category_list cl ON s.shoesno = cl.shoesno
     JOIN category c ON cl.categoryno = c.categoryno
-    WHERE s.shoesno = #{shoesno} and cl.categoryno = #{categoryno}
+    WHERE s.shoesno = #{shoesno} AND ROWNUM = 1
   </select>
 
   <resultMap id="shoesRead" type="dev.mvc.shoes.ShoesAllVO">

@@ -13,9 +13,9 @@ public interface OptionDAOInter {
 
   public int option_search_count(int shoesno);
   
-  public ArrayList<OptionVO> option_sizes(Map<String, Object> map);
+  public ArrayList<Integer> option_sizes(int shoesno);
 
-  public ArrayList<String> option_color(Map<String, Object> map);
+  public ArrayList<String> option_color(int shoesno);
   
   
 

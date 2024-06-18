@@ -509,3 +509,48 @@
   }
   
   
+    .form-horizontal {
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .form-horizontal .form-group-inline {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .form-horizontal .form-group-inline label {
+            margin-right: 10px;
+        }
+
+        .form-horizontal .form-group-inline select {
+            width: 200px;
+        }
+
+        .form-horizontal .form-group-inline input,
+        .form-horizontal .form-group-inline select {
+            width: auto;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .btn {
+            margin: 5px;
+        }
+  

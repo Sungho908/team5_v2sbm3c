@@ -2,24 +2,25 @@
 <html layout:decorate="~{layout}">
 <html xmlns:th="http://www.thymeleaf.org">
 <!-- layout.html 상속 -->
-<div layout:fragment="content"  style="width: 80%; margin:40px auto; text-align: center;">
+<div layout:fragment="content" style="width: 80%; margin:40px auto; text-align: center;">
+<link href="/css/style.css" rel="Stylesheet" type="text/css">
+  <div class="title_line" style="text-align: center;">
+    <span th:text="${categoryVO.name}" style="font-size: 20px; "></span>
+    > <span th:text="${categoryVO.subname}" style="font-size: 20px;"></span>
 
-  <div class="title_line">
-  <span th:text="${categoryVO.name}" style="font-size: 20px;"></span>
-  > <span th:text="${categoryVO.subname}" style="font-size: 20px;"></span>
-  
   </div>
   <input type="hidden" name="categoryno" th:value="${categoryno}">
   <div class="content_main">
     <div class="content_body">
-      <div class = "shoes" th:each="shoesVO, status:${list}">
+      <div class="shoes" th:each="shoesVO, status:${list}">
         <a th:href="@{|/shoes/${shoesVO.shoesno}?categoryno=${categoryno}|}">
           <img src="/images/nike.jpg"><!-- 이미지 및 기타 정보 -->
         </a>
         <p th:text="${shoesVO.title}"></p>
         <p th:text="'가격: ' + ${shoesVO.price} +'원 '"></p>
-        <p th:text="${shoesVO.contents}"></p>
+        <p th:text="${#strings.abbreviate(shoesVO.contents, 50)}"></p>
         <th:block th:if="${status.index % 5 == 4}"><br></th:block>
+
       </div>
     </div>
   </div>

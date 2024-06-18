@@ -61,7 +61,7 @@ public interface ShoesProcInter {
    * @return ShoesAllVO
    */
   
-  public ShoesAllVO read(int shoesno, int categoryno);
+  public ShoesAllVO read(int shoesno);
 
   
   

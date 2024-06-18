@@ -107,28 +107,27 @@ public class ShoesCont {
   @GetMapping(value = "/{shoesno}")
   public String details(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
       @RequestParam(name = "categoryno") int categoryno) {
-    System.out.println(session.getAttribute("ck_pw"));
-    System.out.println(session.getAttribute("ck_save"));
+    // session에 들어있는 로그인 값
+    //MemberVO memberVO = (MemberVO)session.getAttribute("login");
 
-    // 로그인 사용자 이름 넣기
-    // int memberno = session.getMemberno();
     model.addAttribute("memberno", 1);
-    
+
     MemberVO memberVO = this.memberProc.readByMemberno(1);
     model.addAttribute("nickname", memberVO.getNickname());
-    
-    ShoesAllVO shoesAllVO = this.shoesProc.read(shoesno, categoryno);
-    model.addAttribute("shoesAllVO", shoesAllVO);
 
-    ArrayList<OptionVO> sizes = this.optionProc.option_sizes(shoesno, categoryno);
+    ShoesAllVO shoesAllVO = this.shoesProc.read(shoesno);
+    model.addAttribute("shoesAllVO", shoesAllVO);
+    
+    System.out.println(shoesAllVO.toString());
+
+    ArrayList<Integer> sizes = this.optionProc.option_sizes(shoesno);
     model.addAttribute("sizes", sizes);
 
-    ArrayList<String> color = this.optionProc.option_color(shoesno, categoryno);
+    ArrayList<String> color = this.optionProc.option_color(shoesno);
     model.addAttribute("color", color);
 
-    
     ArrayList<ShoesAllVO> review = this.reviewProc.review_list(shoesno);
-    if(review.size() == 0) {
+    if (review.size() == 0) {
       model.addAttribute("no_review", true);
     }
     model.addAttribute("review", review);
@@ -139,7 +138,7 @@ public class ShoesCont {
     return "shoes/detail"; // /templates/shoes/read.html
 
   }
-
+  
   /**
    * 브랜드 목록
    * 

@@ -82,20 +82,21 @@ public class BasketCont {
 
   @PostMapping(value = "/create")
   @ResponseBody
-  public Map<String, Object> create(@RequestBody BasketVO basketVO, HttpSession session) {
+  public Map<String, Object> create(@RequestBody Map<String, Object> map, HttpSession session) {
+    MemberVO memberVO = (MemberVO) session.getAttribute("login");
     Map<String, Object> response = new HashMap<>();
 
-    Integer memberno = 1; // 임시로 하드코딩
+    int memberno = memberVO.getMemberno();
+    String color = (String) map.get("color");
+    int sizes = (Integer) map.get("sizes");
 
     // Integer memberno = (Integer) session.getAttribute("memberno");
     // if (memberno == null) {
     // response.put("message", "로그인이 필요합니다.");
     // }
-
-    basketVO.setMemberno(memberno);
-
-    int result = basketProc.create(basketVO.getMemberno(), basketVO.getColor(), basketVO.getSizes());
-    if (result > 0) {
+    int result = basketProc.create(memberno, color, sizes);
+    
+    if (result == 1) {
       response.put("success", true);
     } else {
       response.put("message", "장바구니에 추가하는데 실패했습니다.");
@@ -127,8 +128,13 @@ public class BasketCont {
 
   @PostMapping(value = "/delete")
   @ResponseBody
-  public Map<String, Object> delete(@RequestBody BasketVO basketVO, HttpSession session) {
+  public Map<String, Object> delete(@RequestBody Map<String, Object> map, HttpSession session) {
+    MemberVO memberVO = (MemberVO) session.getAttribute("login");
     Map<String, Object> response = new HashMap<>();
+    int memberno = memberVO.getMemberno();
+    int basketno = (Integer) map.get("basketno");
+    
+    int result = basketProc.delete(memberno, basketno);
 
     // 세션에서 멤버 번호 가져오기
 
@@ -137,15 +143,7 @@ public class BasketCont {
     // response.put("message", "세션이 만료되었거나 로그인 되어 있지 않습니다.");
     // return response;
     // }
-
-    Integer memberno = 1;
-
-    basketVO.setMemberno(memberno);
-
-    // 장바구니 삭제 처리
-    int result = basketProc.delete(basketVO.getMemberno(), basketVO.getBasketno());
-
-    if (result > 0) {
+    if (result == 1) {
       response.put("success", true);
     } else {
       response.put("message", "장바구니 제품 삭제에 실패했습니다.");

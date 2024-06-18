@@ -1,12 +1,12 @@
   /* ver 2.4 2024_0426 */
 
   /* 폰트 선언 */
-@font-face {
+  @font-face {
     font-family: 'GmarketSansMedium';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-}
+  }
 
   @font-face {
     font-family: 'TTHakgyoansimMonggeulmonggeulR';
@@ -306,7 +306,7 @@
     padding: 8px;
     width: 50%;
     margin-bottom: 15px;
-    font-size:30px;
+    font-size: 30px;
     text-align: center;
     justify-content: center;
     /* 수평 가운데 정렬 */
@@ -316,13 +316,15 @@
     /* 가운데 정렬을 위한 margin 설정 */
 
   }
-  
-.liked {
-  color: blue;
-}
-.hated {
-  color: blue;
-}
+
+  .liked {
+    color: blue;
+  }
+
+  .hated {
+    color: blue;
+  }
+
   .rating {
     font-weight: bold;
   }
@@ -347,86 +349,93 @@
     font-size: 12px;
     color: #888;
   }
-    .like-btn {
-      margin-top: 10px;
-        }
 
-     .like-btn button {
-         background-color: transparent;
-         border: none;
-         cursor: pointer;
-     }
+  .like-btn {
+    margin-top: 10px;
+  }
 
-    .like-btn button:hover {
-        color: blue;
-     }
+  .like-btn button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .like-btn button:hover {
+    color: blue;
+  }
+
   /* 상세 후기 끝*/
   .widget_item_comment_container {
     position: relative;
     display: block;
     width: 50%;
   }
+
   /* 후기 목록 */
- 
- 
- .review-list {
-  margin-top: 20px;
-  width:50%;
-  text-align: center;
-  margin: 0 auto;
-  margin-top: 30px;
-}
 
-.review-item {
-  background-color: #f9f9f9;
-  border: 1px solid black;
-  border-radius: 5px;
-  padding: 15px;
-  margin-bottom: 15px;
-}
 
-.review-number {
-  background-color: #333;
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 5px;
-}
+  .review-list {
+    margin-top: 20px;
+    width: 50%;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 30px;
+  }
 
-.review-info {
-  margin-bottom: 10px;
-}
+  .review-item {
+    background-color: #f9f9f9;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
 
-.review-label {
-  font-weight: bold;
-}
+  .review-number {
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
 
-.review-value {
-  margin-left: 10px;
-}
+  .review-info {
+    margin-bottom: 10px;
+  }
 
-.review-content {
-  margin-top: 10px;
-  padding: 10px; /* 후기 내용에 패딩 추가 */
-  border: 1px solid #ddd; /* 후기 내용에 테두리 추가 */
-  border-radius: 5px; /* 후기 내용에 테두리 둥글게 */
-}
+  .review-label {
+    font-weight: bold;
+  }
 
-.review-date {
-  color: #888;
-  font-size: 12px;
-}
+  .review-value {
+    margin-left: 10px;
+  }
+
+  .review-content {
+    margin-top: 10px;
+    padding: 10px;
+    /* 후기 내용에 패딩 추가 */
+    border: 1px solid #ddd;
+    /* 후기 내용에 테두리 추가 */
+    border-radius: 5px;
+    /* 후기 내용에 테두리 둥글게 */
+  }
+
+  .review-date {
+    color: #888;
+    font-size: 12px;
+  }
 
   /* 후기 목록 끝 */
-  
-  
-  
-  
+
+
+
+
   /* 말풍선 */
-   .widget_item_comment_container {
+  .widget_item_comment_container {
     position: relative;
     display: flex;
     align-items: center;
-    width: 50%; /* 말풍선의 너비를 조정하세요 */
+    width: 50%;
+    /* 말풍선의 너비를 조정하세요 */
     margin: 20px auto;
     padding: 10px;
     border-radius: 10px;
@@ -434,16 +443,20 @@
   }
 
   .widget_answer_img {
-    width: 50px; /* 이미지의 너비를 조정하세요 */
-    height: 50px; /* 이미지의 높이를 조정하세요 */
+    width: 50px;
+    /* 이미지의 너비를 조정하세요 */
+    height: 50px;
+    /* 이미지의 높이를 조정하세요 */
     background-color: #ccc;
     border-radius: 50%;
     margin-right: 10px;
   }
 
   .widget_item_comment_container_img {
-    width: 50px; /* 이미지의 너비를 조정하세요 */
-    height: 50px; /* 이미지의 높이를 조정하세요 */
+    width: 50px;
+    /* 이미지의 너비를 조정하세요 */
+    height: 50px;
+    /* 이미지의 높이를 조정하세요 */
     border-radius: 50%;
     margin-right: 10px;
   }
@@ -459,7 +472,7 @@
   .widget_item_comment_content_1 {
     font-weight: bold;
   }
-  
+
   /* 말풍선 끝 */
 
 
@@ -534,17 +547,30 @@
   }
 
 
- .content_body {
+  .content_body {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px; /* 요소 사이의 간격 */
-    justify-content: center; /* 요소를 왼쪽 정렬 */
-}
+    gap: 16px;
+    /* 요소 사이의 간격 */
+    justify-content: center;
+    /* 요소를 왼쪽 정렬 */
+  }
 
-.shoes {
+  .shoes {
     box-sizing: border-box;
     border: 1px solid #ddd;
-}
+    padding: 10px;
+    width: 300px;
+    /* 예시로 너비를 설정 */
+    word-wrap: break-word;
+    /* 긴 단어나 URL이나 긴 문자열에서 줄 바꿈 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-overflow: ellipsis;
+    /* 생략 부호(...) 표시 */
+  }
 
 
   .shoes img {
@@ -563,11 +589,12 @@
     /* 테두리를 검정색으로 설정합니다 */
   }
 
-.shoes p {
+  .shoes p {
     width: 100%;
     font-size: 20px;
-    text-align: left; /* 텍스트를 왼쪽 정렬 */
-}
+    text-align: left;
+    /* 텍스트를 왼쪽 정렬 */
+  }
 
   .moreMenuContainer {
     position: relative;
@@ -603,19 +630,19 @@
     /* 배경색 변경 시 부드럽게 전환 */
   }
 
-  .basket {
-    display: flex;
-    align-items: center;
-    margin: 0 auto;
-    justify-content: center;
-    /* 수평 가운데 정렬 */
-    margin-top: 50px;
-  }
+ .basket {
+    border: 1px solid #ddd;
+    margin: 10px;
+    width: 300px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-  .basket img {
+.basket_img {
+    width: 100px;
+    height: auto;
     margin-right: 20px;
-    /* 이미지와 텍스트 사이의 간격 조정 */
-  }
+}
 
   .cart-quantity {
     display: flex;
@@ -951,7 +978,7 @@
     /* top -> right -> bottom -> left */
     clear: both;
     padding-bottom: 5px;
-      border-bottom: 1px solid #ebebeb;
+    border-bottom: 1px solid #ebebeb;
   }
 
   .title {
@@ -1521,42 +1548,43 @@
     font-weight: normal;
     /* 일반 글꼴 */
   }
-  
-     .list {
-            display: block;
-            margin-bottom: 20px; /* 항목들 간의 간격 */
-           border: 1px solid #ccc;
-        }
 
-        .list p, .list .quantity-control, .list button {
-            margin: 10px 0; /* 세로 간격 */
-        }
+  .list {
+    display: block;
+    margin-bottom: 20px;
+    /* 항목들 간의 간격 */
+    border: 1px solid #ccc;
+    padding: 10px;
+    /* 내부 여백 설정 */
+  }
 
-        .quantity-control {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+  .list p,
+  .list .quantity-control,
+  .list button {
+    margin: 10px 0;
+    /* 세로 간격 */
+  }
 
-        .quantity-btn {
-            width: 30px;
-            height: 30px;
-        }
+  .quantity-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-        .quantity {
-            display: inline-block;
-            width: 30px;
-            text-align: center;
-            margin: 0 10px; /* 버튼과 수량 사이의 간격 */
-        }
-        .basket_btn{
-          margin: 0 auto;
-          width: 100%;
-        }
-        .basket_img{
-         border: 1px solid black;
-         height: 100%;
-        }
+  .quantity-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .quantity {
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    margin: 0 10px;
+    /* 버튼과 수량 사이의 간격 */
+  }
+
+
   .td_left {
     border-top: none;
     border-right: none;
@@ -1796,27 +1824,29 @@
     font-size: 1.5em;
   }
 
-/*고객센터 */
+  /*고객센터 */
 
-    .xans-element- xans-board xans-board-list-4 xans-board-list xans-board-4 center{
-      font: 0.75em 'Lato',sans-serif,Dotum,AppleGothic,sans-serif;
-      border-spacing: 0;
-      border-collapse: collapse;
-      color: #fff;
-      line-height: 1.5;
-      text-align: center;
-      font-size: 11px;
-    }
-    .gRight{
-      font: 0.75em 'Lato',sans-serif,Dotum,AppleGothic,sans-serif;
-      color: #353535;
-      float: right;
-      text-align: right;
-      min-width: 80px;
-      font-size: 11px;
-    }
-    .displaynone{
-    font: 0.75em 'Lato',sans-serif,Dotum,AppleGothic,sans-serif;
+  .xans-element- xans-board xans-board-list-4 xans-board-list xans-board-4 center {
+    font: 0.75em 'Lato', sans-serif, Dotum, AppleGothic, sans-serif;
+    border-spacing: 0;
+    border-collapse: collapse;
+    color: #fff;
+    line-height: 1.5;
+    text-align: center;
+    font-size: 11px;
+  }
+
+  .gRight {
+    font: 0.75em 'Lato', sans-serif, Dotum, AppleGothic, sans-serif;
+    color: #353535;
+    float: right;
+    text-align: right;
+    min-width: 80px;
+    font-size: 11px;
+  }
+
+  .displaynone {
+    font: 0.75em 'Lato', sans-serif, Dotum, AppleGothic, sans-serif;
     border-spacing: 0;
     border-collapse: collapse;
     line-height: 1.5;
@@ -1832,9 +1862,9 @@
     border-left: 0px solid #dfdfdf;
     padding-left: 0;
     padding-right: 0;
-    }
+  }
 
-/*고객센터 끝 */
+  /*고객센터 끝 */
 
   .cart_price {
     width: 50%;
@@ -1892,38 +1922,90 @@
     display: table-cell;
     vertical-align: middle;
   }
+
+  /* 장바구니 css */
   
- /* 관리자 카테고리 생성 */
-.form-horizontal {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+  
+#panel_delete {
+    text-align: center;
+    padding: 20px;
+}
+
+.panel-title {
+    font-size: 20px;
+    font-weight: bold;
     margin-bottom: 20px;
 }
 
-.form-group {
+.basket-list {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+
+
+.item-details {
+    display: flex;
     align-items: center;
-    margin-bottom: 20px;
 }
 
-.form-horizontal .form-group {
-    flex-direction: row;
-    align-items: flex-start;
+.basket-img {
+    width: 100px;
+    height: auto;
+    margin-right: 20px;
 }
 
-.form-horizontal .form-group label {
-    margin-right: 10px;
+.item-info {
+    flex: 1;
 }
 
-.form-horizontal .form-group input,
-.form-horizontal .form-group select {
-    width: auto;
+.item-title {
+    font-size: 16px;
+    margin-bottom: 5px;
 }
 
-.btn {
+.item-option {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.quantity-btn {
+    background-color: #f0f0f0;
+    border: none;
+    color: #555;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px 10px;
+    transition: background-color 0.3s ease;
+}
+
+.quantity-btn:hover {
+    background-color: #ddd;
+}
+
+.item-total{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.basket_btn {
+    background-color: #dc3545;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
     margin-top: 10px;
 }
 
+.basket-btn:hover {
+    background-color: #c82333;
+}

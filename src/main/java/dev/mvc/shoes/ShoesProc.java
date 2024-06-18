@@ -129,14 +129,11 @@ public class ShoesProc implements ShoesProcInter {
   }
 
   @Override
-  public ShoesAllVO read(int shoesno, int categoryno) {
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("shoesno", shoesno);
-    map.put("categoryno", categoryno);
-
-    ShoesAllVO shoesAllVO = this.shoesDAO.read(map);
+  public ShoesAllVO read(int shoesno) {
+    ShoesAllVO shoesAllVO = this.shoesDAO.read(shoesno);
     return shoesAllVO;
   }
+
 
   @Override
   public ShoesVO admin_read(int shoesno) {

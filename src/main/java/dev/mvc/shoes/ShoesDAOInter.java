@@ -52,7 +52,7 @@ public interface ShoesDAOInter {
    * @param cateno
    * @return
    */
-  public ShoesAllVO read(Map<String, Object> map);
+  public ShoesAllVO read(int shoesno);
   
   /**
    * 조회 id="read_option" resultMap="shoesOption" parameterType="Map"

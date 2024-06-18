@@ -40,4 +40,10 @@ public class ReviewProc implements ReviewProcInter {
     return cnt;
   }
 
+  @Override
+  public ArrayList<ShoesAllVO> myReview(int memberno) {
+    ArrayList<ShoesAllVO> shoesAllVO = this.reviewDAO.myReview(memberno);
+    return shoesAllVO;
+  }
+
 }

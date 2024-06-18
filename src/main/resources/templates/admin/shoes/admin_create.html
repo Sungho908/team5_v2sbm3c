@@ -4,50 +4,56 @@
 <!-- layout.html 상속-->
 
 <div layout:fragment="content">
-  <div class="title_line">신발 등록</div>
+  <div class="title_line" style="text-align: center;">신발 등록</div>
   <div class="top_menu_line"></div>
 
   <form th:object="${shoesVO}" method="post" action="/admin/shoes/admin_create">
     <div class="form-horizontal">
       <div class="form-group">
         <label for="name">중분류</label>
-        <select class="form-control fom-control-sm" style="width: 10%; margin: 0 auto; text-align: center;">
+        <select class="form-control fom-control-sm" style="width: 10%;  margin-top: 10px; text-align: center;">
+           <option value="">중분류를 선택해주세요.</option>
           <option th:each="category : ${name}" th:value="${category.categoryno}" th:text="${category.name}">
           </option>
         </select>
         <label for="brand" style="margin:0 auto;">소분류</label>
         <select type="text" name="brand" id="brand" value="" class="form-control fom-control-sm"
-          placeholder="브랜드명을 입력하세요." style="width: 10%; margin: 0 auto; text-align: center;">
-          <option value="">소분류</option>
+          placeholder="브랜드명을 입력하세요." style="width: 10%; margin-top: 10px; text-align: center;">
+          <option value="">소분류를 선택해주세요.</option>
           <option th:each="brand : ${brand}" th:value="${brand}" th:text="${brand}"></option>
         </select>
       </div>
 
 
-    <div class="form-group">
-      <label for="price">금액</label>
-      <input type="text" name="price" id="price" value="" class="form-control fom-control-sm" placeholder="금액을 입력하세요."
-        style="width: 20%; margin: 0 auto; text-align: center;">
-    </div>
+      <div class="form-group">
+        <label for="price">금액</label>
+        <input type="text" name="price" id="price" value="" class="form-control fom-control-sm" placeholder="금액을 입력하세요."
+          style="width: 10%; text-align: center; margin-top: 20px;">
+      </div>
 
-    <div class="form-group">
-      <label for="contents">내용</label>
-      <textarea type="text" name="contents" id="contents" value="" class="form-control fom-control-sm"
-        placeholder="내용을 입력하세요." style="width: 20%; margin: 0 auto; text-align: center;"></textarea>
-    </div>
+      <div class="form-group">
+        <label for="contents">내용</label>
+        <textarea type="text" name="contents" id="contents" value="" class="form-control fom-control-sm"
+          placeholder="내용을 입력하세요." style="width: 20%;  margin-top: 10px;   text-align: center;"></textarea>
+      </div>
 
-    <div class="form-group">
-      <label>판매여부</label>
-      <select type="text" name="visible" value="Y" autofocus="autofocus" class="form-control fom-control-sm"
-        style="width: 20%; margin: 0 auto; text-align: center;">
-        <option value="Y">Y</option>
-        <option value="N">N</option>
-      </select>
-    </div>
+      <div class="form-group">
+        <label>판매여부</label>
+        <select type="text" name="visible" value="Y" autofocus="autofocus" class="form-control fom-control-sm"
+          style="width: 10%; margin-top: 10px;text-align: center;">
+          <option value="Y">Y</option>
+          <option value="N">N</option>
+        </select>
+        <button type="submit" class="btn btn-secondary btn-sm">등록</button>
+        <button type="button" onclick="location.href='./admin_list_all'" class="btn btn-secondary btn-sm">목록</button>
+      </div>
 
-    <button type="submit" class="btn btn-secondary btn-sm">등록</button>
-    <button type="button" onclick="location.href='./admin_list_all'" class="btn btn-secondary btn-sm">목록</button>
-  </form>
+
+    </div>
+</div>
+
+
+</form>
 
 
 </html>
