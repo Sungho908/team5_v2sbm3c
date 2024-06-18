@@ -94,9 +94,17 @@ public class ShoesCont {
    * @return
    */
   @GetMapping(value = "/{shoesno}")
+<<<<<<< HEAD
   public String details(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno) {
     // 로그인 사용자 이름 넣기
     // int memberno = session.getMemberno();
+=======
+  public String details(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
+      @RequestParam(name = "categoryno") int categoryno) {
+    // session에 들어있는 로그인 값
+    //MemberVO memberVO = (MemberVO)session.getAttribute("login");
+
+>>>>>>> main
     model.addAttribute("memberno", 1);
     
     MemberVO memberVO = this.memberProc.readByMemberno(1);
@@ -104,6 +112,8 @@ public class ShoesCont {
     
     ShoesAllVO shoesAllVO = this.shoesProc.read(shoesno);
     model.addAttribute("shoesAllVO", shoesAllVO);
+    
+    System.out.println(shoesAllVO.toString());
 
     ArrayList<Integer> sizes = this.optionProc.option_sizes(shoesno);
     model.addAttribute("sizes", sizes);

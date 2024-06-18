@@ -53,206 +53,85 @@ CREATE TABLE SHOES_FILE(
 		SHOESNO                       		NUMBER(9)		 NULL ,
   FOREIGN KEY (SHOESNO) REFERENCES SHOES (SHOESNO)
 );
+-----------------------------------------------------------------------------------------------------------------------
 
-SELECT m.memberno, p.paymentno
-FROM member m
-INNER JOIN payment p ON m.memberno = p.memberno
-WHERE m.memberno = 1;
-
-
-commit;
-
-SELECT m.memberno,
-       p.paymentno, p.rdate, p.status, p.payment_status, p.cs_status, p.total_price, p.delivery, p.total_payment,
-       pd.payment_details_no, pd.payment_amount,
-       s.shoesno, s.title, s.brand, s.rating, s.price, s.discount, s.contents, s.visible,
-       sf.shoes_file_no, sf.name, sf.sizes as shoes_file_sizes, sf.ex, sf.src,
-       o.optionno, o.sizes as option_sizes, o.amount, o.color
-       
-FROM member m 
-    INNER JOIN payment p          ON m.memberno  = p.memberno
-    INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
-    INNER JOIN options o          ON pd.optionno = o.optionno
-    INNER JOIN shoes s            ON o.shoesno   = s.shoesno
-    INNER JOIN shoes_file sf      ON s.shoesno   = sf.shoesno
-WHERE m.memberno = 1;
-
-SELECT COUNT(p.paymentno) as cnt
-FROM member m
-INNER JOIN payment p ON m.memberno = p.paymentno
-WHERE m.memberno = 1 and p.paymentno = 2;
-
-SELECT COUNT(*) AS cnt
-FROM member m 
-    INNER JOIN payment p          ON m.memberno  = p.memberno
-    INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
-    INNER JOIN options o          ON pd.optionno = o.optionno
-    INNER JOIN shoes s            ON o.shoesno   = s.shoesno
-    INNER JOIN shoes_file sf      ON s.shoesno   = sf.shoesno
-WHERE m.memberno = 1 AND p.paymentno = 1;
-
-     
-     
-     SELECT m.memberno,
-       p.paymentno, p.rdate, p.status, p.payment_status, p.cs_status, p.total_price, p.delivery, p.total_payment,
-       LISTAGG(
-         '{ "payment_details_no": ' || pd.payment_details_no || ', "payment_amount": ' || pd.payment_amount || 
-         ', "optionno": ' || o.optionno || ', "sizes": ' || o.sizes || ', "amount": ' || o.amount || ', "color": ' || o.color || ' }',
-         ','
-       ) WITHIN GROUP (ORDER BY pd.payment_details_no) AS payment_details,
-       s.shoesno, s.title, s.brand, s.rating, s.price, s.discount, s.contents, s.visible,
-       sf.shoes_file_no, sf.name, sf.sizes as shoes_file_sizes, sf.ex, sf.src
-FROM member m 
-    INNER JOIN payment p          ON m.memberno  = p.memberno
-    INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
-    INNER JOIN options o          ON pd.optionno = o.optionno
-    INNER JOIN shoes s            ON o.shoesno   = s.shoesno
-    INNER JOIN shoes_file sf      ON s.shoesno   = sf.shoesno
-WHERE m.memberno = 1
-GROUP BY m.memberno, p.paymentno, p.rdate, p.status, p.payment_status, p.cs_status, p.total_price, p.delivery, p.total_payment,
-         s.shoesno, s.title, s.brand, s.rating, s.price, s.discount, s.contents, s.visible,
-         sf.shoes_file_no, sf.name, sf.sizes, sf.ex, sf.src;
-         
-         
-         
-         
-     SELECT 
-       p.paymentno, 
-       p.rdate, 
-       p.status,
-       p.payment_status, 
-       p.cs_status,
-       p.total_price, 
-       p.delivery, 
-       p.total_payment,
-       LISTAGG(
-         '{ "payment_details_no": ' || pd.payment_details_no || ', "payment_amount": ' || pd.payment_amount || 
-         ', "optionno": ' || o.optionno || ', "sizes": ' || o.sizes || ', "amount": ' || o.amount || ', "color": ' || o.color || ' }',
-         ','
-       ) WITHIN GROUP (ORDER BY pd.payment_details_no) AS payment_details,
-       s.shoesno, s.title, s.brand, s.rating, s.price, s.discount, s.contents, s.visible,
-       sf.shoes_file_no, sf.name, sf.sizes as shoes_file_sizes, sf.ex, sf.src
-FROM member m 
-    INNER JOIN payment p          ON m.memberno  = p.memberno
-    INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
-    INNER JOIN options o          ON pd.optionno = o.optionno
-    INNER JOIN shoes s            ON o.shoesno   = s.shoesno
-    INNER JOIN shoes_file sf      ON s.shoesno   = sf.shoesno
-WHERE m.memberno = 1
-GROUP BY m.memberno, p.paymentno, p.rdate, p.status, p.payment_status, p.cs_status, p.total_price, p.delivery, p.total_payment,
-         s.shoesno, s.title, s.brand, s.rating, s.price, s.discount, s.contents, s.visible,
-         sf.shoes_file_no, sf.name, sf.sizes, sf.ex, sf.src;
-
-
-
-
-
-
-
-
-
-
-SELECT m.memberno,
-           p.paymentno, 
-           p.rdate, 
-           p.status, 
-           p.payment_status, 
-           p.cs_status, 
-           p.total_price, 
-           p.delivery, 
-           p.total_payment,
-           
-           
-           LISTAGG(
-             '{ "payment_details_no": ' || pd.payment_details_no || ', "payment_amount": ' || pd.payment_amount || 
-             ', "optionno": ' || o.optionno || ', "sizes": ' || o.sizes || ', "amount": ' || o.amount || ', "color": ' || '"' || o.color || '"' || ' }',
-             ','
-           ) WITHIN GROUP (ORDER BY pd.payment_details_no) AS payment_details,
-           s.shoesno, s.title, s.brand, s.rating, s.price, s.discount, s.contents, s.visible,
-           sf.shoes_file_no, sf.name, sf.sizes as shoes_file_sizes, sf.ex, sf.src
-    FROM member m 
-        INNER JOIN payment p          ON m.memberno  = p.memberno
-        INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
-        INNER JOIN options o          ON pd.optionno = o.optionno
-        INNER JOIN shoes s            ON o.shoesno   = s.shoesno
-        INNER JOIN shoes_file sf      ON s.shoesno   = sf.shoesno
-    WHERE m.memberno =1
-    GROUP BY m.memberno, p.paymentno, p.rdate, p.status, p.payment_status, p.cs_status, p.total_price, p.delivery, p.total_payment,
-             s.shoesno, s.title, s.brand, s.rating, s.price, s.discount, s.contents, s.visible,
-             sf.shoes_file_no, sf.name, sf.sizes, sf.ex, sf.src
-
-commit;
-
-
-  SELECT DISTINCT
-    m.memberno,
-    p.paymentno, 
-    p.rdate, 
-    p.status, 
-    p.payment_status, 
-    p.cs_status, 
-    p.total_price, 
-    p.delivery, 
-    p.total_payment,
-    o.shoesno, 
-    s.title, 
-    s.brand, 
-    s.rating, 
-    s.price, 
-    s.discount, 
-    s.contents, 
-    s.visible,
-    sf.shoes_file_no, 
-    sf.name, 
-    sf.sizes as shoes_file_sizes, 
-    sf.ex, 
-    sf.src
-  FROM 
-    member m 
-    INNER JOIN payment p ON m.memberno = p.memberno
-    INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
-    INNER JOIN options o ON pd.optionno = o.optionno
-    INNER JOIN shoes s ON o.shoesno = s.shoesno
-    LEFT JOIN shoes_file sf ON s.shoesno = sf.shoesno
-  WHERE 
-    m.memberno = 1
-  ORDER BY 
-    p.rdate ASC;
-    
-    
-    
     SELECT DISTINCT
+      m.memberno,
+      m.id AS memberid,
+      m.nickname,
+      p.paymentno
+    FROM 
+      member m 
+      INNER JOIN payment p ON m.memberno = p.memberno
+
+      WHERE UPPER(m.id) LIKE '%' || UPPER('') || '%' OR UPPER(m.nickname) LIKE '%' || UPPER('') || '%'
+
+    ORDER BY 
+      p.rdate DESC;
+      
+
+
+
+WITH PaymentRank AS (
+  SELECT
     m.memberno,
-    m.id,
-    m.name,
-    p.paymentno, 
-    p.rdate, 
-    p.status, 
-    p.payment_status, 
-    p.cs_status, 
-    p.total_price, 
-    p.delivery, 
-    p.total_payment,
-    o.shoesno, 
-    s.title, 
-    s.brand, 
-    s.rating, 
-    s.price, 
-    s.discount, 
-    s.contents, 
-    s.visible,
-    sf.shoes_file_no, 
-    sf.name, 
-    sf.sizes as shoes_file_sizes, 
-    sf.ex, 
-    sf.src
+    m.id AS memberid,
+    m.nickname,
+    p.paymentno,
+    p.rdate,
+    ROW_NUMBER() OVER (PARTITION BY m.memberno ORDER BY p.rdate DESC) AS rn
   FROM 
     member m 
     INNER JOIN payment p ON m.memberno = p.memberno
-    INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
-    INNER JOIN options o ON pd.optionno = o.optionno
-    INNER JOIN shoes s ON o.shoesno = s.shoesno
-    LEFT JOIN shoes_file sf ON s.shoesno = sf.shoesno
+  WHERE 
+    UPPER(m.id) LIKE '%' || UPPER('') || '%' 
+    OR UPPER(m.nickname) LIKE '%' || UPPER('') || '%'
+)
+SELECT
+  memberno,
+  memberid,
+  nickname,
+  paymentno
+FROM
+  PaymentRank
+WHERE
+  rn = 1
+ORDER BY 
+  rdate DESC;
 
-  ORDER BY 
-    p.rdate ASC;
+
+
+	  SELECT
+      m.memberno,
+      p.paymentno,
+      pd.payment_details_no,
+      pd.payment_amount,
+      o.optionno,
+      o.sizes,
+      o.amount,
+      o.color,
+      s.shoesno,
+      s.title,
+      s.brand,
+      s.rating,
+      s.price,
+      s.discount,
+      s.contents,
+      s.visible,
+      sf.shoes_file_no,
+      sf.name,
+      sf.sizes as shoes_file_sizes,
+      sf.ex,
+      sf.src
+    FROM
+      member m
+      INNER JOIN payment p ON p.paymentno = m.memberno
+      INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
+      INNER JOIN options o ON pd.optionno = o.optionno
+      INNER JOIN shoes s ON o.shoesno = s.shoesno
+      LEFT JOIN shoes_file sf ON s.shoesno = sf.shoesno
+    WHERE
+      m.memberno = 17
+    ORDER BY
+      pd.payment_details_no
+

@@ -68,7 +68,7 @@
         list-style: none;
       }
 
-      .title {
+      .title-payment {
         text-align: left;
         font-size: 3rem;
       }
@@ -81,7 +81,7 @@
     </style>
     <div th:replace="~{fragment/infoSidebarFragment::infoSidebarFragment}"></div>
     <div class="main-container">
-      <div class="title">주문내역</div>
+      <div class="title-payment">주문내역</div>
       <div class="dateDiv-main clearfix">
         <div style="float: left;">
           <div class="dateDiv-btn" th:with="dates = ${not #strings.isEmpty(param.dates) ? param.dates : '7'}">
@@ -158,7 +158,7 @@
 
             <!-- 상품명/주문옵션/주문번호 -->
             <td style="padding: 18px 5px 18px 20px;">
-              <div style="display: flex; align-items: center; border-top: 1px solid #ddd;" th:each="pd : ${list.payment_details_option}">
+              <div style="display: flex; align-items: center; border-top: 1px solid #ddd; height:120px;" th:each="pd : ${list.payment_details_option}">
 
                 <div>
                   <a href="#">
@@ -168,10 +168,10 @@
                 </div>
 
                 <div>
-                  <a style="position: relative; top: 25px; font-size: 1.3rem;" href="#" th:text="${pd.title}">상품명</a>
+                  <a style="position: relative; font-size: 1.3rem;" href="#" th:text="${pd.title}">상품명</a>
                   <ul style="list-style-type: none; padding: 0px;">
-                    <li style="top: 25px;" th:text="|색상 / ${pd.color} / ${#numbers.formatInteger(pd.price, 3, 'COMMA')}원 / ${pd.payment_amount}개|">색상/가격/수량</li>
-                    <li style="top: 5px;" th:text="|수량 │ ${pd.payment_amount}개 / 주문번호 ${pd.payment_details_no}|">수량 | 주문번호 |</li>
+                    <li th:text="|색상 / ${pd.color} / ${#numbers.formatInteger(pd.price, 3, 'COMMA')}원 / ${pd.payment_amount}개|">색상/가격/수량</li>
+                    <li th:text="|수량 │ ${pd.payment_amount}개 / 주문번호 ${pd.payment_details_no}|">수량 | 주문번호 |</li>
                   </ul>
                 </div>
 
@@ -188,7 +188,7 @@
             <!-- 주문상태 -->
             <td style="width: 30px; text-align:center">
               <div>
-                <span style="font-size: 0.8rem;" th:text="|(${list.payment_status})|">결제 상태</span><br>
+                <span style="font-size: 0.8rem;" th:text="${list.payment_status == '입금완료(수동)' or list.payment_status == '입금완료(자동)' ? '입금완료' : list.payment_status}"></span><br>
                 <span th:text="${list.status}">주문상태/CS상태</span>
               </div>
             </td>
@@ -262,4 +262,3 @@
 </body>
 
 </html>
-

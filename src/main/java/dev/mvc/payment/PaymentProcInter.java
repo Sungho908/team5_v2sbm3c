@@ -25,5 +25,8 @@ public interface PaymentProcInter {
    * id="update" parameterType="Map"
    * */
   public int update(Map<String, Object> map);
+  
+  
+  public String pagingBox(int now_page, String word, String list_file, int search_count);
 }
 

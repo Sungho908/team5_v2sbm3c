@@ -70,16 +70,24 @@
                 <span class="xans_myshop_main_basket_cnt">0</span></span>
             </a>
           </li>
+          <th:block sec:authorize="hasAuthority('ADMIN') or hasAuthority('MASTER')">
+            <li><a href="/admin">ADMIN</a></li>    
+          </th:block>
           <li class="nav-item dropdown" id="disablelink">
             <a th:text="|[${session.login.nickname}]|" class="nav-link dropdown-toggle" href="#"
               id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"> 중분류메뉴 </a>
 
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="nav-link" href="/member/update">회원정보 변경</a></li>
+              <li><a class="nav-link" href="/member/payment/order">회원정보 변경</a></li>
               <li><a class="nav-link" href="/login/history">접속기록 확인</a></li>
+<<<<<<< HEAD
               <li><a class="nav-link" href="/review/myReview">작성한 리뷰</a></li>
               <li><a class="nav-link" href="/report/myReport">신고 내역</a></li>
               <li><a class="nav-link" href="/member/logout">로그아웃</a></li>
+=======
+              <li><a class="nav-link" href="/report/myReport">내 신고 내역</a></li>
+              <li><a class="nav-link" href="/login/logout">로그아웃</a></li>
+>>>>>>> main
             </ul>
           </li>
         </th:block>

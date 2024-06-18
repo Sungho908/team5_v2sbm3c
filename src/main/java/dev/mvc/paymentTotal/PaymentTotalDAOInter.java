@@ -12,15 +12,38 @@ public interface PaymentTotalDAOInter {
    * @param  map memberno, search, startDate, endDate
    * @return ArrayList&lt;PaymentTotalVO&gt; 객체
    * */
-//  public ArrayList<PaymentTotalVO> list(HashMap<String, Object> map);
-//  이벤트 핸들러 따로 구현
+  public ArrayList<PaymentTotalVO> list(HashMap<String, Object> map);
+  
+  /**
+   * 
+   * id="selectPaymentDetailsByPaymentNo" parameterType="map" resultMap="PaymentDetailsOptionMap"
+   * */
+  public ArrayList<PaymentDetailsOptionVO> selectPaymentDetailsByPaymentNo(Map<String, Object> map);
+  
   
   
   /**
-   * 어드민 주문정보 가져오기
-   * id="listAdmin" parameterType="int" resultMap="PaymentTotalMap"
-   * @param
-   * @return 
+   * 주문목록 count 가져오기
+   * id="count" resultType="int" parameterType="word"
+   * @return 주문정보가 있는 멤버들의 count
    * */
-  public ArrayList<PaymentTotalVO> listAdmin();
+  public int count(String word);
+  
+  
+  /**
+   * 페이징처리를 위한 admin 주문목록
+   * id="listAdminPaging" resultType="dev.mvc.paymentTotal.PaymentTotalVO" parameterType="Map"
+   * @param map word, start_num, end_num
+   * @return ArrayList&lt;PaymentTotalVO&gt; 객체 
+   * */
+  public ArrayList<PaymentTotalVO> listAdminPaging(Map<String, Object> map);
+  
+  
+  /**
+   * admin 주문목록 상세정보 가져오기 (Ajax)
+   * id="listAdminPDO" parameterType="int" resultMap="PaymentTotalMap"
+   * @param memberno 조회할 memberno
+   * @return ArrayList&lt;PaymentTotalVO&gt; 객체
+   * */
+  public ArrayList<PaymentTotalVO> listAdminPDO(int memberno);
 }

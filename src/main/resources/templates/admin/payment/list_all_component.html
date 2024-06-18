@@ -24,8 +24,9 @@
       transition: max-height 0.2s ease-out;
       background-color: #f1f1f1;
     }
-    .clearfix::after{
-      content:'';
+
+    .clearfix::after {
+      content: '';
       display: block;
       clear: both;
     }
@@ -33,251 +34,116 @@
     .active:after {
       content: "\2212";
     }
-    
-    .color-white{
+
+    .color-white {
       color: white;
     }
-    
-    .block{
+
+    .block {
       display: block;
     }
   </style>
   <!--/*■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■*/-->
-  <th:block th:each="paymentTotalList : ${paymentTotalLists}">
+  <th:block th:each="paymentTotal : ${list}">
     <div>
-      <button type="button" class="collapsible" onclick="collapse(this);">
-        <div style="display: flex; justify-content: space-around;" th:with="paymentTotalone=${paymentTotalList.value[0]}">
-          <span class="color-white" th:text="|회원번호: ${paymentTotalone.memberno}|"></span>
-          <span class="color-white" th:text="|회원ID: ${paymentTotalone.memberid}|"></span>
-          <span class="color-white" th:text="|회원닉네임: ${paymentTotalone.nickname}|"></span>
+      <button type="button" class="collapsible" th:onclick="fetchList(this, [[${paymentTotal.memberno}]]);">
+        <div style="display: flex; justify-content: space-around;">
+          <span class="color-white" th:text="|회원번호: ${paymentTotal.memberno}|"></span>
+          <span class="color-white" th:text="|회원ID: ${paymentTotal.memberid}|"></span>
+          <span class="color-white" th:text="|회원닉네임: ${paymentTotal.nickname}|"></span>
         </div>
       </button>
-      <!--/*●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●*/-->
-      <div class="contents" id="btnDiv" th:each="paymentTotal : ${paymentTotalList.value}">
-        <button type="button" class="collapsible" onclick="collapseChild(this);" style="padding: 5px;">
-          <div style="padding: 5px 30px 5px 30px;">
-            <div style="float: left;">
-              <span class="color-white block" th:text="|주문번호: ${paymentTotal.paymentno}|">paymentno</span>
-              <div th:each="pdo : ${paymentTotal.payment_details_option}">
-                <span class="color-white" style="width: 120px; float: left;" th:text="|주문상세번호: ${pdo.payment_details_no}|">pdno / title</span>
-                <span class="color-white" th:text="| │ 상 품 명: ${pdo.title}|"></span>  
-              </div>
-              <span class="color-white block" th:text="|주문일자: ${#dates.format(paymentTotal.rdate, 'yyyy-MM-dd HH:mm:ss')}|">rdate</span>
-            </div>
-            <div style="float: right;">
-              <span class="color-white block" th:text="|결제상태: ${paymentTotal.payment_status}|">payment_status</span>
-              <span class="color-white block" th:text="|주문상태: ${paymentTotal.status}|">status</span>
-              <span class="color-white block" th:text="|C S 상태: ${paymentTotal.cs_status !=null ? paymentTotal.cs_status:'NULL'}|">cs_status</span>
-            </div>
-          </div>
-        </button>
-        <div class="contents">
-          <div class="clearfix" style="margin-top: 10px;">
-            <div th:object="${paymentTotal}">
-              <span th:text="|총 상품가격: *{#numbers.formatInteger(total_price, 3, 'COMMA')}원 │ 배송비: *{#numbers.formatInteger(delivery, 3, 'COMMA')}원 │ 총 주문가격: *{#numbers.formatInteger(total_payment, 3, 'COMMA')}원|"></span>
-            </div>
-            <div style="float: left;" th:object="${paymentTotal}">
-              <div style="display: flex; align-items: center;">
-                <label style="width: 120px; float: left;">결제상태 수정하기</label>
-                <select style="height: 2rem; width: 10rem;" name="payment_status" id="selectbox">
-                  <option th:selected="*{payment_status} == '입금전' ">입금전</option>
-                  <option th:selected="*{payment_status} == '추가입금대기' " >추가입금대기</option>
-                  <option th:selected="*{payment_status.matches('입금완료\\(수동\\)')}">입금완료(수동)</option>
-                  <option th:selected="*{payment_status.matches('입금완료\\(자동\\)')}">입금완료(자동)</option>
-                  <option th:selected="*{payment_status} == '결제완료' ">결제완료</option>
-                </select>
-              </div>
-              
-              <div style="display: flex; align-items: center;">
-                <label style="width: 120px; float: left;">주문상태 수정하기</label>
-                <select style="height: 2rem; width: 10rem;" name="status" id="selectbox">
-                  <option th:selected="*{status} == '상품준비중' ">상품준비중</option>
-                  <option th:selected="*{status} == '배송준비중' ">배송준비중</option>
-                  <option th:selected="*{status} == '배송보류' ">배송보류</option>
-                  <option th:selected="*{status} == '배송대기' ">배송대기</option>
-                  <option th:selected="*{status} == '배송중' ">배송중</option>
-                  <option th:selected="*{status} == '배송완료' ">배송완료</option>
-                </select>
-              </div>
-              
-              <div style="display: flex; align-items: center;">
-                <label style="width: 120px; float: left;">CS상태 수정하기</label>
-                <select style="height: 2rem; width: 10rem;" name="cs_status" id="selectbox">
-                  <option th:selected="*{cs_status} == null " value="NULL">NULL로 변경</option>
-                  <option th:selected="*{cs_status} == '취소' ">취소</option>
-                  <option th:selected="*{cs_status} == '교환' ">교환</option>
-                  <option th:selected="*{cs_status} == '반품' ">반품</option>
-                  <option th:selected="*{cs_status} == '환불' ">환불</option>
-                </select>
-              </div>
-              
-            </div>
-            <div style="float:right;">
-              <button style="position: relative; bottom: 0px; right: 0px; height: 56px; width: 8rem; border: 1px solid #bbb; background-color: #e63740; color:#fff" onclick="submit(this)" type="button">적용하기</button> 
-            </div>
-          </div>
-          <!--/*주문 정보 기입란*/-->
-          <hr>
-          <div th:each="pdo : ${paymentTotal.payment_details_option}">
-            <table style="width: 100%;" >
-                <colgroup>
-                  <col style="width: 33%;" />
-                  <col style="width: 33%;" />
-                  <col style="width: 33%;" />
-                </colgroup>
-              <tbody>
-                <tr>
-                  <td>
-                    <div>
-                      <span style="float: left; width: 100px;">신발번호:</span>
-                      <span th:text="${pdo.shoesno}">.</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      <span style="float: left; width: 100px;">신발평점:</span>
-                      <span th:text="${pdo.rating}">.</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      <span style="float: left; width: 100px;">상 품 명:</span>
-                      <span th:text="${pdo.title}">.</span>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <span style="float: left; width: 100px;">주문상세번호:</span>
-                      <span th:text="${pdo.payment_details_no}">.</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      <span style="float: left; width: 100px;">할 인 률:</span>
-                      <span th:text="|${#numbers.formatInteger(pdo.discount,0)}%|">.</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      <span style="float: left; width: 100px;">브랜드명:</span>
-                      <span th:text="${pdo.brand}">.</span>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div>
-                      <span style="float: left; width: 100px;">주문수량:</span>
-                      <span th:text="${pdo.payment_amount}">.</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      <span style="float: left; width: 100px;">신발가격:</span>
-                      <span th:text="|${#numbers.formatInteger(pdo.price, 3, 'COMMA')}원|">.</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      <span style="float: left; width: 100px;">사이즈 / 색상:</span>
-                      <span th:text="|${pdo.sizes} / ${pdo.color}|">.</span>
-                    </div>
-                  </td>
-                </tr>  
-              </tbody>
-            </table> 
-            <hr>
-            
-          </div>
-          
-        </div>
-      </div>
-      <!--/*●●●●●●●●●●●●●●●●●●●●●●●●●●●●●● ●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●*/-->
+      <div class="contents" id="btnDiv"></div>
     </div>
   </th:block>
   <!--/*■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■*/-->
+
+  <div class="bottom_menu" th:utext="${paging}"></div>
+
   <script>
-    function collapse(element) {
-      let before = document.querySelector(".active")               // 기존에 활성화된 버튼
-      let height = 0;
-      if (before && document.querySelector(".active") != element) {  // 자신 이외에 이미 활성화된 버튼이 있으면
-        before.nextElementSibling.style.maxHeight = null;   // 기존에 펼쳐진 내용 접고
-        before.classList.remove("active");                  // 버튼 비활성화
+    function fetchList(button, memberno) {
+  const contentsDiv = button.nextElementSibling;
+
+  if (button.classList.contains("active")) {
+    // 버튼이 활성화 상태일 경우 내용을 닫습니다.
+    contentsDiv.style.maxHeight = null;
+    button.classList.remove("active");
+  } else {
+    // 버튼이 활성화 상태가 아닐 경우 AJAX 요청을 보냅니다.
+    // AJAX 요청을 보내기 전에 기존 내용을 초기화합니다.
+    contentsDiv.innerHTML = '';
+
+    fetch(`./list/${memberno}`, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
       }
-      element.classList.toggle("active");         // 활성화 여부 toggle
-
-
-      let contents = element.nextElementSibling;
-      while (contents) {
-        if (contents.style.maxHeight != 0) {         // 버튼 다음 요소가 펼쳐져 있으면
-          contents.style.maxHeight = null;         // 접기
-        } else {
-          height = height + contents.scrollHeight;
-          contents.style.maxHeight = height + "px";  // 접혀있는 경우 펼치기
-        }
-        contents = contents.nextElementSibling;
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok' + response.statusText);
       }
+      return response.text();
+    })
+    .then(data => {
+      console.log(data);
+      contentsDiv.innerHTML = data;
 
-    }
+      // 모든 활성화된 버튼과 내용을 축소합니다.
+      document.querySelectorAll('.collapsible.active').forEach(activeButton => {
+        activeButton.classList.remove('active');
+        activeButton.nextElementSibling.style.maxHeight = null;
+      });
+
+      // 버튼을 활성화하고 내용을 확장합니다.
+      button.classList.add("active");
+      contentsDiv.style.maxHeight = contentsDiv.scrollHeight + "px";
+    })
+    .catch(error => {
+      alert('리스트를 가져오는 데 실패했습니다.');
+      console.error("ERROR:", error);
+    });
+  }
+}
+
 
     function collapseChild(element) {
-      let before = document.querySelector(".activeChild")               // 기존에 활성화된 버튼
-      if (before && document.querySelector(".activeChild") != element) {  // 자신 이외에 이미 활성화된 버튼이 있으면
-        before.nextElementSibling.style.maxHeight = null;   // 기존에 펼쳐진 내용 접고
-        before.classList.remove("activeChild");                  // 버튼 비활성화
+      let before = document.querySelector(".activeChild");
+      if (before && document.querySelector(".activeChild") != element) {
+        before.nextElementSibling.style.maxHeight = null;
+        before.classList.remove("activeChild");
       }
-      element.classList.toggle("activeChild");         // 활성화 여부 toggle
+      element.classList.toggle("activeChild");
 
       let contents = element.nextElementSibling;
-      if (contents.style.maxHeight != 0) {         // 버튼 다음 요소가 펼쳐져 있으면
-        contents.style.maxHeight = null;         // 접기
+      if (contents.style.maxHeight != 0) {
+        contents.style.maxHeight = null;
       } else {
         let parent = element.parentNode;
         let height = contents.scrollHeight + element.scrollHeight + parent.scrollHeight;
         parent.style.maxHeight = height + "px";
-        contents.style.maxHeight = contents.scrollHeight + "px";  // 접혀있는 경우 펼치기
+        contents.style.maxHeight = contents.scrollHeight + "px";
       }
     }
-    
-    const selectElement = document.querySelector("#selectbox");
-    const options       = document.querySelectorAll("option");
-    for(let i=0; i < options.length; i++){
-      if(!options[i].hasAttribute('value')){
-        options[i].value = options[i].text;  
-      }
-      
-    }
-    
-    function submit(btn){
-      //버튼의 부모요소 가져오기
+
+    function submit(btn) {
       let grandparentDiv = btn.closest('#btnDiv');
       let parentDiv = btn.closest('.clearfix');
-      
-      //주문번호 span 찾기
+
       let span = grandparentDiv.querySelector('.collapsible > div > div > span');
       let paymentno = span.textContent.trim().match(/\d+/)[0];
-      
-      //select option 값 가져오기
+
       let payment_status = parentDiv.querySelector('div:nth-child(2) > div:nth-child(1) > select[name=payment_status] option:checked').value;
-      let status         = parentDiv.querySelector('div:nth-child(2) > div:nth-child(2) > select[name=status] option:checked').value;
-      let cs_status      = parentDiv.querySelector('div:nth-child(2) > div:nth-child(3) > select[name=cs_status] option:checked').value
-      
-      //상태정보 갱신을 위한 span태그 가져오기
+      let status = parentDiv.querySelector('div:nth-child(2) > div:nth-child(2) > select[name=status] option:checked').value;
+      let cs_status = parentDiv.querySelector('div:nth-child(2) > div:nth-child(3) > select[name=cs_status] option:checked').value;
+
       let payment_status_span = grandparentDiv.querySelector('.collapsible > div > div:nth-child(2) > span:nth-child(1)');
       let status_span = grandparentDiv.querySelector('.collapsible > div > div:nth-child(2) > span:nth-child(2)');
       let cs_status_span = grandparentDiv.querySelector('.collapsible > div > div:nth-child(2) > span:nth-child(3)');
-      
-      console.log(payment_status_span);
-      console.log(status_span);
-      console.log(cs_status_span);
 
-
-      
-      fetch('./update',{
-        method:'POST',
-        headers:{
+      fetch('./update', {
+        method: 'POST',
+        headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -286,27 +152,23 @@
           status: status,
           cs_status: cs_status
         }),
-        
       })
       .then((response) => {
-        if(!response.ok){
+        if (!response.ok) {
           throw new Error('Network response was not ok' + response.statusText);
         }
         return response.text();
       })
-      .then((data)=>{
+      .then((data) => {
         payment_status_span.innerHTML = '결제상태: ' + payment_status;
-        status_span.innerHTML = '주문상태: ' + status; 
+        status_span.innerHTML = '주문상태: ' + status;
         cs_status_span.innerHTML = 'C S 상태: ' + cs_status;
-        console.log('ok'); 
+        console.log('ok');
       })
-      .catch((error)=>{
+      .catch((error) => {
         alert('주문정보 업데이트에 실패하였습니다.');
-        console.log("ERROR:" + error)
+        console.log("ERROR:" + error);
       });
-
     }
   </script>
-
-
 </div>
