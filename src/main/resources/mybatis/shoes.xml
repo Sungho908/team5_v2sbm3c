@@ -25,7 +25,7 @@
     FROM shoes s
     JOIN category_list cl ON s.shoesno = cl.shoesno
     JOIN category c ON cl.categoryno = c.categoryno
-    <if test="categoryno != null and categoryno != ''">
+    <if test="categoryno != 0">
       WHERE cl.categoryno = #{categoryno}
       <if test="word != null and word != ''">
       AND (
@@ -36,7 +36,7 @@
       )
     </if>
     </if>
-    <if test="word != null and word != '' and (categoryno == null or categoryno == '')">
+    <if test="word != null and word != '' and (categoryno == 0)">
     WHERE 
     (
     UPPER(s.title) LIKE '%' || UPPER(#{word}) || '%'
@@ -45,6 +45,37 @@
     OR UPPER(s.price) LIKE '%' || UPPER(#{word}) || '%'
     )
   </if>
+  </select>
+
+  <select id="list_search_paging" resultType="dev.mvc.shoes.ShoesVO" parameterType="Map">
+    SELECT shoesno, title, brand, contents, price, visible
+    FROM (
+      SELECT s.shoesno AS shoesno, s.title AS title, s.brand AS brand, s.contents AS contents, s.price AS price, s.visible AS visible,
+        ROW_NUMBER() OVER(
+            ORDER BY
+                CASE
+                    WHEN s.visible = 'N' THEN 0
+                    ELSE 1
+                END,
+                s.shoesno DESC
+        ) AS r
+    FROM shoes s
+    JOIN category_list cl ON s.shoesno = cl.shoesno
+    JOIN category c ON cl.categoryno = c.categoryno
+    <where>
+      <if test="categoryno != 0">
+        AND cl.categoryno = #{categoryno}
+      </if>
+      <if test="word != null and word != ''">
+        AND (
+        UPPER(s.title) LIKE '%' || UPPER(#{word}) || '%'
+        OR UPPER(s.brand) LIKE '%' || UPPER(#{word}) || '%'
+        OR UPPER(s.contents) LIKE '%' || UPPER(#{word}) || '%'
+        OR UPPER(s.price) LIKE '%' || UPPER(#{word}) || '%'
+        )
+      </if>
+    </where>
+    )
   </select>
 
 
@@ -89,37 +120,6 @@
       WHERE UPPER(TITLE) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(BRAND) LIKE '%' || UPPER(#{word}) || '%'
     </if>
     ORDER BY shoesno ASC
-  </select>
-
-  <select id="list_search_paging" resultType="dev.mvc.shoes.ShoesVO" parameterType="Map">
-    SELECT shoesno, title, brand, contents, price, visible
-    FROM (
-      SELECT s.shoesno AS shoesno, s.title AS title, s.brand AS brand, s.contents AS contents, s.price AS price, s.visible AS visible,
-        ROW_NUMBER() OVER(
-            ORDER BY
-                CASE
-                    WHEN s.visible = 'N' THEN 0
-                    ELSE 1
-                END,
-                s.shoesno DESC
-        ) AS r
-    FROM shoes s
-    JOIN category_list cl ON s.shoesno = cl.shoesno
-    JOIN category c ON cl.categoryno = c.categoryno
-    <where>
-      <if test="categoryno != null and categoryno != ''">
-        AND cl.categoryno = #{categoryno}
-      </if>
-      <if test="word != null and word != ''">
-        AND (
-        UPPER(s.title) LIKE '%' || UPPER(#{word}) || '%'
-        OR UPPER(s.brand) LIKE '%' || UPPER(#{word}) || '%'
-        OR UPPER(s.contents) LIKE '%' || UPPER(#{word}) || '%'
-        OR UPPER(s.price) LIKE '%' || UPPER(#{word}) || '%'
-        )
-      </if>
-    </where>
-    )
   </select>
 
   <!-- 신발 목록 정보 -->
@@ -195,7 +195,13 @@
       FROM review
       WHERE shoesno = #{shoesno}
     )
-      WHERE shoesno = #{shoesno};
+      WHERE shoesno = #{shoesno}
   </update>
+
+  <select id="inquiry_select" resultType = "dev.mvc.shoes.ShoesVO" parameterType="String">
+    select title, brand from shoes
+    WHERE UPPER(title) LIKE '%' || UPPER(#{word}) || '%'
+    OR UPPER(brand) LIKE '%' || UPPER(#{word}) || '%'
+  </select>
 
 </mapper>

@@ -175,4 +175,10 @@ public class CategoryProc implements CategoryProcInter {
     return str.toString();
   }
 
+  @Override
+  public CategoryVO category_select(int categoryno) {
+    CategoryVO categoryVO = this.categoryDAO.category_select(categoryno);
+    return categoryVO;
+  }
+
 }

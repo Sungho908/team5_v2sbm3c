@@ -40,7 +40,6 @@ public class inquiryCont {
     }
 
     System.out.println("select" + select);
-    System.out.println("text" + text);
     response.put("success", true);
     return response;
   }
