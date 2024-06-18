@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.mvc.member.MemberVO;
+import dev.mvc.paymentTotal.PaymentTotalVO;
 
 @Service("dev.mvc.payment.PaymentProc")
 public class PaymentProc implements PaymentProcInter {
@@ -38,11 +39,11 @@ public class PaymentProc implements PaymentProcInter {
   @Override
   public String pagingBox(int now_page, String word, String list_file, int search_count) {
  // 전체 페이지 수: (double)1/10 -> 0.1 -> 1 페이지, (double)12/10 -> 1.2 페이지 -> 2 페이지
-    int total_page = (int)(Math.ceil((double)search_count / MemberVO.RECORD_PER_PAGE));
+    int total_page = (int)(Math.ceil((double)search_count / PaymentTotalVO.RECORD_PER_PAGE));
     // 전체 그룹  수: (double)1/10 -> 0.1 -> 1 그룹, (double)12/10 -> 1.2 그룹-> 2 그룹
-    int total_grp = (int)(Math.ceil((double)total_page / MemberVO.PAGE_PER_BLOCK)); 
+    int total_grp = (int)(Math.ceil((double)total_page / PaymentTotalVO.PAGE_PER_BLOCK)); 
     // 현재 그룹 번호: (double)13/10 -> 1.3 -> 2 그룹
-    int now_grp = (int)(Math.ceil((double)now_page / MemberVO.PAGE_PER_BLOCK));  
+    int now_grp = (int)(Math.ceil((double)now_page / PaymentTotalVO.PAGE_PER_BLOCK));  
     
     // 1 group: 1, 2, 3 ... 9, 10
     // 2 group: 11, 12 ... 19, 20
@@ -88,7 +89,7 @@ public class PaymentProc implements PaymentProcInter {
     // now_grp: 3 (21 ~ 30 page) 
     // 현재 2그룹일 경우: (2 - 1) * 10 = 1그룹의 마지막 페이지 10
     // 현재 3그룹일 경우: (3 - 1) * 10 = 2그룹의 마지막 페이지 20
-    int _now_page = (now_grp - 1) * MemberVO.PAGE_PER_BLOCK;  
+    int _now_page = (now_grp - 1) * PaymentTotalVO.PAGE_PER_BLOCK;  
     if (now_grp >= 2){ // 현재 그룹번호가 2이상이면 페이지수가 11페이지 이상임으로 이전 그룹으로 갈수 있는 링크 생성 
       str.append("<span class='span_box_1'><A href='"+list_file+"?word="+word+"&now_page="+_now_page + "'>이전</A></span>"); 
     } 
@@ -120,5 +121,6 @@ public class PaymentProc implements PaymentProcInter {
      
     return str.toString(); 
   }
+
 
 }

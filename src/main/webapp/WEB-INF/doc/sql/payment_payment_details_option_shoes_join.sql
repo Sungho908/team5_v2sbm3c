@@ -54,159 +54,84 @@ CREATE TABLE SHOES_FILE(
   FOREIGN KEY (SHOESNO) REFERENCES SHOES (SHOESNO)
 );
 -----------------------------------------------------------------------------------------------------------------------
-SELECT m.memberno, p.paymentno
-FROM member m
-INNER JOIN payment p ON m.memberno = p.memberno
-WHERE m.memberno = 1;
 
-
-commit;
-
-
-
-     
- 
-         
-
-
-
-  SELECT DISTINCT
-    m.memberno,
-    p.paymentno, 
-    p.rdate, 
-    p.status, 
-    p.payment_status, 
-    p.cs_status, 
-    p.total_price, 
-    p.delivery, 
-    p.total_payment,
-    o.shoesno, 
-    s.title, 
-    s.brand, 
-    s.rating, 
-    s.price, 
-    s.discount, 
-    s.contents, 
-    s.visible,
-    sf.shoes_file_no, 
-    sf.name, 
-    sf.sizes as shoes_file_sizes, 
-    sf.ex, 
-    sf.src
-  FROM 
-    member m 
-    INNER JOIN payment p ON m.memberno = p.memberno
-    INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
-    INNER JOIN options o ON pd.optionno = o.optionno
-    INNER JOIN shoes s ON o.shoesno = s.shoesno
-    LEFT JOIN shoes_file sf ON s.shoesno = sf.shoesno
-  WHERE 
-    m.memberno = 1
-  ORDER BY 
-    p.rdate ASC;
-    
-    
-    
     SELECT DISTINCT
+      m.memberno,
+      m.id AS memberid,
+      m.nickname,
+      p.paymentno
+    FROM 
+      member m 
+      INNER JOIN payment p ON m.memberno = p.memberno
+
+      WHERE UPPER(m.id) LIKE '%' || UPPER('') || '%' OR UPPER(m.nickname) LIKE '%' || UPPER('') || '%'
+
+    ORDER BY 
+      p.rdate DESC;
+      
+
+
+
+WITH PaymentRank AS (
+  SELECT
     m.memberno,
-    m.id,
-    m.name,
-    p.paymentno, 
-    p.rdate, 
-    p.status, 
-    p.payment_status, 
-    p.cs_status, 
-    p.total_price, 
-    p.delivery, 
-    p.total_payment,
-    o.shoesno, 
-    s.title, 
-    s.brand, 
-    s.rating, 
-    s.price, 
-    s.discount, 
-    s.contents, 
-    s.visible,
-    sf.shoes_file_no, 
-    sf.name, 
-    sf.sizes as shoes_file_sizes, 
-    sf.ex, 
-    sf.src
+    m.id AS memberid,
+    m.nickname,
+    p.paymentno,
+    p.rdate,
+    ROW_NUMBER() OVER (PARTITION BY m.memberno ORDER BY p.rdate DESC) AS rn
   FROM 
     member m 
     INNER JOIN payment p ON m.memberno = p.memberno
-    INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
-    INNER JOIN options o ON pd.optionno = o.optionno
-    INNER JOIN shoes s ON o.shoesno = s.shoesno
-    LEFT JOIN shoes_file sf ON s.shoesno = sf.shoesno
-
-  ORDER BY 
-    p.rdate ASC;
-
-select * from member order by memberno;
-
-select * from payment order by paymentno;
-
-select * from payment_details order by payment_details_no;
-
-select * from shoes order by shoesno;
-
--- PAYMENT 테이블 삽입문
-DECLARE
-  CURSOR member_cursor IS SELECT MEMBERNO FROM MEMBER;
-  v_MEMBERNO MEMBER.MEMBERNO%TYPE;
-BEGIN
-  OPEN member_cursor;
-  LOOP
-    FETCH member_cursor INTO v_MEMBERNO;
-    EXIT WHEN member_cursor%NOTFOUND;
-    FOR j IN 1..3 LOOP
-      INSERT INTO PAYMENT (PAYMENTNO, RDATE, STATUS, PAYMENT_STATUS, CS_STATUS, TOTAL_PRICE, DELIVERY, TOTAL_PAYMENT, MEMBERNO)
-      VALUES (
-        payment_seq.nextval,
-        TO_DATE('2024-06-' || TO_CHAR(10 + j) || ' 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), 
-        CASE 
-          WHEN j = 1 THEN '배송완료' 
-          WHEN j = 2 THEN '상품준비중' 
-          ELSE '배송중' 
-        END, 
-        '결제완료', 
-        '반품', 
-        100000 * j, 
-        2500, 
-        100000 * j + 2500, 
-        v_MEMBERNO
-      );
-    END LOOP;
-  END LOOP;
-  CLOSE member_cursor;
-END;
-
-
--- PAYMENT_DETAILS 테이블 삽입문
-DECLARE
-  CURSOR payment_cursor IS SELECT PAYMENTNO FROM PAYMENT;
-  v_PAYMENTNO PAYMENT.PAYMENTNO%TYPE;
-BEGIN
-  OPEN payment_cursor;
-  LOOP
-    FETCH payment_cursor INTO v_PAYMENTNO;
-    EXIT WHEN payment_cursor%NOTFOUND;
-    FOR j IN 1..2 LOOP
-      INSERT INTO PAYMENT_DETAILS (PAYMENT_DETAILS_NO, PAYMENT_AMOUNT, OPTIONNO, PAYMENTNO)
-      VALUES (
-        payment_details_seq.nextval,
-        1, 
-        j, 
-        v_PAYMENTNO
-      );
-    END LOOP;
-  END LOOP;
-  CLOSE payment_cursor;
-END;
-
-commit;
+  WHERE 
+    UPPER(m.id) LIKE '%' || UPPER('') || '%' 
+    OR UPPER(m.nickname) LIKE '%' || UPPER('') || '%'
+)
+SELECT
+  memberno,
+  memberid,
+  nickname,
+  paymentno
+FROM
+  PaymentRank
+WHERE
+  rn = 1
+ORDER BY 
+  rdate DESC;
 
 
 
+	  SELECT
+      m.memberno,
+      p.paymentno,
+      pd.payment_details_no,
+      pd.payment_amount,
+      o.optionno,
+      o.sizes,
+      o.amount,
+      o.color,
+      s.shoesno,
+      s.title,
+      s.brand,
+      s.rating,
+      s.price,
+      s.discount,
+      s.contents,
+      s.visible,
+      sf.shoes_file_no,
+      sf.name,
+      sf.sizes as shoes_file_sizes,
+      sf.ex,
+      sf.src
+    FROM
+      member m
+      INNER JOIN payment p ON p.paymentno = m.memberno
+      INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
+      INNER JOIN options o ON pd.optionno = o.optionno
+      INNER JOIN shoes s ON o.shoesno = s.shoesno
+      LEFT JOIN shoes_file sf ON s.shoesno = sf.shoesno
+    WHERE
+      m.memberno = 17
+    ORDER BY
+      pd.payment_details_no
 
