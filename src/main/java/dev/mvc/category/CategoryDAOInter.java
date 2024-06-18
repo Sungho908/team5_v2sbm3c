@@ -1,6 +1,7 @@
 package dev.mvc.category;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public interface CategoryDAOInter {
@@ -33,5 +34,8 @@ public interface CategoryDAOInter {
   
   public int list_search_count(String word);
 
+  public CategoryVO category_select(int categoryno);
+  
+  public ArrayList<CategoryVO> select_name(String subname);
   
 }

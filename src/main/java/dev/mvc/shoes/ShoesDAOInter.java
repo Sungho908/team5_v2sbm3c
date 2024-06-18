@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import dev.mvc.basket.BasketVO;
+import dev.mvc.category.CategoryVO;
 import dev.mvc.option.OptionVO;
 
 public interface ShoesDAOInter {
@@ -96,4 +97,8 @@ public interface ShoesDAOInter {
   public int option_delete(Map<String, Object> map);
   
 
+  public ArrayList<ShoesVO> selectNike(ShoesVO shoesVO);
+  
+
+  
 }

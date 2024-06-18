@@ -1,39 +1,40 @@
-// JavaScript 코드
-function decreaseQuantity(button) {
-  var quantityElement = button.nextElementSibling; // 다음 형제 요소인 span.quantity를 찾습니다.
-  var quantity = parseInt(quantityElement.innerText);
+// 수량 감소 함수
+function decreaseQuantity() {
+  var quantity = parseInt(document.querySelector('.quantity').innerText);
+  var basketno = parseInt(document.querySelector('.basketno').value);
+  var price = parseInt(document.querySelector('.price').value);
   if (quantity > 1) {
-    quantityElement.innerText = quantity - 1;
-    var basketno = parseInt(button.closest('.basket').querySelector('p:first-child span').innerText.trim());
-    update(basketno, quantity - 1); // 수량 감소 후 서버에 업데이트 요청
+    update(basketno, quantity - 1, price);
   }
 }
 
-function increaseQuantity(button) {
-  var quantityElement = button.previousElementSibling; // 이전 형제 요소인 span.quantity를 찾습니다.
-  var quantity = parseInt(quantityElement.innerText);
-  quantityElement.innerText = quantity + 1;
-  var basketno = parseInt(button.closest('.basket').querySelector('p:first-child span').innerText.trim());
-  update(basketno, quantity + 1); // 수량 증가 후 서버에 업데이트 요청
+// 수량 증가 함수
+function increaseQuantity() {
+  var quantity = parseInt(document.querySelector('.quantity').innerText);
+  var basketno = parseInt(document.querySelector('.basketno').value);
+  var price = parseInt(document.querySelector('.price').value);
+  update(basketno, quantity + 1, price);
 }
 
+
 // 서버에 POST 요청을 보내어 amount 값을 업데이트하는 함수
-function update(basketno, amount) {
+function update(basketno, amount, price) {
   fetch('/basket/update', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      memberno: 1,
-      basketno: basketno,
-      amount: amount
+      basketno: parseInt(basketno),
+      amount: parseInt(amount)
     })
   })
     .then(response => response.json())
     .then(response => {
       if (response.success) {
         alert('수량을 변경했습니다.');
+        document.querySelector('.quantity').innerText = amount;
+        document.querySelector('.total').innerText = price * amount;
       } else {
         alert('수량 변경에 실패했습니다.');
         console.error('수량 변경에 실패했습니다.');
@@ -43,41 +44,41 @@ function update(basketno, amount) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  // 장바구니 담기 버튼 클릭 시
   var cartButton = document.querySelector('.detail_btnl');
 
-    cartButton.addEventListener('click', function() {
-      var size = document.getElementById('sizes').value; // 수정: 'sizes'로 변경
-      var color = document.getElementById('color').value;
+  cartButton.addEventListener('click', function() {
+    var size = document.getElementById('sizes').value;
+    var color = document.getElementById('color').value;
 
-      if (size === '' || color === '') {
-        alert('사이즈와 색상을 선택해주세요.');
-        return;
-      }
+    if (size === '' || color === '') {
+      alert('사이즈와 색상을 선택해주세요.');
+      return;
+    }
 
-      fetch('/basket/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          memberno: 1,
-          sizes: size, // 수정: 'sizes'로 변경
-          color: color
-        })
+    fetch('/basket/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        memberno: 1,
+        sizes: size,
+        color: color
       })
-        .then(response => response.json())
-        .then(response => {
-          if (response.success) {
-            alert('장바구니에 담았습니다.');
-          } else {
-            alert('장바구니에 제품을 추가하는데 실패했습니다.');
-          }
-        })
-        .catch(error => console.error('Error:', error));
-    });
+    })
+      .then(response => response.json())
+      .then(response => {
+        if (response.success) {
+          alert('장바구니에 담았습니다.');
+        } else {
+          alert('장바구니에 제품을 추가하는데 실패했습니다.');
+        }
+      })
+      .catch(error => console.error('Error:', error));
   });
-  
-document.addEventListener('DOMContentLoaded', function() {
+
+  // 장바구니 취소 버튼 클릭 시
   var cancelButtons = document.querySelectorAll('.basket_btn');
 
   cancelButtons.forEach(function(button) {
@@ -92,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
+  // 장바구니 상품 삭제 요청 함수
   function cancelBasket(basketno) {
     fetch('/basket/delete', {
       method: 'POST',
@@ -99,8 +101,8 @@ document.addEventListener('DOMContentLoaded', function() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        memberno: 1, // 멤버 번호 설정 (session에서 가져오거나 하드코딩 가능)
-        basketno: basketno // 삭제할 바스켓 번호 전달
+        memberno: 1,
+        basketno: basketno
       })
     })
       .then(response => response.json())
@@ -114,6 +116,5 @@ document.addEventListener('DOMContentLoaded', function() {
       })
       .catch(error => console.error('Error:', error));
   }
-
- 
 });
+

@@ -19,7 +19,7 @@
     FROM category
     WHERE parentno = #{categoryno}
   </select>
-  
+
   <insert id="create" parameterType="dev.mvc.category.CategoryVO">
     INSERT INTO category (categoryno, name, subname, seq, cnt, parentno)
     SELECT 
@@ -123,6 +123,29 @@
     ORDER BY seq ASC
   </select>
 
+
+  <select id="select_name" resultType="dev.mvc.category.CategoryVO" parameterType="String">
+    SELECT categoryno, name
+    FROM category
+    WHERE subname= #{subname}
+  </select>
+
+
+
+  <select id="category_select" resultType="dev.mvc.category.CategoryVO">
+  SELECT name, subname FROM CATEGORY
+  WHERE categoryno = #{categoryno}
+  </select>
+  <!--
+   SELECT subname
+    FROM category
+    WHERE parentno = 
+    (SELECT categoryno  FROM category
+    WHERE categoryno = 29);
+    -->
+    
+    
+    
 </mapper>
 
 

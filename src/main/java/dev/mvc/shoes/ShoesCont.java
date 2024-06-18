@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import dev.mvc.category.CategoryProcInter;
+import dev.mvc.category.CategoryVO;
 import dev.mvc.member.MemberProcInter;
 import dev.mvc.member.MemberVO;
 import dev.mvc.option.OptionProcInter;
+import dev.mvc.option.OptionVO;
 import dev.mvc.reportType.ReportTypeProcInter;
 import dev.mvc.reportType.ReportTypeVO;
 import dev.mvc.review.ReviewProcInter;
@@ -39,6 +42,10 @@ public class ShoesCont {
   private ReviewProcInter reviewProc;
 
   @Autowired
+  @Qualifier("dev.mvc.category.CategoryProc")
+  private CategoryProcInter categoryProc;
+
+  @Autowired
   @Qualifier("dev.mvc.reportType.ReportTypeProc")
   private ReportTypeProcInter reportTypeProc;
 
@@ -56,6 +63,7 @@ public class ShoesCont {
 
     ArrayList<ShoesVO> list = this.shoesProc.list_search_paging(categoryno, word);
     model.addAttribute("list", list);
+    
     int search_count = this.shoesProc.list_search_count(categoryno, word);
 
     int no = search_count - ((now_page - 1) * this.record_per_page);
@@ -78,7 +86,10 @@ public class ShoesCont {
       @RequestParam(name = "categoryno", defaultValue = "") int categoryno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-
+    
+    CategoryVO categoryVO = categoryProc.category_select(categoryno);
+    model.addAttribute("categoryVO", categoryVO);
+    
     table_paging(model, categoryno, word, now_page);
 
     return "shoes/list";
@@ -115,6 +126,7 @@ public class ShoesCont {
     ArrayList<String> color = this.optionProc.option_color(shoesno, categoryno);
     model.addAttribute("color", color);
 
+    
     ArrayList<ShoesAllVO> review = this.reviewProc.review_list(shoesno);
     if(review.size() == 0) {
       model.addAttribute("no_review", true);
@@ -129,7 +141,7 @@ public class ShoesCont {
   }
 
   /**
-   * 제품 상세
+   * 브랜드 목록
    * 
    * @param session
    * @param model
@@ -143,4 +155,6 @@ public class ShoesCont {
     return "shoes/brand"; // /templates/shoes/read.html
 
   }
+  
+  
 }

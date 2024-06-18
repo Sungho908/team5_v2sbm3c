@@ -16,7 +16,7 @@ public interface BasketProcInter {
   public int delete(int memberno, int basketno);
 
 
-  public int update(BasketVO basketVO);
+  public int update(int amount, int memberno, int basketno);
 
   public int decrease(OptionVO optionVO);
   

@@ -5,7 +5,9 @@
 <div layout:fragment="content"  style="width: 80%; margin:40px auto; text-align: center;">
 
   <div class="title_line">
-    스니커즈/슬립온 > 스니커즈
+  <span th:text="${categoryVO.name}" style="font-size: 20px;"></span>
+  > <span th:text="${categoryVO.subname}" style="font-size: 20px;"></span>
+  
   </div>
   <input type="hidden" name="categoryno" th:value="${categoryno}">
   <div class="content_main">

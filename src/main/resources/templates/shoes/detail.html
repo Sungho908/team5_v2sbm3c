@@ -27,9 +27,8 @@
             <select name="sizes" id="sizes" class="form-control form-control-sm"
               style="width: 50%; margin: 0 auto; margin-top: 20px; margin-bottom: 20px; text-align: center; ">
               <option value="">사이즈를 선택하세요</option>
-<option th:each="option : ${sizes}" 
-        th:value="${option.sizes}" 
-        th:text="${option.amount == 0} ? ${option.sizes + ' (품절)'} : ${option.sizes}"></option>
+              <option th:each="option : ${sizes}" th:value="${option.sizes}"
+                th:text="${option.amount == 0} ? ${option.sizes + ' - 품절'} : ${option.sizes}"></option>
 
             </select>
             <br>

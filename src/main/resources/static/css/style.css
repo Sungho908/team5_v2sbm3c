@@ -606,6 +606,7 @@
   .basket {
     display: flex;
     align-items: center;
+    margin: 0 auto;
     justify-content: center;
     /* 수평 가운데 정렬 */
     margin-top: 50px;
@@ -1891,3 +1892,38 @@
     display: table-cell;
     vertical-align: middle;
   }
+  
+ /* 관리자 카테고리 생성 */
+.form-horizontal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.form-horizontal .form-group {
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.form-horizontal .form-group label {
+    margin-right: 10px;
+}
+
+.form-horizontal .form-group input,
+.form-horizontal .form-group select {
+    width: auto;
+}
+
+.btn {
+    margin-top: 10px;
+}
+

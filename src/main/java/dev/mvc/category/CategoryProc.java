@@ -2,6 +2,7 @@ package dev.mvc.category;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,5 +175,21 @@ public class CategoryProc implements CategoryProcInter {
 
     return str.toString();
   }
+
+  @Override
+  public CategoryVO category_select(int categoryno) {
+    CategoryVO categoryVO = this.categoryDAO.category_select(categoryno);
+    return categoryVO;
+  }
+
+  @Override
+  public ArrayList<CategoryVO> select_name(String subname) {
+    ArrayList<CategoryVO> name = this.categoryDAO.select_name(subname);
+    return name;
+  }
+
+  
+
+
 
 }

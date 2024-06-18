@@ -41,8 +41,12 @@ public class BasketProc implements BasketProcInter {
   }
 
   @Override
-  public int update(BasketVO basketVO) {
-    int cnt = this.basketDAO.update(basketVO);
+  public int update(int amount, int memberno, int basketno) {
+    Map<String, Object> map = new HashMap<>();
+    map.put("amount", amount);
+    map.put("memberno", memberno);
+    map.put("basketno", basketno);
+    int cnt = this.basketDAO.update(map);
     return cnt;
   }
 
