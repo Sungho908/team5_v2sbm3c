@@ -9,7 +9,10 @@
   <body>
     <script src="/js/basket.js"></script>
     <div class="detail_container">
-      <input type="hidden" id="memberno" th:data-mymemberno="${memberno}">
+      <span th:if="${not #strings.isEmpty(session.login)}">
+        <input type="hidden" id="memberno" th:data-memberno="|${session.login.memberno}|">
+      </span>
+      <input type="hidden" id="mymemberno" th:data-mymemberno="${memberno}">
       <input type="hidden" id="shoesno" th:data-shoesno="${shoesAllVO.shoesVO.shoesno}">
 
       <h1 class="title" th:text="${shoesAllVO.shoesVO.title}"></h1>

@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
   var review_update = document.querySelectorAll(".review_update");
-  var myno = document.getElementById("memberno").getAttribute("data-mymemberno");
+  var myno = document.getElementById("mymemberno").getAttribute("data-mymemberno");
   var shoesno = document.getElementById("shoesno").getAttribute("data-shoesno");
   var stars = document.querySelectorAll('.stars');
   var update_star = document.querySelectorAll('.update_star');

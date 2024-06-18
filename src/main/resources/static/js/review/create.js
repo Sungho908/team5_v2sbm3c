@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
   var nickname = document.getElementById("nickname").getAttribute("data-nickname");
   var stars = document.querySelectorAll('.star');
   var rating = document.getElementById('rating');
-  var myno = document.getElementById("memberno").getAttribute("data-mymemberno");
+  var myno = document.getElementById("mymemberno").getAttribute("data-mymemberno");
   var shoesno = document.getElementById("shoesno").getAttribute("data-shoesno");
   rating.textContent = "5.0";
   reviewStars(parseFloat("5.0"));

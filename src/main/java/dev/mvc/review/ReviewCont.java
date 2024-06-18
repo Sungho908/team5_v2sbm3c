@@ -13,14 +13,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import dev.mvc.likes.LikesProcInter;
 import dev.mvc.member.MemberProcInter;
+import dev.mvc.member.MemberVO;
 import dev.mvc.option.OptionProcInter;
 import dev.mvc.shoes.ShoesAllVO;
 import dev.mvc.shoes.ShoesProcInter;
+import dev.mvc.team5.DefaultCont;
+import dev.mvc.tool.Alert;
 import jakarta.servlet.http.HttpSession;
 
 @RequestMapping("/review")
@@ -127,10 +131,15 @@ public class ReviewCont {
 
   @GetMapping("/myReview")
   public String myReport(HttpSession session, Model model) {
-    // int memberno = session.getMemberno();
-    int memberno = 1;
-    ArrayList<ShoesAllVO> list = this.reviewProc.myReview(memberno);
-    model.addAttribute("list", list);
-    return "review/myReview";
+    MemberVO memberVO = (MemberVO) session.getAttribute("login");
+    if (memberVO != null) {
+      int memberno = memberVO.getMemberno();
+      ArrayList<ShoesAllVO> list = this.reviewProc.myReview(memberno);
+      model.addAttribute("list", list);
+      return "review/myReview";
+    } else {
+      Alert message = new Alert("로그인 후 이용해주세요.", "/login/signin", RequestMethod.GET, null);
+      return DefaultCont.showMessageAndRedirect(message, model);
+    }
   }
 }

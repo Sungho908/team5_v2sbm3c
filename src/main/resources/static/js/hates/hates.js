@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
       var review = hate.closest('.review');
       var reviewno = review.querySelector(".reviewno").value;
       var hates_count = review.querySelector('.hates_count');
-      
+
       fetch('/hates/hates', {
         method: 'POST',
         headers: {

@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
   var review_delete = document.querySelectorAll(".review_delete");
-  var myno = document.getElementById("memberno").getAttribute("data-mymemberno");
+  var myno = document.getElementById("mymemberno").getAttribute("data-mymemberno");
   var shoesno = document.getElementById("shoesno").getAttribute("data-shoesno");
   review_delete.forEach(function(link) {
     link.addEventListener("click", function(event) {

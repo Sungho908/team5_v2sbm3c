@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import dev.mvc.member.MemberVO;
 import dev.mvc.review.ReviewProcInter;
 import jakarta.servlet.http.HttpSession;
 
@@ -30,23 +31,24 @@ public class HatesCont {
   @PostMapping(value = "/hates")
   @ResponseBody
   public Map<String, Object> hates(HttpSession session, Model model, @RequestBody Map<String, String> map) {
-    // int memberno = session.getMemberno();
+    MemberVO memberVO = (MemberVO) session.getAttribute("login");
     Map<String, Object> response = new HashMap<>();
-
     int reviewno = Integer.parseInt(map.get("reviewno"));
-    int memberno = 1;
 
-    int cnt = 0;
-    if (Boolean.parseBoolean(map.get("hated"))) { // decrease
-      cnt = this.hatesProc.decreased_hates(reviewno, memberno);
-      response.put("success", "decrease");
+    if (memberVO != null) {
+      int memberno = memberVO.getMemberno();
+      if (Boolean.parseBoolean(map.get("hated"))) { // decrease
+        this.hatesProc.decreased_hates(reviewno, memberno);
+        response.put("success", "decrease");
+      } else {
+        this.hatesProc.increased_hates(reviewno, memberno);
+        response.put("success", "increase");
+      }
     } else {
-      cnt = this.hatesProc.increased_hates(reviewno, memberno);
-      response.put("success", "increase");
+      response.put("fail", "login");
     }
     int hates_count = this.hatesProc.hates_count(reviewno);
     response.put("hates_count", hates_count);
-
     return response;
   }
 }
