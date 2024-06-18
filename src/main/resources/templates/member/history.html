@@ -5,7 +5,7 @@
   
   <div th:replace="~{fragment/infoSidebarFragment::infoSidebarFragment}"></div>
   
-  <div style="margin-top: 10px;">
+  <div style="margin-top: 10px; text-align: center;">
     <h2>최근기록 10건만 저장됩니다.</h2>
     <input type="hidden" id="memberno" th:value="${#lists.isEmpty(list) ? '' : list[0].memberno}">
     <button class="btn btn-secondary btn-lg" onclick="deleteAll()" th:disabled="${#lists.isEmpty(list)}">모두 삭제</button>

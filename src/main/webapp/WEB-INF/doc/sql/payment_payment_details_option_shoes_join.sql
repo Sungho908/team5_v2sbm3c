@@ -104,6 +104,10 @@ ORDER BY
 	  SELECT
       m.memberno,
       p.paymentno,
+      P.rdate,
+      p.total_price,
+      p.cs_status,
+      p.payment_status,
       pd.payment_details_no,
       pd.payment_amount,
       o.optionno,
@@ -125,13 +129,82 @@ ORDER BY
       sf.src
     FROM
       member m
-      INNER JOIN payment p ON p.paymentno = m.memberno
+      INNER JOIN payment p ON p.memberno = m.memberno
       INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
       INNER JOIN options o ON pd.optionno = o.optionno
       INNER JOIN shoes s ON o.shoesno = s.shoesno
       LEFT JOIN shoes_file sf ON s.shoesno = sf.shoesno
     WHERE
-      m.memberno = 17
+        m.memberno = 1
     ORDER BY
-      pd.payment_details_no
+      pd.payment_details_no;
+      
+-- 1. 임시 테이블 생성
+CREATE GLOBAL TEMPORARY TABLE temp_total_payment (
+  paymentno NUMBER,
+  total_price NUMBER,
+  total_payment NUMBER
+) ON COMMIT DELETE ROWS;
 
+-- 2. 각 주문 내역의 신발 가격 합계와 총 결제 금액을 계산하여 임시 테이블에 삽입
+INSERT INTO temp_total_payment (paymentno, total_price, total_payment)
+SELECT 
+  p.paymentno,
+  SUM(s.price) AS total_price,
+  (SUM(s.price) + p.delivery) AS total_payment
+FROM
+  payment p
+  INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
+  INNER JOIN options o ON pd.optionno = o.optionno
+  INNER JOIN shoes s ON o.shoesno = s.shoesno
+GROUP BY
+  p.paymentno,
+  p.delivery;
+
+-- 3. payment 테이블의 total_price와 total_payment 업데이트
+UPDATE payment p
+SET 
+  p.total_price = (
+    SELECT t.total_price
+    FROM temp_total_payment t
+    WHERE t.paymentno = p.paymentno
+  ),
+  p.total_payment = (
+    SELECT t.total_payment
+    FROM temp_total_payment t
+    WHERE t.paymentno = p.paymentno
+  )
+WHERE p.paymentno IN (SELECT paymentno FROM temp_total_payment);
+
+-- 4. 임시 테이블 삭제
+DROP TABLE temp_total_payment;
+
+-- 5. 전체 결과 조회 (요청하신 SELECT 쿼리 포함)
+SELECT 
+  m.memberno,
+  p.paymentno,
+  p.payment_status,
+  p.delivery,
+  p.total_price,
+  p.total_payment,
+  LISTAGG(s.shoesno, ', ') WITHIN GROUP (ORDER BY s.shoesno) AS shoes_numbers,
+  LISTAGG(s.price, ', ') WITHIN GROUP (ORDER BY s.shoesno) AS shoes_prices
+FROM
+  member m
+  INNER JOIN payment p ON p.memberno = m.memberno
+  INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
+  INNER JOIN options o ON pd.optionno = o.optionno
+  INNER JOIN shoes s ON o.shoesno = s.shoesno
+WHERE
+  m.memberno = 1
+GROUP BY
+  m.memberno,
+  p.paymentno,
+  p.payment_status,
+  p.delivery,
+  p.total_price,
+  p.total_payment
+ORDER BY
+  MIN(pd.payment_details_no);
+  
+  commit;
