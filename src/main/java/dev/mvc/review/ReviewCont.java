@@ -13,14 +13,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import dev.mvc.likes.LikesProcInter;
 import dev.mvc.member.MemberProcInter;
+import dev.mvc.member.MemberVO;
 import dev.mvc.option.OptionProcInter;
 import dev.mvc.shoes.ShoesAllVO;
 import dev.mvc.shoes.ShoesProcInter;
+import dev.mvc.team5.DefaultCont;
+import dev.mvc.tool.Alert;
 import jakarta.servlet.http.HttpSession;
 
 @RequestMapping("/review")
@@ -60,14 +64,13 @@ public class ReviewCont {
 
     ReviewVO reviewVO = new ReviewVO();
     reviewVO.setContents(map.get("contents"));
-    reviewVO.setGrade(Double.valueOf(map.get("grade")));
+    reviewVO.setRating(Double.valueOf(map.get("rating")));
     reviewVO.setShoesno(Integer.parseInt(map.get("shoesno")));
     reviewVO.setMemberno(1);
-    
+
     int cnt = this.reviewProc.create(reviewVO);
-    cnt = cnt + this.likesProc.create();
     Map<String, Object> response = new HashMap<>();
-    if (cnt == 2) {
+    if (cnt == 1) {
       ArrayList<ShoesAllVO> review = this.reviewProc.review_list(Integer.parseInt(map.get("shoesno")));
       response.put("review", review);
       response.put("success", true);
@@ -87,10 +90,10 @@ public class ReviewCont {
   @GetMapping(value = "/list/{shoesno}")
   public String list(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
       @RequestParam(name = "categoryno") int categoryno) {
-    
+
     ArrayList<ReviewVO> list = this.reviewProc.review_list_all(shoesno);
     model.addAttribute("list", list);
-    
+
     return "review/list";
   }
 
@@ -98,10 +101,10 @@ public class ReviewCont {
   @ResponseBody
   public Map<String, Object> update(HttpSession session, Model model, @RequestBody Map<String, String> map) {
     Map<String, Object> response = new HashMap<>();
-    
+
     ReviewVO reviewVO = new ReviewVO();
     reviewVO.setContents(map.get("contents"));
-    reviewVO.setGrade(Double.valueOf(map.get("grade")));
+    reviewVO.setRating(Double.valueOf(map.get("rating")));
     reviewVO.setReviewno(Integer.parseInt(map.get("reviewno")));
 
     int cnt = this.reviewProc.update(reviewVO);
@@ -124,5 +127,19 @@ public class ReviewCont {
 
     response.put("success", true);
     return response;
+  }
+
+  @GetMapping("/myReview")
+  public String myReport(HttpSession session, Model model) {
+    MemberVO memberVO = (MemberVO) session.getAttribute("login");
+    if (memberVO != null) {
+      int memberno = memberVO.getMemberno();
+      ArrayList<ShoesAllVO> list = this.reviewProc.myReview(memberno);
+      model.addAttribute("list", list);
+      return "review/myReview";
+    } else {
+      Alert message = new Alert("로그인 후 이용해주세요.", "/login/signin", RequestMethod.GET, null);
+      return DefaultCont.showMessageAndRedirect(message, model);
+    }
   }
 }

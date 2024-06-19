@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dev.mvc.basket.BasketVO;
 import dev.mvc.option.OptionVO;
 
 //@Component("dev.mvc.shoes.ShoesProc")
@@ -127,12 +126,8 @@ public class ShoesProc implements ShoesProcInter {
   }
 
   @Override
-  public ShoesAllVO read(int shoesno, int categoryno) {
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("shoesno", shoesno);
-    map.put("categoryno", categoryno);
-
-    ShoesAllVO shoesAllVO = this.shoesDAO.read(map);
+  public ShoesAllVO read(int shoesno) {
+    ShoesAllVO shoesAllVO = this.shoesDAO.read(shoesno);
     return shoesAllVO;
   }
 

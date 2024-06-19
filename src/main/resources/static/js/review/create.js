@@ -3,10 +3,10 @@ document.addEventListener("DOMContentLoaded", function() {
   var createReview = document.getElementById("createReview");
   var nickname = document.getElementById("nickname").getAttribute("data-nickname");
   var stars = document.querySelectorAll('.star');
-  var grade = document.getElementById('grade');
-  var myno = document.getElementById("memberno").getAttribute("data-mymemberno");
+  var rating = document.getElementById('rating');
+  var myno = document.getElementById("mymemberno").getAttribute("data-mymemberno");
   var shoesno = document.getElementById("shoesno").getAttribute("data-shoesno");
-  grade.textContent = "5.0";
+  rating.textContent = "5.0";
   reviewStars(parseFloat("5.0"));
 
   if (!nickname) {
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
   stars.forEach(star => {
     star.addEventListener('click', function() {
       var value = this.getAttribute('data-value');
-      grade.textContent = value;
+      rating.textContent = value;
       reviewStars(value);
     });
   });
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function() {
       },
       body: JSON.stringify({
         contents: review,
-        grade: grade.textContent,
+        rating: rating.textContent,
         shoesno: shoesno
       })
     })
@@ -78,9 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
       .then(data => {
         if (data.success) {
           alert('답글이 작성되었습니다.');
-          var url = new URLSearchParams(window.location.search);
-          var categoryno = url.get('categoryno');
-          window.location.href = "/shoes/" + shoesno + "?categoryno=" + categoryno;
+          window.location.href = "/shoes/" + shoesno;
         } else {
           alert('답글 작성에 실패하였습니다.');
         }

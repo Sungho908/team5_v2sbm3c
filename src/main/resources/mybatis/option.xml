@@ -7,23 +7,23 @@
     VALUES (OPTION_SEQ.nextval, #{sizes}, #{color}, #{shoesno})
   </insert>
 
-  <select id="option_sizes" resultType="int" parameterType="Map">
+  <select id="option_sizes" resultType="int" parameterType="Integer">
     SELECT distinct o.sizes
     FROM shoes s
     JOIN category_list cl ON s.shoesno = cl.shoesno
     JOIN category c ON cl.categoryno = c.categoryno
     JOIN options o ON s.shoesno = o.shoesno
-    WHERE s.shoesno = #{shoesno} and cl.categoryno = #{categoryno}
+    WHERE s.shoesno = #{shoesno}
     ORDER BY o.sizes
   </select>
 
-  <select id="option_color" resultType="String" parameterType="Map">
+  <select id="option_color" resultType="String" parameterType="Integer">
     SELECT distinct o.color
     FROM shoes s
     JOIN category_list cl ON s.shoesno = cl.shoesno
     JOIN category c ON cl.categoryno = c.categoryno
     JOIN options o ON s.shoesno = o.shoesno
-    WHERE s.shoesno = #{shoesno} and cl.categoryno = #{categoryno}
+    WHERE s.shoesno = #{shoesno}
   </select>
   
   <update id="option_update" parameterType="dev.mvc.option.OptionVO">

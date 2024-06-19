@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
+  var memberno = document.getElementById("memberno") ? document.getElementById("memberno").getAttribute("data-memberno") : 0;
+  var myno = document.getElementById("mymemberno").getAttribute("data-mymemberno");
   var report = document.querySelectorAll(".report");
   var popup = document.getElementById("popup");
   var closebtn = document.querySelector(".close-btn");
@@ -8,13 +10,13 @@ document.addEventListener("DOMContentLoaded", function() {
   var reportTitle = document.getElementById("reportTitle");
   var reportContents = document.getElementById("reportContents");
   var selectType = document.getElementById("reportType");
-
   report.forEach(function(link) {
     link.addEventListener("click", function(event) {
       event.preventDefault();
-      var reviewno = link.closest(".review").querySelector(".reviewno").value;
-      var nickname = link.closest(".review").querySelector(".nickname").value;
-      
+      if (memberno !== 0) {
+        var reviewno = link.closest(".review").querySelector(".reviewno").value;
+        var nickname = link.closest(".review").querySelector(".nickname").value;
+
         fetch('/report/report_count', {
           method: 'POST',
           headers: {
@@ -35,6 +37,10 @@ document.addEventListener("DOMContentLoaded", function() {
             }
           })
           .catch(error => console.error('Error:', error));
+      } else {
+        alert('로그인 후 이용해주세요.');
+      }
+
     });
   });
 
@@ -66,7 +72,9 @@ document.addEventListener("DOMContentLoaded", function() {
     })
       .then(response => response.json())
       .then(data => {
-        if (data.success) {
+        if (data.fail) {
+          alert('로그인 후 이용해주세요.');
+        } else if (data.success) {
           alert('신고가 성공적으로 접수되었습니다.');
           popup.style.display = "none";
           window.location.href = "/";

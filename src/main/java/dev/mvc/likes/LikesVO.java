@@ -9,21 +9,18 @@ import lombok.ToString;
 @ToString
 //CREATE TABLE LIKES(
 //    LIKESNO                           NUMBER(9)    NULL      PRIMARY KEY,
-//    LIKES                                 NUMBER(9) DEFAULT 0  NOT NULL,
-//    HATES                                 NUMBER(9) DEFAULT 0  NOT NULL,
 //    REVIEWNO                      NUMBER(9) NOT NULL,
-//  FOREIGN KEY (REVIEWNO) REFERENCES REVIEW (REVIEWNO)
+//    MEMBERNO                      NUMBER(9) NOT NULL,
+//  FOREIGN KEY (REVIEWNO) REFERENCES REVIEW (REVIEWNO),
+//FOREIGN KEY (MEMBERNO) REFERENCES MEMBER (MEMBERNO)
 //);
 public class LikesVO {
   /** 좋아요 번호 */
   private Integer likesno;
   
-  /** 좋아요 */
-  private Integer likes;
-  
-  /** 싫어요 */
-  private Integer hates;
-  
   /** 후기 번호 */
   private Integer reviewno;
+  
+  /** 멤버 번호 */
+  private Integer memberno;
 }

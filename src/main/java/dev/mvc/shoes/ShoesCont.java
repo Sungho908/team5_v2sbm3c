@@ -1,6 +1,7 @@
 package dev.mvc.shoes;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,9 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import dev.mvc.category.CategoryProcInter;
+import dev.mvc.category.CategoryVO;
 import dev.mvc.member.MemberProcInter;
 import dev.mvc.member.MemberVO;
 import dev.mvc.option.OptionProcInter;
@@ -25,6 +31,10 @@ public class ShoesCont {
   @Autowired
   @Qualifier("dev.mvc.shoes.ShoesProc")
   private ShoesProcInter shoesProc;
+
+  @Autowired
+  @Qualifier("dev.mvc.category.CategoryProc")
+  private CategoryProcInter categoryProc;
 
   @Autowired
   @Qualifier("dev.mvc.option.OptionProc")
@@ -75,9 +85,14 @@ public class ShoesCont {
    */
   @GetMapping(value = "/list")
   public String list(HttpSession session, Model model,
-      @RequestParam(name = "categoryno", defaultValue = "") int categoryno,
+      @RequestParam(name = "categoryno", defaultValue = "0") Integer categoryno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+    if (categoryno != 0) {
+      CategoryVO categoryVO = categoryProc.category_select(categoryno);
+      model.addAttribute("categoryVO", categoryVO);
+    }
 
     table_paging(model, categoryno, word, now_page);
 
@@ -100,23 +115,23 @@ public class ShoesCont {
     //MemberVO memberVO = (MemberVO)session.getAttribute("login");
 
     model.addAttribute("memberno", 1);
-    
+
     MemberVO memberVO = this.memberProc.readByMemberno(1);
     model.addAttribute("nickname", memberVO.getNickname());
-    
-    ShoesAllVO shoesAllVO = this.shoesProc.read(shoesno, categoryno);
+
+    ShoesAllVO shoesAllVO = this.shoesProc.read(shoesno);
     model.addAttribute("shoesAllVO", shoesAllVO);
     
     System.out.println(shoesAllVO.toString());
 
-    ArrayList<Integer> sizes = this.optionProc.option_sizes(shoesno, categoryno);
+    ArrayList<Integer> sizes = this.optionProc.option_sizes(shoesno);
     model.addAttribute("sizes", sizes);
 
-    ArrayList<String> color = this.optionProc.option_color(shoesno, categoryno);
+    ArrayList<String> color = this.optionProc.option_color(shoesno);
     model.addAttribute("color", color);
 
     ArrayList<ShoesAllVO> review = this.reviewProc.review_list(shoesno);
-    if(review.size() == 0) {
+    if (review.size() == 0) {
       model.addAttribute("no_review", true);
     }
     model.addAttribute("review", review);

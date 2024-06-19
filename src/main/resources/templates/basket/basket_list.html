@@ -2,20 +2,11 @@
 
 <html layout:decorate="~{layout}">
 <!-- layout.html 상속-->
-<div layout:fragment="content">
-  <div class="title_line">
-    <span class="nav-link" onclick="history.back()"> &lt; </span> 장바구니
-  </div>
-  <script src="/js/basket.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <aside class="aside_right">
-    <a href="/shoes/list_all?now_page=1">목록</a>
-    <span class="menu_devide">│</span>
-    <a href="/shoes/create">등록</a>
-    <span class="menu_devide">│</span>
-    <a href="javascript: location.reload();">새로 고침</a>
-  </aside>
-  <div class="top_menu_line"></div>
+<div layout:fragment="content" style="width: 70%; margin:40px auto; text-align: center;">
+  <div th:replace="~{fragment/infoSidebarFragment::infoSidebarFragment}"></div>
+
+  <h2 style="float:left; margin-left:5%; margin-bottom:3%;">장바구니</h2>
+  <br>
   <div id='panel_delete'
     style='padding: 10px 0px 10px 0px; background-color: #F9F9F9; width: 100%; text-align: center;'>
 
@@ -35,16 +26,10 @@
         <p>금액:<span th:text="${ShoesAllVO.shoesVO.price}"></span></p>
         <button class="basket_btn" style="width:300px;">장바구니 취소</button>
       </div>
-
     </div>
-
-
-
   </div>
-
 </div>
-<!-- /templates/cate/list_all_component.html 파일의 list_all_fragment import -->
-
+<script src="/js/basket.js"></script>
 </div>
 
 </html>

@@ -29,4 +29,4 @@ function search() {
   // 검색어를 저장해
   var url = '/shoes/list?word=' + encodeURIComponent(search);
   window.location.href = url;
-  }
+}

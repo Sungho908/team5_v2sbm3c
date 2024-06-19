@@ -19,7 +19,7 @@
     FROM category
     WHERE parentno = #{categoryno}
   </select>
-  
+
   <insert id="create" parameterType="dev.mvc.category.CategoryVO">
     INSERT INTO category (categoryno, name, subname, seq, cnt, parentno)
     SELECT 
@@ -123,6 +123,11 @@
     ORDER BY seq ASC
   </select>
 
+  <select id="category_select" resultType="dev.mvc.category.CategoryVO">
+    SELECT name, subname FROM category
+    WHERE categoryno = #{categoryno}
+  </select>
+  
 </mapper>
 
 
