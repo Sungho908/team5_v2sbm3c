@@ -33,5 +33,6 @@ public interface CategoryDAOInter {
   
   public int list_search_count(String word);
 
+  public CategoryVO category_select(int categoryno);
   
 }

@@ -2,16 +2,23 @@
 <html layout:decorate="~{layout}">
 <html xmlns:th="http://www.thymeleaf.org">
 <!-- layout.html 상속 -->
-<div layout:fragment="content"  style="width: 80%; margin:40px auto; text-align: center;">
+<div layout:fragment="content" style="width: 80%; margin:40px auto; text-align: center;">
 
   <div class="title_line">
-    스니커즈/슬립온 > 스니커즈
+    <span th:if="${categoryVO != null}">
+      <span th:text="${categoryVO.name}" style="font-size:20px;"></span>
+      > <span th:text="${categoryVO.subname}" style="font-size:20px;"></span>
+    </span>
+    <span th:if="${word != null and word != ''}">
+      <span style="font-size:20px;">&nbsp; 검색어:</span>
+      <span th:text="${word}" style="font-size:20px;"></span>
+    </span>
   </div>
   <input type="hidden" name="categoryno" th:value="${categoryno}">
   <div class="content_main">
     <div class="content_body">
-      <div class = "shoes" th:each="shoesVO, status:${list}">
-        <a th:href="@{|/shoes/${shoesVO.shoesno}?categoryno=${categoryno}|}">
+      <div class="shoes" th:each="shoesVO, status:${list}">
+        <a th:href="@{|/shoes/${shoesVO.shoesno}|}">
           <img src="/images/nike.jpg"><!-- 이미지 및 기타 정보 -->
         </a>
         <p th:text="${shoesVO.title}"></p>

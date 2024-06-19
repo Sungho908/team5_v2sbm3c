@@ -111,4 +111,29 @@
     WHERE reportno = #{reportno}
   </update>
 
+  <select id="myReport" resultMap="myReport" parameterType="Integer">
+    SELECT r.reportno AS reportno, r.title AS title, r.contents AS contents, r.rdate AS rdate, 
+        r.report_visible AS report_visible, r.report_contents AS report_contents, r.memberno AS memberno, r.reviewno AS reviewno, 
+        rt.type AS type
+    FROM report r
+    JOIN report_type rt ON r.typeno = rt.typeno
+    WHERE memberno = #{memberno}
+  </select>
+
+  <resultMap id="myReport" type="dev.mvc.report.ReportInfoVO">
+    <association property="reportVO" javaType="dev.mvc.report.ReportVO">
+      <id property="reportno" column="reportno" />
+      <result property="title" column="title" />
+      <result property="contents" column="contents" />
+      <result property="rdate" column="rdate" />
+      <result property="report_visible" column="report_visible" />
+      <result property="report_contents" column="report_contents" />
+      <result property="memberno" column="memberno" />
+      <result property="reviewno" column="reviewno" />
+    </association>
+
+    <association property="reportTypeVO" javaType="dev.mvc.reportType.ReportTypeVO">
+      <result property="type" column="type" />
+    </association>
+  </resultMap>
 </mapper>
