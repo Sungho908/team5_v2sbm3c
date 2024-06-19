@@ -1939,15 +1939,14 @@
 
 .basket-list {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column; /* 세로 방향으로 변경 */
+    align-items: center; /* 중앙 정렬 */
 }
-
-
 
 .item-details {
     display: flex;
     align-items: center;
+    margin-bottom: 20px; /* 각 항목 사이에 여백 추가 */
 }
 
 .basket-img {
@@ -1990,7 +1989,7 @@
     background-color: #ddd;
 }
 
-.item-total{
+.item-total {
     font-size: 16px;
     font-weight: bold;
 }
@@ -2003,9 +2002,4 @@
     font-size: 14px;
     padding: 10px 20px;
     transition: background-color 0.3s ease;
-    margin-top: 10px;
-}
-
-.basket-btn:hover {
-    background-color: #c82333;
 }

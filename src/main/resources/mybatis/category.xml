@@ -131,11 +131,19 @@
   </select>
 
 
-
   <select id="category_select" resultType="dev.mvc.category.CategoryVO">
   SELECT name, subname FROM CATEGORY
   WHERE categoryno = #{categoryno}
   </select>
+
+  <select id="select_subname" resultType="dev.mvc.category.CategoryVO" parameterType="String">
+    SELECT subname
+    FROM category
+    WHERE parentno = 
+    (SELECT categoryno FROM category
+    WHERE name = #{name} AND subname= '-')
+  </select>
+
   <!--
    SELECT subname
     FROM category
@@ -143,9 +151,8 @@
     (SELECT categoryno  FROM category
     WHERE categoryno = 29);
     -->
-    
-    
-    
+
+
 </mapper>
 
 

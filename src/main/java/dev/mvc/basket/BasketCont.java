@@ -83,9 +83,17 @@ public class BasketCont {
   @PostMapping(value = "/create")
   @ResponseBody
   public Map<String, Object> create(@RequestBody Map<String, Object> map, HttpSession session) {
+    
+    System.out.println("Create method called");
+    
     MemberVO memberVO = (MemberVO) session.getAttribute("login");
     Map<String, Object> response = new HashMap<>();
 
+    if (memberVO == null) {
+      response.put("message", "로그인이 필요합니다.");
+      return response;
+    }
+    
     int memberno = memberVO.getMemberno();
     String color = (String) map.get("color");
     int sizes = (Integer) map.get("sizes");
@@ -135,8 +143,6 @@ public class BasketCont {
     int basketno = (Integer) map.get("basketno");
     
     int result = basketProc.delete(memberno, basketno);
-
-    // 세션에서 멤버 번호 가져오기
 
     // Integer memberno = (Integer) session.getAttribute("memberno");
     // if (memberno == null) {

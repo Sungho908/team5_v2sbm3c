@@ -36,8 +36,10 @@ public interface CategoryProcInter {
   public String pagingBox(int now_page, String word, String list_file, int search_count, 
       int record_per_page, int page_per_block);
   
+  
   public CategoryVO category_select (int categoryno);
   
   public ArrayList<CategoryVO> select_name(String subname);
   
+  public ArrayList<CategoryVO> select_subname (String name);
 }

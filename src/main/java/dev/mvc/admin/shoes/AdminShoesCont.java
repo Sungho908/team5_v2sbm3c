@@ -1,7 +1,9 @@
 package dev.mvc.admin.shoes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,8 +14,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import dev.mvc.category.CategoryProcInter;
@@ -118,8 +122,9 @@ public class AdminShoesCont {
    * 신발 생성 폼
    */
   @GetMapping(value = "/admin_create")
-  public String admin_create(HttpSession session, Model model, CategoryVO categoryVO,
-      @RequestParam(name ="subname", defaultValue = "-") String subname,
+  public String admin_create(HttpSession session, Model model, 
+      @RequestParam(name = "subname", defaultValue = "-") String subname,
+      @RequestParam(name = "name", defaultValue = "") String name,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
@@ -128,9 +133,12 @@ public class AdminShoesCont {
 
     ArrayList<ShoesVO> menu = this.shoesProc.admin_list_all();
     model.addAttribute("menu", menu);
-    
-    ArrayList<CategoryVO> name = this.categoryProc.select_name(subname);
-    model.addAttribute("name", name);
+
+    ArrayList<CategoryVO> name_list = this.categoryProc.select_name(subname);
+    model.addAttribute("name_list", name_list);
+
+    ArrayList<CategoryVO> subname_list = this.categoryProc.select_subname(name);
+    model.addAttribute("subname_list", subname_list);
 
     table_paging(model, word, now_page);
 
@@ -154,7 +162,16 @@ public class AdminShoesCont {
       return "admin/shoes/msg";
     }
   }
-
+  
+  @PostMapping("/select_subname") 
+  @ResponseBody
+  public ArrayList<CategoryVO> select_subname(@RequestBody Map<String, Object> map) {
+      String name = (String) map.get("name");
+      
+      // parentCategoryNo에 따라 소분류 목록을 가져오는 메서드 호출
+      ArrayList<CategoryVO> subcategory = categoryProc.select_subname(name);
+      return subcategory;
+  }
   /**
    * 조회 + 목록
    * 

@@ -512,36 +512,32 @@
     .form-horizontal {
             flex-direction: column;
             align-items: center;
+            text-align: center;
             width: 100%;
             margin-bottom: 20px;
             margin-top: 20px;
         }
 
+    .form-horizontal .row{
+      text-align: center;
+      align-items: center;
+      
+    }
         .form-group {
-            display: flex;
             flex-direction: column;
             align-items: center;
             margin-bottom: 20px;
+            text-align: center;
+
         }
 
-        .form-horizontal .form-group-inline {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-        }
 
-        .form-horizontal .form-group-inline label {
-            margin-right: 10px;
-        }
-
-        .form-horizontal .form-group-inline select {
-            width: 200px;
-        }
-
-        .form-horizontal .form-group-inline input,
-        .form-horizontal .form-group-inline select {
+        .form-horizontal .form-group input,
+        .form-horizontal .form-group select ,
+        .form-horizontal .form-group textarea
+         {
             width: auto;
+              border: solid 1px black; 
         }
 
         .btn-container {
@@ -553,4 +549,3 @@
         .btn {
             margin: 5px;
         }
-  

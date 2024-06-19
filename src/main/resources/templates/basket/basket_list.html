@@ -22,11 +22,12 @@
             <p class="item-option"><span>색상:</span> <span th:text="${ShoesAllVO.optionVO.color}"></span></p>
             <p class="item-option"><span>사이즈:</span> <span th:text="${ShoesAllVO.optionVO.sizes}"></span></p>
             <div class="quantity-control">
-              <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
+              <button class="quantity-btn decrease" onclick="decreaseQuantity()">-</button>
               <span class="quantity" th:text="${ShoesAllVO.basketVO.amount}"></span>
-              <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+              <button class="quantity-btn increase" onclick="increaseQuantity()">+</button>
             </div>
-            <p class="item-total">금액: <span class="total" th:text="${ShoesAllVO.shoesVO.price * ShoesAllVO.basketVO.amount}"></span>원</p>
+            <p class="item-total">금액: <span class="total"
+                th:text="${ShoesAllVO.shoesVO.price * ShoesAllVO.basketVO.amount}"></span>원</p>
           </div>
         </div>
         <button class="basket_btn">장바구니 취소</button>
