@@ -22,19 +22,33 @@
     <a href="javascript: location.reload();">새로 고침</a>
   </aside>
 
-  <div class="container mt-3" style="width: 50%; margin: 5px auto;">
-    <input type="hidden" name="shoesno" th:value="${shoesVO.shoesno}">
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">신발 번호: <span th:text="${shoesVO.shoesno}"></span></li>
-      <li class="list-group-item">카테고리 번호: <span th:text="${shoesVO.categoryno}"></span></li>
-      <li class="list-group-item">회원 번호: <span th:text="${shoesVO.memberno}"></span></li>
-      <li class="list-group-item">제목: <span th:text="${shoesVO.title}"></span></li>
-      <li class="list-group-item">브랜드명: <span th:text="${shoesVO.brand}"></span></li>
-      <li class="list-group-item">금액: <span th:text="${shoesVO.price}"></span></li>
-      <li class="list-group-item">할인: <span th:text="${shoesVO.discount}"></span></li>
-      <li class="list-group-item">내용: <span th:text="${shoesVO.contents}"></span></li>
-    </ul>
-  </div>
+  <body>
+    <div class="container mt-3" style="max-width: 600px;">
+      <div class="card">
+        <div class="card-header bg-primary text-white text-center">
+          <h4>신발 정보</h4>
+        </div>
+        <div class="card-body">
+          <input type="hidden" name="shoesno" th:value="${shoesVO.shoesno}">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <strong>신발 번호:</strong> <span th:text="${shoesVO.shoesno}"></span>
+            </li>
+            <li class="list-group-item">
+              <strong>제목:</strong> <span th:text="${shoesVO.title}"></span>
+            </li>
+            <li class="list-group-item">
+              <strong>브랜드명:</strong> <span th:text="${shoesVO.brand}"></span>
+            </li>
+            <li class="list-group-item">
+              <strong>금액:</strong> <span th:text="${shoesVO.price}"></span>
+            </li>
+            <li class="list-group-item">
+              <strong>내용:</strong> <span th:text="${shoesVO.contents}"></span>
+            </li>
+          </ul>
+        </div>
+  </body>
   <div class="top_menu_line"></div>
 
   <div th:replace="~{admin/shoes/admin_option_component::admin_option_fragment}"></div>
