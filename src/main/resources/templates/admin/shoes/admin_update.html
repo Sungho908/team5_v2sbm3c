@@ -13,27 +13,28 @@
 </head>
 
 <div layout:fragment="content">
-  <div>
-    <aside class="aside_right">
-      <a href="/admin/shoes/admin_list_all?now_page=1">신발 목록</a>
-      <span class="menu_devide">│</span>
-      <a href="/admin/shoes/admin_create">신발 등록</a>
-      <span class="menu_devide">│</span>
-      <a th:href="@{|/admin/shoes/admin_delete/${shoesVO.shoesno}?word=${word}&now_page=${now_page}|}">신발 삭제</a>
-      <span class="menu_devide">│</span>
-      <a href="javascript: location.reload();">새로 고침</a>
-    </aside>
-    <div class="top_menu_line"></div>
-  </div>
-      <div class='title_line'></div>
 
+  <div class='title_line'></div>
   <body>
 
     <div class="container mt-3" style="max-width: 800px;">
       <div class="card">
         <div class="card-header bg-primary text-white text-center">
-          <h4>신발 정보 수정</h4>
+          <span th:text="${shoesVO.title}+ '  >  수정'"  style="font-size: 20px;" class="bg-primary text-white text-center"></span>
+        
+        
+          <aside class="aside_right">
+            <a href="/admin/shoes/admin_list_all?now_page=1" title="신발 목록"><i class="fas fa-list"></i></a>
+            <span class="menu_devide">│</span>
+            <a href="/admin/shoes/admin_create" title="신발 등록"><i class="fas fa-plus-circle"></i></a>
+            <span class="menu_devide">│</span>
+            <a th:href="@{|/admin/shoes/admin_delete/${shoesVO.shoesno}?word=${word}&now_page=${now_page}|}"
+              title="신발 삭제"><i class="fas fa-trash-alt"></i></a>
+            <span class="menu_devide">│</span>
+            <a href="javascript: location.reload();" title="새로 고침"><i class="fas fa-sync-alt"></i></a>
+          </aside>
         </div>
+        
         <div class="card-body">
           <form name="frm" th:object="${shoesVO}" method="post" action="/admin/shoes/admin_update">
             <input type="hidden" name="shoesno" th:value="${shoesVO.shoesno}">
@@ -67,8 +68,7 @@
 
             <div class="form-group">
               <label>내용</label>
-              <textarea name="contents" class="form-control" rows="5"
-                th:field="*{contents}" ></textarea>
+              <textarea name="contents" class="form-control" rows="5" th:field="*{contents}"></textarea>
               <div th:if="${#fields.hasErrors('contents')}" class="alert alert-danger" role="alert"
                 style="margin-top: 5px;">
                 <div th:each="err : ${#fields.errors('contents')}" th:text="${err}"></div>
@@ -77,19 +77,21 @@
 
             <div class="form-group">
               <label>판매여부</label>
-              <input type="text" name="visible" th:value="${shoesVO.visible}" class="form-control"
+
+              <select type="text" name="visible" th:value="${shoesVO.visible}" class="form-control"
                 th:field="*{visible}">
-              <div th:if="${#fields.hasErrors('visible')}" class="alert alert-danger" role="alert"
-                style="margin-top: 5px;">
-                <div th:each="err : ${#fields.errors('visible')}" th:text="${err}"></div>
-              </div>
+                <div th:if="${#fields.hasErrors('visible')}" class="alert alert-danger" role="alert"
+                  style="margin-top: 5px;">
+                  <div th:each="err : ${#fields.errors('visible')}" th:text="${err}"></div>
+                </div>
+              </select>
             </div>
 
-            <div class="text-center">
-              <button type="submit" class="btn btn-primary">저장</button>
-                  <button type="button"
+            <div class="content_body_bottom">
+              <button type="submit" class="btn btn-primary btn-sm">저장</button>
+              <button type="button"
                 th:attr="onclick=|location.href='/admin/shoes/admin_read/${shoesVO.shoesno}?word=${word}&now_page=${now_page}'|"
-                class="btn btn-secondary">취소</button>
+                class="btn btn-secondary btn-sm">취소</button>
             </div>
 
 
