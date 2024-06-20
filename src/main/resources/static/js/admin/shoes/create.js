@@ -77,3 +77,30 @@ function fetchSubcategories(mainCategoryId, subCategoryId) {
       .catch(error => console.error('Error:', error));
   }
 }
+
+$(document).ready(function() {
+    $('#addCategoryButton').click(function(e) {
+        e.preventDefault(); // 폼 제출 방지
+        var newCategoryRow = `
+        <div class="row justify-content-center category-row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="mainCategory">중분류</label>
+                    <select id="mainCategory" name="mainCategory" class="form-control form-control-sm">
+                        <option value="">중분류를 선택해주세요.</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="subCategory">소분류</label>
+                    <select id="subCategory" name="subCategory" class="form-control form-control-sm">
+                        <option value="">소분류를 선택해주세요.</option>
+                    </select>
+                </div>
+            </div>
+        </div>`;
+        $('#categoryContainer').append(newCategoryRow);
+        $('#addCategoryButton').hide(); // 추가 버튼 숨기기
+    });
+});

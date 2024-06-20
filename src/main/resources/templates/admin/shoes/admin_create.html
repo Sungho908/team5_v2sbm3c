@@ -3,6 +3,7 @@
 <html layout:decorate="~{admin/layout}">
 <!-- layout.html 상속-->
 
+<<<<<<< HEAD
 <div layout:fragment="content">
 
   <body>
@@ -82,5 +83,99 @@
 
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <script type="text/javascript" src="/js/admin/shoes/create.js"></script>
+=======
+
+<head>
+  <meta charset="UTF-8">
+  <title>상품 등록</title>
+   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="/js/admin/shoes/create.js"></script>
+  <link href="/admin/css/style.css" rel="Stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <div class="title_linee">신발 등록</div>
+        <div class="form-container">
+            <h2 class="form-title">상품 등록</h2>
+            <form th:object="${shoesVO}" method="post" action="/admin/shoes/admin_create" id="shoeForm">
+                <div class="form-horizontal" id="categoryContainer">
+                    <!-- 첫 번째 줄 -->
+                    <div class="row justify-content-center">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="mainCategory">중분류</label>
+                                <select id="mainCategory" name="mainCategory" class="form-control form-control-sm">
+                                    <option value="">중분류를 선택해주세요.</option>
+                                    <option th:each="category : ${name_list}" th:value="${category.categoryno}" th:text="${category.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="subCategory">소분류</label>
+                                <select id="subCategory" name="subCategory" class="form-control form-control-sm">
+                                    <option value="">소분류를 선택해주세요.</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-secondary btn-sm btn-custom" id="addCategoryButton">추가</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="price">금액</label>
+                            <input type="text" name="price" id="price" class="form-control form-control-sm" placeholder="금액을 입력하세요.">
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label for="contents">내용</label>
+                            <textarea name="contents" id="contents" class="form-control form-control-sm" placeholder="내용을 입력하세요."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>판매여부</label>
+                            <select name="visible" class="form-control form-control-sm">
+                                <option value="Y">Y</option>
+                                <option value="N">N</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-secondary btn-sm btn-custom">등록</button>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <button type="button" onclick="location.href='./admin_list_all'" class="btn btn-secondary btn-sm btn-custom">목록</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+>>>>>>> e79ae90b23a068e06a5bfc4c221ebf6ae5d956df
 
 </html>
