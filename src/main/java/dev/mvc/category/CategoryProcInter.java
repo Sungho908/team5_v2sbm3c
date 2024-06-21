@@ -3,6 +3,8 @@ package dev.mvc.category;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+
 public interface CategoryProcInter {
 
   public ArrayList<String> name_list();
@@ -42,4 +44,6 @@ public interface CategoryProcInter {
   public ArrayList<CategoryVO> select_name(String subname);
   
   public ArrayList<CategoryVO> select_subname (String name);
+
+  void addCorsMappings(CorsRegistry registry);
 }

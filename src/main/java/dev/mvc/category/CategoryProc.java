@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Service("dev.mvc.category.CategoryProc")
 public class CategoryProc implements CategoryProcInter {
@@ -194,7 +195,13 @@ public class CategoryProc implements CategoryProcInter {
     return subname;
   }
 
-
+  @Override
+  public void addCorsMappings(CorsRegistry registry) {
+      registry.addMapping("/**")  // 모든 경로에 대해 CORS 설정
+              .allowedOrigins("*") // 모든 origin 허용 (실제 운영 환경에서는 필요에 따라 수정)
+              .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
+              .allowedHeaders("*"); // 모든 헤더 허용
+  }
   
   
 

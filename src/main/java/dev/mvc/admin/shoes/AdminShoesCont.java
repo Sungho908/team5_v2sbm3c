@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -122,7 +123,7 @@ public class AdminShoesCont {
    * 신발 생성 폼
    */
   @GetMapping(value = "/admin_create")
-  public String admin_create(HttpSession session, Model model, 
+  public String admin_create(HttpSession session, Model model,
       @RequestParam(name = "subname", defaultValue = "-") String subname,
       @RequestParam(name = "name", defaultValue = "") String name,
       @RequestParam(name = "word", defaultValue = "") String word,
@@ -139,7 +140,7 @@ public class AdminShoesCont {
 
     ArrayList<CategoryVO> subname_list = this.categoryProc.select_subname(name);
     model.addAttribute("subname_list", subname_list);
-
+    
     table_paging(model, word, now_page);
 
     return "admin/shoes/admin_create";
@@ -162,16 +163,21 @@ public class AdminShoesCont {
       return "admin/shoes/msg";
     }
   }
-  
-  @PostMapping("/select_subname") 
+
+  @PostMapping("/select_subname")
   @ResponseBody
-  public ArrayList<CategoryVO> select_subname(@RequestBody Map<String, Object> map) {
+  public Map<String, Object> select_subname(@RequestBody Map<String, Object> map) {
       String name = (String) map.get("name");
       
-      // parentCategoryNo에 따라 소분류 목록을 가져오는 메서드 호출
-      ArrayList<CategoryVO> subcategory = categoryProc.select_subname(name);
-      return subcategory;
+      ArrayList<CategoryVO> subname_list = categoryProc.select_subname(name);
+
+      Map<String, Object> response = new HashMap<>();
+      
+      response.put("subname_list", subname_list); // 소분류 목록을 응답에 추가
+      
+      return response;
   }
+
   /**
    * 조회 + 목록
    * 
