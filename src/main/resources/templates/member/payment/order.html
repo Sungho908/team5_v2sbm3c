@@ -3,7 +3,7 @@
 
 <body>
   <div layout:fragment="content">
-      <style type="text/css">
+    <style type="text/css">
       table {
         margin: 0px auto;
         table-layout: fixed;
@@ -24,7 +24,7 @@
         background: f7f5f5;
       }
 
-      thead > tr > td {
+      thead>tr>td {
         text-align: center;
       }
 
@@ -99,7 +99,8 @@
               th:style="${dates.toString() == '360'} ? 'background-color: #aaa;' : 'background-color: #fff;' ">12개월</button>
           </div>
           <div class="dateDiv-text"
-            th:text="|• ${#dates.format(startDates,'yyyy-MM-dd')} ~ ${#dates.format(#dates.createToday(),'yyyy-MM-dd')}|">•</div>
+            th:text="|• ${#dates.format(startDates,'yyyy-MM-dd')} ~ ${#dates.format(#dates.createToday(),'yyyy-MM-dd')}|">
+            •</div>
         </div>
 
         <div style="float: right; display: flex; align-items: center;">
@@ -149,7 +150,8 @@
                 <span class="paymentno" style="color: #999;" th:text="|(${list.paymentno})|">주문번호표시</span>
               </div>
               <div style="border-top: 1px solid #ddd;">
-                결제금액:<span style="font-size: 1.2rem;" th:text="|${#numbers.formatInteger(list.total_payment, 3, 'COMMA')}원|">결제금액표시</span>
+                결제금액:<span style="font-size: 1.2rem;"
+                  th:text="|${#numbers.formatInteger(list.total_payment, 3, 'COMMA')}원|">결제금액표시</span>
                 <div style="text-align: left; margin-left: 8px;">
                   <a style="color: #416de9; font-size: 12px;" href="">주문상세보기▶</a>
                 </div>
@@ -158,19 +160,26 @@
 
             <!-- 상품명/주문옵션/주문번호 -->
             <td style="padding: 18px 5px 18px 20px;">
-              <div style="display: flex; align-items: center; border-top: 1px solid #ddd; height:120px;" th:each="pd : ${list.payment_details_option}">
+              <div style="display: flex; align-items: center; border-top: 1px solid #ddd; height:120px;"
+                th:each="pd : ${list.payment_details_option}">
 
                 <div>
                   <a href="#">
-                    <img style="width:60px; height: 60px; float:left; display: block;" th:src="@{|/file/storage/${pd.src}|}" th:if="${not #strings.isEmpty(pd.src)}">
-                    <img style="width:60px; height: 60px; float:left; display: block;" th:src="@{/images/none.png}" th:if="${#strings.isEmpty(pd.src)}">
+                    <img style="width:60px; height: 60px; float:left; display: block;"
+                      th:src="@{|/file/storage/${pd.src}|}" th:if="${not #strings.isEmpty(pd.src)}">
+                    <img style="width:60px; height: 60px; float:left; display: block;" th:src="@{/images/none.png}"
+                      th:if="${#strings.isEmpty(pd.src)}">
                   </a>
                 </div>
 
                 <div>
+                  <input type="hidden" id="payment_details_no" class="payment_details_no" th:value="${pd.payment_details_no}">
+                  <input type="hidden" id="shoestitle" class="shoestitle" th:value="${pd.title}">
                   <a style="position: relative; font-size: 1.3rem;" href="#" th:text="${pd.title}">상품명</a>
                   <ul style="list-style-type: none; padding: 0px;">
-                    <li th:text="|색상 / ${pd.color} / ${#numbers.formatInteger(pd.price, 3, 'COMMA')}원 / ${pd.payment_amount}개|">색상/가격/수량</li>
+                    <li
+                      th:text="|색상 / ${pd.color} / ${#numbers.formatInteger(pd.price, 3, 'COMMA')}원 / ${pd.payment_amount}개|">
+                      색상/가격/수량</li>
                     <li th:text="|수량 │ ${pd.payment_amount}개 / 주문번호 ${pd.payment_details_no}|">수량 | 주문번호 |</li>
                   </ul>
                 </div>
@@ -180,25 +189,30 @@
             <!-- 브랜드 정보 -->
 
             <td style="text-align: center;">
-              <div th:each="pdo : ${list.payment_details_option}" style="display: flex; flex-direction: column; justify-content: center; height: 120px;">
-                <a style="color: #416de9; font-size: 12px; display: block;" href="" th:text="${pdo.brand}">브랜드</a>  
+              <div th:each="pdo : ${list.payment_details_option}"
+                style="display: flex; flex-direction: column; justify-content: center; height: 120px;">
+                <a style="color: #416de9; font-size: 12px; display: block;" href="" th:text="${pdo.brand}">브랜드</a>
               </div>
-              
+
             </td>
             <!-- 주문상태 -->
             <td style="width: 30px; text-align:center">
               <div>
-                <span style="font-size: 0.8rem;" th:text="${list.payment_status == '입금완료(수동)' or list.payment_status == '입금완료(자동)' ? '입금완료' : list.payment_status}"></span><br>
+                <span style="font-size: 0.8rem;"
+                  th:text="${list.payment_status == '입금완료(수동)' or list.payment_status == '입금완료(자동)' ? '입금완료' : list.payment_status}"></span><br>
                 <span th:text="${list.status}">주문상태/CS상태</span>
               </div>
             </td>
           </tr>
           <tr>
             <td colspan="3">
-              <div style="display: flex; justify-content: space-between; margin: 0px 10px 0px 10px; height: 30px; align-items: center;">
+              <div
+                style="display: flex; justify-content: space-between; margin: 0px 10px 0px 10px; height: 30px; align-items: center;">
                 <div>
-                  <a th:href="@{|/member/inquiry/paymentinquiry/${list.paymentno}|}" style="color: #416de9; font-size: 12px; margin-right:10px;">문의하기▶</a>
-                  <a href="javascript:void(0);" class="deletepayment" style="color: #416de9; font-size: 12px;">주문내역삭제▶</a>
+                  <a href="#" class="paymentinquiry"
+                    style="color: #416de9; font-size: 12px; margin-right: 10px;">문의하기▶</a>
+                  <a href="javascript:void(0);" class="deletepayment"
+                    style="color: #416de9; font-size: 12px;">주문내역삭제▶</a>
                 </div>
                 <div>
                   <button class="btn btn-danger">구매후기</button>
@@ -209,14 +223,16 @@
         </tbody>
       </table>
     </div>
+    
+    <div th:replace="~{inquiry/paymentinquiry::paymentinquiry_fragment}"></div>
     <script type="text/javascript">
-      document.addEventListener("DOMContentLoaded", function() {
+      document.addEventListener("DOMContentLoaded", function () {
         // 모든 deletepayment 링크를 선택
         let deleteLinks = document.querySelectorAll(".deletepayment");
 
-        deleteLinks.forEach(function(link) {
+        deleteLinks.forEach(function (link) {
           // 각 링크에 클릭 이벤트 리스너 추가
-          link.addEventListener("click", function() {
+          link.addEventListener("click", function () {
             // paymentno 요소 찾기
             let paynospan = this.closest("tr").previousElementSibling.querySelector(".paymentno");
             // paymentno 텍스트 가져오기
@@ -226,8 +242,8 @@
 
             if (confirm("정말로 주문내역을 삭제하시겠습니까?")) {
               fetch('./delete?no=' + payno, {
-                  method: 'POST'
-                })
+                method: 'POST'
+              })
                 .then(response => {
                   if (!response.ok) {
                     throw new Error('Network Error');
@@ -244,8 +260,10 @@
             }
           });
         });
-      });
 
+
+      });
+      
       function submit() {
         document.querySelector("#search-frm").submit();
       }
