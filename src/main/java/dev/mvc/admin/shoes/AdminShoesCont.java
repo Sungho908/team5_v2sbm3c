@@ -1,19 +1,30 @@
 package dev.mvc.admin.shoes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import dev.mvc.category.CategoryProcInter;
+import dev.mvc.category.CategoryVO;
 import dev.mvc.member.MemberProcInter;
+import dev.mvc.option.OptionProcInter;
 import dev.mvc.option.OptionVO;
 import dev.mvc.shoes.ShoesProcInter;
 import dev.mvc.shoes.ShoesVO;
@@ -29,6 +40,14 @@ public class AdminShoesCont {
   private ShoesProcInter shoesProc;
 
   @Autowired
+  @Qualifier("dev.mvc.option.OptionProc")
+  private OptionProcInter optionProc;
+
+  @Autowired
+  @Qualifier("dev.mvc.category.CategoryProc")
+  private CategoryProcInter categoryProc;
+
+  @Autowired
   @Qualifier("dev.mvc.member.MemberProc") // @Service("dev.mvc.member.MemberProc")
   private MemberProcInter memberProc;
 
@@ -42,14 +61,13 @@ public class AdminShoesCont {
     System.out.println("-> AdminShoesCont created.");
   }
 
-  
   private void table_paging(Model model, String word, int now_page) {
     ArrayList<ShoesVO> list = this.shoesProc.admin_list_search_paging(word, now_page, this.record_per_page);
     model.addAttribute("list", list);
 
     int search_count = this.shoesProc.admin_list_search_count(word);
-    String paging = this.shoesProc.pagingBox(now_page, word, "/admin/shoes/admin_list_all", search_count, this.record_per_page,
-        this.page_per_block);
+    String paging = this.shoesProc.pagingBox(now_page, word, "/admin/shoes/admin_list_all", search_count,
+        this.record_per_page, this.page_per_block);
 
     int no = search_count - ((now_page - 1) * this.record_per_page);
 
@@ -63,20 +81,23 @@ public class AdminShoesCont {
     ArrayList<OptionVO> list = this.shoesProc.option_paging(shoesno, word, now_page, this.record_per_page);
     model.addAttribute("list", list);
 
-    
     int search_count = this.shoesProc.option_search_count(shoesno);
-    System.out.println(search_count);
+    System.out.println("search_count: " + search_count);
+
     String paging = this.shoesProc.pagingBox(now_page, word, "/admin/shoes/admin_read/" + shoesno, search_count,
         this.record_per_page, this.page_per_block); // 2, '',
 
+    System.out.println("paging: " + paging);
+
     int no = search_count - ((now_page - 1) * this.record_per_page);
+
+    System.out.println("no: " + no);
 
     model.addAttribute("paging", paging);
     model.addAttribute("now_page", now_page);
     model.addAttribute("word", word);
     model.addAttribute("no", no);
   }
-
 
   /**
    * 등록폼 + 목록
@@ -89,11 +110,10 @@ public class AdminShoesCont {
   public String admin_list_all(HttpSession session, Model model,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
-      
+
     word = Tool.checkNull(word).trim();
     // shoesVO.setNamesub("-"); // 폼 초기값 설정
-    
+
     table_paging(model, word, now_page);
 
     return "admin/shoes/admin_list_all"; // /shoes/list_search.html
@@ -103,7 +123,10 @@ public class AdminShoesCont {
    * 신발 생성 폼
    */
   @GetMapping(value = "/admin_create")
-  public String admin_create(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
+  public String admin_create(HttpSession session, Model model,
+      @RequestParam(name = "subname", defaultValue = "-") String subname,
+      @RequestParam(name = "name", defaultValue = "") String name,
+      @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
     ShoesVO shoesVO = new ShoesVO();
@@ -112,6 +135,12 @@ public class AdminShoesCont {
     ArrayList<ShoesVO> menu = this.shoesProc.admin_list_all();
     model.addAttribute("menu", menu);
 
+    ArrayList<CategoryVO> name_list = this.categoryProc.select_name(subname);
+    model.addAttribute("name_list", name_list);
+
+    ArrayList<CategoryVO> subname_list = this.categoryProc.select_subname(name);
+    model.addAttribute("subname_list", subname_list);
+    
     table_paging(model, word, now_page);
 
     return "admin/shoes/admin_create";
@@ -135,6 +164,20 @@ public class AdminShoesCont {
     }
   }
 
+  @PostMapping("/select_subname")
+  @ResponseBody
+  public Map<String, Object> select_subname(@RequestBody Map<String, Object> map) {
+      String name = (String) map.get("name");
+      
+      ArrayList<CategoryVO> subname_list = categoryProc.select_subname(name);
+
+      Map<String, Object> response = new HashMap<>();
+      
+      response.put("subname_list", subname_list); // 소분류 목록을 응답에 추가
+      
+      return response;
+  }
+
   /**
    * 조회 + 목록
    * 
@@ -145,13 +188,15 @@ public class AdminShoesCont {
   @GetMapping(value = "/admin_read/{shoesno}")
   public String admin_read(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
       @RequestParam(name = "word", defaultValue = "") String word,
-      @RequestParam(name = "now_page", defaultValue = "") int now_page) {
-    
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+
+    System.out.println("Received now_page: " + now_page);
+
     ShoesVO shoesVO = this.shoesProc.admin_read(shoesno);
     model.addAttribute("shoesVO", shoesVO);
 
     table_paging_option(model, shoesno, word, now_page);
-    
+
     return "admin/shoes/admin_read"; //
 
   }
@@ -189,13 +234,14 @@ public class AdminShoesCont {
 
     int cnt = this.shoesProc.admin_update(shoesVO);
     if (cnt == 1) {
-      return "redirect:/admin/shoes/admin_read/" + shoesVO.getShoesno() + "?word=" + Tool.encode(word) + "&now_page=" + now_page;
+      return "redirect:/admin/shoes/admin_read/" + shoesVO.getShoesno() + "?word=" + Tool.encode(word) + "&now_page="
+          + now_page;
     } else {
       model.addAttribute("code", "update_fail");
       return "admin/shoes/msg";
     }
   }
-  
+
   /** 카테고리 삭제 폼 */
   @GetMapping(value = "/admin_delete/{shoesno}")
   public String admin_delete(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
@@ -233,7 +279,6 @@ public class AdminShoesCont {
     }
   }
 
-  
   /**
    * 옵션 생성 폼
    */
@@ -241,27 +286,27 @@ public class AdminShoesCont {
   public String option_create(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
+
     ShoesVO shoesVO = this.shoesProc.admin_read(shoesno);
     model.addAttribute("shoesVO", shoesVO);
 
     OptionVO optionVO = new OptionVO();
     optionVO.setShoesno(shoesno);
+
     model.addAttribute("optionVO", optionVO);
 
     table_paging(model, word, now_page);
 
     return "admin/shoes/option_create";
   }
-  
-  
+
   /** 옵션 생성 */
   @PostMapping(value = "/option_create")
   public String option_create_process(HttpSession session, Model model, @Valid OptionVO optionVO,
       BindingResult bindingResult, @RequestParam(name = "shoesno") Integer shoesno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    
+
     ShoesVO shoesVO = this.shoesProc.admin_read(shoesno);
     model.addAttribute("shoesVO", shoesVO);
 
@@ -279,7 +324,6 @@ public class AdminShoesCont {
 
   }
 
-  
   /** 옵션 수정 폼 */
   @GetMapping(value = "/option_update/{optionno}")
   public String option_update(HttpSession session, Model model, @PathVariable("optionno") Integer optionno,
@@ -291,19 +335,16 @@ public class AdminShoesCont {
 
     OptionVO optionVO = this.shoesProc.shoes_option(optionno, shoesno);
     model.addAttribute("optionVO", optionVO);
-    
+
     table_paging_option(model, shoesno, word, now_page);
 
     return "admin/shoes/option_update";
   }
-  
 
   /** 옵션 수정 */
   @PostMapping(value = "/option_update")
-  public String option_update(HttpSession session, Model model, @Valid OptionVO optionVO,
-      BindingResult bindingResult, 
-      @RequestParam(name = "shoesno") Integer shoesno,
-      @RequestParam(name = "word", defaultValue = "") String word,
+  public String option_update(HttpSession session, Model model, @Valid OptionVO optionVO, BindingResult bindingResult,
+      @RequestParam(name = "shoesno") Integer shoesno, @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
     ShoesVO shoesVO = this.shoesProc.admin_read(shoesno);
@@ -316,17 +357,15 @@ public class AdminShoesCont {
 
     int cnt = this.shoesProc.option_update(optionVO);
     model.addAttribute("cnt", cnt);
-    return "redirect:/admin/shoes/admin_read/" + shoesno + "?optionno=" + optionVO.getOptionno() + "&word=" + Tool.encode(word)
-        + "&now_page=" + now_page;
+    return "redirect:/admin/shoes/admin_read/" + shoesno + "?optionno=" + optionVO.getOptionno() + "&word="
+        + Tool.encode(word) + "&now_page=" + now_page;
 
   }
-  
+
   /** 옵션 삭제 폼 */
   @GetMapping(value = "/option_delete/{optionno}")
-  public String option_delete(HttpSession session, Model model, 
-      @PathVariable("optionno") Integer optionno,
-      @RequestParam(name = "shoesno") Integer shoesno, 
-      @RequestParam(name = "word", defaultValue = "") String word,
+  public String option_delete(HttpSession session, Model model, @PathVariable("optionno") Integer optionno,
+      @RequestParam(name = "shoesno") Integer shoesno, @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
     OptionVO optionVO = this.shoesProc.shoes_option(optionno, shoesno);
@@ -340,14 +379,11 @@ public class AdminShoesCont {
     return "admin/shoes/option_delete";
 
   }
-  
 
   /** 옵션 삭제 */
   @PostMapping(value = "/option_delete")
-  public String option_delete_process(HttpSession session, Model model, 
-      @Valid OptionVO optionVO,
-      @RequestParam("shoesno") Integer shoesno,
-      @RequestParam("optionno") Integer optionno,
+  public String option_delete_process(HttpSession session, Model model, @Valid OptionVO optionVO,
+      @RequestParam("shoesno") Integer shoesno, @RequestParam("optionno") Integer optionno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
@@ -361,10 +397,9 @@ public class AdminShoesCont {
       return "redirect:/admin/shoes/admin_list_all?now_page=1";
     } else {
       model.addAttribute("code", "delete_fail");
-      
+
       return "admin/shoes/msg";
     }
   }
-  
-  
+
 }

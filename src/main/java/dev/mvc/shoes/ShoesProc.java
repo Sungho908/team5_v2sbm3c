@@ -66,6 +66,7 @@ public class ShoesProc implements ShoesProcInter {
     int now_grp = (int) (Math.ceil((double) now_page / page_per_block));
     int start_page = ((now_grp - 1) * page_per_block) + 1;
     int end_page = (now_grp * page_per_block);
+    
     StringBuffer str = new StringBuffer();
 
     str.append("<style type='text/css'>");
@@ -130,6 +131,7 @@ public class ShoesProc implements ShoesProcInter {
     ShoesAllVO shoesAllVO = this.shoesDAO.read(shoesno);
     return shoesAllVO;
   }
+
 
   @Override
   public ShoesVO admin_read(int shoesno) {
@@ -233,7 +235,4 @@ public class ShoesProc implements ShoesProcInter {
     ArrayList<ShoesVO> list = this.shoesDAO.inquiry_select(word);
     return list;
   }
-
-
-  
 }

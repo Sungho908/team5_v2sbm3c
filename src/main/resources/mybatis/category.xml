@@ -127,7 +127,21 @@
     SELECT name, subname FROM category
     WHERE categoryno = #{categoryno}
   </select>
-  
+
+  <select id="select_name" resultType="dev.mvc.category.CategoryVO" parameterType="String">
+    SELECT categoryno, name
+    FROM category
+    WHERE subname= #{subname}
+  </select>
+
+  <select id="select_subname" resultType="dev.mvc.category.CategoryVO" parameterType="String">
+     SELECT subname
+    FROM category
+    WHERE parentno = 
+    (SELECT categoryno  FROM category
+    WHERE categoryno = #{categoryno})
+  </select>
+
 </mapper>
 
 

@@ -95,4 +95,6 @@ public interface ShoesDAOInter {
   public int option_delete(Map<String, Object> map);
   
   public ArrayList<ShoesVO> inquiry_select(String word);
+
+  
 }

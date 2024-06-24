@@ -87,5 +87,4 @@
       <result property="title" column="title" />
     </association>
   </resultMap>
-
 </mapper>

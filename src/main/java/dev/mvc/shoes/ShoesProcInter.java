@@ -1,6 +1,7 @@
 package dev.mvc.shoes;
 
 import java.util.ArrayList;
+
 import dev.mvc.option.OptionVO;
 
 public interface ShoesProcInter {
@@ -43,8 +44,10 @@ public interface ShoesProcInter {
    * @param map
    * @return 신발 목록 정보
    */
+  
   public ArrayList<ShoesVO> list_search_paging(int categoryno, String word);
 
+  
   public String pagingBox(int now_page, String word, String list_file, int search_count, int record_per_page,
       int page_per_block);
 
@@ -94,3 +97,4 @@ public interface ShoesProcInter {
   
   public ArrayList<ShoesVO> inquiry_select(String word);
 }
+  

@@ -8,7 +8,7 @@ CREATE TABLE SHOES(
 		BRAND                       		VARCHAR2(100)		 NOT NULL,
 		RATING                      		NUMBER		 DEFAULT 0 NOT NULL,
 		PRICE                       		NUMBER		 NOT NULL,
-		DISCOUNT                    		NUMBER		 NOT NULL,
+		DISCOUNT                    		NUMBER		 DEFAULT 0   NOT NULL,
 		CONTENTS                    		VARCHAR2(1000)		 NOT NULL,
 		VISIBLE                     		CHAR(1)	     DEFAULT 'F' NOT NULL,
    FOREIGN KEY (MEMBERNO) REFERENCES MEMBER (MEMBERNO)

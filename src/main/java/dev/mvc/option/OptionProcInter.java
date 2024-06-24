@@ -1,6 +1,9 @@
 package dev.mvc.option;
 
 import java.util.ArrayList;
+import java.util.Map;
+
+import dev.mvc.category.CategoryVO;
 
 public interface OptionProcInter {
 

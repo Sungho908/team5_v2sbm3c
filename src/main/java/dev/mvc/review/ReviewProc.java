@@ -118,5 +118,4 @@ public class ReviewProc implements ReviewProcInter {
     ArrayList<ShoesAllVO> shoesAllVO = this.reviewDAO.myReview(memberno);
     return shoesAllVO;
   }
-
 }

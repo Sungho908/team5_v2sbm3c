@@ -1,7 +1,6 @@
 package dev.mvc.shoes;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,11 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import dev.mvc.category.CategoryProcInter;
 import dev.mvc.category.CategoryVO;
@@ -66,6 +62,7 @@ public class ShoesCont {
 
     ArrayList<ShoesVO> list = this.shoesProc.list_search_paging(categoryno, word);
     model.addAttribute("list", list);
+
     int search_count = this.shoesProc.list_search_count(categoryno, word);
 
     int no = search_count - ((now_page - 1) * this.record_per_page);
@@ -94,6 +91,9 @@ public class ShoesCont {
       model.addAttribute("categoryVO", categoryVO);
     }
 
+    CategoryVO categoryVO = categoryProc.category_select(categoryno);
+    model.addAttribute("categoryVO", categoryVO);
+
     table_paging(model, categoryno, word, now_page);
 
     return "shoes/list";
@@ -112,12 +112,12 @@ public class ShoesCont {
   public String details(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
       @RequestParam(name = "categoryno", defaultValue = "0", required = false) int categoryno) {
     // session에 들어있는 로그인 값
-    //MemberVO memberVO = (MemberVO)session.getAttribute("login");
-
-    model.addAttribute("memberno", 1);
-
-    MemberVO memberVO = this.memberProc.readByMemberno(1);
-    model.addAttribute("nickname", memberVO.getNickname());
+    MemberVO memberVO = (MemberVO)session.getAttribute("login");
+    if(memberVO != null) {
+      model.addAttribute("memberno", memberVO.getMemberno());
+      model.addAttribute("nickname", memberVO.getNickname());
+    }
+    
 
     ShoesAllVO shoesAllVO = this.shoesProc.read(shoesno);
     model.addAttribute("shoesAllVO", shoesAllVO);
@@ -144,7 +144,7 @@ public class ShoesCont {
   }
 
   /**
-   * 제품 상세
+   * 브랜드 목록
    * 
    * @param session
    * @param model
@@ -158,4 +158,5 @@ public class ShoesCont {
     return "shoes/brand"; // /templates/shoes/read.html
 
   }
+
 }
