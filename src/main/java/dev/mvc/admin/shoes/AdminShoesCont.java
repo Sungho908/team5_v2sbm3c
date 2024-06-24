@@ -124,8 +124,6 @@ public class AdminShoesCont {
    */
   @GetMapping(value = "/admin_create")
   public String admin_create(HttpSession session, Model model,
-      @RequestParam(name = "subname", defaultValue = "-") String subname,
-      @RequestParam(name = "name", defaultValue = "") String name,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
@@ -135,17 +133,49 @@ public class AdminShoesCont {
     ArrayList<ShoesVO> menu = this.shoesProc.admin_list_all();
     model.addAttribute("menu", menu);
 
-    ArrayList<CategoryVO> name_list = this.categoryProc.select_name(subname);
+    ArrayList<Integer> list = new ArrayList<>();
+    ArrayList<CategoryVO> name_list = this.categoryProc.select_name(list);
     model.addAttribute("name_list", name_list);
-
-    ArrayList<CategoryVO> subname_list = this.categoryProc.select_subname(name);
-    model.addAttribute("subname_list", subname_list);
     
     table_paging(model, word, now_page);
 
     return "admin/shoes/admin_create";
   }
 
+  @PostMapping("/select_subname")
+  @ResponseBody
+  public Map<String, Object> select_subname(@RequestBody Map<String, Object> map) {
+      int categoryno = (Integer) map.get("categoryno");
+      
+      ArrayList<CategoryVO> subname_list = categoryProc.select_subname(categoryno);
+
+      Map<String, Object> response = new HashMap<>();
+      
+      response.put("subname_list", subname_list); // 소분류 목록을 응답에 추가
+      
+      return response;
+  }
+  
+  /** 카테고리 분류 추가 */
+  @PostMapping(value ="/addcategory") 
+  @ResponseBody
+  public Map<String, Object> addcategory(@RequestBody ArrayList<Integer> arraylist) {
+    for(int i = 0; i < arraylist.size(); i++) {
+      System.out.println("ㅁㅁ" + arraylist.get(i));
+    }
+    
+    ArrayList<CategoryVO> name_list = this.categoryProc.select_name(arraylist);
+    
+    
+    Map<String, Object> response = new HashMap<>();
+    if(name_list.size() != 0) {
+      
+      response.put("success", true);
+      response.put("name_list", name_list);
+    }
+    return response;
+  }
+  
   /** 신발 생성 */
   @PostMapping(value = "/admin_create")
   public String create_process(HttpSession session, Model model, @Valid ShoesVO shoesVO, BindingResult bindingResult,
@@ -162,20 +192,6 @@ public class AdminShoesCont {
       model.addAttribute("code", "create_fail");
       return "admin/shoes/msg";
     }
-  }
-
-  @PostMapping("/select_subname")
-  @ResponseBody
-  public Map<String, Object> select_subname(@RequestBody Map<String, Object> map) {
-      String name = (String) map.get("name");
-      
-      ArrayList<CategoryVO> subname_list = categoryProc.select_subname(name);
-
-      Map<String, Object> response = new HashMap<>();
-      
-      response.put("subname_list", subname_list); // 소분류 목록을 응답에 추가
-      
-      return response;
   }
 
   /**

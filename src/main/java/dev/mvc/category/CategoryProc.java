@@ -183,14 +183,15 @@ public class CategoryProc implements CategoryProcInter {
   }
   
   @Override
-  public ArrayList<CategoryVO> select_name(String subname) {
-    ArrayList<CategoryVO> name = this.categoryDAO.select_name(subname);
-    return name;
+  public ArrayList<CategoryVO> select_name(ArrayList<Integer> categorynoList) {
+    
+    ArrayList<CategoryVO> categoryVO = this.categoryDAO.select_name(categorynoList);
+    return categoryVO;
   }
 
   @Override
-  public ArrayList<CategoryVO> select_subname(String name) {
-    ArrayList<CategoryVO> subname = this.categoryDAO.select_subname(name);
+  public ArrayList<CategoryVO> select_subname(int categoryno) {
+    ArrayList<CategoryVO> subname = this.categoryDAO.select_subname(categoryno);
     return subname;
   }
 

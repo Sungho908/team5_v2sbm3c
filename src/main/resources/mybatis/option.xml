@@ -8,7 +8,7 @@
   </insert>
 
   <select id="option_sizes" resultType="int" parameterType="Integer">
-    SELECT distinct o.sizes
+  SELECT distinct o.sizes, o.amount
     FROM shoes s
     JOIN category_list cl ON s.shoesno = cl.shoesno
     JOIN category c ON cl.categoryno = c.categoryno
