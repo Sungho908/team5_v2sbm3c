@@ -11,6 +11,7 @@
   <select id="report_count" parameterType="Map">
     SELECT count(*) FROM report WHERE memberno = #{memberno} AND reviewno = #{reviewno}
   </select>
+  
   <!-- 검색된 레코드 수 -->
   <select id="list_search_count" resultType="int" parameterType="String">
     SELECT COUNT(*) as cnt
@@ -110,6 +111,13 @@
     SET report_visible = #{report_visible}, report_contents = #{report_contents}
     WHERE reportno = #{reportno}
   </update>
+
+  <select id="myReportCount" parameterType="Integer">
+    SELECT COUNT(*)
+    FROM report r
+    JOIN report_type rt ON r.typeno = rt.typeno
+    WHERE memberno = #{memberno}
+  </select>
 
   <select id="myReport" resultMap="myReport" parameterType="Integer">
     SELECT r.reportno AS reportno, r.title AS title, r.contents AS contents, r.rdate AS rdate, 

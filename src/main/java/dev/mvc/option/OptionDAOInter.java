@@ -12,8 +12,9 @@ public interface OptionDAOInter {
   public int option_delete(Map<String, Object> map);
 
   public int option_search_count(int shoesno);
-  
+
   public ArrayList<Integer> option_sizes(int shoesno);
 
   public ArrayList<String> option_color(int shoesno);
+
 }

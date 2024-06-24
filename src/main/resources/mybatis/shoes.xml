@@ -2,10 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.mvc.shoes.ShoesDAOInter">
   <insert id="admin_create" parameterType="dev.mvc.shoes.ShoesVO">
-    INSERT INTO SHOES (SHOESNO, MEMBERNO, TITLE, BRAND, PRICE, DISCOUNT,
-    CONTENTS)
-    VALUES (SHOES_SEQ.nextval, #{memberno}, #{title}, #{brand}, #{price},
-    #{discount}, #{contents})  </insert>
+    DECLARE
+        v_shoesno NUMBER;
+    BEGIN
+        INSERT INTO shoes(shoesno, memberno, title, brand, price, contents)
+        VALUES (SHOES_SEQ.nextval, #{memberno}, #{title}, #{brand}, #{price}, #{contents})
+        RETURNING shoesno INTO v_shoesno;
+        INSERT INTO category_list (categorylistno, categoryno, shoesno)
+        VALUES (CATEGORY_LIST_SEQ.nextval, #{categoryno}, v_shoesno);
+    END;
+    </insert>
 
   <update id="admin_update" parameterType="dev.mvc.shoes.ShoesVO">
     UPDATE SHOES
@@ -47,6 +53,7 @@
   </if>
   </select>
 
+
   <select id="list_search_paging" resultType="dev.mvc.shoes.ShoesVO" parameterType="Map">
     SELECT shoesno, title, brand, contents, price, visible
     FROM (
@@ -62,22 +69,28 @@
     FROM shoes s
     JOIN category_list cl ON s.shoesno = cl.shoesno
     JOIN category c ON cl.categoryno = c.categoryno
-    <where>
-      <if test="categoryno != 0">
-        AND cl.categoryno = #{categoryno}
-      </if>
+    <if test="categoryno != null and categoryno != ''">
+      WHERE cl.categoryno = #{categoryno}
       <if test="word != null and word != ''">
-        AND (
-        UPPER(s.title) LIKE '%' || UPPER(#{word}) || '%'
-        OR UPPER(s.brand) LIKE '%' || UPPER(#{word}) || '%'
-        OR UPPER(s.contents) LIKE '%' || UPPER(#{word}) || '%'
-        OR UPPER(s.price) LIKE '%' || UPPER(#{word}) || '%'
-        )
-      </if>
-    </where>
+      AND (
+      UPPER(s.title) LIKE '%' || UPPER(#{word}) || '%'
+      OR UPPER(s.brand) LIKE '%' || UPPER(#{word}) || '%'
+      OR UPPER(s.contents) LIKE '%' || UPPER(#{word}) || '%'
+      OR UPPER(s.price) LIKE '%' || UPPER(#{word}) || '%'
+      )
+    </if>
+    </if>
+    <if test="word != null and word != '' and (categoryno == null or categoryno == '')">
+    WHERE 
+    (
+    UPPER(s.title) LIKE '%' || UPPER(#{word}) || '%'
+    OR UPPER(s.brand) LIKE '%' || UPPER(#{word}) || '%'
+    OR UPPER(s.contents) LIKE '%' || UPPER(#{word}) || '%'
+    OR UPPER(s.price) LIKE '%' || UPPER(#{word}) || '%'
+    )
+  </if>
     )
   </select>
-
 
   <!-- 신발 상세 -->
   <select id="read" resultMap="shoesRead" parameterType="Integer">
@@ -168,8 +181,8 @@
   </select>
 
   <insert id="option_create" parameterType="dev.mvc.option.OptionVO">
-    INSERT INTO OPTIONS (OPTIONNO, SIZES, COLOR, SHOESNO)
-    VALUES (OPTION_SEQ.nextval, #{sizes}, #{color}, #{shoesno})
+    INSERT INTO OPTIONS (OPTIONNO, AMOUNT, SIZES, COLOR, SHOESNO)
+    VALUES (OPTION_SEQ.nextval, #{amount}, #{sizes}, #{color}, #{shoesno})
   </insert>
 
   <update id="option_update" parameterType="dev.mvc.option.OptionVO">
@@ -198,8 +211,8 @@
       WHERE shoesno = #{shoesno}
   </update>
 
-  <select id="inquiry_select" resultType = "dev.mvc.shoes.ShoesVO" parameterType="String">
-    select title, brand from shoes
+  <select id="inquiry_select" resultType="dev.mvc.shoes.ShoesVO" parameterType="String">
+    select shoesno, title, brand from shoes
     WHERE UPPER(title) LIKE '%' || UPPER(#{word}) || '%'
     OR UPPER(brand) LIKE '%' || UPPER(#{word}) || '%'
   </select>

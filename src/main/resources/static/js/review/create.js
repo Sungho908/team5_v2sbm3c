@@ -4,12 +4,13 @@ document.addEventListener("DOMContentLoaded", function() {
   var nickname = document.getElementById("nickname").getAttribute("data-nickname");
   var stars = document.querySelectorAll('.star');
   var rating = document.getElementById('rating');
-  var myno = document.getElementById("mymemberno").getAttribute("data-mymemberno");
+  var myid = document.getElementById("mymemberno");
+  var myno = myid ? myid.getAttribute("data-mymemberno") : null;
   var shoesno = document.getElementById("shoesno").getAttribute("data-shoesno");
   rating.textContent = "5.0";
   reviewStars(parseFloat("5.0"));
 
-  if (!nickname) {
+  if (!myno) {
     reviewContents.value = "로그인 후 이용해주세요";
     reviewContents.disabled = true;
   }

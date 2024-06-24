@@ -4,8 +4,8 @@
 
   <!-- 생성 -->
   <insert id="create" parameterType="dev.mvc.shoesInquiry.ShoesInquiryVO">
-    INSERT INTO shoes_inquiry(shoes_inquiry_no, title, contents, rdate, optionno, memberno)
-    VALUES(SHOES_INQUIRY_SEQ.nextval, #{title}, #{contents}, sysdate, #{optionno}, #{memberno});
+    INSERT INTO shoes_inquiry(shoes_inquiry_no, title, contents, rdate, shoesno, memberno)
+    VALUES(SHOES_INQUIRY_SEQ.nextval, #{title}, #{contents}, sysdate, #{shoesno}, #{memberno})
   </insert>
 
   <!-- 검색된 레코드 수 -->
@@ -13,8 +13,7 @@
     SELECT COUNT(*) as cnt
     FROM shoes_inquiry si
     JOIN member m ON si.memberno = m.memberno
-    JOIN options o ON si.optionno = o.optionno
-    JOIN shoes s ON o.shoesno = s.shoesno
+    JOIN shoes s ON si.shoesno = s.shoesno
     <if test="word != null and word != ''">
       WHERE
       (
@@ -41,8 +40,7 @@
     ) AS r
     FROM shoes_inquiry si
     JOIN member m ON si.memberno = m.memberno
-    JOIN options o ON si.optionno = o.optionno
-    JOIN shoes s ON o.shoesno = s.shoesno
+    JOIN shoes s ON si.shoesno = s.shoesno
     <if test="word != null and word != ''">
     WHERE
     (
@@ -75,13 +73,11 @@
 
   <select id="read" resultMap="ReadInquiry" parameterType="Integer">
     SELECT si.shoes_inquiry_no as shoes_inquiry_no, si.title as title, si.contents as contents, 
-    si.rdate as rdate, si.answer_visible as answer_visible, s.title shoestitle, m.nickname as nickname,
-    o.sizes as sizes, o.color as color, si.answer_contents as answer_contents
+    si.rdate as rdate, si.answer_visible as answer_visible, s.title shoestitle, m.nickname as nickname, si.answer_contents as answer_contents
     FROM shoes_inquiry si
     JOIN member m ON si.memberno = m.memberno
-    JOIN options o ON si.optionno = o.optionno
-    JOIN shoes s ON o.shoesno = s.shoesno
-    WHERE shoes_inquiry_no = ${shoes_inquiry_no}
+    JOIN shoes s ON si.shoesno = s.shoesno
+    WHERE shoes_inquiry_no = #{shoes_inquiry_no}
   </select>
 
   <resultMap id="ReadInquiry" type="dev.mvc.shoesInquiry.ShoesInquiryInfoVO">
@@ -92,11 +88,6 @@
       <result property="rdate" column="rdate" />
       <result property="answer_visible" column="answer_visible" />
       <result property="answer_contents" column="answer_contents" />
-    </association>
-
-    <association property="optionVO" javaType="dev.mvc.option.OptionVO">
-      <result property="sizes" column="sizes" />
-      <result property="color" column="color" />
     </association>
 
     <association property="shoesVO" javaType="dev.mvc.shoes.ShoesVO">
@@ -113,5 +104,45 @@
     SET answer_visible = #{answer_visible}, answer_contents = #{answer_contents}
     WHERE shoes_inquiry_no = #{shoes_inquiry_no}
   </update>
-  
+
+  <select id="myInquiryCount" parameterType="Integer">
+    SELECT COUNT(*)
+    FROM shoes_inquiry
+    WHERE memberno = #{memberno}
+  </select>
+
+  <select id="myInquiry" resultMap="myInquiry" parameterType="Map">
+    SELECT shoes_inquiry_no, title, contents, rdate, shoestitle, answer_visible,  answer_contents FROM (
+      SELECT si.shoes_inquiry_no as shoes_inquiry_no, si.title as title, si.contents as contents, 
+      si.rdate as rdate, si.answer_visible as answer_visible, si.answer_contents as answer_contents, s.title shoestitle,
+      ROW_NUMBER() OVER(
+        ORDER BY
+          CASE
+            WHEN answer_visible = 'N' THEN 0
+            ELSE 1
+          END
+      ) AS r
+      FROM shoes_inquiry si
+      JOIN shoes s ON si.shoesno = s.shoesno
+      WHERE si.memberno = #{memberno}
+      ORDER BY si.shoes_inquiry_no desc
+    ) WHERE r &gt;= #{start_num} AND r &lt;= #{end_num}
+  </select>
+
+  <resultMap id="myInquiry" type="dev.mvc.shoesInquiry.ShoesInquiryInfoVO">
+    <association property="shoesInquiryVO" javaType="dev.mvc.shoesInquiry.ShoesInquiryVO">
+      <id property="shoes_inquiry_no" column="shoes_inquiry_no" />
+      <result property="title" column="title" />
+      <result property="contents" column="contents" />
+      <result property="rdate" column="rdate" />
+      <result property="answer_visible" column="answer_visible" />
+      <result property="answer_contents" column="answer_contents" />
+    </association>
+
+    <association property="shoesVO" javaType="dev.mvc.shoes.ShoesVO">
+      <result property="title" column="shoestitle" />
+    </association>
+
+  </resultMap>
+
 </mapper>

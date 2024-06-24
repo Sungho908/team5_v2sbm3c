@@ -80,10 +80,45 @@
     cursor: pointer;
 }
 
-#search-popup .search-popup-content p {
-  font-size: 20px;
+#shoes-table{
+        table-layout: fixed;
+        min-width: 100%;
+        max-width: 100%;
+        width: 100%;
 }
 
+#shoes-table th, #shoes-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+#shoes-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  background-color: white;
+}
+
+#payment-table{
+        table-layout: fixed;
+        min-width: 100%;
+        max-width: 100%;
+        width: 100%;
+}
+
+#payment-table th, #payment-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+#payment-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  background-color: white;
+}
 
 .shoes_select {
   margin-bottom: 2%;

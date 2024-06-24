@@ -14,7 +14,13 @@ public class PaymentInquiryProc implements PaymentInquiryProcInter{
   private PaymentInquiryDAOInter paymentInquiryDAO;
 
   @Override
-  public int create(PaymentInquiryVO paymentInquiryVO) {
+  public int create(String title, String contents, int memberno, int payment_details_no) {
+    PaymentInquiryVO paymentInquiryVO = new PaymentInquiryVO();
+    paymentInquiryVO.setTitle(title);
+    paymentInquiryVO.setContents(contents);
+    paymentInquiryVO.setMemberno(memberno);
+    paymentInquiryVO.setPayment_details_no(payment_details_no);
+    
     int cnt = this.paymentInquiryDAO.create(paymentInquiryVO);
     return cnt;
   }
@@ -123,5 +129,33 @@ public class PaymentInquiryProc implements PaymentInquiryProcInter{
     
     int cnt = this.paymentInquiryDAO.answer(map);
     return cnt;
+  }
+
+  @Override
+  public ArrayList<PaymentInquiryInfoVO> inquiry_select(int memberno) {
+    ArrayList<PaymentInquiryInfoVO> list = this.paymentInquiryDAO.inquiry_select(memberno);
+    return list;
+  }
+
+  @Override
+  public int myInquiryCount(int memberno) {
+    int cnt = this.paymentInquiryDAO.myInquiryCount(memberno);
+    return cnt;
+  }
+
+  @Override
+  public ArrayList<PaymentInquiryInfoVO> myInquiry(int memberno, int now_page, int record_per_page) {
+    int begin_of_page = (now_page - 1) * record_per_page;
+
+    int start_num = begin_of_page + 1;
+    int end_num = begin_of_page + record_per_page;
+    
+    Map <String, Object> map = new HashMap<>();
+    map.put("memberno", memberno);
+    map.put("start_num", start_num);
+    map.put("end_num", end_num);
+    
+    ArrayList<PaymentInquiryInfoVO> paymentInquiryInfoVO = this.paymentInquiryDAO.myInquiry(map);
+    return paymentInquiryInfoVO;
   }
 }

@@ -25,7 +25,7 @@
     JOIN options o ON s.shoesno = o.shoesno
     WHERE s.shoesno = #{shoesno}
   </select>
-  
+
   <update id="option_update" parameterType="dev.mvc.option.OptionVO">
     UPDATE OPTIONS
     SET SIZES = #{sizes}, AMOUNT = #{amount}, COLOR = #{color}
@@ -55,9 +55,9 @@
     JOIN shoes s ON o.shoesno = s.shoesno
     WHERE r &gt; = #{start_num} AND r &lt; = #{end_num}
   </select>
-  
+
   <select id="parent_count" parameterType="Integer">
-     SELECT COUNT(*) FROM options WHERE shoesno = #{shoesno}
+    SELECT COUNT(*) FROM options WHERE shoesno = #{shoesno}
   </select>
 
 

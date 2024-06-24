@@ -35,4 +35,8 @@ public interface CategoryDAOInter {
 
   public CategoryVO category_select(int categoryno);
   
+  public ArrayList<CategoryVO> select_name(String subname);
+  
+  public ArrayList<CategoryVO> select_subname(String name);
+  
 }

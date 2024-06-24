@@ -38,8 +38,8 @@ public class ShoesInquiryVO {
   /** 답변 내용 */
   private String answer_contents;
   
-  /** 옵션 번호 */
-  private Integer optionno;
+  /** 신발 번호 */
+  private Integer shoesno;
   
   /** 멤버 번호 */
   private Integer memberno;

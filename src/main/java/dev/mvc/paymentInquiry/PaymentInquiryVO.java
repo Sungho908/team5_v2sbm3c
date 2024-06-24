@@ -15,9 +15,9 @@ import lombok.ToString;
 //    ANSWER_VISIBLE          CHAR(1)          DEFAULT 'N'   NOT NULL,
 //    ANSWER_CONTENTS          VARCHAR2(1000)   DEFAULT '',
 //    MEMBERNO                NUMBER(9),
-//    PAYMENTNO               NUMBER(9),
+//    payment_details_no               NUMBER(9),
 //    FOREIGN KEY (MEMBERNO) REFERENCES MEMBER (MEMBERNO),
-//    FOREIGN KEY (PAYMENTNO) REFERENCES PAYMENT (PAYMENTNO)
+//    FOREIGN KEY (payment_details_no) REFERENCES PAYMENT_Details (payment_details_no)
 //);
 @Getter
 @Setter
@@ -50,5 +50,5 @@ public class PaymentInquiryVO {
   
   
   /** 주문 번호 */
-  private Integer paymentno;
+  private Integer payment_details_no;
 }

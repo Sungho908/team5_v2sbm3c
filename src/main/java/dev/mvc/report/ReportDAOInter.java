@@ -55,7 +55,15 @@ public interface ReportDAOInter {
   public int answer(Map<String, Object> map);
   
   /**
-   * 내 신고 내역 select id="myReport" resultMap="myReport" parameterType="Int"
+   * 내 신고 내역 개수 select id="myReportCount" resultMap="myReport" parameterType="Integer"
+   * 
+   * @param memberno
+   * @return 내 신고 내역 개수
+   */
+  public int myReportCount(int memberno);
+  
+  /**
+   * 내 신고 내역 select id="myReport" resultMap="myReport" parameterType="Integer"
    * 
    * @param memberno
    * @return ArrayList<ReportInfoVO>

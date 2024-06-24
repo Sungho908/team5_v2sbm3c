@@ -31,7 +31,7 @@
       padding-bottom: 5px;
     }
   </style>
-  <div style="width:70%; margin: 30px auto;">
+  <div style="width:100%; padding-left: 280px;">
     <div class="search-box">
       <div class="input-group">
 
@@ -74,16 +74,17 @@
                   th:text="${reportInfoVO.reportVO.contents}"></span>
                 <div class='line'></div><br>
                 <span th:if="${reportInfoVO.reportVO.report_contents}">
-                  <span style="font-size: 20px;">답변</span><br>
-                  <span th:text="${reportInfoVO.reportVO.report_contents}"></span>
+                  <span style="font-size: 20px; padding-left: 7%;">답변</span><br>
+                  <span style="padding-left: 10%;" th:text="${reportInfoVO.reportVO.report_contents}"></span>
                 </span>
                 <span th:unless="${reportInfoVO.reportVO.report_contents}">
-                  <span style="font-size: 20px;">답변을 기다리는 중입니다.</span><br>
+                  <span style="font-size: 20px; padding-left: 7%;">답변을 기다리는 중입니다.</span><br>
                 </span>
               </td>
             </tr>
           </tbody>
         </table>
+        <div class="bottom_menu" th:utext="${paging}"></div>
       </div>
     </div>
   </div>

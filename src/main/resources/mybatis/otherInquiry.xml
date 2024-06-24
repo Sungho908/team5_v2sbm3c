@@ -5,7 +5,7 @@
   <!-- 생성 -->
   <insert id="create" parameterType="dev.mvc.otherInquiry.OtherInquiryVO">
     INSERT INTO other_inquiry(other_inquiry_no, title, contents, rdate, memberno)
-    VALUES(OTHER_INQUIRY_SEQ.nextval, #{title}, #{contents}, sysdate, #{memberno});
+    VALUES(OTHER_INQUIRY_SEQ.nextval, #{title}, #{contents}, sysdate, #{memberno})
   </insert>
 
   <!-- 검색된 레코드 수 -->
@@ -69,8 +69,8 @@
     SET answer_visible = #{answer_visible}, answer_contents = #{answer_contents}
     WHERE other_inquiry_no = #{other_inquiry_no}
   </update>
-  
-    <select id="read" resultMap="InquiryResult" parameterType="Integer">
+
+  <select id="read" resultMap="InquiryResult" parameterType="Integer">
     SELECT oi.other_inquiry_no as other_inquiry_no, oi.title as title, oi.contents as contents, 
     oi.rdate as rdate, oi.answer_visible as answer_visible, m.nickname as nickname, oi.answer_contents as answer_contents
     FROM other_inquiry oi
@@ -78,5 +78,25 @@
     WHERE other_inquiry_no = ${other_inquiry_no}
   </select>
 
-
+  <select id="myInquiryCount" parameterType="Integer">
+    SELECT COUNT(*)
+    FROM other_inquiry
+    WHERE memberno = #{memberno}
+  </select>
+  
+  <select id="myInquiry" resultType="dev.mvc.otherInquiry.OtherInquiryVO" parameterType="Map">
+        SELECT other_inquiry_no, title, contents, rdate, answer_visible, answer_contents FROM (
+      SELECT other_inquiry_no, title, contents, rdate, answer_visible, answer_contents,
+      ROW_NUMBER() OVER(
+        ORDER BY
+          CASE
+            WHEN answer_visible = 'N' THEN 0
+            ELSE 1
+          END
+      ) AS r
+      FROM other_inquiry oi
+      WHERE oi.memberno = #{memberno}
+      ORDER BY other_inquiry_no desc
+    ) WHERE r &gt;= #{start_num} AND r &lt;= #{end_num}
+  </select>
 </mapper>

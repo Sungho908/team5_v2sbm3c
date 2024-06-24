@@ -14,7 +14,12 @@ public class ShoesInquiryProc implements ShoesInquiryProcInter {
   private ShoesInquiryDAOInter shoesInquiryDAO;
 
   @Override
-  public int create(ShoesInquiryVO shoesInquiryVO) {
+  public int create(String title, String contents, int shoesno, int memberno) {
+    ShoesInquiryVO shoesInquiryVO = new ShoesInquiryVO();
+    shoesInquiryVO.setTitle(title);
+    shoesInquiryVO.setContents(contents);
+    shoesInquiryVO.setShoesno(shoesno);
+    shoesInquiryVO.setMemberno(memberno);
     int cnt = this.shoesInquiryDAO.create(shoesInquiryVO);
     return cnt;
   }
@@ -119,12 +124,34 @@ public class ShoesInquiryProc implements ShoesInquiryProcInter {
     map.put("shoes_inquiry_no", shoes_inquiry_no);
     map.put("answer_visible", answer_visible);
     map.put("answer_contents", answer_contents);
-    
+
     System.out.println(shoes_inquiry_no);
     System.out.println(answer_visible);
     System.out.println(answer_contents);
     int cnt = this.shoesInquiryDAO.answer(map);
     return cnt;
   }
-  
+
+  @Override
+  public int myInquiryCount(int memberno) {
+    int cnt = this.shoesInquiryDAO.myInquiryCount(memberno);
+    return cnt;
+  }
+
+  @Override
+  public ArrayList<ShoesInquiryInfoVO> myInquiry(int memberno, int now_page, int record_per_page) {
+    int begin_of_page = (now_page - 1) * record_per_page;
+
+    int start_num = begin_of_page + 1;
+    int end_num = begin_of_page + record_per_page;
+    
+    Map <String, Object> map = new HashMap<>();
+    map.put("memberno", memberno);
+    map.put("start_num", start_num);
+    map.put("end_num", end_num);
+    
+    ArrayList<ShoesInquiryInfoVO> list = this.shoesInquiryDAO.myInquiry(map);
+    return list;
+  }
+
 }

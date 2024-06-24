@@ -49,4 +49,20 @@ public interface ShoesInquiryDAOInter {
    * @return int
    */
   public int answer(Map<String, Object> map);
+  
+  /**
+   * 내 문의 개수
+   * select id="myInquiryCount" parameterType="Integer"
+   * @param memberno
+   * @return 내 문의 개수
+   */
+  public int myInquiryCount(int memberno);
+  
+  /**
+   * 내 문의
+   * select id="myInquiry" resultMap="myInquiry" parameterType="Map"
+   * @param memberno
+   * @return 내 문의
+   */
+  public ArrayList<ShoesInquiryInfoVO> myInquiry(Map<String, Object> map);
 }

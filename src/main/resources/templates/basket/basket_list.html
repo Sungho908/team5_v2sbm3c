@@ -2,34 +2,36 @@
 
 <html layout:decorate="~{layout}">
 <!-- layout.html 상속-->
-<div layout:fragment="content" style="width: 70%; margin:40px auto; text-align: center;">
-  <div th:replace="~{fragment/infoSidebarFragment::infoSidebarFragment}"></div>
+<div layout:fragment="content">
 
-  <h2 style="float:left; margin-left:5%; margin-bottom:3%;">장바구니</h2>
-  <br>
-  <div id='panel_delete'
-    style='padding: 10px 0px 10px 0px; background-color: #F9F9F9; width: 100%; text-align: center;'>
 
-    <p style="font-size: 20px;">장바구니 담은 메뉴</p>
-    <div class="basket" th:each="ShoesAllVO, status:${list}">
-      <img class="basket_img" src="/images/crocs.jpg" alt="장바구니1">
-      <div class="list">
-        <p><span th:text="${ShoesAllVO.basketVO.basketno}"></span></p>
-        <p><span th:text="${ShoesAllVO.optionVO.sizes}"></span></p>
-        <p><span th:text="${ShoesAllVO.optionVO.color}"></span></p>
-        <p><span th:text="${ShoesAllVO.shoesVO.title}"></span></p>
-        <div class="quantity-control">
-          <button class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
-          <span class="quantity" th:text="${ShoesAllVO.basketVO.amount}"></span>
-          <button class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+  <div id="panel_delete">
+    <p class="panel-title">장바구니 담은 메뉴</p>
+    <div class="basket-list">
+      <div class="basket" th:each="ShoesAllVO, status:${list}">
+        <div class="item-details">
+          <img class="basket_img" src="/images/crocs.jpg" alt="장바구니1">
+          <div class="item-info">
+            <input type="hidden" class="basketno" th:value="${ShoesAllVO.basketVO.basketno}">
+            <input type="hidden" class="price" th:value="${ShoesAllVO.shoesVO.price}">
+            <p class="item-title" th:text="${ShoesAllVO.shoesVO.title}"></p>
+            <p class="item-option"><span>색상:</span> <span th:text="${ShoesAllVO.optionVO.color}"></span></p>
+            <p class="item-option"><span>사이즈:</span> <span th:text="${ShoesAllVO.optionVO.sizes}"></span></p>
+            <div class="quantity-control">
+              <button class="quantity-btn decrease" onclick="decreaseQuantity()">-</button>
+              <span class="quantity" th:text="${ShoesAllVO.basketVO.amount}"></span>
+              <button class="quantity-btn increase" onclick="increaseQuantity()">+</button>
+            </div>
+            <p class="item-total">금액: <span class="total"
+                th:text="${ShoesAllVO.shoesVO.price * ShoesAllVO.basketVO.amount}"></span>원</p>
+          </div>
         </div>
-        <p>금액:<span th:text="${ShoesAllVO.shoesVO.price}"></span></p>
-        <button class="basket_btn" style="width:300px;">장바구니 취소</button>
+        <button class="basket_btn">장바구니 취소</button>
       </div>
     </div>
   </div>
-</div>
-<script src="/js/basket.js"></script>
+  <script src="/js/basket.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </div>
 
 </html>

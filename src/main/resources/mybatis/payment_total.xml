@@ -5,117 +5,117 @@
 
 <mapper namespace="dev.mvc.paymentTotal.PaymentTotalDAOInter">
 
-	<resultMap id="PaymentDetailsOptionMap" type="dev.mvc.paymentTotal.PaymentDetailsOptionVO">
-		<id property="payment_details_no" column="payment_details_no" />
+  <resultMap id="PaymentDetailsOptionMap" type="dev.mvc.paymentTotal.PaymentDetailsOptionVO">
+    <id property="payment_details_no" column="payment_details_no" />
 
-		<result property="shoesno" column="shoesno" />
-		<result property="title" column="title" />
-		<result property="brand" column="brand" />
-		<result property="rating" column="rating" />
-		<result property="price" column="price" />
-		<result property="discount" column="discount" />
-		<result property="contents" column="contents" />
-		<result property="visible" column="visible" />
+    <result property="shoesno" column="shoesno" />
+    <result property="title" column="title" />
+    <result property="brand" column="brand" />
+    <result property="rating" column="rating" />
+    <result property="price" column="price" />
+    <result property="discount" column="discount" />
+    <result property="contents" column="contents" />
+    <result property="visible" column="visible" />
 
-		<result property="payment_amount" column="payment_amount" />
-		<result property="optionno" column="optionno" />
-		<result property="sizes" column="sizes" />
-		<result property="amount" column="amount" />
-		<result property="color" column="color" />
+    <result property="payment_amount" column="payment_amount" />
+    <result property="optionno" column="optionno" />
+    <result property="sizes" column="sizes" />
+    <result property="amount" column="amount" />
+    <result property="color" column="color" />
 
-		<result property="shoes_file_no" column="shoes_file_no" />
-		<result property="name" column="name" />
-		<result property="shoes_file_sizes" column="shoes_file_sizes" />
-		<result property="ex" column="ex" />
-		<result property="src" column="src" />
-	</resultMap>
+    <result property="shoes_file_no" column="shoes_file_no" />
+    <result property="name" column="name" />
+    <result property="shoes_file_sizes" column="shoes_file_sizes" />
+    <result property="ex" column="ex" />
+    <result property="src" column="src" />
+  </resultMap>
 
-	<resultMap id="PaymentTotalMap" type="dev.mvc.paymentTotal.PaymentTotalVO">
-		<id property="paymentno" column="paymentno" />
-		<result property="memberno" column="memberno" />
-		<result property="rdate" column="rdate" />
-		<result property="status" column="status" />
-		<result property="payment_status" column="payment_status" />
-		<result property="cs_status" column="cs_status" />
-		<result property="total_price" column="total_price" />
-		<result property="delivery" column="delivery" />
-		<result property="total_payment" column="total_payment" />
+  <resultMap id="PaymentTotalMap" type="dev.mvc.paymentTotal.PaymentTotalVO">
+    <id property="paymentno" column="paymentno" />
+    <result property="memberno" column="memberno" />
+    <result property="rdate" column="rdate" />
+    <result property="status" column="status" />
+    <result property="payment_status" column="payment_status" />
+    <result property="cs_status" column="cs_status" />
+    <result property="total_price" column="total_price" />
+    <result property="delivery" column="delivery" />
+    <result property="total_payment" column="total_payment" />
 
-		<collection property="payment_details_option" autoMapping="true" ofType="dev.mvc.paymentTotal.PaymentDetailsOptionVO" column="paymentno" />
-	</resultMap>
+    <collection property="payment_details_option" autoMapping="true" ofType="dev.mvc.paymentTotal.PaymentDetailsOptionVO" column="paymentno" />
+  </resultMap>
 
-	<select id="list" parameterType="map" resultMap="PaymentTotalMap" resultOrdered="true">
-		SELECT DISTINCT
-		m.memberno,
-		p.paymentno,
-		p.rdate,
-		p.status,
-		p.payment_status,
-		p.cs_status,
-		p.total_price,
-		p.delivery,
-		p.total_payment
-		FROM
-		member m
-		INNER JOIN payment p ON m.memberno = p.memberno
-		INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
-		WHERE
-		m.memberno = #{memberno}
-		<if test="startDate != null and endDate != null">
-			AND p.rdate BETWEEN #{startDate} AND #{endDate}
-		</if>
-		ORDER BY
-		p.rdate DESC
-	</select>
+  <select id="list" parameterType="map" resultMap="PaymentTotalMap" resultOrdered="true">
+    SELECT DISTINCT
+    m.memberno,
+    p.paymentno,
+    p.rdate,
+    p.status,
+    p.payment_status,
+    p.cs_status,
+    p.total_price,
+    p.delivery,
+    p.total_payment
+    FROM
+    member m
+    INNER JOIN payment p ON m.memberno = p.memberno
+    INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
+    WHERE
+    m.memberno = #{memberno}
+    <if test="startDate != null and endDate != null">
+      AND p.rdate BETWEEN #{startDate} AND #{endDate}
+    </if>
+    ORDER BY
+    p.rdate DESC
+  </select>
 
-	<select id="selectPaymentDetailsByPaymentNo" parameterType="map" resultMap="PaymentDetailsOptionMap">
-		SELECT
-		pd.payment_details_no,
-		pd.payment_amount,
-		o.optionno,
-		o.sizes,
-		o.amount,
-		o.color,
-		s.shoesno,
-		s.title,
-		s.brand,
-		s.rating,
-		s.price,
-		s.discount,
-		s.contents,
-		s.visible,
-		sf.shoes_file_no,
-		sf.name,
-		sf.sizes as shoes_file_sizes,
-		sf.ex,
-		sf.src
-		FROM
-		payment_details pd
-		INNER JOIN options o ON pd.optionno = o.optionno
-		INNER JOIN shoes s ON o.shoesno = s.shoesno
-		LEFT JOIN shoes_file sf ON s.shoesno = sf.shoesno
-		WHERE
-		pd.paymentno = #{paymentno}
-		<if test="search != null and search != ''">
-			AND UPPER(s.title) LIKE '%' || UPPER(#{search}) || '%'
-		</if>
-		ORDER BY
-		pd.payment_details_no
-	</select>
+  <select id="selectPaymentDetailsByPaymentNo" parameterType="map" resultMap="PaymentDetailsOptionMap">
+    SELECT
+    pd.payment_details_no,
+    pd.payment_amount,
+    o.optionno,
+    o.sizes,
+    o.amount,
+    o.color,
+    s.shoesno,
+    s.title,
+    s.brand,
+    s.rating,
+    s.price,
+    s.discount,
+    s.contents,
+    s.visible,
+    sf.shoes_file_no,
+    sf.name,
+    sf.sizes as shoes_file_sizes,
+    sf.ex,
+    sf.src
+    FROM
+    payment_details pd
+    INNER JOIN options o ON pd.optionno = o.optionno
+    INNER JOIN shoes s ON o.shoesno = s.shoesno
+    LEFT JOIN shoes_file sf ON s.shoesno = sf.shoesno
+    WHERE
+    pd.paymentno = #{paymentno}
+    <if test="search != null and search != ''">
+      AND UPPER(s.title) LIKE '%' || UPPER(#{search}) || '%'
+    </if>
+    ORDER BY
+    pd.payment_details_no
+  </select>
 
-	<select id="count" resultType="int" parameterType="String">
-		SELECT
-		COUNT(DISTINCT m.memberno) AS member_count
-		FROM
-		member m
-		INNER JOIN payment p ON m.memberno = p.memberno
-		<if test="word != null and word != '' ">
-			WHERE UPPER(m.id) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(m.nickname) LIKE '%' || UPPER(#{word}) || '%'
-		</if>
-	</select>
+  <select id="count" resultType="int" parameterType="String">
+    SELECT
+    COUNT(DISTINCT m.memberno) AS member_count
+    FROM
+    member m
+    INNER JOIN payment p ON m.memberno = p.memberno
+    <if test="word != null and word != '' ">
+      WHERE UPPER(m.id) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(m.nickname) LIKE '%' || UPPER(#{word}) || '%'
+    </if>
+  </select>
 
-	<select id="listAdminPaging" resultType="dev.mvc.paymentTotal.PaymentTotalVO" parameterType="Map">
-		SELECT *
+  <select id="listAdminPaging" resultType="dev.mvc.paymentTotal.PaymentTotalVO" parameterType="Map">
+    SELECT *
     FROM (
       WITH PaymentRank AS (
         SELECT
@@ -146,10 +146,10 @@
     )
     WHERE rownum_ BETWEEN #{start_num} AND #{end_num}
     ORDER BY rdate DESC
-	</select>
-	
-	<select id="listAdminPDO" parameterType="int" resultMap="PaymentTotalMap">
-	  SELECT
+  </select>
+  
+  <select id="listAdminPDO" parameterType="int" resultMap="PaymentTotalMap">
+    SELECT
       m.memberno,
       p.paymentno,
       p.rdate,
@@ -189,6 +189,6 @@
       m.memberno = #{memberno}
     ORDER BY
       p.rdate DESC
-	</select>
+  </select>
 
 </mapper>

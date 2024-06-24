@@ -58,6 +58,14 @@
     WHERE reviewno = #{reviewno}
   </delete>
 
+  <select id="myReviewCount" parameterType="Integer">
+    SELECT COUNT(*) 
+    FROM review r
+    JOIN shoes s ON s.shoesno = r.shoesno
+    WHERE r.memberno = #{memberno}
+    ORDER BY rdate desc
+  </select>
+  
   <select id="myReview" resultMap="myReview" parameterType="Integer">
     SELECT r.reviewno, r.contents, r.rating, r.rdate, s.shoesno, s.title
     FROM review r
@@ -79,5 +87,4 @@
       <result property="title" column="title" />
     </association>
   </resultMap>
-  
 </mapper>
