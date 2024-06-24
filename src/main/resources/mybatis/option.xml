@@ -82,7 +82,6 @@
       s.shoesno = #{shoesno}
     ORDER BY 
       o.sizes
->>>>>>> Stashed changes
   </select>
 
 
