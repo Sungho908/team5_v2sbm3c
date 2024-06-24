@@ -14,7 +14,12 @@ public class OtherInquiryProc implements OtherInquiryProcInter {
   private OtherInquiryDAOInter otherInquiryDAO;
 
   @Override
-  public int create(OtherInquiryVO otherInquiryVO) {
+  public int create(String title, String contents, int memberno) {
+    OtherInquiryVO otherInquiryVO = new OtherInquiryVO();
+    otherInquiryVO.setTitle(title);
+    otherInquiryVO.setContents(contents);
+    otherInquiryVO.setMemberno(memberno);
+    
     int cnt = this.otherInquiryDAO.create(otherInquiryVO);
     return cnt;
   }
@@ -122,6 +127,28 @@ public class OtherInquiryProc implements OtherInquiryProcInter {
     
     int cnt = this.otherInquiryDAO.answer(map);
     return cnt;
+  }
+
+  @Override
+  public int myInquiryCount(int memberno) {
+    int cnt = this.otherInquiryDAO.myInquiryCount(memberno);
+    return cnt;
+  }
+
+  @Override
+  public ArrayList<OtherInquiryVO> myInquiry(int memberno, int now_page, int record_per_page) {
+    int begin_of_page = (now_page - 1) * record_per_page;
+
+    int start_num = begin_of_page + 1;
+    int end_num = begin_of_page + record_per_page;
+    
+    Map <String, Object> map = new HashMap<>();
+    map.put("memberno", memberno);
+    map.put("start_num", start_num);
+    map.put("end_num", end_num);
+    
+    ArrayList<OtherInquiryVO> list = this.otherInquiryDAO.myInquiry(map);
+    return list;
   }
 
 }

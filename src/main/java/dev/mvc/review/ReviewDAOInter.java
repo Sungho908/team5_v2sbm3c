@@ -41,7 +41,15 @@ public interface ReviewDAOInter {
   public int delete(int reviewno);
 
   /**
-   * 작성한 댓글 내역 select id="myReview" resultMap="myReview" parameterType="Int"
+   * 작성한 댓글 내역 수 select id="myReviewCount" parameterType="Integer"
+   * 
+   * @param memberno
+   * @return 작성한 댓글 내역 수
+   */
+  public int myReviewCount(int memberno);
+
+  /**
+   * 작성한 댓글 내역 select id="myReview" resultMap="myReview" parameterType="Integer"
    * 
    * @param memberno
    * @return ArrayList<ShoesAllVO>

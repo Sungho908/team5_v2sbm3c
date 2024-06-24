@@ -54,6 +54,9 @@ public class ReviewCont {
     System.out.println("-> ShoesCont created.");
   }
 
+  public int record_per_page = 5;
+  public int page_per_block = 5;
+
   /* 후기 작성 */
   @PostMapping(value = "/create")
   @ResponseBody
@@ -130,12 +133,23 @@ public class ReviewCont {
   }
 
   @GetMapping("/myReview")
-  public String myReport(HttpSession session, Model model) {
+  public String myReport(HttpSession session, Model model,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
     MemberVO memberVO = (MemberVO) session.getAttribute("login");
     if (memberVO != null) {
       int memberno = memberVO.getMemberno();
       ArrayList<ShoesAllVO> list = this.reviewProc.myReview(memberno);
       model.addAttribute("list", list);
+
+      int search_count = this.reviewProc.myReviewCount(memberno);
+      String paging = this.reviewProc.pagingBox(now_page, "", "/review/myreview", search_count, this.record_per_page,
+          this.page_per_block);
+
+      int no = search_count - ((now_page - 1) * this.record_per_page);
+
+      model.addAttribute("paging", paging);
+      model.addAttribute("now_page", now_page);
+      model.addAttribute("no", no);
       return "review/myReview";
     } else {
       Alert message = new Alert("로그인 후 이용해주세요.", "/login/signin", RequestMethod.GET, null);

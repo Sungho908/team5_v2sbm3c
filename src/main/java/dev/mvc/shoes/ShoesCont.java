@@ -20,6 +20,8 @@ import dev.mvc.category.CategoryVO;
 import dev.mvc.member.MemberProcInter;
 import dev.mvc.member.MemberVO;
 import dev.mvc.option.OptionProcInter;
+import dev.mvc.option.OptionVO;
+import dev.mvc.paymentTotal.PaymentTotalProcInter;
 import dev.mvc.reportType.ReportTypeProcInter;
 import dev.mvc.reportType.ReportTypeVO;
 import dev.mvc.review.ReviewProcInter;
@@ -51,6 +53,10 @@ public class ShoesCont {
   @Autowired
   @Qualifier("dev.mvc.reportType.ReportTypeProc")
   private ReportTypeProcInter reportTypeProc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.paymentTotal.PaymentTotalProc")
+  private PaymentTotalProcInter paymentTotalProc;
 
   /** 페이지당 출력할 레코드 갯수, nowPage는 1부터 시작 */
   public int record_per_page = 5;
@@ -66,6 +72,7 @@ public class ShoesCont {
 
     ArrayList<ShoesVO> list = this.shoesProc.list_search_paging(categoryno, word);
     model.addAttribute("list", list);
+
     int search_count = this.shoesProc.list_search_count(categoryno, word);
 
     int no = search_count - ((now_page - 1) * this.record_per_page);
@@ -85,7 +92,7 @@ public class ShoesCont {
    */
   @GetMapping(value = "/list")
   public String list(HttpSession session, Model model,
-      @RequestParam(name = "categoryno", defaultValue = "0") Integer categoryno,
+      @RequestParam(name = "categoryno", defaultValue = "0", required = false) Integer categoryno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
@@ -93,6 +100,9 @@ public class ShoesCont {
       CategoryVO categoryVO = categoryProc.category_select(categoryno);
       model.addAttribute("categoryVO", categoryVO);
     }
+
+    CategoryVO categoryVO = categoryProc.category_select(categoryno);
+    model.addAttribute("categoryVO", categoryVO);
 
     table_paging(model, categoryno, word, now_page);
 
@@ -110,20 +120,21 @@ public class ShoesCont {
    */
   @GetMapping(value = "/{shoesno}")
   public String details(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
-      @RequestParam(name = "categoryno") int categoryno) {
+      @RequestParam(name = "categoryno", defaultValue = "0", required = false) int categoryno) {
     // session에 들어있는 로그인 값
-    //MemberVO memberVO = (MemberVO)session.getAttribute("login");
-
-    model.addAttribute("memberno", 1);
-
-    MemberVO memberVO = this.memberProc.readByMemberno(1);
-    model.addAttribute("nickname", memberVO.getNickname());
+    MemberVO memberVO = (MemberVO)session.getAttribute("login");
+    if(memberVO != null) {
+      model.addAttribute("memberno", memberVO.getMemberno());
+      model.addAttribute("nickname", memberVO.getNickname());
+    }
+    
 
     ShoesAllVO shoesAllVO = this.shoesProc.read(shoesno);
     model.addAttribute("shoesAllVO", shoesAllVO);
     
     System.out.println(shoesAllVO.toString());
-
+    
+    
     ArrayList<Integer> sizes = this.optionProc.option_sizes(shoesno);
     model.addAttribute("sizes", sizes);
 
@@ -137,14 +148,20 @@ public class ShoesCont {
     model.addAttribute("review", review);
 
     ArrayList<ReportTypeVO> reportType = this.reportTypeProc.search_type();
-    model.addAttribute("reportType", reportType);
+    model.addAttribute("reportType", reportType); 
+    
+    //kag0330 추가
+    model.addAttribute("options", this.optionProc.optionByshoesno(shoesno));
+    for(OptionVO option : this.optionProc.optionByshoesno(shoesno)) {
+      System.out.println(option.toString());
+    }
 
     return "shoes/detail"; // /templates/shoes/read.html
 
   }
 
   /**
-   * 제품 상세
+   * 브랜드 목록
    * 
    * @param session
    * @param model
@@ -158,4 +175,14 @@ public class ShoesCont {
     return "shoes/brand"; // /templates/shoes/read.html
 
   }
+
+  
+  @ResponseBody
+  @PostMapping("{shoesno}/payment")
+  public boolean shoespayment(@PathVariable("shoesno")int shoesno, @RequestBody Map<String, Object> map) {
+    if(!this.paymentTotalProc.create(map))
+      return false;
+    return true;
+  }
+
 }

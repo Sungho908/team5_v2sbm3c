@@ -7,5 +7,10 @@
     where paymentno = #{paymentno}
   </delete>
   
+  <insert id="create" parameterType="Map">
+    INSERT INTO payment_details(payment_details_no, payment_amount, optionno, paymentno)
+    VALUES (payment_details_seq.nextval, #{amount}, #{optionno}, #{paymentno})
+  </insert>
+  
   
 </mapper>

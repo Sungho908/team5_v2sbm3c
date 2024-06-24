@@ -5,6 +5,15 @@ import java.util.Map;
 
 public interface PaymentDAOInter {
   /**
+   * 주문내역 생성
+   * id="create" parameterType="Map"
+   * @param map
+   * @return 성공한 쿼리 갯수
+   * */
+  public int create(Map<String, Object> map);
+  
+  
+  /**
    * 회원의 모든 주문내역 가져오기
    * id="list_all" parameterType="int" resultType="dev.mvc.payment.PaymentVO"
    * @param memberno
@@ -25,4 +34,10 @@ public interface PaymentDAOInter {
    * id="update" parameterType="Map"
    * */
   public int update(Map<String, Object> map);
+  
+  /**
+   * 주문취소(CS_STATUS == '취소')
+   * id="cancel" parameterType="int"
+   * */
+  public int cancel(int paymentno);
 }

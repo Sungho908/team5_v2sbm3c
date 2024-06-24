@@ -55,5 +55,14 @@
    AND basketno = #{basketno}
   </delete>
 
+    <update id="decrease">
+        UPDATE options SET AMOUNT = AMOUNT - 1 WHERE OPTIONNO = #{optionNo}
+    </update>
+
+    <update id="increase">
+        UPDATE options SET AMOUNT = AMOUNT + 1 WHERE OPTIONNO = #{optionNo}
+    </update>
+
+
 </mapper>
 

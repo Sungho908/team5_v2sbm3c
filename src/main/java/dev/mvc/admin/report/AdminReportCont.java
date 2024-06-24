@@ -47,7 +47,7 @@ public class AdminReportCont {
       model.addAttribute("list", list);
 
       int search_count = this.reportProc.list_search_count(word);
-      String paging = this.reportProc.pagingBox(now_page, word, "/admin/notice/list", search_count,
+      String paging = this.reportProc.pagingBox(now_page, word, "/admin/report/list", search_count,
           this.record_per_page, this.page_per_block);
 
       int no = search_count - ((now_page - 1) * this.record_per_page);

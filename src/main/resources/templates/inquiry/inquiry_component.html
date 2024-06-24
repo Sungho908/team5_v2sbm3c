@@ -14,7 +14,7 @@
       <div id="shoes_select" class="shoes_select">
         <span>문의 신발 검색</span>
         <div style="display: flex; align-items: center; margin-top:1%;">
-
+          <input type="hidden" id="shoesno" name="shoesno">
           <input type="text" class="form-control" id="shoes_text"
             style="margin-left:20%; width: 50%; margin-right: 2%;">
           <button type="button" class="btn btn-secondary" id="selectShoes">검색</button>
@@ -23,9 +23,10 @@
       <div id="payment_select" class="payment_select">
         <span>내 주문 검색</span>
         <div style="display: flex; align-items: center; margin-top:1%;">
+          <input type="hidden" id="payment_details_no" name="payment_details_no">
           <input type="text" class="form-control" id="payment_text"
-            style="margin-left:20%; width: 50%; margin-right: 2%;">
-          <button type="button" class="btn btn-secondary" id="selectPayment">검색</button>
+            style="margin-left:20%; width: 60%; margin-right: 2%; text-align:center;" readOnly>
+
         </div>
       </div>
       <div class="mb-3">

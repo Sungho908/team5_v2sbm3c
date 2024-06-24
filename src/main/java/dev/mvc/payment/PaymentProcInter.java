@@ -28,5 +28,11 @@ public interface PaymentProcInter {
   
   
   public String pagingBox(int now_page, String word, String list_file, int search_count);
+  
+  /**
+   * 주문취소(CS_STATUS == '취소')
+   * id="cancel" parameterType="int"
+   * */
+  public int cancel(int paymentno);
 }
 

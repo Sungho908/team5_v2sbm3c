@@ -7,14 +7,19 @@ import dev.mvc.shoes.ShoesAllVO;
 public interface ReviewProcInter {
 
   public ArrayList<ShoesAllVO> review_list(int shoesno);
-  
+
   public ArrayList<ReviewVO> review_list_all(int shoesno);
 
   public int create(ReviewVO reviewVO);
 
   public int update(ReviewVO reviewVO);
-  
+
   public int delete(int reviewno);
-  
+
+  public String pagingBox(int now_page, String word, String list_file, int search_count, int record_per_page,
+      int page_per_block);
+
+  public int myReviewCount(int memberno);
+
   public ArrayList<ShoesAllVO> myReview(int memberno);
 }

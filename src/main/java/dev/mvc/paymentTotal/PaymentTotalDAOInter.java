@@ -7,12 +7,17 @@ import java.util.Map;
 
 public interface PaymentTotalDAOInter {
   /**
-   * 주문정보 가져오기
+   * 주문정보 가져오기(CS NULL)
    * id="list" parameterType="Map" resultMap="PaymentTotalMap"
    * @param  map memberno, search, startDate, endDate
    * @return ArrayList&lt;PaymentTotalVO&gt; 객체
    * */
   public ArrayList<PaymentTotalVO> list(HashMap<String, Object> map);
+  
+  /**
+   * 주문정보 가져오기(CS NOT NULL)
+   * id="cslist" parameterType="map" resultMap="PaymentTotalMap" resultOrdered="true"*/
+  public ArrayList<PaymentTotalVO> cslist(HashMap<String, Object> map);
   
   /**
    * 
@@ -41,9 +46,27 @@ public interface PaymentTotalDAOInter {
   
   /**
    * admin 주문목록 상세정보 가져오기 (Ajax)
-   * id="listAdminPDO" parameterType="int" resultMap="PaymentTotalMap"
+   * id="listAdminPDO" parameterType="Map" resultMap="PaymentTotalMap"
    * @param memberno 조회할 memberno
    * @return ArrayList&lt;PaymentTotalVO&gt; 객체
    * */
-  public ArrayList<PaymentTotalVO> listAdminPDO(int memberno);
+  public ArrayList<PaymentTotalVO> listAdminPDO(Map<String, Object> map);
+  
+  
+  /**
+   * admin 목록 카운트(멤버)
+   * id="member_cnt" parameterType="Map" resultType="int"
+   * @param map
+   * @return 멤버목록 count
+   * */
+  public int member_cnt(Map<String, Object> map);
+  
+  /**
+   * admin 목록 카운트(주문)
+   * id="payment_cnt" parameterType="Map" resultType="int"
+   * @param map
+   * @return 주문목록 count
+   * */
+  public int payment_cnt(Map<String, Object> map);
+  
 }

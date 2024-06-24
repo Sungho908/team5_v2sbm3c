@@ -44,4 +44,14 @@ public interface OtherInquiryDAOInter {
    * @return int
    */
   public int answer(Map<String, Object> map);
+  
+  /**
+   * 내 문의 개수
+   * select id="myInquiryCount" parameterType="Integer"
+   * @param memberno
+   * @return 내 문의 개수
+   */
+  public int myInquiryCount(int memberno);
+  
+  public ArrayList<OtherInquiryVO> myInquiry(Map<String, Object> map);
 }
