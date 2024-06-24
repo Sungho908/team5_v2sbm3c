@@ -4,8 +4,9 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
-@Setter @Getter
+@Setter @Getter @ToString
 public class CategoryVO {
   /** 카테고리 번호 */
   private Integer categoryno = 0;

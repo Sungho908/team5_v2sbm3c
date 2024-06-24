@@ -121,6 +121,11 @@ public class PaymentProc implements PaymentProcInter {
      
     return str.toString(); 
   }
+  
+
+  public int cancel(int paymentno) {
+    return this.paymentDAO.cancel(paymentno);
+  }
 
 
 }

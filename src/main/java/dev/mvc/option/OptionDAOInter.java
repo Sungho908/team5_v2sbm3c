@@ -8,6 +8,9 @@ public interface OptionDAOInter {
   public int option_create(OptionVO optionVO);
 
   public int option_update(OptionVO optionVO);
+  
+  /**id="option_update_amount" parameterType="Map"*/
+  public int option_update_amount(Map<String,Object> map);
 
   public int option_delete(Map<String, Object> map);
 
@@ -16,5 +19,8 @@ public interface OptionDAOInter {
   public ArrayList<Integer> option_sizes(int shoesno);
 
   public ArrayList<String> option_color(int shoesno);
+  
+  /**id="optionByshoesno" parameterType="int" resultType="dev.mvc.option.OptionVO"*/
+  public ArrayList<OptionVO> optionByshoesno(int shoesno);
 
 }

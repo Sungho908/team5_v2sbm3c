@@ -133,9 +133,9 @@ ORDER BY
       INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
       INNER JOIN options o ON pd.optionno = o.optionno
       INNER JOIN shoes s ON o.shoesno = s.shoesno
-      LEFT JOIN shoes_file sf ON s.shoesno = sf.shoesno
+      LEFT JOIN shoes_file sf ON s.shoesno = sf.shoesno 
     WHERE
-        m.memberno = 1
+       payment_status = '결제완료'
     ORDER BY
       pd.payment_details_no;
       
@@ -208,3 +208,154 @@ ORDER BY
   MIN(pd.payment_details_no);
   
   commit;
+  
+
+
+INSERT INTO payment(paymentno, rdate, status, payment_status, total_price, delivery, total_payment, memberno)
+values(payment_seq.nextval, sysdate, '상품준비중', '입금전', 0, 2500, total_price + delivery, 1);
+
+UPDATE options
+SET amount = 0
+WHERE optionsno = 1;
+
+INSERT INTO payment_details(payment_details_no, payment_amount, optionno, paymentno)
+VALUES (payment_details_seq.nextval, 1, 1,1);
+
+
+
+select DISTINCT
+  m.memberno,
+  
+  p.paymentno,
+  p.rdate,
+  p.status,
+  p.payment_status,
+  p.status,
+  p.cs_status,
+  p.total_price,
+  p.delivery,
+  p.total_payment,
+  
+  pd.payment_details_no,
+  
+  o.optionno,
+  o.sizes,
+  o.amount,
+  o.color,
+  
+  s.shoesno,
+  s.price,
+  s.discount
+  
+FROM 
+  member m
+  INNER JOIN payment         p  ON m.memberno   = p.memberno
+  INNER JOIN payment_details pd ON pd.paymentno = p.paymentno
+  INNER JOIN options         o  ON o.optionno   = pd.optionno
+  INNER JOIN shoes           s  ON s.shoesno = o.shoesno
+  
+WHERE m.memberno = 1;
+
+
+
+
+
+
+--payment count
+
+SELECT
+  COUNT(DISTINCT m.memberno) AS cnt
+FROM
+  member m
+  INNER JOIN payment p ON p.memberno = m.memberno
+  INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
+  INNER JOIN options o ON pd.optionno = o.optionno
+  INNER JOIN shoes s ON o.shoesno = s.shoesno
+  LEFT JOIN shoes_file sf ON s.shoesno = sf.shoesno;
+
+SELECT
+  COUNT(DISTINCT p.paymentno) AS cnt
+FROM
+  member m
+  INNER JOIN payment p ON p.memberno = m.memberno
+  INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
+  INNER JOIN options o ON pd.optionno = o.optionno
+  INNER JOIN shoes s ON o.shoesno = s.shoesno
+  LEFT JOIN shoes_file sf ON s.shoesno = sf.shoesno;
+
+
+--주문상세
+		SELECT
+		m.memberno,
+		p.paymentno,
+		p.rdate,
+		p.payment_status,
+		p.status,
+		p.cs_status,
+		p.total_price,
+		p.delivery,
+		p.total_payment,
+		pd.payment_details_no,
+		pd.payment_amount,
+		o.optionno,
+		o.sizes,
+		o.amount,
+		o.color,
+		s.shoesno,
+		s.title,
+		s.brand,
+		s.rating,
+		s.price,
+		s.discount,
+		s.contents,
+		s.visible,
+		sf.shoes_file_no,
+		sf.name,
+		sf.sizes as shoes_file_sizes,
+		sf.ex,
+		sf.src
+		FROM
+		member m
+		INNER JOIN payment p ON p.memberno = m.memberno
+		INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
+		INNER JOIN options o ON pd.optionno = o.optionno
+		INNER JOIN shoes s ON o.shoesno = s.shoesno
+		LEFT JOIN shoes_file sf ON s.shoesno = sf.shoesno
+		WHERE
+		m.memberno = 1
+          AND p.payment_status IN ('입금완료(수동)');
+        
+
+
+
+  SELECT *
+  FROM (
+    WITH PaymentRank AS (
+      SELECT
+        m.memberno,
+        m.id AS memberid,
+        m.nickname,
+        p.paymentno,
+        p.rdate,
+        ROW_NUMBER() OVER (PARTITION BY m.memberno ORDER BY p.rdate DESC) AS rn
+      FROM
+        member m
+        INNER JOIN payment p ON m.memberno = p.memberno
+      WHERE
+        p.payment_status IN '입금완료(수동)')
+    SELECT
+      memberno,
+      memberid,
+      nickname,
+      paymentno,
+      rdate,
+      ROW_NUMBER() OVER (ORDER BY rdate DESC) AS rownum_
+    FROM
+      PaymentRank
+    WHERE
+      rn = 1
+  )
+  WHERE rownum_ BETWEEN 1 AND 3
+  ORDER BY rdate DESC
+
+

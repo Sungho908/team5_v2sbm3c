@@ -18,5 +18,8 @@ public interface OptionProcInter {
   public ArrayList<Integer> option_sizes(int shoesno);
   
   public ArrayList<String> option_color(int shoesno);
+  
+  /**id="optionByshoesno" parameterType="int" resultType="dev.mvc.option.OptionVO"*/
+  public ArrayList<OptionVO> optionByshoesno(int shoesno);
 
 }

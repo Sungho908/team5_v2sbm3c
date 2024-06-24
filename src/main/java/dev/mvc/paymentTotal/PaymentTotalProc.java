@@ -7,19 +7,39 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import dev.mvc.option.OptionDAOInter;
+import dev.mvc.payment.PaymentDAOInter;
+import dev.mvc.payment.PaymentProc;
+import dev.mvc.paymentDetails.PaymentDetailsDAOInter;
+import dev.mvc.shoes.ShoesDAOInter;
 import dev.mvc.tool.Tool;
 
 @Service("dev.mvc.paymentTotal.PaymentTotalProc")
 public class PaymentTotalProc implements PaymentTotalProcInter {
   @Autowired
   private PaymentTotalDAOInter paymentTotalDAO;
+  
+  @Autowired
+  private PaymentDAOInter paymentDAO;
+  
+  @Autowired
+  private PaymentProc paymentProc;
+  
+  @Autowired
+  private PaymentDetailsDAOInter paymentDetailsDAO;
+  
+  @Autowired
+  private ShoesDAOInter shoesDAO;
+  
+  @Autowired
+  private OptionDAOInter optionDAO;
 
   @Autowired
   private SqlSession sqlsession;
@@ -38,15 +58,12 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
     map.put("endDate", today);
     map.put("search", search);
 
-    // PaymentTotalVO 리스트를 담을 리스트 초기화
     List<PaymentTotalVO> paymentTotalList = new ArrayList<PaymentTotalVO>();
 
-    // 결과를 처리할 핸들러 정의
     sqlsession.select("dev.mvc.paymentTotal.PaymentTotalDAOInter.list", map,
         (ResultHandler<PaymentTotalVO>) context -> {
           PaymentTotalVO paymentTotal = context.getResultObject();
 
-          // 자식 쿼리 호출
           HashMap<String, Object> childMap = new HashMap<>();
           childMap.put("paymentno", paymentTotal.getPaymentno());
           childMap.put("search", search);
@@ -54,7 +71,6 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
           ArrayList<PaymentDetailsOptionVO> paymentDetailsList = (ArrayList) sqlsession
               .selectList("dev.mvc.paymentTotal.PaymentTotalDAOInter.selectPaymentDetailsByPaymentNo", childMap);
 
-          // paymentDetailsList가 비어있지 않으면 paymentTotalList에 추가
           if (!paymentDetailsList.isEmpty()) {
             paymentTotal.setPayment_details_option(paymentDetailsList);
             paymentTotalList.add(paymentTotal);
@@ -65,17 +81,50 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
   }
 
   @Override
+  public ArrayList<PaymentTotalVO> cslist(int memberno, int date, String search) {
+    if (date > 0) {
+      date = -date;
+    }
+    Date today = new Date();
+    Date dates = Tool.addDays(today, date);
+
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    map.put("memberno", memberno);
+    map.put("startDate", dates);
+    map.put("endDate", today);
+    map.put("search", search);
+
+    List<PaymentTotalVO> paymentTotalList = new ArrayList<>();
+
+    sqlsession.select("dev.mvc.paymentTotal.PaymentTotalDAOInter.cslist", map, (ResultHandler<PaymentTotalVO>) context -> {
+      PaymentTotalVO paymentTotal = context.getResultObject();
+
+      HashMap<String, Object> childMap = new HashMap<>();
+      childMap.put("paymentno", paymentTotal.getPaymentno());
+      childMap.put("search", search);
+
+      ArrayList<PaymentDetailsOptionVO> paymentDetailsList = (ArrayList) sqlsession.selectList("dev.mvc.paymentTotal.PaymentTotalDAOInter.selectPaymentDetailsByPaymentNo", childMap);
+
+      if (!paymentDetailsList.isEmpty()) {
+        paymentTotal.setPayment_details_option(paymentDetailsList);
+        paymentTotalList.add(paymentTotal);
+      }
+    });
+
+    return (ArrayList<PaymentTotalVO>) paymentTotalList;
+  }
+
+  @Override
   public int count(String word) {
     return this.paymentTotalDAO.count(word);
   }
 
   @Override
-  public ArrayList<PaymentTotalVO> listAdminPaging(String word, int now_page, int record_per_page) {
+  public ArrayList<PaymentTotalVO> listAdminPaging(String word, int now_page, int record_per_page, Map<String,Object> map) {
     int begin_of_page = (now_page - 1) * record_per_page;
     int start_num = begin_of_page + 1;
     int end_num = begin_of_page + record_per_page;
-
-    Map<String, Object> map = new HashMap<>();
+    
     map.put("word", word);
     map.put("start_num", start_num);
     map.put("end_num", end_num);
@@ -84,16 +133,46 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
   }
 
   @Override
-  public ArrayList<PaymentTotalVO> listAdminPDO(int memberno) {
-    return this.paymentTotalDAO.listAdminPDO(memberno);
+  public ArrayList<PaymentTotalVO> listAdminPDO(Map<String, Object> map){
+    return this.paymentTotalDAO.listAdminPDO(map);
   };
 
   @Override
-  public String ajaxStr(int memberno) {
+  public String paymentAjax(Map<String,Object> map) {
     StringBuffer str = new StringBuffer();
+    
+    String now_page_str =  map.get("now_page").toString();
+    int now_page = now_page_str.isEmpty() ? 1 : Integer.parseInt(now_page_str);
+    System.out.println(map.toString());
+    System.out.println("now_page_str: " + now_page_str);
+    System.out.println("now_page: " + now_page);
+ 
+    ArrayList<PaymentTotalVO> paymentTotalList =  this.listAdminPaging(map.get("word").toString(), now_page, PaymentTotalVO.RECORD_PER_PAGE, map);
+    for(PaymentTotalVO paymentTotal : paymentTotalList) {
+      str.append("<div>");
+      str.append("  <button type=\"button\" class=\"collapsible\" onclick=\"fetchList(this, " + paymentTotal.getMemberno() + ");\">");
+      str.append("  <div style=\"display: flex; justify-content: space-around;\">");
+      str.append("    <span class=\"color-white\" th:text=\"|회원번호: ${paymentTotal.memberno}|\">회원번호:" + paymentTotal.getMemberno() + "</span>");
+      str.append("    <span class=\"color-white\" th:text=\"|회원ID: ${paymentTotal.memberid}|\">" + paymentTotal.getMemberid() + "</span>");
+      str.append("    <span class=\"color-white\" th:text=\"|회원닉네임: ${paymentTotal.nickname}|\"> " + paymentTotal.getNickname() + " </span>");
+      str.append("  </div>");
+      str.append("</button>");
+      str.append("<div class=\"contents\" id=\"btnDiv\"></div>");
+      str.append("</div>");
+    }
+    str.append("<div class=\"bottom_menu\">" + this.paymentProc.pagingBox(now_page, map.get("word").toString(), map.get("path").toString(), this.paymentTotalDAO.member_cnt(map)) + "</div>");
+    
+    return str.toString();
+  }
 
-    ArrayList<PaymentTotalVO> list = this.listAdminPDO(memberno);
-
+  @Override
+  public String paymentDetailsAjax(int memberno, Map<String,Object> map) {
+    StringBuffer str = new StringBuffer();
+    
+    map.put("memberno", memberno);
+    
+    ArrayList<PaymentTotalVO> list = this.listAdminPDO(map);
+    
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     DecimalFormat df = new DecimalFormat("###,###원");
 
@@ -106,8 +185,6 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
       String current_payment_status = payment.getPayment_status();
       String current_status = payment.getStatus();
       String current_cs_status = payment.getCs_status();
-
-//      str.append("<div class=\"contents\" id=\"btnDiv\">");
 
       str.append(
           "  <button type=\"button\" class=\"collapsible\" onclick=\"collapseChild(this);\" style=\"padding: 5px;\">");
@@ -280,10 +357,35 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
         str.append("    </div>");
       }
       str.append("  </div>");
-//      str.append("</div>");
     }
     return str.toString();
 
+  }
+
+
+  @Override
+  @Transactional
+  public boolean create(Map<String, Object> map) {
+    map.put("total_price", ( Integer.parseInt( (String) map.get("amount")) * Integer.parseInt( (String) map.get("price") ) ) );
+    
+    map.put("delivery", Integer.parseInt( (String) map.get("price") ) >= 100000 ? 0 : 2500);
+    if(this.paymentDAO.create(map) < 1)
+      return false;
+    if(this.optionDAO.option_update_amount(map) < 1)
+      return false;
+    if(this.paymentDetailsDAO.create(map) < 1)
+      return false;
+    return true;
+  }
+
+  @Override
+  public int member_cnt(Map<String, Object> map) {
+    return this.paymentTotalDAO.member_cnt(map);
+  }
+
+  @Override
+  public int payment_cnt(Map<String, Object> map) {
+    return this.paymentTotalDAO.payment_cnt(map);
   }
 
 }

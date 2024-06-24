@@ -1,6 +1,7 @@
 package dev.mvc.shoes;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,14 +9,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import dev.mvc.category.CategoryProcInter;
 import dev.mvc.category.CategoryVO;
 import dev.mvc.member.MemberProcInter;
 import dev.mvc.member.MemberVO;
 import dev.mvc.option.OptionProcInter;
+import dev.mvc.option.OptionVO;
+import dev.mvc.paymentTotal.PaymentTotalProcInter;
 import dev.mvc.reportType.ReportTypeProcInter;
 import dev.mvc.reportType.ReportTypeVO;
 import dev.mvc.review.ReviewProcInter;
@@ -47,6 +53,10 @@ public class ShoesCont {
   @Autowired
   @Qualifier("dev.mvc.reportType.ReportTypeProc")
   private ReportTypeProcInter reportTypeProc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.paymentTotal.PaymentTotalProc")
+  private PaymentTotalProcInter paymentTotalProc;
 
   /** 페이지당 출력할 레코드 갯수, nowPage는 1부터 시작 */
   public int record_per_page = 5;
@@ -123,7 +133,8 @@ public class ShoesCont {
     model.addAttribute("shoesAllVO", shoesAllVO);
     
     System.out.println(shoesAllVO.toString());
-
+    
+    
     ArrayList<Integer> sizes = this.optionProc.option_sizes(shoesno);
     model.addAttribute("sizes", sizes);
 
@@ -137,7 +148,13 @@ public class ShoesCont {
     model.addAttribute("review", review);
 
     ArrayList<ReportTypeVO> reportType = this.reportTypeProc.search_type();
-    model.addAttribute("reportType", reportType);
+    model.addAttribute("reportType", reportType); 
+    
+    //kag0330 추가
+    model.addAttribute("options", this.optionProc.optionByshoesno(shoesno));
+    for(OptionVO option : this.optionProc.optionByshoesno(shoesno)) {
+      System.out.println(option.toString());
+    }
 
     return "shoes/detail"; // /templates/shoes/read.html
 
@@ -157,6 +174,15 @@ public class ShoesCont {
 
     return "shoes/brand"; // /templates/shoes/read.html
 
+  }
+
+  
+  @ResponseBody
+  @PostMapping("{shoesno}/payment")
+  public boolean shoespayment(@PathVariable("shoesno")int shoesno, @RequestBody Map<String, Object> map) {
+    if(!this.paymentTotalProc.create(map))
+      return false;
+    return true;
   }
 
 }
