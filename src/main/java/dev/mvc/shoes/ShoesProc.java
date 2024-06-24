@@ -228,6 +228,12 @@ public class ShoesProc implements ShoesProcInter {
     return cnt;
   }
 
+  @Override
+  public ArrayList<ShoesVO> inquiry_select(String word) {
+    ArrayList<ShoesVO> list = this.shoesDAO.inquiry_select(word);
+    return list;
+  }
+
 
   
 }

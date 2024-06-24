@@ -30,12 +30,8 @@
             </span>
             <span style="float:right; margin-right:1%;">
               작성 시간 : <span style="font-size: 1em;"
-                th:text="${#dates.format(shoesInquiryInfoVO.shoesInquiryVO.rdate, 'yy/MM/dd HH:SS')}"></span>
+                th:text="${#dates.format(shoesInquiryInfoVO.shoesInquiryVO.rdate, 'yy/MM/dd HH:MM')}"></span>
             </span><br>
-            <span style="float:left; margin-left:1%;">
-              사이즈 : <span style="font-size: 1em;" th:text="${shoesInquiryInfoVO.optionVO.sizes}"></span> &nbsp;
-              색상 : <span style="font-size: 1em;" th:text="${shoesInquiryInfoVO.optionVO.color}"></span>
-            </span>
             <div class='menu_line'></div>
             <div style="white-space: pre-wrap; margin-left:2%;"><span
                 th:text="${shoesInquiryInfoVO.shoesInquiryVO.contents}"></span>

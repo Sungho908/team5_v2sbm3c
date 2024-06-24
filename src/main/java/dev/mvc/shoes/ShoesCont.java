@@ -85,7 +85,7 @@ public class ShoesCont {
    */
   @GetMapping(value = "/list")
   public String list(HttpSession session, Model model,
-      @RequestParam(name = "categoryno", defaultValue = "0") Integer categoryno,
+      @RequestParam(name = "categoryno", defaultValue = "0", required = false) Integer categoryno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
@@ -110,7 +110,7 @@ public class ShoesCont {
    */
   @GetMapping(value = "/{shoesno}")
   public String details(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
-      @RequestParam(name = "categoryno") int categoryno) {
+      @RequestParam(name = "categoryno", defaultValue = "0", required = false) int categoryno) {
     // session에 들어있는 로그인 값
     //MemberVO memberVO = (MemberVO)session.getAttribute("login");
 

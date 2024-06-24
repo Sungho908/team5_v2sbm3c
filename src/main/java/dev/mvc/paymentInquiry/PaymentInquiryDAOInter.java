@@ -44,4 +44,27 @@ public interface PaymentInquiryDAOInter {
    * @return int
    */
   public int answer(Map<String, Object> map);
+  
+  /**
+   * 문의 - 주문 검색 결과
+   * @param memberno
+   * @return 주문 검색 결과
+   */
+  public ArrayList<PaymentInquiryInfoVO> inquiry_select(int memberno);
+  
+  /**
+   * 내 문의 개수
+   * select id="myInquiryCount" parameterType="Integer"
+   * @param memberno
+   * @return 내 문의 개수
+   */
+  public int myInquiryCount(int memberno);
+  
+  /**
+   * 내 문의
+   * select id="myInquiry" resultMap="myInquiry" parameterType="Map"
+   * @param memberno
+   * @return 내 문의
+   */
+  public ArrayList<PaymentInquiryInfoVO> myInquiry(Map<String, Object> map);
 }

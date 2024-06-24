@@ -91,5 +91,6 @@ public interface ShoesProcInter {
   public OptionVO shoes_option(int optionno, int shoesno); // 단일 read
   
   public int option_delete(int shoesno, int optionno);
-
+  
+  public ArrayList<ShoesVO> inquiry_select(String word);
 }

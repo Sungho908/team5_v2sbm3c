@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public interface PaymentInquiryProcInter {
 
-  public int create(PaymentInquiryVO paymentInquiryVO);
+  public int create(String title, String contents, int memberno, int payment_details_no);
 
   public int list_search_count(String word);
 
@@ -16,4 +16,10 @@ public interface PaymentInquiryProcInter {
 
   public String pagingBox(int now_page, String word, String list_file, int search_count, int record_per_page,
       int page_per_block);
+  
+  public ArrayList<PaymentInquiryInfoVO> inquiry_select(int memberno);
+  
+  public int myInquiryCount(int memberno);
+  
+  public ArrayList<PaymentInquiryInfoVO> myInquiry(int memberno, int now_page, int record_per_page);
 }

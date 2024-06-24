@@ -134,6 +134,12 @@ public class ReportProc implements ReportProcInter {
   }
 
   @Override
+  public int myReportCount(int memberno) {
+    int cnt = this.reportDAO.myReportCount(memberno);
+    return cnt;
+  }
+
+  @Override
   public ArrayList<ReportInfoVO> myReport(int memberno) {
     ArrayList<ReportInfoVO> reportInfoVO = this.reportDAO.myReport(memberno);
     return reportInfoVO;

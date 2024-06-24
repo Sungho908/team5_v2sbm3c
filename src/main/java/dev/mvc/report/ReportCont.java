@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import dev.mvc.member.MemberVO;
@@ -26,6 +27,9 @@ public class ReportCont {
   @Autowired
   @Qualifier("dev.mvc.report.ReportProc")
   private ReportProcInter reportProc;
+
+  public int record_per_page = 5;
+  public int page_per_block = 5;
 
   @PostMapping(value = "/report_count")
   @ResponseBody
@@ -61,12 +65,23 @@ public class ReportCont {
   }
 
   @GetMapping("/myReport")
-  public String myReport(HttpSession session, Model model) {
+  public String myReport(HttpSession session, Model model,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
     MemberVO memberVO = (MemberVO) session.getAttribute("login");
     if (memberVO != null) {
       int memberno = memberVO.getMemberno();
       ArrayList<ReportInfoVO> list = this.reportProc.myReport(memberno);
       model.addAttribute("list", list);
+      int search_count = this.reportProc.myReportCount(memberno);
+      String paging = this.reportProc.pagingBox(now_page, "", "/report/myReport", search_count, this.record_per_page,
+          this.page_per_block);
+
+      int no = search_count - ((now_page - 1) * this.record_per_page);
+
+      model.addAttribute("paging", paging);
+      model.addAttribute("now_page", now_page);
+      model.addAttribute("no", no);
+
       return "report/myReport";
     } else {
       Alert message = new Alert("로그인 후 이용해주세요.", "/login/signin", RequestMethod.GET, null);

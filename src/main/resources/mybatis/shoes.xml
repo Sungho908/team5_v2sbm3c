@@ -199,7 +199,7 @@
   </update>
 
   <select id="inquiry_select" resultType = "dev.mvc.shoes.ShoesVO" parameterType="String">
-    select title, brand from shoes
+    select shoesno, title, brand from shoes
     WHERE UPPER(title) LIKE '%' || UPPER(#{word}) || '%'
     OR UPPER(brand) LIKE '%' || UPPER(#{word}) || '%'
   </select>

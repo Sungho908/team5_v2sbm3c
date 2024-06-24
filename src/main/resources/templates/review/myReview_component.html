@@ -30,8 +30,9 @@
       border-bottom: 0.5px dotted #000;
       padding-bottom: 5px;
     }
+    
   </style>
-  <div style="width:70%; margin: 30px auto;">
+  <div style="width:100%; padding-left: 280px;">
     <div class="search-box">
       <div class="input-group">
 
@@ -70,16 +71,16 @@
               <td class="td_bs zoom">+</td>
             </tr>
             <tr class="contents">
-              <td colspan="5" style="padding:10px 20% 10px 20%;">
+              <td colspan="5" style="font-size: 20px; padding-left: 7%;">
                 리뷰 내용
                 <div class='line'></div><br>
-                <span style="margin-left: 30px; margin-bottom: 30px;" th:text="${shoesAllVO.reviewVO.contents}"></span>
+                <span style="padding-left: 10%; margin-bottom: 30px;" th:text="${shoesAllVO.reviewVO.contents}"></span>
               </td>
             </tr>
           </tbody>
         </table>
+        <div class="bottom_menu" th:utext="${paging}"></div>
       </div>
     </div>
-
   </div>
 </div>
