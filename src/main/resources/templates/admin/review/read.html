@@ -27,35 +27,22 @@
             <a href="/admin/shoes/admin_create" title="등록"><i class="fas fa-plus-circle"></i></a>
             <span class="menu_devide">│</span>
             <a href="javascript: location.reload();" title="새로 고침"><i class="fas fa-sync-alt"></i></a>
-            <span class="menu_devide">│</span>
-            <a href="/admin/review/list" title="후기 보기">
-              <i class="fas fa-comments"></i>
           </aside>
         </div>
         <div class="card-body">
-          <input type="hidden" name="shoesno" th:value="${shoesVO.shoesno}">
+          <input type="hidden" name="reviewno" th:value="${reviewVO.reviewno}">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
-              <strong>신발 번호:</strong> <span th:text="${shoesVO.shoesno}"></span>
+              <strong>신발 번호:</strong> <span th:text="${reviewVO.reviewno}"></span>
             </li>
             <li class="list-group-item">
-              <strong>제목:</strong> <span th:text="${shoesVO.title}"></span>
-            </li>
-            <li class="list-group-item">
-              <strong>브랜드명:</strong> <span th:text="${shoesVO.brand}"></span>
-            </li>
-            <li class="list-group-item">
-              <strong>금액:</strong> <span th:text="${shoesVO.price}"></span>
-            </li>
-            <li class="list-group-item">
-              <strong>내용:</strong> <span th:text="${shoesVO.contents}"></span>
+              <strong>제목:</strong> <span th:text="${reviewVO.contents}"></span>
             </li>
           </ul>
         </div>
   </body>
   <div class="top_menu_line"></div>
 
-  <div th:replace="~{admin/shoes/admin_option_component::admin_option_fragment}"></div>
 
 
 </html>

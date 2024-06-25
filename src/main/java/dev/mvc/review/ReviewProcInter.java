@@ -22,4 +22,12 @@ public interface ReviewProcInter {
   public int myReviewCount(int memberno);
 
   public ArrayList<ShoesAllVO> myReview(int memberno);
+  
+  public int list_search_count(String word);
+  
+  public ArrayList<ReviewVO> list_search_paging(String word, int now_page, int record_per_page);
+  
+  public ArrayList<ReviewVO> list();
+
+  public ArrayList<ReviewVO> shoes_reviews(int shoesno);
 }

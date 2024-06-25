@@ -3,6 +3,7 @@ package dev.mvc.shoes;
 import java.util.ArrayList;
 
 import dev.mvc.option.OptionVO;
+import dev.mvc.review.ReviewVO;
 
 public interface ShoesProcInter {
   /**
@@ -96,5 +97,8 @@ public interface ShoesProcInter {
   public int option_delete(int shoesno, int optionno);
   
   public ArrayList<ShoesVO> inquiry_select(String word);
+
+
+  public ArrayList<ReviewVO> Shoes_reviews(int shoesno);
 }
   

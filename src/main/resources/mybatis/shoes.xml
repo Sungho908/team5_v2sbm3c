@@ -217,4 +217,12 @@
     OR UPPER(brand) LIKE '%' || UPPER(#{word}) || '%'
   </select>
 
+
+
+ <select id="Shoes_reviews" resultType="dev.mvc.review.ReviewVO">
+        SELECT reviewno, contents, rating, rdate, shoesno
+        FROM review
+        WHERE shoesno = #{shoesno}
+        ORDER BY rdate DESC
+    </select>
 </mapper>

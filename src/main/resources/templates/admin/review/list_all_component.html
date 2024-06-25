@@ -1,0 +1,47 @@
+<div th:fragment="list_all_fragment">
+  <!-- <div th:replace=... -->
+
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <div class="container mt-5">
+    <h2 class="mb-4">리뷰 목록</h2>
+    <table class="table table-hover review-table">
+      <thead class="thead-light">
+        <tr>
+          <th style="width: 10%;">리뷰 번호</th>
+          <th style="width: 40%;">내용</th>
+          <th style="width: 15%;">평점</th>
+          <th style="width: 15%;">날짜</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="reviewVO : ${list}">
+          <td th:text="${reviewVO.reviewno}"></td>
+          <td class="review-contents">
+            <a th:href="@{|/admin/review/read/${reviewVO.reviewno}|}" class="review-link"
+              th:text="${reviewVO.contents}"></a>
+          </td>
+          <td class="rating">
+            <!-- 숫자 평점 -->
+            <span th:text="${reviewVO.rating}"></span>
+            <!-- 별표 -->
+            <span th:each="star : ${#numbers.sequence(1, 5)}">
+              <span th:if="${star le reviewVO.rating}" style="color: yellow;">&#9733;</span>
+              <span th:unless="${star le reviewVO.rating}">&#9733;</span>
+            </span>
+          </td>
+          <td class="review-date" th:text="${#dates.format(reviewVO.rdate, 'yyyy-MM-dd')}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 부트스트랩 JS 및 종속성 -->
+
+</div>
+
+
+<!-- 페이지 버튼 목록 출력 시작 -->
+<div class="bottom_menu" th:utext="${paging}"></div>
+<!-- 페이지 버튼 목록 출력 종료 -->
+</div>

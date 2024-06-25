@@ -26,6 +26,8 @@ import dev.mvc.category.CategoryVO;
 import dev.mvc.member.MemberProcInter;
 import dev.mvc.option.OptionProcInter;
 import dev.mvc.option.OptionVO;
+import dev.mvc.review.ReviewProcInter;
+import dev.mvc.review.ReviewVO;
 import dev.mvc.shoes.ShoesProcInter;
 import dev.mvc.shoes.ShoesVO;
 import dev.mvc.tool.Tool;
@@ -50,6 +52,11 @@ public class AdminShoesCont {
   @Autowired
   @Qualifier("dev.mvc.member.MemberProc") // @Service("dev.mvc.member.MemberProc")
   private MemberProcInter memberProc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.review.ReviewProc")
+  private ReviewProcInter reviewProc;
+
 
   /** 페이지당 출력할 레코드 갯수, nowPage는 1부터 시작 */
   public int record_per_page = 5;
@@ -125,6 +132,7 @@ public class AdminShoesCont {
   @GetMapping(value = "/admin_create")
   public String admin_create(HttpSession session, Model model,
       @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "shoesno") int shoesno,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
     ShoesVO shoesVO = new ShoesVO();
@@ -133,6 +141,9 @@ public class AdminShoesCont {
     ArrayList<ShoesVO> menu = this.shoesProc.admin_list_all();
     model.addAttribute("menu", menu);
 
+    ArrayList<ReviewVO> reviews = this.reviewProc.shoes_reviews(shoesno);
+    model.addAttribute("reviews", reviews);
+    
     ArrayList<Integer> list = new ArrayList<>();
     ArrayList<CategoryVO> name_list = this.categoryProc.select_name(list);
     model.addAttribute("name_list", name_list);
