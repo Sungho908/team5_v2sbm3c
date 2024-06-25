@@ -366,15 +366,29 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
   @Override
   @Transactional
   public boolean create(Map<String, Object> map) {
-    map.put("total_price", ( Integer.parseInt( (String) map.get("amount")) * Integer.parseInt( (String) map.get("price") ) ) );
+    System.out.println(map.toString());
+    List<Map<String,Object>> basketList = (List<Map<String, Object>>) map.get("basket");
+    int total_price = basketList.stream().mapToInt(item->(int)item.get("price")).sum();
     
-    map.put("delivery", Integer.parseInt( (String) map.get("price") ) >= 100000 ? 0 : 2500);
-    if(this.paymentDAO.create(map) < 1)
+    System.out.println(basketList);
+    System.out.println(total_price);
+    
+    map.put("total_price", total_price);
+    map.put("delivery", (total_price >= 100000 ?  0 : 2500) );
+    
+    if(this.paymentDAO.create(map) < 1)//total_price, delivery, memberno
       return false;
-    if(this.optionDAO.option_update_amount(map) < 1)
-      return false;
-    if(this.paymentDetailsDAO.create(map) < 1)
-      return false;
+    
+    for(Map<String,Object> basket: basketList) {
+      basket.put("paymentno", map.get("paymentno"));
+      
+      if(this.optionDAO.option_update_amount(basket) < 1)//amount, optionno
+        return false;
+      
+      if(this.paymentDetailsDAO.create(basket) < 1)//amount, paymentno, optionno
+        return false;
+    }
+    
     return true;
   }
 

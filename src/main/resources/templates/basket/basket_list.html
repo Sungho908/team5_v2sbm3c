@@ -30,6 +30,54 @@
       </div>
     </div>
   </div>
+
+  <button class="btn btn-info" style="display:block; text-align: center; margin: 0 auto;" onclick="send()">구매하기</button>
+  <script th:inline="javascript">
+    let basketList = /*[[${list}]]*/[];
+
+    function extractData(list) {
+      return list.map(item => {
+        return {
+          optionno: item.optionVO.optionno,
+          amount: item.basketVO.amount,
+          price: item.shoesVO.price * item.basketVO.amount,
+        }
+      });
+    }
+
+    function send() {
+
+      console.log(extractData(basketList));
+
+      fetch(window.location.pathname + '/payment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          basket: extractData(basketList),
+          memberno: /*[[${session.login.memberno}]]*/""
+        }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok' + response.statusText);
+          }
+          return response.text();
+        })
+        .then((data) => {
+          if (!data) {
+            alert('결제주문이 실패하였습니다.');
+            return false;
+          }
+          alert('결제주문이 성공하였습니다.');
+          location.href = '/member/payment/order';
+        })
+        .catch((error) => {
+          alert('에러가 발생하였습니다. 관리자에게 연락하세요.');
+        });
+    }
+  </script>
   <script src="/js/basket.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </div>

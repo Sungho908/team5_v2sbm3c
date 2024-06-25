@@ -152,9 +152,6 @@ public class ShoesCont {
     
     //kag0330 추가
     model.addAttribute("options", this.optionProc.optionByshoesno(shoesno));
-    for(OptionVO option : this.optionProc.optionByshoesno(shoesno)) {
-      System.out.println(option.toString());
-    }
 
     return "shoes/detail"; // /templates/shoes/read.html
 

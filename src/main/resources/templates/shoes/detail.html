@@ -8,6 +8,7 @@
       width: max-content;
       margin: 0px auto;
     }
+
     .optionDiv::after {
       content: '';
       display: block;
@@ -27,7 +28,8 @@
       <img src="/images/nike.jpg" alt="스니커즈1">
       <div class="content">
         <p>상품 설명 </p>
-        <p>가격:<span id="price" th:text="|${#numbers.formatInteger(shoesAllVO.shoesVO.price, 3, 'COMMA')}원|">price</span></p>
+        <p>가격:<span id="price" th:text="|${#numbers.formatInteger(shoesAllVO.shoesVO.price, 3, 'COMMA')}원|">price</span>
+        </p>
       </div>
       <div class="content">
         <h2>옵션 선택</h2>
@@ -75,12 +77,17 @@
     let optionSelect = document.getElementById('optionSelect');
     let amountInput = document.getElementById('amountInput');
 
+    let sizes = "";
+    let color = "";
+
     optionSelect.addEventListener('change', function () {
       let selectedValue = this.value;
       let selectedOption = options.find(option => option.optionno == selectedValue);
       if (selectedOption) {
         amountInput.disabled = false;
         amountInput.max = selectedOption.amount;
+        sizes = selectedOption.sizes;
+        color = selectedOption.color;
       } else {
         amountInput.disabled = true;
         amountInput.value = null;
@@ -97,7 +104,10 @@
       }
     });
 
+
+
     function send() {
+      let basketList = [];
       let memberno = /*[[${session.login != null ? session.login.memberno : null}]]*/"";
       let price = document.getElementById("price").innerText.replace(/[^0-9]/g, '');
 
@@ -113,16 +123,20 @@
         return false;
       }
 
+      basketList.push({
+        optionno: selected,
+        amount: parseInt(amountInput.value),
+        price: parseInt(price)
+      });
+
       fetch(window.location.pathname + '/payment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          basket: basketList,
           memberno: memberno,
-          optionno: selected,
-          amount: amountInput.value,
-          price: price
         }),
       }).then((response) => {
         if (!response.ok) {
@@ -130,17 +144,17 @@
         }
         return response.text();
       })
-      .then((data) => {
-        if (!data) {
-          alert('결제주문이 실패하였습니다.');
-          return false;
-        }
-        alert('결제주문이 성공하였습니다.');
-        location.href = '/member/payment/order';
-      })
-      .catch((error) => {
-        alert('에러가 발생하였습니다. 관리자에게 연락하세요.');
-      });
+        .then((data) => {
+          if (!data) {
+            alert('결제주문이 실패하였습니다.');
+            return false;
+          }
+          alert('결제주문이 성공하였습니다.');
+          location.href = '/member/payment/order';
+        })
+        .catch((error) => {
+          alert('에러가 발생하였습니다. 관리자에게 연락하세요.');
+        });
     }
   </script>
 </div>
