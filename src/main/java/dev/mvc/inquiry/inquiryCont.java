@@ -186,7 +186,12 @@ public class inquiryCont {
       int payment_details_no = Integer.parseInt(map.get("number"));
       String title = map.get("title");
       String contents = map.get("contents");
-
+      
+      System.out.println("m"+ payment_details_no);
+      System.out.println("m"+ title);
+      System.out.println("m"+ contents);
+      System.out.println("m"+ memberno);
+      
       int cnt = this.paymentinquiryProc.create(title, contents, memberno, payment_details_no);
       if (cnt == 1) {
         response.put("success", true);

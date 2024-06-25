@@ -217,4 +217,16 @@
     OR UPPER(brand) LIKE '%' || UPPER(#{word}) || '%'
   </select>
 
+  <!-- 인기순 -->
+  <select id="popularShoes" resultType="dev.mvc.shoes.ShoesVO">
+    SELECT 
+    s.shoesno AS shoesno,
+    s.title AS title,
+    COALESCE(COUNT(pd.payment_amount), 0) AS saleCount
+    FROM shoes s
+    LEFT JOIN options o ON o.shoesno = s.shoesno
+    LEFT JOIN payment_details pd ON pd.optionno = o.optionno
+    GROUP BY s.shoesno, s.title
+    ORDER BY saleCount DESC, shoesno
+  </select>
 </mapper>

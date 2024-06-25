@@ -42,6 +42,8 @@ public class ShoesVO {
   /** sizes */
   private String sizes;
 
+  /** 신발 판매량 */
+  private int saleCount;
   
   
 }
