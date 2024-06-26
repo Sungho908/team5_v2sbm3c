@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import dev.mvc.shoes.ShoesAllVO;
+import dev.mvc.shoes.ShoesVO;
 
 public interface ReviewDAOInter {
 
@@ -76,4 +77,6 @@ public interface ReviewDAOInter {
   
   
   public ArrayList<ReviewVO> list();
+  
+  public ReviewVO read(int reviewno);
 }

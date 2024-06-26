@@ -9,9 +9,10 @@
       <thead class="thead-light">
         <tr>
           <th style="width: 10%;">리뷰 번호</th>
-          <th style="width: 40%;">내용</th>
+          <th style="width: 30%;">내용</th>
           <th style="width: 15%;">평점</th>
           <th style="width: 15%;">날짜</th>
+          <th style="width: 10%;">수정/삭제</th>
         </tr>
       </thead>
       <tbody>
@@ -31,6 +32,14 @@
             </span>
           </td>
           <td class="review-date" th:text="${#dates.format(reviewVO.rdate, 'yyyy-MM-dd')}"></td>
+          <td class="td_bs">
+            <a
+              th:href="@{|/admin/review/update/${reviewVO.reviewno}?&word=${word}&now_page=${now_page}|}"><img
+                src="/cate/images/update.png" class="icon"></a>
+            <a
+              th:href="@{|/admin/review/delete/${reviewVO.reviewno}?&word=${word}&now_page=${now_page}|}"><img
+                src="/cate/images/delete.png" class="icon"></a>
+          </td>
         </tr>
       </tbody>
     </table>

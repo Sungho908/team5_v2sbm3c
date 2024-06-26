@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.mvc.shoes.ShoesAllVO;
+import dev.mvc.shoes.ShoesVO;
 
 @Service("dev.mvc.review.ReviewProc")
 public class ReviewProc implements ReviewProcInter {
@@ -124,8 +125,8 @@ public class ReviewProc implements ReviewProcInter {
 
   @Override
   public ArrayList<ReviewVO> list() {
-    ArrayList<ReviewVO> reviewVO = this.reviewDAO.list();
-    return reviewVO;
+    ArrayList<ReviewVO> list = this.reviewDAO.list();
+    return list;
   }
 
   @Override
@@ -148,5 +149,13 @@ public class ReviewProc implements ReviewProcInter {
     ArrayList<ReviewVO> list = this.reviewDAO.list_search_paging(map);
     return list;
   }
+
+  @Override
+  public ReviewVO read(int reviewno) {
+    ReviewVO reviewVO = this.reviewDAO.read(reviewno);
+    return reviewVO;
+  }
+
+
 
 }

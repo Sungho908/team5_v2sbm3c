@@ -132,7 +132,6 @@ public class AdminShoesCont {
   @GetMapping(value = "/admin_create")
   public String admin_create(HttpSession session, Model model,
       @RequestParam(name = "word", defaultValue = "") String word,
-      @RequestParam(name = "shoesno") int shoesno,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
     ShoesVO shoesVO = new ShoesVO();
@@ -141,7 +140,7 @@ public class AdminShoesCont {
     ArrayList<ShoesVO> menu = this.shoesProc.admin_list_all();
     model.addAttribute("menu", menu);
 
-    ArrayList<ReviewVO> reviews = this.reviewProc.shoes_reviews(shoesno);
+    ArrayList<ReviewVO> reviews = this.reviewProc.list();
     model.addAttribute("reviews", reviews);
     
     ArrayList<Integer> list = new ArrayList<>();

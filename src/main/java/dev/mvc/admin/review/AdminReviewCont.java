@@ -7,17 +7,19 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import dev.mvc.review.ReviewProcInter;
 import dev.mvc.review.ReviewVO;
+import dev.mvc.shoes.ShoesVO;
 import jakarta.servlet.http.HttpSession;
 
 @RequestMapping("/admin/review")
 @Controller
 public class AdminReviewCont {
-  
+
   @Autowired
   @Qualifier("dev.mvc.review.ReviewProc")
   private ReviewProcInter reviewProc;
@@ -28,12 +30,10 @@ public class AdminReviewCont {
   /** 블럭당 페이지 수, 하나의 블럭은 10개의 페이지로 구성됨 */
   public int page_per_block = 5;
 
-  
   public AdminReviewCont() {
     System.out.println("-> AdminReviewCont created.");
   }
-  
-  
+
 //  /** 리뷰 페이징 */
 //  private void review_table_paging(Model model, String word, int now_page) {
 //    ArrayList<ReviewVO> list = this.reviewProc.list_search_paging(word, now_page, this.record_per_page);
@@ -55,20 +55,37 @@ public class AdminReviewCont {
 //    }
 //
 //  }
-  
+
   /** 리뷰 목록 */
   @GetMapping(value = "/list")
-  public String list(HttpSession session, Model model,
+  public String list(HttpSession session, Model model, 
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    //word = Tool.checkNull(word).trim();
-    
-    ArrayList<ReviewVO> list  = this.reviewProc.list();
-    model.addAttribute("list", list);
-    //review_table_paging(model, word, now_page);
+    // word = Tool.checkNull(word).trim();
 
+    ArrayList<ReviewVO> list = this.reviewProc.list();
+    model.addAttribute("list", list);
+    // review_table_paging(model, word, now_page);
+    
     return "admin/review/list";
   }
-  
-  
+
+  /** 리뷰 보기 */
+  @GetMapping(value = "/read/{reviewno}")
+  public String read(HttpSession session, Model model, 
+      @PathVariable("reviewno") Integer reviewno,
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    // word = Tool.checkNull(word).trim();
+
+    ArrayList<ReviewVO> list = this.reviewProc.list();
+    model.addAttribute("list", list);
+
+    ReviewVO reviewVO = this.reviewProc.read(reviewno);
+    model.addAttribute("reviewVO", reviewVO);
+    // review_table_paging(model, word, now_page);
+
+    return "admin/review/read";
+  }
+
 }

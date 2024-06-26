@@ -98,51 +98,58 @@
   </select>
 
   <!-- 검색된 레코드 수 -->
- 
-   <select id="list_search_count" resultType="int" parameterType="Map"> 
+
+  <select id="list_search_count" resultType="int" parameterType="Map">
     SELECT COUNT(*) as cnt 
     FROM review r 
     JOIN shoes s ON r.memberno = s.memberno 
-    JOIN hates h ON s.memberno = h.memberno 
-    <if test="reviewno != 0"> 
-      WHERE cl.categoryno = #{categoryno} 
+    JOIN hates h ON s.memberno = h.memberno
+    <if test="reviewno != 0">
+      WHERE cl.categoryno = #{categoryno}
       <if test="word != null and word != ''">
         AND (
         UPPER(r.contents) LIKE '%' || UPPER(#{word}) || '%'
         )
       </if>
     </if>
-    <if
-      test="word != null and word != '' and (reviewno == 0)">
+    <if test="word != null and word != '' and (reviewno == 0)">
       WHERE
       (
       UPPER(r.contents) LIKE '%' || UPPER(#{word}) || '%'
       )
     </if>
   </select>
- 
-  <select id="list_search_paging" resultType="dev.mvc.review.ReviewVO" parameterType="Map"> 
+
+  <select id="list_search_paging" resultType="dev.mvc.review.ReviewVO" parameterType="Map">
     SELECT reviewno, contentes
      FROM 
      ( SELECT r.reviewno AS reviewno, r.contents AS contents, 
      ROW_NUMBER() OVER( ORDER BY CASE WHEN s.visible = 'N' THEN 0 ELSE 1 END, r.reviewno DESC ) AS r 
     FROM review r 
     JOIN shoes s ON r.memberno = s.memberno 
-    JOIN hates h ON s.memberno = h.memberno <if
-      test="reviewno != null and reviewno != ''"> WHERE cl.reviewno =
-    #{reviewno} <if test="word != null and word != ''">
+    JOIN hates h ON s.memberno = h.memberno
+    <if test="reviewno != null and reviewno != ''">
+      WHERE cl.reviewno =
+    #{reviewno}
+      <if test="word != null and word != ''">
         AND (
         UPPER(r.contents) LIKE '%' || UPPER(#{word}) || '%'
         )
       </if>
     </if>
-    <if
-      test="word != null and word != '' and (reviewno == null or reviewno == '')">
+    <if test="word != null and word != '' and (reviewno == null or reviewno == '')">
     WHERE
       (
       UPPER(r.contents) LIKE '%' || UPPER(#{word}) || '%'
       )
     </if>
-    ) </select>
+    )
+  </select>
+
+  <select id="read" parameterType="Integer">
+    SELECT reviewno, contents, rating, rdate
+    FROM review
+    WHERE reviewno = #{reviewno}
+  </select>
 
 </mapper>
