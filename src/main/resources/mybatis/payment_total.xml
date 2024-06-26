@@ -7,7 +7,14 @@
 
   <resultMap id="PaymentDetailsOptionMap" type="dev.mvc.paymentTotal.PaymentDetailsOptionVO">
     <id property="payment_details_no" column="payment_details_no" />
-
+    <result property="payment_amount" column="payment_amount" />
+    <result property="paymentno" column="paymentno" />
+    
+    <result property="optionno" column="optionno" />
+    <result property="sizes" column="sizes" />
+    <result property="amount" column="amount" />
+    <result property="color" column="color" />
+    
     <result property="shoesno" column="shoesno" />
     <result property="title" column="title" />
     <result property="brand" column="brand" />
@@ -16,13 +23,11 @@
     <result property="discount" column="discount" />
     <result property="contents" column="contents" />
     <result property="visible" column="visible" />
-
-    <result property="payment_amount" column="payment_amount" />
-    <result property="optionno" column="optionno" />
-    <result property="sizes" column="sizes" />
-    <result property="amount" column="amount" />
-    <result property="color" column="color" />
-
+    
+    <result property="subname" column="subname"/>
+    
+    <result property="categoryno" column="categoryno"/>
+    
     <result property="shoes_file_no" column="shoes_file_no" />
     <result property="name" column="name" />
     <result property="shoes_file_sizes" column="shoes_file_sizes" />
@@ -47,28 +52,28 @@
     <collection property="payment_details_option" autoMapping="true" ofType="dev.mvc.paymentTotal.PaymentDetailsOptionVO" column="paymentno" />
   </resultMap>
 
-	<select id="list" parameterType="map" resultMap="PaymentTotalMap" resultOrdered="true">
-		SELECT DISTINCT
-		m.memberno,
-		p.paymentno,
-		p.rdate,
-		p.status,
-		p.payment_status,
-		p.cs_status,
-		p.total_price,
-		p.delivery,
-		p.total_payment
-		FROM
-		member m
-		INNER JOIN payment p ON m.memberno = p.memberno
-		INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
-		WHERE
-		m.memberno = #{memberno} AND p.cs_status IS NULL
-		<if test="startDate != null and endDate != null">
-			AND p.rdate BETWEEN #{startDate} AND #{endDate}
-		</if>
-		ORDER BY
-		p.rdate DESC
+	<select id="list" parameterType="map" resultMap="PaymentTotalMap" resultOrdered="true" >
+    SELECT DISTINCT
+    m.memberno,
+    p.paymentno,
+    p.rdate,
+    p.status,
+    p.payment_status,
+    p.cs_status,
+    p.total_price,
+    p.delivery,
+    p.total_payment
+    FROM
+    member m
+    INNER JOIN payment p ON m.memberno = p.memberno
+    INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
+    WHERE
+    m.memberno = #{memberno} AND p.cs_status IS NULL
+    <if test="startDate != null and endDate != null">
+      AND p.rdate BETWEEN #{startDate} AND #{endDate}
+    </if>
+    ORDER BY
+    p.rdate DESC
 	</select>
 	
 	 <select id="cslist" parameterType="map" resultMap="PaymentTotalMap" resultOrdered="true">
@@ -111,6 +116,8 @@
     s.discount,
     s.contents,
     s.visible,
+    c.subname,
+    cl.categoryno,
     sf.shoes_file_no,
     sf.name,
     sf.sizes as shoes_file_sizes,
@@ -120,9 +127,11 @@
     payment_details pd
     INNER JOIN options o ON pd.optionno = o.optionno
     INNER JOIN shoes s ON o.shoesno = s.shoesno
+    INNER JOIN category_list cl ON cl.shoesno = s.shoesno
+    INNER JOIN category c ON c.categoryno = cl.categoryno
     LEFT JOIN shoes_file sf ON s.shoesno = sf.shoesno
     WHERE
-    pd.paymentno = #{paymentno}
+    pd.paymentno = #{paymentno} AND c.subname = s.brand
     <if test="search != null and search != ''">
       AND UPPER(s.title) LIKE '%' || UPPER(#{search}) || '%'
     </if>
@@ -130,16 +139,7 @@
     pd.payment_details_no
   </select>
 
-  <select id="count" resultType="int" parameterType="String">
-    SELECT
-    COUNT(DISTINCT m.memberno) AS member_count
-    FROM
-    member m
-    INNER JOIN payment p ON m.memberno = p.memberno
-    <if test="word != null and word != '' ">
-      WHERE UPPER(m.id) LIKE '%' || UPPER(#{word}) || '%' OR UPPER(m.nickname) LIKE '%' || UPPER(#{word}) || '%'
-    </if>
-  </select>
+
 <!-- ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ -->
 
 	<select id="listAdminPaging" resultMap="PaymentTotalMap" parameterType="Map" >

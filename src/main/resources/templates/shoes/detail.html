@@ -28,6 +28,7 @@
       <img src="/images/nike.jpg" alt="스니커즈1">
       <div class="content">
         <p>상품 설명 </p>
+        <span th:text="${shoesAllVO.shoesVO.contents}"></span>
         <p>가격:<span id="price" th:text="|${#numbers.formatInteger(shoesAllVO.shoesVO.price, 3, 'COMMA')}원|">price</span>
         </p>
       </div>
