@@ -28,8 +28,7 @@
             <span class="menu_devide">│</span>
             <a href="javascript: location.reload();" title="새로 고침"><i class="fas fa-sync-alt"></i></a>
             <span class="menu_devide">│</span>
-            <a href="/admin/review/list" title="후기 보기">
-              <i class="fas fa-comments"></i>
+            <a th:href="@{|/admin/review/list/${shoesVO.shoesno}|}" title="후기 보기"><i class="fas fa-comments"></i></a>
           </aside>
         </div>
         <div class="card-body">

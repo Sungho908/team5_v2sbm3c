@@ -57,8 +57,7 @@ public interface ReviewDAOInter {
    * @return ArrayList<ShoesAllVO>
    */
   public ArrayList<ShoesAllVO> myReview(int memberno);
-  
-  
+
   /**
    * 검색된 레코드 수 id="list_search_count" resultType="int" parameterType="String"
    * 
@@ -68,15 +67,16 @@ public interface ReviewDAOInter {
   public int list_search_count(String word);
 
   /**
-   * 페이징 id="list_search_paging" resultMap="InquiryResult" parameterType="Map"
+   * 페이징 id="list_search_paging" parameterType="Map"
    * 
    * @param Map
-   * @return ArrayList<ReportInfoVO>
+   * @return ArrayList
    */
   public ArrayList<ReviewVO> list_search_paging(Map<String, Object> map);
-  
-  
+
   public ArrayList<ReviewVO> list();
-  
-  public ReviewVO read(int reviewno);
+
+
+  public ArrayList<ReviewVO> shoes_reviews(int shoesno);
+
 }

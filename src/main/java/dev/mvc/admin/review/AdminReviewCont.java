@@ -1,6 +1,8 @@
 package dev.mvc.admin.review;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,12 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import dev.mvc.review.ReviewProcInter;
 import dev.mvc.review.ReviewVO;
-import dev.mvc.shoes.ShoesVO;
 import jakarta.servlet.http.HttpSession;
 
 @RequestMapping("/admin/review")
@@ -34,46 +38,44 @@ public class AdminReviewCont {
     System.out.println("-> AdminReviewCont created.");
   }
 
-//  /** 리뷰 페이징 */
-//  private void review_table_paging(Model model, String word, int now_page) {
-//    ArrayList<ReviewVO> list = this.reviewProc.list_search_paging(word, now_page, this.record_per_page);
-//
-//    if (list.isEmpty()) {
-//    } else {
-//      model.addAttribute("list", list);
-//
-//      int search_count = this.reviewProc.list_search_count(word);
-//      String paging = this.reviewProc.pagingBox(now_page, word, "/admin/review/list", search_count,
-//          this.record_per_page, this.page_per_block);
-//
-//      int no = search_count - ((now_page - 1) * this.record_per_page);
-//
-//      model.addAttribute("paging", paging);
-//      model.addAttribute("now_page", now_page);
-//      model.addAttribute("word", word);
-//      model.addAttribute("no", no);
-//    }
-//
-//  }
+  /** 리뷰 페이징 */
+  private void review_table_paging(Model model, int shoesno, String word, int now_page) {
+    
+    ArrayList<ReviewVO> list = this.reviewProc.list_search_paging(word, shoesno, now_page, this.record_per_page);
+    model.addAttribute("list", list);
+
+    int search_count = this.reviewProc.list_search_count(word);
+    String paging = this.reviewProc.pagingBox(now_page, word, "/admin/review/list", search_count, this.record_per_page,
+        this.page_per_block);
+
+    int no = search_count - ((now_page - 1) * this.record_per_page);
+
+    model.addAttribute("paging", paging);
+    model.addAttribute("shoesno", shoesno);
+    model.addAttribute("now_page", now_page);
+    model.addAttribute("word", word);
+    model.addAttribute("no", no);
+  }
+
 
   /** 리뷰 목록 */
-  @GetMapping(value = "/list")
-  public String list(HttpSession session, Model model, 
+  @GetMapping(value = "/list/{shoesno}")
+  public String list(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
     // word = Tool.checkNull(word).trim();
 
-    ArrayList<ReviewVO> list = this.reviewProc.list();
-    model.addAttribute("list", list);
-    // review_table_paging(model, word, now_page);
-    
+    ArrayList<ReviewVO> reviews = this.reviewProc.shoes_reviews(shoesno);
+    model.addAttribute("reviews", reviews);
+
+    review_table_paging(model, shoesno, word, now_page);
+
     return "admin/review/list";
   }
 
   /** 리뷰 보기 */
   @GetMapping(value = "/read/{reviewno}")
-  public String read(HttpSession session, Model model, 
-      @PathVariable("reviewno") Integer reviewno,
+  public String read(HttpSession session, Model model, @PathVariable("reviewno") Integer reviewno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
     // word = Tool.checkNull(word).trim();
@@ -81,11 +83,33 @@ public class AdminReviewCont {
     ArrayList<ReviewVO> list = this.reviewProc.list();
     model.addAttribute("list", list);
 
-    ReviewVO reviewVO = this.reviewProc.read(reviewno);
-    model.addAttribute("reviewVO", reviewVO);
     // review_table_paging(model, word, now_page);
 
     return "admin/review/read";
   }
 
+  /** 리뷰 삭제 */
+  @PostMapping(value = "/delete")
+  @ResponseBody
+  public Map<String, Object> admin_delete_process(HttpSession session, Model model,
+      @RequestBody Map<String, Object> map) {
+
+    Map<String, Object> response = new HashMap<>();
+    int reviewno = (Integer) map.get("reviewno");
+
+    int result = this.reviewProc.delete(reviewno);
+
+    // Integer memberno = (Integer) session.getAttribute("memberno");
+    // if (memberno == null) {
+    // response.put("message", "세션이 만료되었거나 로그인 되어 있지 않습니다.");
+    // return response;
+    // }
+    if (result == 1) {
+      response.put("success", true);
+    } else {
+      response.put("message", "장바구니 제품 삭제에 실패했습니다.");
+    }
+
+    return response;
+  }
 }
