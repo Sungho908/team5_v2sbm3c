@@ -3,15 +3,17 @@
 <mapper namespace="dev.mvc.review.ReviewDAOInter">
 
   <select id="review_list" resultMap="reviewRead">
-    SELECT r.reviewno, r.contents, r.rating, r.rdate, s.title, m.memberno, m.nickname, 
-       COUNT(l.likesno) AS likes, COUNT(h.hatesno) AS hates
-      FROM review r
-      JOIN shoes s ON r.shoesno = s.shoesno
-      JOIN member m ON r.memberno = m.memberno
-      LEFT JOIN likes l ON r.reviewno = l.reviewno
-      LEFT JOIN hates h ON r.reviewno = h.reviewno
-      WHERE r.shoesno = #{shoesno}
-      GROUP BY r.reviewno, r.contents, r.rating, r.rdate, s.title, m.memberno, m.nickname
+    SELECT r.reviewno, r.contents, r.rating, r.rdate, s.title, m.memberno,
+    m.nickname,
+    COUNT(l.likesno) AS likes, COUNT(h.hatesno) AS hates
+    FROM review r
+    JOIN shoes s ON r.shoesno = s.shoesno
+    JOIN member m ON r.memberno = m.memberno
+    LEFT JOIN likes l ON r.reviewno = l.reviewno
+    LEFT JOIN hates h ON r.reviewno = h.reviewno
+    WHERE r.shoesno = #{shoesno}
+    GROUP BY r.reviewno, r.contents, r.rating, r.rdate, s.title, m.memberno,
+    m.nickname
   </select>
 
   <resultMap id="reviewRead" type="dev.mvc.shoes.ShoesAllVO">
@@ -44,7 +46,8 @@
 
   <insert id="create" parameterType="dev.mvc.review.ReviewVO">
     INSERT INTO review(reviewno, contents, rating, rdate, shoesno, memberno)
-    VALUES(review_seq.nextval, #{contents}, #{rating}, sysdate, #{shoesno}, #{memberno})
+    VALUES(review_seq.nextval, #{contents}, #{rating}, sysdate, #{shoesno},
+    #{memberno})
   </insert>
 
   <update id="update" parameterType="dev.mvc.review.ReviewVO">
@@ -59,13 +62,13 @@
   </delete>
 
   <select id="myReviewCount" parameterType="Integer">
-    SELECT COUNT(*) 
+    SELECT COUNT(*)
     FROM review r
     JOIN shoes s ON s.shoesno = r.shoesno
     WHERE r.memberno = #{memberno}
     ORDER BY rdate desc
   </select>
-  
+
   <select id="myReview" resultMap="myReview" parameterType="Integer">
     SELECT r.reviewno, r.contents, r.rating, r.rdate, s.shoesno, s.title
     FROM review r
@@ -87,4 +90,66 @@
       <result property="title" column="title" />
     </association>
   </resultMap>
+
+  <select id="list" resultType="dev.mvc.review.ReviewVO">
+    SELECT reviewno, contents, rating, rdate
+    FROM review 
+    ORDER BY reviewno ASC
+  </select>
+
+  <!-- 검색된 레코드 수 -->
+
+  <select id="list_search_count" resultType="int" parameterType="Map">
+    SELECT COUNT(*) as cnt 
+    FROM review r 
+    JOIN shoes s ON r.memberno = s.memberno 
+    JOIN hates h ON s.memberno = h.memberno
+    <if test="reviewno != 0">
+      WHERE cl.categoryno = #{categoryno}
+      <if test="word != null and word != ''">
+        AND (
+        UPPER(r.contents) LIKE '%' || UPPER(#{word}) || '%'
+        )
+      </if>
+    </if>
+    <if test="word != null and word != '' and (reviewno == 0)">
+      WHERE
+      (
+      UPPER(r.contents) LIKE '%' || UPPER(#{word}) || '%'
+      )
+    </if>
+  </select>
+
+  <select id="list_search_paging" resultType="dev.mvc.review.ReviewVO" parameterType="Map">
+    SELECT reviewno, contentes
+     FROM 
+     ( SELECT r.reviewno AS reviewno, r.contents AS contents, 
+     ROW_NUMBER() OVER( ORDER BY CASE WHEN s.visible = 'N' THEN 0 ELSE 1 END, r.reviewno DESC ) AS r 
+    FROM review r 
+    JOIN shoes s ON r.memberno = s.memberno 
+    JOIN hates h ON s.memberno = h.memberno
+    <if test="reviewno != null and reviewno != ''">
+      WHERE cl.reviewno =
+    #{reviewno}
+      <if test="word != null and word != ''">
+        AND (
+        UPPER(r.contents) LIKE '%' || UPPER(#{word}) || '%'
+        )
+      </if>
+    </if>
+    <if test="word != null and word != '' and (reviewno == null or reviewno == '')">
+    WHERE
+      (
+      UPPER(r.contents) LIKE '%' || UPPER(#{word}) || '%'
+      )
+    </if>
+    )
+  </select>
+
+  <select id="read" parameterType="Integer">
+    SELECT reviewno, contents, rating, rdate
+    FROM review
+    WHERE reviewno = #{reviewno}
+  </select>
+
 </mapper>

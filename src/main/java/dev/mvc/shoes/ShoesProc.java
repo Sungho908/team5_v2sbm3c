@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.mvc.option.OptionVO;
+import dev.mvc.review.ReviewVO;
 
 //@Component("dev.mvc.shoes.ShoesProc")
 @Service("dev.mvc.shoes.ShoesProc")
@@ -233,6 +234,12 @@ public class ShoesProc implements ShoesProcInter {
   @Override
   public ArrayList<ShoesVO> inquiry_select(String word) {
     ArrayList<ShoesVO> list = this.shoesDAO.inquiry_select(word);
+    return list;
+  }
+
+  @Override
+  public ArrayList<ReviewVO> Shoes_reviews(int shoesno) {
+    ArrayList<ReviewVO> list = this.shoesDAO.Shoes_reviews(shoesno);
     return list;
   }
 }

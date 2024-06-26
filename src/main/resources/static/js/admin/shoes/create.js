@@ -1,53 +1,45 @@
 document.addEventListener("DOMContentLoaded", function() {
   console.log("DOMContentLoaded event fired");
-  var button = document.getElementById('addCategoryButton');
+
+  var addbutton = document.getElementById('addCategoryButton');
   var categoryContainer = document.getElementById('categoryContainer');
   var categoryCount = 1; // 초기 카운트는 1
 
-  button.addEventListener('click', function(e) {
+  var arraylist = [];
+  addbutton.addEventListener('click', function(e) {
     e.preventDefault(); // 폼 제출 방지
-    console.log("Add Category button clicked");
 
-    if (categoryCount < 5) {
+    var categoryno = document.getElementById('mainCategory').value;
+    var subcategoryno = document.getElementById('subCategory').value;
+    
+    arraylist.push(parseInt(categoryno,10));
+    fetch('/admin/shoes/addcategory', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(arraylist)
+    })
+      .then(response => response.json())
+      .then(response => {
+        response.name_list.forEach(category => {
+          alert(category.name);
+          // 여기서 각 CategoryVO 객체의 속성을 원하는 대로 처리할 수 있습니다.
+        });
+      })
+      .catch(error => console.error('Error:', error));
+
+    if (categoryCount < 4) {
       categoryCount++;
-      console.log("Adding category, count:", categoryCount);
-
-     // 새로운 카테고리 폼 요소 추가
-            var newCategoryRow = document.createElement('div');
-            newCategoryRow.classList.add('form-row', 'category-row');
-
-            newCategoryRow.innerHTML = `
-                <div class="form-group col-sm-6">
-                    <label for="mainCategory${categoryCount}">중분류</label>
-                    <select id="mainCategory${categoryCount}" name="mainCategory${categoryCount}" class="form-control">
-                        <option value="">중분류를 선택해주세요.</option>
-                        
-                    </select>
-                </div>
-                <div class="form-group col-sm-6">
-                    <label for="subCategory${categoryCount}">소분류</label>
-                    <select id="subCategory${categoryCount}" name="subCategory${categoryCount}" class="form-control">
-                        <option value="">소분류를 선택해주세요.</option>
-                    </select>
-                </div>
-            `;
-
-      // 기존 카테고리 컨테이너에 새 행 추가
-      categoryContainer.appendChild(newCategoryRow);
-
-      // 새로 추가된 mainCategory와 subCategory에 이벤트 리스너 추가
-      document.getElementById(`mainCategory${categoryCount}`).addEventListener('change', function() {
-        fetchSubcategories(this.id, `subCategory${categoryCount}`);
-      });
-
-      if (categoryCount >= 5) {
-        button.style.display = 'none';
-      }
+    } else {
+      addbutton.style.display = 'none';
     }
-  });
-});
 
-document.addEventListener('DOMContentLoaded', function() {
+
+
+  });
+
+  // 동적으로 옵션을 생성하는 함수
   document.getElementById('mainCategory').addEventListener('change', function() {
     var mainCategoryName = this.value;
     if (mainCategoryName) {
@@ -57,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          name: mainCategoryName,
+          categoryno: parseInt(mainCategoryName, 10)
         })
       })
         .then(response => {
@@ -85,5 +77,5 @@ document.addEventListener('DOMContentLoaded', function() {
       subCategorySelect.innerHTML = '<option value="">소분류를 선택해주세요.</option>';
     }
   });
-});
 
+});

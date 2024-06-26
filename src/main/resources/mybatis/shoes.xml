@@ -229,4 +229,12 @@
     GROUP BY s.shoesno, s.title
     ORDER BY saleCount DESC, shoesno
   </select>
+
+ <select id="Shoes_reviews" resultType="dev.mvc.review.ReviewVO">
+        SELECT reviewno, contents, rating, rdate, shoesno
+        FROM review
+        WHERE shoesno = #{shoesno}
+        ORDER BY rdate DESC
+    </select>
+    
 </mapper>

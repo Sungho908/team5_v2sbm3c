@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import dev.mvc.option.OptionVO;
+import dev.mvc.review.ReviewVO;
 
 public interface ShoesDAOInter {
   /**
@@ -96,5 +97,6 @@ public interface ShoesDAOInter {
   
   public ArrayList<ShoesVO> inquiry_select(String word);
 
+  public ArrayList<ReviewVO> Shoes_reviews(int shoesno);
   
 }
