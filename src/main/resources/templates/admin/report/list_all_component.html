@@ -31,8 +31,7 @@
         <td class="td_bs">
           <div th:if="${#strings.equals(reportInfoVO.reportVO.report_visible, 'N')}">
             <a
-              th:href="@{|/admin/report/${reportInfoVO.reportVO.reportno}?word=${word}&now_page=${now_page}|}"><img
-                src="/admin/report/images/update.png" class="icon"></a>
+              th:href="@{|/admin/report/${reportInfoVO.reportVO.reportno}?word=${word}&now_page=${now_page}|}"><i class="fas fa-edit"></i></a>
           </div>
         </td>
 
