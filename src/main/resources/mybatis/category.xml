@@ -141,7 +141,7 @@
   </select>
 
   <select id="select_subname" resultType="dev.mvc.category.CategoryVO" parameterType="Integer">
-     SELECT subname
+     SELECT categoryno, subname
     FROM category
     WHERE parentno = 
     (SELECT categoryno  FROM category

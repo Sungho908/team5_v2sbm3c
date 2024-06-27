@@ -7,8 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dev.mvc.category.CategoryVO;
-
 @Service("dev.mvc.option.OptionProc")
 public class OptionProc implements OptionProcInter {
 
@@ -22,17 +20,23 @@ public class OptionProc implements OptionProcInter {
   }
 
   @Override
-  public int option_update(OptionVO optionVO) {
-    int cnt = this.optionDAO.option_update(optionVO);
+  public ArrayList<OptionVO> option_list(int shoesno) {
+    ArrayList<OptionVO> optionVO = this.optionDAO.option_list(shoesno);
+    return optionVO;
+  }
+
+  @Override
+  public int option_update(int amount, int optionno) {
+    Map<String, Object> map = new HashMap<>();
+    map.put("amount", amount);
+    map.put("optionno", optionno);
+    int cnt = this.optionDAO.option_update(map);
     return cnt;
   }
 
   @Override
-  public int option_delete(int shoesno, int optionno) {
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("shoesno", shoesno);
-    map.put("optionno", optionno);
-    int cnt = this.optionDAO.option_delete(map);
+  public int option_delete(int optionno) {
+    int cnt = this.optionDAO.option_delete(optionno);
     return cnt;
   }
 
@@ -40,6 +44,25 @@ public class OptionProc implements OptionProcInter {
   public int option_search_count(int shoesno) {
     int cnt = this.optionDAO.option_search_count(shoesno);
     return cnt;
+  }
+
+  @Override
+  public ArrayList<OptionVO> option_paging(int shoesno, String word, int now_page, int record_per_page) {
+    int begin_of_page = (now_page - 1) * record_per_page;
+
+    int start_num = begin_of_page + 1;
+
+    int end_num = begin_of_page + record_per_page;
+
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("shoesno", shoesno);
+    map.put("word", word);
+    map.put("start_num", start_num);
+    map.put("end_num", end_num);
+
+    ArrayList<OptionVO> list = this.optionDAO.option_paging(map);
+    return list;
+
   }
 
   @Override
@@ -53,7 +76,5 @@ public class OptionProc implements OptionProcInter {
     ArrayList<String> color = this.optionDAO.option_color(shoesno);
     return color;
   }
-
-
 
 }

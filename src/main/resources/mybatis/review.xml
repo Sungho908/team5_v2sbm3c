@@ -3,17 +3,19 @@
 <mapper namespace="dev.mvc.review.ReviewDAOInter">
 
   <select id="review_list" resultMap="reviewRead">
-    SELECT r.reviewno, r.contents, r.rating, r.rdate, s.title, m.memberno,
-    m.nickname,
-    COUNT(l.likesno) AS likes, COUNT(h.hatesno) AS hates
-    FROM review r
-    JOIN shoes s ON r.shoesno = s.shoesno
-    JOIN member m ON r.memberno = m.memberno
-    LEFT JOIN likes l ON r.reviewno = l.reviewno
-    LEFT JOIN hates h ON r.reviewno = h.reviewno
-    WHERE r.shoesno = #{shoesno}
-    GROUP BY r.reviewno, r.contents, r.rating, r.rdate, s.title, m.memberno,
-    m.nickname
+    SELECT *
+    FROM (
+      SELECT r.reviewno, r.contents, r.rating, r.rdate, s.title, m.memberno, m.nickname,
+      COUNT(l.likesno) AS likes, COUNT(h.hatesno) AS hates
+      FROM review r
+      JOIN shoes s ON r.shoesno = s.shoesno
+      JOIN member m ON r.memberno = m.memberno
+      LEFT JOIN likes l ON r.reviewno = l.reviewno
+      LEFT JOIN hates h ON r.reviewno = h.reviewno
+      WHERE r.shoesno = 1
+      GROUP BY r.reviewno, r.contents, r.rating, r.rdate, s.title, m.memberno, m.nickname
+      ORDER BY r.reviewno DESC
+    ) WHERE ROWNUM &lt; = 5
   </select>
 
   <resultMap id="reviewRead" type="dev.mvc.shoes.ShoesAllVO">

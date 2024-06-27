@@ -21,8 +21,12 @@ public class ShoesProc implements ShoesProcInter {
   }
 
   @Override
-  public int admin_create(ShoesVO shoesVO) {
-    int cnt = this.shoesDAO.admin_create(shoesVO);
+  public int admin_create(ShoesVO shoesVO, ArrayList<Integer> categorylist) {
+    
+    Map<String, Object> map = new HashMap<>();
+    map.put("shoesVO", shoesVO);
+    map.put("categorylist", categorylist);
+    int cnt = this.shoesDAO.admin_create(map);
     return cnt;
   }
 
@@ -172,62 +176,6 @@ public class ShoesProc implements ShoesProcInter {
   @Override
   public int parent_count(int shoesno) {
     int cnt = this.shoesDAO.parent_count(shoesno);
-    return cnt;
-  }
-
-  @Override
-  public ArrayList<OptionVO> option_paging(int shoesno, String word, int now_page, int record_per_page) {
-    int begin_of_page = (now_page - 1) * record_per_page;
-
-    int start_num = begin_of_page + 1;
-
-    int end_num = begin_of_page + record_per_page;
-
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("shoesno", shoesno);
-    map.put("word", word);
-    map.put("start_num", start_num);
-    map.put("end_num", end_num);
-
-    ArrayList<OptionVO> list = this.shoesDAO.option_paging(map);
-    return list;
-
-  }
-
-  @Override
-  public int option_search_count(int shoesno) {
-    int cnt = this.shoesDAO.option_search_count(shoesno);
-    return cnt;
-  }
-
-  @Override
-  public int option_create(OptionVO optionVO) {
-    int cnt = this.shoesDAO.option_create(optionVO);
-    return cnt;
-  }
-
-  @Override
-  public int option_update(OptionVO optionVO) {
-    int cnt = this.shoesDAO.option_update(optionVO);
-    return cnt;
-  }
-
-  @Override
-  public OptionVO shoes_option(int optionno, int shoesno) {
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("optionno", optionno);
-    map.put("shoesno", shoesno);
-
-    OptionVO list = this.shoesDAO.shoes_option(map);
-    return list;
-  }
-
-  @Override
-  public int option_delete(int shoesno, int optionno) {
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("shoesno", shoesno);
-    map.put("optionno", optionno);
-    int cnt = this.shoesDAO.option_delete(map);
     return cnt;
   }
 

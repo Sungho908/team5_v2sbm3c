@@ -2,16 +2,13 @@ package dev.mvc.admin.shoes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import dev.mvc.category.CategoryProcInter;
 import dev.mvc.category.CategoryVO;
@@ -52,11 +48,10 @@ public class AdminShoesCont {
   @Autowired
   @Qualifier("dev.mvc.member.MemberProc") // @Service("dev.mvc.member.MemberProc")
   private MemberProcInter memberProc;
-  
+
   @Autowired
   @Qualifier("dev.mvc.review.ReviewProc")
   private ReviewProcInter reviewProc;
-
 
   /** 페이지당 출력할 레코드 갯수, nowPage는 1부터 시작 */
   public int record_per_page = 5;
@@ -85,20 +80,15 @@ public class AdminShoesCont {
   }
 
   private void table_paging_option(Model model, int shoesno, String word, int now_page) {
-    ArrayList<OptionVO> list = this.shoesProc.option_paging(shoesno, word, now_page, this.record_per_page);
+    ArrayList<OptionVO> list = this.optionProc.option_paging(shoesno, word, now_page, this.record_per_page);
     model.addAttribute("list", list);
 
-    int search_count = this.shoesProc.option_search_count(shoesno);
-    System.out.println("search_count: " + search_count);
+    int search_count = this.optionProc.option_search_count(shoesno);
 
     String paging = this.shoesProc.pagingBox(now_page, word, "/admin/shoes/admin_read/" + shoesno, search_count,
         this.record_per_page, this.page_per_block); // 2, '',
 
-    System.out.println("paging: " + paging);
-
     int no = search_count - ((now_page - 1) * this.record_per_page);
-
-    System.out.println("no: " + no);
 
     model.addAttribute("paging", paging);
     model.addAttribute("now_page", now_page);
@@ -142,11 +132,11 @@ public class AdminShoesCont {
 
     ArrayList<ReviewVO> reviews = this.reviewProc.list();
     model.addAttribute("reviews", reviews);
-    
+
     ArrayList<Integer> list = new ArrayList<>();
     ArrayList<CategoryVO> name_list = this.categoryProc.select_name(list);
     model.addAttribute("name_list", name_list);
-    
+
     table_paging(model, word, now_page);
 
     return "admin/shoes/admin_create";
@@ -155,53 +145,56 @@ public class AdminShoesCont {
   @PostMapping("/select_subname")
   @ResponseBody
   public Map<String, Object> select_subname(@RequestBody Map<String, Object> map) {
-      int categoryno = (Integer) map.get("categoryno");
-      
-      ArrayList<CategoryVO> subname_list = categoryProc.select_subname(categoryno);
+    int categoryno = (Integer) map.get("categoryno");
 
-      Map<String, Object> response = new HashMap<>();
-      
-      response.put("subname_list", subname_list); // 소분류 목록을 응답에 추가
-      
-      return response;
-  }
-  
-  /** 카테고리 분류 추가 */
-  @PostMapping(value ="/addcategory") 
-  @ResponseBody
-  public Map<String, Object> addcategory(@RequestBody ArrayList<Integer> arraylist) {
-    for(int i = 0; i < arraylist.size(); i++) {
-      System.out.println("ㅁㅁ" + arraylist.get(i));
-    }
-    
-    ArrayList<CategoryVO> name_list = this.categoryProc.select_name(arraylist);
-    
-    
+    ArrayList<CategoryVO> subname_list = categoryProc.select_subname(categoryno);
+
     Map<String, Object> response = new HashMap<>();
-    if(name_list.size() != 0) {
-      
+
+    response.put("subname_list", subname_list); // 소분류 목록을 응답에 추가
+
+    return response;
+  }
+
+  /** 카테고리 분류 추가 */
+  @PostMapping(value = "/addcategory")
+  @ResponseBody
+  public Map<String, Object> addcategory(@RequestBody ArrayList<Integer> categorylist) {
+
+    ArrayList<CategoryVO> name_list = this.categoryProc.select_name(categorylist);
+    Map<String, Object> response = new HashMap<>();
+    if (name_list.size() != 0) {
+
       response.put("success", true);
       response.put("name_list", name_list);
     }
     return response;
   }
-  
+
   /** 신발 생성 */
   @PostMapping(value = "/admin_create")
-  public String create_process(HttpSession session, Model model, @Valid ShoesVO shoesVO, BindingResult bindingResult,
-      @RequestParam(name = "word", defaultValue = "") String word,
-      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+  public Map<String, Object> create_process(HttpSession session, Model model, @RequestBody Map<String, Object> map) {
 
-    if (bindingResult.hasErrors()) {
-      return "admin/shoes/admin_create";
-    }
-    int cnt = this.shoesProc.admin_create(shoesVO);
-    if (cnt == 1) {
-      return "redirect:/admin/shoes/admin_list_all?now_page=1";
-    } else {
-      model.addAttribute("code", "create_fail");
-      return "admin/shoes/msg";
-    }
+    ArrayList<Integer> categorylist = (ArrayList<Integer>) map.get("subcategorylist");
+
+    String title = (String) map.get("title");
+    String brand = (String) map.get("brand");
+    int price = (Integer) map.get("price");
+    String contents = (String) map.get("contents");
+    String visible = (String) map.get("visible");
+
+    ShoesVO shoesVO = new ShoesVO();
+    shoesVO.setMemberno(1); // 로그인으로 수정
+    shoesVO.setTitle(title);
+    shoesVO.setBrand(brand);
+    shoesVO.setPrice(price);
+    shoesVO.setContents(contents);
+    shoesVO.setVisible(visible);
+
+    this.shoesProc.admin_create(shoesVO, categorylist);
+    Map<String, Object> response = new HashMap<>();
+    response.put("success", true);
+    return response;
   }
 
   /**
@@ -215,8 +208,6 @@ public class AdminShoesCont {
   public String admin_read(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-
-    System.out.println("Received now_page: " + now_page);
 
     ShoesVO shoesVO = this.shoesProc.admin_read(shoesno);
     model.addAttribute("shoesVO", shoesVO);
@@ -305,9 +296,6 @@ public class AdminShoesCont {
     }
   }
 
-  /**
-   * 옵션 생성 폼
-   */
   @GetMapping(value = "/option_create/{shoesno}")
   public String option_create(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
       @RequestParam(name = "word", defaultValue = "") String word,
@@ -315,6 +303,9 @@ public class AdminShoesCont {
 
     ShoesVO shoesVO = this.shoesProc.admin_read(shoesno);
     model.addAttribute("shoesVO", shoesVO);
+
+    ArrayList<OptionVO> optionList = this.optionProc.option_list(now_page);
+    model.addAttribute("optionList", optionList);
 
     OptionVO optionVO = new OptionVO();
     optionVO.setShoesno(shoesno);
@@ -333,16 +324,13 @@ public class AdminShoesCont {
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
 
-    ShoesVO shoesVO = this.shoesProc.admin_read(shoesno);
-    model.addAttribute("shoesVO", shoesVO);
-
     if (bindingResult.hasErrors()) {
       return "admin/shoes/option_create";
     }
 
-    int cnt = this.shoesProc.option_create(optionVO);
+    int cnt = this.optionProc.option_create(optionVO);
     if (cnt == 1) {
-      return "redirect:/admin/shoes/admin_list_all?now_page=1";
+      return "redirect:/admin/shoes/admin_read/" + shoesno;
     } else {
       model.addAttribute("code", "create_fail");
       return "admin/shoes/msg";
@@ -350,82 +338,36 @@ public class AdminShoesCont {
 
   }
 
-  /** 옵션 수정 폼 */
-  @GetMapping(value = "/option_update/{optionno}")
-  public String option_update(HttpSession session, Model model, @PathVariable("optionno") Integer optionno,
-      @RequestParam(name = "shoesno") Integer shoesno, @RequestParam(name = "word", defaultValue = "") String word,
-      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-
-    ShoesVO shoesVO = this.shoesProc.admin_read(shoesno);
-    model.addAttribute("shoesVO", shoesVO);
-
-    OptionVO optionVO = this.shoesProc.shoes_option(optionno, shoesno);
-    model.addAttribute("optionVO", optionVO);
-
-    table_paging_option(model, shoesno, word, now_page);
-
-    return "admin/shoes/option_update";
-  }
-
   /** 옵션 수정 */
   @PostMapping(value = "/option_update")
-  public String option_update(HttpSession session, Model model, @Valid OptionVO optionVO, BindingResult bindingResult,
-      @RequestParam(name = "shoesno") Integer shoesno, @RequestParam(name = "word", defaultValue = "") String word,
-      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+  @ResponseBody
+  public Map<String, Object> option_update(HttpSession session, Model model, @RequestBody Map<String, Object> map) {
 
-    ShoesVO shoesVO = this.shoesProc.admin_read(shoesno);
-    model.addAttribute("shoesVO", shoesVO);
+    int optionno = (Integer) map.get("optionno");
+    int amount = (Integer) map.get("amount");
 
-    if (bindingResult.hasErrors()) {
-      table_paging(model, word, now_page);
-      return "admin/shoes/option_update";
+    Map<String, Object> response = new HashMap<>();
+    int cnt = this.optionProc.option_update(amount, optionno);
+    if (cnt == 1) {
+      response.put("success", true);
     }
 
-    int cnt = this.shoesProc.option_update(optionVO);
-    model.addAttribute("cnt", cnt);
-    return "redirect:/admin/shoes/admin_read/" + shoesno + "?optionno=" + optionVO.getOptionno() + "&word="
-        + Tool.encode(word) + "&now_page=" + now_page;
-
-  }
-
-  /** 옵션 삭제 폼 */
-  @GetMapping(value = "/option_delete/{optionno}")
-  public String option_delete(HttpSession session, Model model, @PathVariable("optionno") Integer optionno,
-      @RequestParam(name = "shoesno") Integer shoesno, @RequestParam(name = "word", defaultValue = "") String word,
-      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-
-    OptionVO optionVO = this.shoesProc.shoes_option(optionno, shoesno);
-    model.addAttribute("optionVO", optionVO);
-
-    ShoesVO shoesVO = this.shoesProc.admin_read(shoesno);
-    model.addAttribute("shoesVO", shoesVO);
-
-    table_paging(model, word, now_page);
-
-    return "admin/shoes/option_delete";
-
+    return response;
   }
 
   /** 옵션 삭제 */
   @PostMapping(value = "/option_delete")
-  public String option_delete_process(HttpSession session, Model model, @Valid OptionVO optionVO,
-      @RequestParam("shoesno") Integer shoesno, @RequestParam("optionno") Integer optionno,
-      @RequestParam(name = "word", defaultValue = "") String word,
-      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+  @ResponseBody
+  public Map<String, Object> option_delete(HttpSession session, Model model, @RequestBody Map<String, Object> map) {
 
-    System.out.println("optionno:" + optionno);
-    ShoesVO shoesVO = this.shoesProc.admin_read(shoesno);
-    model.addAttribute("shoesVO", shoesVO);
+    int optionno = (Integer) map.get("optionno");
 
-    int cnt = this.shoesProc.option_delete(shoesno, optionno);
-    model.addAttribute("cnt", cnt);
+    Map<String, Object> response = new HashMap<>();
+    int cnt = this.optionProc.option_delete(optionno);
     if (cnt == 1) {
-      return "redirect:/admin/shoes/admin_list_all?now_page=1";
-    } else {
-      model.addAttribute("code", "delete_fail");
-
-      return "admin/shoes/msg";
+      response.put("success", true);
     }
-  }
 
+    return response;
+  }
 }
