@@ -85,12 +85,11 @@ public class ShoesCont {
       @RequestParam(name = "categoryno", defaultValue = "0", required = false) Integer categoryno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-
     if (categoryno != 0) {
       CategoryVO categoryVO = categoryProc.category_select(categoryno);
       model.addAttribute("categoryVO", categoryVO);
-    }
-
+    } 
+    
     CategoryVO categoryVO = categoryProc.category_select(categoryno);
     model.addAttribute("categoryVO", categoryVO);
 

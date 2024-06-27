@@ -99,4 +99,5 @@ public interface ShoesDAOInter {
 
   public ArrayList<ReviewVO> Shoes_reviews(int shoesno);
   
+  
 }

@@ -124,14 +124,12 @@ public class ReviewProc implements ReviewProcInter {
   }
 
   @Override
-  public ArrayList<ReviewVO> list() {
-    ArrayList<ReviewVO> list = this.reviewDAO.list();
-    return list;
-  }
+  public int list_search_count(int shoesno, String word) {
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("shoesno", shoesno);
+    map.put("word", word);
 
-  @Override
-  public int list_search_count(String word) {
-    int cnt = this.reviewDAO.list_search_count(word);
+    int cnt = this.reviewDAO.list_search_count(map);
     return cnt;
   }
 
@@ -153,11 +151,6 @@ public class ReviewProc implements ReviewProcInter {
     return list;
   }
 
-  @Override
-  public ArrayList<ReviewVO> shoes_reviews(int shoesno) {
-    ArrayList<ReviewVO> list = this.reviewDAO.shoes_reviews(shoesno);
-    return list;
-  }
 
 
 }

@@ -91,21 +91,17 @@
     </association>
   </resultMap>
 
-  <select id="list" resultType="dev.mvc.review.ReviewVO">
-    SELECT reviewno, contents, rating, rdate
-    FROM review 
-    ORDER BY reviewno ASC
-  </select>
-
 
   <!-- 검색된 레코드 수 -->
-<select id="list_search_count" resultType="int" parameterType="String">
-  SELECT COUNT(*) as cnt
+  <select id="list_search_count" resultType="int" parameterType="Map">
+    SELECT COUNT(*) as cnt
   FROM review
-  <if test="word != null and word != ''">
-    WHERE UPPER(contents) LIKE '%' || UPPER(#{word}) || '%'
+  WHERE shoesno = #{shoesno}
+    <if test="word != null and word != ''">
+    AND UPPER(contents) LIKE '%' || UPPER(#{word}) || '%'
   </if>
-</select>
+
+  </select>
 
   <select id="list_search_paging" resultType="dev.mvc.review.ReviewVO" parameterType="Map">
     SELECT reviewno, contents, rating, rdate, shoesno, r
@@ -115,24 +111,13 @@
             SELECT reviewno, contents, rating, rdate, shoesno
             FROM review
     <if test="word != null and word != ''">
-              WHERE UPPER(contents) LIKE '%' || UPPER(#{contents}) || '%'   
+              WHERE UPPER(contents) LIKE '%' || UPPER(#{word}) || '%'   
             </if>
     ORDER BY reviewno ASC
-        )
+        ) WHERE shoesno = #{shoesno}
     )
     WHERE r &gt; = #{start_num} AND r &lt; = #{end_num}
-    
   </select>
 
-    <!-- WHERE r >= 1 AND r <= 3   WHERE r &gt; = #{start_num} AND r &lt; = #{end_num}-->
-   
-  <!-- 특정 신발의 리뷰 정보를 조회하는 쿼리 -->
-  <select id="shoes_reviews" parameterType="int" resultType="dev.mvc.review.ReviewVO">
-        SELECT r.reviewno, r.contents, r.rating, r.rdate, s.shoesno
-        FROM review r
-        JOIN shoes s ON r.shoesno = s.shoesno
-        WHERE r.shoesno = #{shoesno}
-    </select>
-      
 
 </mapper>

@@ -29,6 +29,7 @@ public interface ShoesProcInter {
    * @return 삭제 성공 여부
    */
   public int admin_delete(int shoesno);
+  
 
   /**
    * 검색된 레코드 수 id="list_search_count" resultType="int" parameterType="Map"
@@ -100,5 +101,7 @@ public interface ShoesProcInter {
 
 
   public ArrayList<ReviewVO> Shoes_reviews(int shoesno);
+  
+  
 }
   

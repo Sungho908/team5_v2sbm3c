@@ -1,7 +1,5 @@
 <div th:fragment="list_all_fragment">
   <!-- <div th:replace=... -->
-
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
     .container {
       max-width: 800px;
@@ -37,9 +35,10 @@
   </style>
   <div class="container">
     <h2 class="mb-4" style="text-align: center;">리뷰 목록</h2>
-    <div th:each="reviewVO : ${reviews}" class="review-item">
+    <div th:each="reviewVO : ${list}" class="review-item">
+      <input type="hidden" class="reviewno" th:value="${reviewVO.reviewno}">
       <div class="review-no">
-        <span th:text="'리뷰번호: ' + ${reviewVO.reviewno}" class="reviewno" style="font-size: 20px;"></span>
+        <span th:text="'리뷰번호: ' + ${reviewVO.reviewno}" style="font-size: 20px;"></span>
       </div>
       <input type="hidden" th:value="${reviewVO.shoesno}" class="shoesno">
       <div class="rating">
@@ -65,15 +64,12 @@
       <a id="delete" class="btn btn-danger delete-btn" style="color: white">삭제</a>
     </div>
     <!-- 만약 리뷰가 없을 경우에 대한 처리 -->
-    <div th:if="${reviews.isEmpty()}" class="text-center" style="font-size: 20px;">
+    <div th:if="${list.isEmpty()}" class="text-center" style="font-size: 20px;">
       등록된 리뷰가 없습니다.
     </div>
   </div>
-  <!-- 페이지 버튼 목록 출력 시작 -->
+  
   <div class="bottom_menu" th:utext="${paging}"></div>
-  <!-- 페이지 버튼 목록 출력 종료 -->
-  
-  
   
   
   <script>
@@ -84,7 +80,7 @@
         button.addEventListener('click', function () {
           if (confirm('삭제하시겠습니까?')) {
             var review = button.closest('.review-item');
-            var reviewno = review.querySelector('.reviewno').textContent;
+            var reviewno = review.querySelector('.reviewno').value;
             var shoesno = review.querySelector('.shoesno').value;
 
             fetch('/admin/review/delete', {
@@ -93,8 +89,7 @@
                 'Content-Type': 'application/json'
               },
               body: JSON.stringify({
-                reviewno: parseInt(reviewno),
-                shoesno: parseInt(shoesno)
+                reviewno: parseInt(reviewno)
               })
             })
               .then(response => response.json())
@@ -102,7 +97,7 @@
                 if (data.success) {
                   alert('리뷰를 삭제했습니다.');
                   console.log('리뷰 삭제에 성공했습니다.');
-                  review.remove();
+                  window.location.href = "/admin/review/list/" + shoesno + "?now_page=1";
                 } else {
                   console.error('리뷰 삭제에 실패했습니다.');
                   alert('리뷰 삭제에 실패했습니다.');
@@ -117,4 +112,6 @@
       });
     });
   </script>
+  
+  
 </div>

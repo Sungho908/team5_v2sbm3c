@@ -140,9 +140,6 @@ public class AdminShoesCont {
     ArrayList<ShoesVO> menu = this.shoesProc.admin_list_all();
     model.addAttribute("menu", menu);
 
-    ArrayList<ReviewVO> reviews = this.reviewProc.list();
-    model.addAttribute("reviews", reviews);
-    
     ArrayList<Integer> list = new ArrayList<>();
     ArrayList<CategoryVO> name_list = this.categoryProc.select_name(list);
     model.addAttribute("name_list", name_list);
@@ -342,7 +339,7 @@ public class AdminShoesCont {
 
     int cnt = this.shoesProc.option_create(optionVO);
     if (cnt == 1) {
-      return "redirect:/admin/shoes/admin_list_all?now_page=1";
+      return "redirect:/admin/shoes/admin_read" + shoesno;
     } else {
       model.addAttribute("code", "create_fail");
       return "admin/shoes/msg";

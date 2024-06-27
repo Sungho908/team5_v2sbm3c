@@ -1,6 +1,7 @@
 // dropdown.js
 
 
+
 document.addEventListener("DOMContentLoaded", function() {
   var dropdownTrigger1 = document.getElementById("navbarDropdown1");
   var dropdownTrigger2 = document.getElementById("navbarDropdown2");
@@ -135,5 +136,6 @@ document.addEventListener("DOMContentLoaded", function() {
   //---------------------------------------------------------------------
 
   //---------------------------------------------------------------------
+  
 
 });

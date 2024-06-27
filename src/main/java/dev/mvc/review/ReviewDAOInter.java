@@ -64,7 +64,7 @@ public interface ReviewDAOInter {
    * @param word 검색어
    * @return 성공한 쿼리 갯수
    */
-  public int list_search_count(String word);
+  public int list_search_count(Map <String, Object> map);
 
   /**
    * 페이징 id="list_search_paging" parameterType="Map"
@@ -74,9 +74,5 @@ public interface ReviewDAOInter {
    */
   public ArrayList<ReviewVO> list_search_paging(Map<String, Object> map);
 
-  public ArrayList<ReviewVO> list();
-
-
-  public ArrayList<ReviewVO> shoes_reviews(int shoesno);
 
 }

@@ -40,12 +40,12 @@ public class AdminReviewCont {
 
   /** 리뷰 페이징 */
   private void review_table_paging(Model model, int shoesno, String word, int now_page) {
-    
     ArrayList<ReviewVO> list = this.reviewProc.list_search_paging(word, shoesno, now_page, this.record_per_page);
     model.addAttribute("list", list);
-
-    int search_count = this.reviewProc.list_search_count(word);
-    String paging = this.reviewProc.pagingBox(now_page, word, "/admin/review/list", search_count, this.record_per_page,
+    model.addAttribute("shoesno", list.get(0).getShoesno());
+    
+    int search_count = this.reviewProc.list_search_count(shoesno, word);
+    String paging = this.reviewProc.pagingBox(now_page, word, "/admin/review/list/"+shoesno, search_count, this.record_per_page,
         this.page_per_block);
 
     int no = search_count - ((now_page - 1) * this.record_per_page);
@@ -65,45 +65,21 @@ public class AdminReviewCont {
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
     // word = Tool.checkNull(word).trim();
 
-    ArrayList<ReviewVO> reviews = this.reviewProc.shoes_reviews(shoesno);
-    model.addAttribute("reviews", reviews);
-
     review_table_paging(model, shoesno, word, now_page);
 
     return "admin/review/list";
   }
-
-  /** 리뷰 보기 */
-  @GetMapping(value = "/read/{reviewno}")
-  public String read(HttpSession session, Model model, @PathVariable("reviewno") Integer reviewno,
-      @RequestParam(name = "word", defaultValue = "") String word,
-      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-    // word = Tool.checkNull(word).trim();
-
-    ArrayList<ReviewVO> list = this.reviewProc.list();
-    model.addAttribute("list", list);
-
-    // review_table_paging(model, word, now_page);
-
-    return "admin/review/read";
-  }
-
+  
   /** 리뷰 삭제 */
   @PostMapping(value = "/delete")
   @ResponseBody
-  public Map<String, Object> admin_delete_process(HttpSession session, Model model,
-      @RequestBody Map<String, Object> map) {
+  public Map<String, Object> admin_delete(@RequestBody Map<String, Object> map) {
 
     Map<String, Object> response = new HashMap<>();
     int reviewno = (Integer) map.get("reviewno");
 
     int result = this.reviewProc.delete(reviewno);
 
-    // Integer memberno = (Integer) session.getAttribute("memberno");
-    // if (memberno == null) {
-    // response.put("message", "세션이 만료되었거나 로그인 되어 있지 않습니다.");
-    // return response;
-    // }
     if (result == 1) {
       response.put("success", true);
     } else {

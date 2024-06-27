@@ -55,9 +55,9 @@
 
 
   <select id="list_search_paging" resultType="dev.mvc.shoes.ShoesVO" parameterType="Map">
-    SELECT shoesno, title, brand, contents, price, visible
+    SELECT shoesno, title, brand, contents, price, visible, discount
     FROM (
-      SELECT s.shoesno AS shoesno, s.title AS title, s.brand AS brand, s.contents AS contents, s.price AS price, s.visible AS visible,
+      SELECT s.shoesno AS shoesno, s.title AS title, s.brand AS brand, s.contents AS contents, s.price AS price, s.visible AS visible, s.discount AS discount,
         ROW_NUMBER() OVER(
             ORDER BY
                 CASE
@@ -224,5 +224,12 @@
         FROM review
         WHERE shoesno = #{shoesno}
         ORDER BY rdate DESC
+    </select>
+    
+    
+      <select id="getdiscount" resultType="double" parameterType="int">
+        SELECT discount
+        FROM shoes
+        WHERE shoesno = #{shoesno}
     </select>
 </mapper>
