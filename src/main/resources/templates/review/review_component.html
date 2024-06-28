@@ -1,7 +1,7 @@
 <div th:fragment="review_fragment">
   <link rel="stylesheet" href="/css/review/style.css">
   <h2 class="title">상품후기<span class="all">
-      <a href="/shoes/review_list_all?shoesno=1">
+      <a th:href="@{|/review/list/${shoesno}|}">
         상품 후기 모두보기
       </a>
       <i class="bi bi-chevron-right"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -18,8 +18,13 @@
     <input type="hidden" class="nickname" th:value="${review.memberVO.nickname}">
     <input type="hidden" class="memberno" th:value="${review.memberVO.memberno}">
     <input type="hidden" class="reviewno" th:value="${review.reviewVO.reviewno}">
-    <div class="rating">평점: <span class="stars" id="stars" th:text="${review.reviewVO.rating}"></span></div>
     <div class="username">닉네임: <span th:text="${review.memberVO.nickname}"></span></div>
+    <div class="rating" style="cursor: default;">
+      <span th:each="star : ${#numbers.sequence(1, 5)}">
+        <span th:if="${star le review.reviewVO.rating}" style="color: yellow; font-size: 1.8rem; ">&#9733;</span>
+        <span th:unless="${star le review.reviewVO.rating}" style="color: lightgray; font-size: 1.8rem;">&#9733;</span>
+      </span>
+    </div>
     <div class="date" th:text="${#dates.format(review.reviewVO.rdate, 'yy/MM/dd')}"></div>
     <div class="contents" th:text="${review.reviewVO.contents}"></div>
     <a href="#" class="btn btn-link likes">좋아요 <span class="likes_count" th:text="${review.reviewVO.likes}"></span></a>
@@ -54,7 +59,6 @@
   <div id="nickname" th:data-nickname="${nickname}"></div>
   <div class="review_create" style="margin-top: 20px;">
     <div style="font-size: 20px;">후기 작성</div>
-    <div class="member">닉네임: <span th:text="${nickname}"></span></div>
     <span class="star-rating">
       <span class="rating" id="rating"></span>
       <span class="star" data-value="1.0">★</span>

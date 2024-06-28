@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", function() {
-  var memberno = document.getElementById("memberno") ? document.getElementById("memberno").getAttribute("data-memberno") : 0;
-  var myno = document.getElementById("mymemberno").getAttribute("data-mymemberno");
   var report = document.querySelectorAll(".report");
   var popup = document.getElementById("popup");
   var closebtn = document.querySelector(".close-btn");
@@ -13,7 +11,13 @@ document.addEventListener("DOMContentLoaded", function() {
   report.forEach(function(link) {
     link.addEventListener("click", function(event) {
       event.preventDefault();
-      if (memberno !== 0) {
+      var memberno = link.closest(".review").querySelector(".memberno").value;
+      var myno = document.getElementById("mymemberno") ? document.getElementById("mymemberno").getAttribute("data-mymemberno") : 0;
+      if (myno === 0) {
+        alert('로그인 후 이용해주세요.');
+      } else if (memberno === myno) {
+        alert('본인은 신고할 수 없습니다.');
+      } else {
         var reviewno = link.closest(".review").querySelector(".reviewno").value;
         var nickname = link.closest(".review").querySelector(".nickname").value;
 
@@ -37,8 +41,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
           })
           .catch(error => console.error('Error:', error));
-      } else {
-        alert('로그인 후 이용해주세요.');
       }
 
     });

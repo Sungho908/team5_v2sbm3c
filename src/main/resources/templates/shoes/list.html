@@ -5,6 +5,7 @@
 <div layout:fragment="content" style="width: 80%; margin:40px auto; text-align: center;">
 
   <div class="title_line">
+
     <span th:if="${categoryVO != null}">
       <span th:text="${categoryVO.name}" style="font-size:20px;"></span>
       > <span th:text="${categoryVO.subname}" style="font-size:20px;"></span>
@@ -18,16 +19,20 @@
   <div class="content_main">
     <div class="content_body">
       <div class="shoes" th:each="shoesVO, status:${list}">
-        <a th:href="@{|/shoes/${shoesVO.shoesno}|}">
-          <img src="/images/nike.jpg"><!-- 이미지 및 기타 정보 -->
-        </a>
+        <div class="square">
+          <a style="width: 100%;" th:href="@{|/shoes/${shoesVO.shoesno}|}">
+            <img th:each="shoesFile : ${shoesFileList}" th:src="${shoesFile.shoesno == shoesVO.shoesno} ? @{|/file/storage/${shoesFile.src}|} : '/images/no_image_x400.png'"><!-- 이미지 및 기타 정보 -->
+          </a>  
+        </div>
         <p th:text="${shoesVO.title}"></p>
-        <p th:text="'가격: ' + ${shoesVO.price} +'원 '"></p>
-        <p th:text="${shoesVO.contents}"></p>
+        <span th:text="${#numbers.formatInteger(shoesVO.discount, 1, 'COMMA')}  + '%'"></span>
+        <span th:text="${#numbers.formatInteger(shoesVO.price, 3, 'COMMA')} +'원 '" class="strike-through"></span>
+        <p th:text="${#numbers.formatInteger(shoesVO.price - (shoesVO.price * shoesVO.discount / 100), 3, 'COMMA')}  + '원'" ></p>
         <th:block th:if="${status.index % 5 == 4}"><br></th:block>
       </div>
     </div>
   </div>
+
 </div>
 
 </html>

@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import dev.mvc.member.MemberProcInter;
 import dev.mvc.member.MemberVO;
 import dev.mvc.option.OptionVO;
+import dev.mvc.payment.PaymentProc;
+import dev.mvc.payment.PaymentProcInter;
+import dev.mvc.paymentTotal.PaymentTotalProcInter;
 import dev.mvc.shoes.ShoesAllVO;
 import dev.mvc.shoes.ShoesProcInter;
 import dev.mvc.shoes.ShoesVO;
@@ -40,6 +43,10 @@ public class BasketCont {
   @Autowired
   @Qualifier("dev.mvc.member.MemberProc") // @Service("dev.mvc.member.MemberProc")
   private MemberProcInter memberProc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.paymentTotal.PaymentTotalProc")
+  private PaymentTotalProcInter paymentTotalProc;
 
   /** 페이지당 출력할 레코드 갯수, nowPage는 1부터 시작 */
   public int record_per_page = 5;
@@ -81,6 +88,7 @@ public class BasketCont {
       int memberno = memberVO.getMemberno();
       
       ArrayList<ShoesAllVO> list = this.basketProc.list(memberno);
+      System.out.println(list.toString());
       model.addAttribute("list", list);
 
       return "basket/basket_list"; // /templates/basket/basket.html
@@ -89,12 +97,21 @@ public class BasketCont {
       return DefaultCont.showMessageAndRedirect(message, model);
     }
   }
+  
+  @ResponseBody
+  @PostMapping("basket_list/payment")
+  public boolean basket_list_create(@RequestBody Map<String, Object> map) {
+    if(!this.paymentTotalProc.create(map)) {
+        return false;
+    }
+    int memberno = (int) map.get("memberno");
+    this.basketProc.delete(memberno ,null);
+    return true;
+  }
 
   @PostMapping(value = "/create")
   @ResponseBody
   public Map<String, Object> create(@RequestBody Map<String, Object> map, HttpSession session) {
-    
-    System.out.println("Create method called");
     
     MemberVO memberVO = (MemberVO) session.getAttribute("login");
     Map<String, Object> response = new HashMap<>();
@@ -107,12 +124,19 @@ public class BasketCont {
     int memberno = memberVO.getMemberno();
     String color = (String) map.get("color");
     int sizes = (Integer) map.get("sizes");
+    int amount = (Integer) map.get("amount");
+    
+    Map<String, Object> readMap = this.basketProc.read(map);
+    System.out.println("basketno: " + readMap);
+    if(readMap != null) {
+      int basketno = Integer.parseInt(readMap.get("BASKETNO").toString());
+      int basketamount = Integer.parseInt(readMap.get("AMOUNT").toString());
+      basketProc.update( (basketamount + amount), memberno, basketno );
+      response.put("message", "항목을 추가하였습니다.");
+      return response;
+    }
 
-    // Integer memberno = (Integer) session.getAttribute("memberno");
-    // if (memberno == null) {
-    // response.put("message", "로그인이 필요합니다.");
-    // }
-    int result = basketProc.create(memberno, color, sizes);
+    int result = basketProc.create(memberno, color, sizes, amount);
     
     if (result == 1) {
       response.put("success", true);

@@ -139,76 +139,6 @@ ORDER BY
     ORDER BY
       pd.payment_details_no;
       
--- 1. 임시 테이블 생성
-CREATE GLOBAL TEMPORARY TABLE temp_total_payment (
-  paymentno NUMBER,
-  total_price NUMBER,
-  total_payment NUMBER
-) ON COMMIT DELETE ROWS;
-
--- 2. 각 주문 내역의 신발 가격 합계와 총 결제 금액을 계산하여 임시 테이블에 삽입
-INSERT INTO temp_total_payment (paymentno, total_price, total_payment)
-SELECT 
-  p.paymentno,
-  SUM(s.price) AS total_price,
-  (SUM(s.price) + p.delivery) AS total_payment
-FROM
-  payment p
-  INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
-  INNER JOIN options o ON pd.optionno = o.optionno
-  INNER JOIN shoes s ON o.shoesno = s.shoesno
-GROUP BY
-  p.paymentno,
-  p.delivery;
-
--- 3. payment 테이블의 total_price와 total_payment 업데이트
-UPDATE payment p
-SET 
-  p.total_price = (
-    SELECT t.total_price
-    FROM temp_total_payment t
-    WHERE t.paymentno = p.paymentno
-  ),
-  p.total_payment = (
-    SELECT t.total_payment
-    FROM temp_total_payment t
-    WHERE t.paymentno = p.paymentno
-  )
-WHERE p.paymentno IN (SELECT paymentno FROM temp_total_payment);
-
--- 4. 임시 테이블 삭제
-DROP TABLE temp_total_payment;
-
--- 5. 전체 결과 조회 (요청하신 SELECT 쿼리 포함)
-SELECT 
-  m.memberno,
-  p.paymentno,
-  p.payment_status,
-  p.delivery,
-  p.total_price,
-  p.total_payment,
-  LISTAGG(s.shoesno, ', ') WITHIN GROUP (ORDER BY s.shoesno) AS shoes_numbers,
-  LISTAGG(s.price, ', ') WITHIN GROUP (ORDER BY s.shoesno) AS shoes_prices
-FROM
-  member m
-  INNER JOIN payment p ON p.memberno = m.memberno
-  INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
-  INNER JOIN options o ON pd.optionno = o.optionno
-  INNER JOIN shoes s ON o.shoesno = s.shoesno
-WHERE
-  m.memberno = 1
-GROUP BY
-  m.memberno,
-  p.paymentno,
-  p.payment_status,
-  p.delivery,
-  p.total_price,
-  p.total_payment
-ORDER BY
-  MIN(pd.payment_details_no);
-  
-  commit;
-  
 
 
 INSERT INTO payment(paymentno, rdate, status, payment_status, total_price, delivery, total_payment, memberno)
@@ -222,39 +152,48 @@ INSERT INTO payment_details(payment_details_no, payment_amount, optionno, paymen
 VALUES (payment_details_seq.nextval, 1, 1,1);
 
 
+--list1
+SELECT * FROM (
+  SELECT DISTINCT
+    m.memberno,
+    p.paymentno,
+    p.rdate,
+    p.status,
+    p.payment_status,
+    p.cs_status,
+    p.total_price,
+    p.delivery,
+    p.total_payment,
+    ROWNUM AS rn
+  FROM
+    member m
+    INNER JOIN payment p ON m.memberno = p.memberno
+    INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
+  WHERE
+    m.memberno = 1 AND p.cs_status IS NULL
+  --  AND p.rdate BETWEEN #{startDate} AND #{endDate}
+  ORDER BY
+    p.rdate DESC
+)
+WHERE rn BETWEEN 1 AND 3
 
-select DISTINCT
-  m.memberno,
-  
-  p.paymentno,
-  p.rdate,
-  p.status,
-  p.payment_status,
-  p.status,
-  p.cs_status,
-  p.total_price,
-  p.delivery,
-  p.total_payment,
-  
-  pd.payment_details_no,
-  
-  o.optionno,
-  o.sizes,
-  o.amount,
-  o.color,
-  
-  s.shoesno,
-  s.price,
-  s.discount
-  
-FROM 
-  member m
-  INNER JOIN payment         p  ON m.memberno   = p.memberno
-  INNER JOIN payment_details pd ON pd.paymentno = p.paymentno
-  INNER JOIN options         o  ON o.optionno   = pd.optionno
-  INNER JOIN shoes           s  ON s.shoesno = o.shoesno
-  
-WHERE m.memberno = 1;
+--count
+
+SELECT DISTINCT
+COUNT(*)
+
+FROM
+member m
+INNER JOIN payment p ON m.memberno = p.memberno
+INNER JOIN payment_details pd ON p.paymentno = pd.paymentno
+WHERE
+m.memberno = 1 AND p.cs_status IS NULL
+ORDER BY
+p.rdate DESC
+
+
+
+
 
 
 

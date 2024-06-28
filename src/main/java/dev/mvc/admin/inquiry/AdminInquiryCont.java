@@ -63,7 +63,7 @@ public class AdminInquiryCont {
       model.addAttribute("list", list);
 
       int search_count = this.shoesinquiryProc.list_search_count(word);
-      String paging = this.shoesinquiryProc.pagingBox(now_page, word, "/admin/inquiry/shoes/list", search_count,
+      String paging = this.shoesinquiryProc.pagingBox(now_page, word, "/admin/inquiry/shoes", search_count,
           this.record_per_page, this.page_per_block);
 
       int no = search_count - ((now_page - 1) * this.record_per_page);
@@ -84,7 +84,7 @@ public class AdminInquiryCont {
       model.addAttribute("list", list);
 
       int search_count = this.paymentinquiryProc.list_search_count(word);
-      String paging = this.paymentinquiryProc.pagingBox(now_page, word, "/admin/inquiry/payment/list", search_count,
+      String paging = this.paymentinquiryProc.pagingBox(now_page, word, "/admin/inquiry/payment", search_count,
           this.record_per_page, this.page_per_block);
 
       int no = search_count - ((now_page - 1) * this.record_per_page);
@@ -105,7 +105,7 @@ public class AdminInquiryCont {
       model.addAttribute("list", list);
 
       int search_count = this.otherinquiryProc.list_search_count(word);
-      String paging = this.otherinquiryProc.pagingBox(now_page, word, "/admin/inquiry/other/list", search_count,
+      String paging = this.otherinquiryProc.pagingBox(now_page, word, "/admin/inquiry/other", search_count,
           this.record_per_page, this.page_per_block);
 
       int no = search_count - ((now_page - 1) * this.record_per_page);

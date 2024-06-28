@@ -6,7 +6,8 @@
   <div class="container mt-3" style="max-width: 800px;">
     <div class="card">
       <div class="card-header bg-primary text-white text-center">
-        <span th:text="${shoesVO.title} + ' >  옵션 추가'" style="font-size: 20px;" class="bg-primary text-white text-center"></span>
+        <span th:text="${shoesVO.title} + ' >  옵션 추가'" style="font-size: 20px;"
+          class="bg-primary text-white text-center"></span>
 
         <aside class="aside_right">
           <a href="/admin/shoes/admin_list_all?now_page=1" title="목록"><i class="fas fa-list"></i></a>
@@ -18,11 +19,8 @@
 
       <div class="top_menu_line"></div>
       <div class="card-body">
-        <form th:object="${optionVO}" method="post" action="/admin/shoes/option_create">
-          <input type="hidden" name="optionno" th:value="${optionVO.optionno}">
+        <form id="createform" th:object="${optionVO}" method="post" action="/admin/shoes/option_create">
           <input type="hidden" name="shoesno" th:value="${optionVO.shoesno}">
-          <input type="hidden" name="word" th:value="${word}">
-          <input type="hidden" name="now_page" th:value="${now_page}">
           <div class="form-group">
             <label for="sizes">SIZE</label>
             <select name="sizes" id="sizes" class="form-control form-control-sm" value="사이즈를 선택하세요"
@@ -57,7 +55,7 @@
 
           <div class="form-group">
             <label>재고</label>
-            <input type="text" name="amount" value="" autofocus="autofocus" placeholder="재고를 입력하세요."
+            <input type="text" id="amount" name="amount" value="" autofocus="autofocus" placeholder="재고를 입력하세요."
               class="form-control form-control-sm" style="width: 20%; margin: 0 auto; text-align: center;">
           </div>
 
@@ -67,7 +65,7 @@
               class="form-control form-control-sm" style="width: 20%; margin: 0 auto; text-align: center;" readonly>
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-sm">등록</button>
+            <button type="button" onclick="createOption()" class="btn btn-primary btn-sm">등록</button>
             <button type="button" onclick="location.href='../admin_list_all'"
               class="btn btn-secondary btn-sm">목록</button>
           </div>
@@ -75,6 +73,34 @@
       </div>
     </div>
   </div>
+  <script th:inline="javascript">
+    var optionList = /*[[${optionList}]]*/[];
+
+    function createOption() {
+      var form = document.getElementById('createform');
+      var sizes = document.getElementById('sizes').value;
+      var color = document.getElementById('color').value;
+      var amount = document.getElementById('amount').value;
+      if (sizes.trim() === '' || color.trim() === '' || amount.trim() === '') {
+        alert('사이즈, 색상, 재고를 입력해주세요.');
+        return;
+      } else if (/[^0-9]/.test(amount)) {
+        alert('올바른 재고를 입력해주세요.');
+        return;
+      }
+
+      if (optionList.length > 0) {
+        for (var i = 0; i < optionList.length; i++) {
+          if (parseInt(sizes, 10) === parseInt(optionList[i].sizes, 10) && color === optionList[i].color) {
+            alert('같은 사이즈와 색상의 옵션이 있습니다.');
+            return;
+          }
+        }
+      }
+
+      form.submit();
+    }
+  </script>
 </div>
 </body>
 

@@ -28,7 +28,7 @@ public class ShoesVO {
   private String contents = "";
   
   /** 신발 판매 여부 */
-  private char visible = 'Y';
+  private String visible = "Y";
   
   /** 유저 번호 */
   private Integer memberno = 0;
@@ -42,6 +42,8 @@ public class ShoesVO {
   /** sizes */
   private String sizes;
 
+  /** 신발 판매량 */
+  private int saleCount;
   
   
 }

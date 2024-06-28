@@ -31,10 +31,8 @@
         <td class="td_bs" th:text="${noticememberfileVO.views}"></td>
         <td class="td_bs" th:text="${noticememberfileVO.nickname}"></td>
         <td class="td_bs">
-          <a th:href="@{|/admin/notice/update/${noticememberfileVO.noticeno}?word=${word }&now_page=${now_page}|}"><img
-              src="/admin/notice/images/update.png" class="icon"></a>
-          <a th:href="@{|/admin/notice/delete/${noticememberfileVO.noticeno}?word=${word}&now_page=${now_page}|}"><img
-              src="/admin/notice/images/delete.png" class="icon"></a>
+          <a th:href="@{|/admin/notice/update/${noticememberfileVO.noticeno}?word=${word }&now_page=${now_page}|}"><i class="fas fa-edit"></i></a>
+          <a th:href="@{|/admin/notice/delete/${noticememberfileVO.noticeno}?word=${word}&now_page=${now_page}|}"><i class="fas fa-trash-alt"></i></a>
         </td>
       </tr>
     </tbody>

@@ -21,7 +21,9 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.json())
         .then(data => {
           hates_count.innerText = data.hates_count;
-          if (data.success === 'increase') {
+          if (data.fail === 'login') {
+            alert('로그인 후 이용해주세요.');
+          } else if (data.success === 'increase') {
             hates_count.classList.add('hated');
           } else if (data.success === 'decrease') {
             hates_count.classList.remove('hated');

@@ -19,12 +19,6 @@ public interface PaymentTotalProcInter {
   public ArrayList<PaymentTotalVO> cslist(int memberno, int date, String search);
   
   
-  /**
-   * 주문목록 count 가져오기
-   * id="count" resultType="int"
-   * @return 주문정보가 있는 멤버들의 count
-   * */
-  public int count(String word);
   
 
   /**

@@ -1,9 +1,12 @@
 package dev.mvc.review;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import dev.mvc.shoes.ShoesAllVO;
 
 @Service("dev.mvc.review.ReviewProc")
@@ -118,4 +121,32 @@ public class ReviewProc implements ReviewProcInter {
     ArrayList<ShoesAllVO> shoesAllVO = this.reviewDAO.myReview(memberno);
     return shoesAllVO;
   }
+
+  @Override
+  public int list_search_count(int shoesno, String word) {
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("shoesno", shoesno);
+    map.put("word", word);
+    int cnt = this.reviewDAO.list_search_count(map);
+    return cnt;
+  }
+
+  @Override
+  public ArrayList<ShoesAllVO> list_search_paging(int shoesno, String word, int now_page, int record_per_page) {
+    int begin_of_page = (now_page - 1) * record_per_page;
+
+    int start_num = begin_of_page + 1;
+
+    int end_num = begin_of_page + record_per_page;
+
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("shoesno", shoesno);
+    map.put("word", word);
+    map.put("shoesno", shoesno);
+    map.put("start_num", start_num);
+    map.put("end_num", end_num);
+    ArrayList<ShoesAllVO> list = this.reviewDAO.list_search_paging(map);
+    return list;
+  }
+
 }

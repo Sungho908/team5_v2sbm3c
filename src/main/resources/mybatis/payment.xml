@@ -8,8 +8,7 @@
   <selectKey keyProperty="paymentno" resultType="int" order="AFTER">
       SELECT payment_seq.CURRVAL FROM DUAL
     </selectKey>
-  
-</insert>
+  </insert>
 
   
   <select id="list_all" parameterType="int" resultType="dev.mvc.payment.PaymentVO">

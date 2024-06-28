@@ -128,14 +128,20 @@
     WHERE categoryno = #{categoryno}
   </select>
 
-  <select id="select_name" resultType="dev.mvc.category.CategoryVO" parameterType="String">
+  <select id="select_name" resultType="dev.mvc.category.CategoryVO" parameterType="java.util.ArrayList">
     SELECT categoryno, name
     FROM category
-    WHERE subname= #{subname}
+    WHERE subname = '-'
+    <if test="list != null and list.size() > 0">
+      AND categoryno NOT IN
+      <foreach collection="list" item="categoryno" open="(" separator="," close=")">
+            #{categoryno}
+        </foreach>
+    </if>
   </select>
 
-  <select id="select_subname" resultType="dev.mvc.category.CategoryVO" parameterType="String">
-     SELECT subname
+  <select id="select_subname" resultType="dev.mvc.category.CategoryVO" parameterType="Integer">
+     SELECT categoryno, subname
     FROM category
     WHERE parentno = 
     (SELECT categoryno  FROM category

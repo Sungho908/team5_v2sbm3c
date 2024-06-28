@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // 수량 증가 및 감소 버튼들을 모두 선택합니다.
   var increaseButtons = document.querySelectorAll('.quantity-control .quantity-btn.increase');
   var decreaseButtons = document.querySelectorAll('.quantity-control .quantity-btn.decrease');
-  
+
   increaseButtons.forEach(function(button) {
     button.addEventListener('click', function() {
       increaseQuantity(button);
@@ -71,12 +71,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // 장바구니 추가 버튼 이벤트 리스너
   if (cartButton) {
     cartButton.addEventListener('click', function() {
-      var size = document.getElementById('sizes').value;
-      var color = document.getElementById('color').value;
 
-      if (size === '' || color === '') {
-        alert('사이즈와 색상을 선택해주세요.');
-        return;
+      if (sizes === '' || color === '' || (amountInput.value == null || amountInput.value == 0)) {
+        alert('옵션을 선택해주세요.');
+        return false;
       }
 
       // 장바구니 추가 요청 보내기
@@ -86,8 +84,9 @@ document.addEventListener('DOMContentLoaded', function() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          sizes: parseInt(size),
-          color: color
+          sizes: parseInt(sizes),
+          color: color,
+          amount: parseInt(amountInput.value)
         })
       })
         .then(response => response.json())
@@ -95,7 +94,8 @@ document.addEventListener('DOMContentLoaded', function() {
           if (response.success) {
             alert('장바구니에 담았습니다.');
           } else {
-            alert('장바구니에 제품을 추가하는데 실패했습니다.');
+            alert(response.message);
+            location.reload(); // 페이지 새로고침
           }
         })
         .catch(error => console.error('Error:', error));

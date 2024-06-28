@@ -34,8 +34,7 @@
         <td class="td_bs">
           <div th:if="${#strings.equals(shoesInquiryInfoVO.shoesInquiryVO.answer_visible, 'N')}">
             <a
-              th:href="@{|/admin/inquiry/shoes/answer/${shoesInquiryInfoVO.shoesInquiryVO.shoes_inquiry_no}?word=${word}&now_page=${now_page}|}"><img
-                src="/admin/inquiry/images/update.png" class="icon"></a>
+              th:href="@{|/admin/inquiry/shoes/${shoesInquiryInfoVO.shoesInquiryVO.shoes_inquiry_no}?word=${word}&now_page=${now_page}|}"><i class="fas fa-edit"></i></a>
           </div>
         </td>
       </tr>

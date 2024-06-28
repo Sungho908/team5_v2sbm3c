@@ -18,6 +18,7 @@ import dev.mvc.option.OptionDAOInter;
 import dev.mvc.payment.PaymentDAOInter;
 import dev.mvc.payment.PaymentProc;
 import dev.mvc.paymentDetails.PaymentDetailsDAOInter;
+import dev.mvc.paymentDetails.PaymentDetailsVO;
 import dev.mvc.shoes.ShoesDAOInter;
 import dev.mvc.tool.Tool;
 
@@ -57,6 +58,7 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
     map.put("startDate", dates);
     map.put("endDate", today);
     map.put("search", search);
+    
 
     List<PaymentTotalVO> paymentTotalList = new ArrayList<PaymentTotalVO>();
 
@@ -68,11 +70,13 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
           childMap.put("paymentno", paymentTotal.getPaymentno());
           childMap.put("search", search);
 
-          ArrayList<PaymentDetailsOptionVO> paymentDetailsList = (ArrayList) sqlsession
+          List<PaymentDetailsOptionVO> paymentDetailsList = sqlsession
               .selectList("dev.mvc.paymentTotal.PaymentTotalDAOInter.selectPaymentDetailsByPaymentNo", childMap);
+          
+          ArrayList<PaymentDetailsOptionVO> pdoArrayList = new ArrayList<>(paymentDetailsList);
 
           if (!paymentDetailsList.isEmpty()) {
-            paymentTotal.setPayment_details_option(paymentDetailsList);
+            paymentTotal.setPayment_details_option(pdoArrayList);
             paymentTotalList.add(paymentTotal);
           }
         });
@@ -114,10 +118,7 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
     return (ArrayList<PaymentTotalVO>) paymentTotalList;
   }
 
-  @Override
-  public int count(String word) {
-    return this.paymentTotalDAO.count(word);
-  }
+
 
   @Override
   public ArrayList<PaymentTotalVO> listAdminPaging(String word, int now_page, int record_per_page, Map<String,Object> map) {
@@ -366,15 +367,29 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
   @Override
   @Transactional
   public boolean create(Map<String, Object> map) {
-    map.put("total_price", ( Integer.parseInt( (String) map.get("amount")) * Integer.parseInt( (String) map.get("price") ) ) );
+    System.out.println(map.toString());
+    List<Map<String,Object>> basketList = (List<Map<String, Object>>) map.get("basket");
+    int total_price = basketList.stream().mapToInt(item->(int)item.get("price")).sum();
     
-    map.put("delivery", Integer.parseInt( (String) map.get("price") ) >= 100000 ? 0 : 2500);
-    if(this.paymentDAO.create(map) < 1)
+    System.out.println(basketList);
+    System.out.println(total_price);
+    
+    map.put("total_price", total_price);
+    map.put("delivery", (total_price >= 100000 ?  0 : 2500) );
+    
+    if(this.paymentDAO.create(map) < 1)//total_price, delivery, memberno
       return false;
-    if(this.optionDAO.option_update_amount(map) < 1)
-      return false;
-    if(this.paymentDetailsDAO.create(map) < 1)
-      return false;
+    
+    for(Map<String,Object> basket: basketList) {
+      basket.put("paymentno", map.get("paymentno"));
+      
+      if(this.optionDAO.option_update_amount(basket) < 1)//amount, optionno
+        return false;
+      
+      if(this.paymentDetailsDAO.create(basket) < 1)//amount, paymentno, optionno
+        return false;
+    }
+    
     return true;
   }
 

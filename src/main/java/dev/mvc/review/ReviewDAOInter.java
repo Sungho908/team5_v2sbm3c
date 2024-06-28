@@ -1,6 +1,7 @@
 package dev.mvc.review;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import dev.mvc.shoes.ShoesAllVO;
 
@@ -55,4 +56,26 @@ public interface ReviewDAOInter {
    * @return ArrayList<ShoesAllVO>
    */
   public ArrayList<ShoesAllVO> myReview(int memberno);
+
+  /**
+   * 검색된 레코드 수 id="list_search_count" resultType="int" parameterType="String"
+   * 
+   * @param 신발 번호, 검색어
+   * @return 성공한 쿼리 갯수
+   */
+  public int list_search_count(Map<String, Object> map);
+
+  /**
+   * 페이징 id="list_search_paging" resultMap="reviewRead" parameterType="Map"
+   * 
+   * @param Map
+   * @return ArrayList<ShoesAllVO>
+   */
+  public ArrayList<ShoesAllVO> list_search_paging(Map<String, Object> map);
+  
+  
+  public ArrayList<ReviewVO> list();
+  
+  public ReviewVO read(int reviewno);
+
 }

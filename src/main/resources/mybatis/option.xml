@@ -3,33 +3,20 @@
 <mapper namespace="dev.mvc.option.OptionDAOInter">
 
   <insert id="option_create" parameterType="dev.mvc.option.OptionVO">
-    INSERT INTO OPTIONS (OPTIONNO, SIZES, COLOR, SHOESNO)
-    VALUES (OPTION_SEQ.nextval, #{sizes}, #{color}, #{shoesno})
+    INSERT INTO OPTIONS (OPTIONNO, SIZES, AMOUNT, COLOR, SHOESNO)
+    VALUES (OPTION_SEQ.nextval, #{sizes}, #{amount}, #{color}, #{shoesno})
   </insert>
 
-  <select id="option_sizes" resultType="int" parameterType="Integer">
-    SELECT distinct o.sizes
-    FROM shoes s
-    JOIN category_list cl ON s.shoesno = cl.shoesno
-    JOIN category c ON cl.categoryno = c.categoryno
-    JOIN options o ON s.shoesno = o.shoesno
-    WHERE s.shoesno = #{shoesno}
-    ORDER BY o.sizes
+  <select id="option_list" resultType="dev.mvc.option.OptionVO" parameterType="Integer">
+    SELECT optionno, sizes, amount, color, shoesno 
+    FROM options 
+    WHERE shoesno = #{shoesno}
   </select>
 
-  <select id="option_color" resultType="String" parameterType="Integer">
-    SELECT distinct o.color
-    FROM shoes s
-    JOIN category_list cl ON s.shoesno = cl.shoesno
-    JOIN category c ON cl.categoryno = c.categoryno
-    JOIN options o ON s.shoesno = o.shoesno
-    WHERE s.shoesno = #{shoesno}
-  </select>
-
-  <update id="option_update" parameterType="dev.mvc.option.OptionVO">
-    UPDATE OPTIONS
-    SET SIZES = #{sizes}, AMOUNT = #{amount}, COLOR = #{color}
-    WHERE OPTIONNO = #{optionno}
+  <update id="option_update" parameterType="Map">
+    UPDATE options
+    SET AMOUNT = #{amount}
+    WHERE optionno = #{optionno}
   </update>
   
   <update id="option_update_amount" parameterType="Map">
@@ -52,14 +39,15 @@
 
 
   <select id="option_paging" resultType="dev.mvc.option.OptionVO" parameterType="Map">
-    SELECT o.optionno, o.shoesno, o.sizes, o.amount, o.color, r
+    SELECT o.optionno, o.shoesno, o.sizes, o.amount, o.color, o.r
     FROM (
-    SELECT optionno, shoesno, sizes, amount, color, rownum as r
-    FROM options
-    WHERE shoesno = #{shoesno}
+      SELECT optionno, shoesno, sizes, amount, color,
+           ROW_NUMBER() OVER (ORDER BY sizes DESC) AS r
+      FROM options
+      WHERE shoesno = #{shoesno}
     ) o
     JOIN shoes s ON o.shoesno = s.shoesno
-    WHERE r &gt; = #{start_num} AND r &lt; = #{end_num}
+    WHERE o.r &gt; = #{start_num} AND o.r &lt; = #{end_num}
   </select>
 
   <select id="parent_count" parameterType="Integer">
@@ -84,6 +72,23 @@
       o.sizes
   </select>
 
+  <select id="option_sizes" resultType="int" parameterType="Integer">
+  SELECT distinct o.sizes, o.amount
+    FROM shoes s
+    JOIN category_list cl ON s.shoesno = cl.shoesno
+    JOIN category c ON cl.categoryno = c.categoryno
+    JOIN options o ON s.shoesno = o.shoesno
+    WHERE s.shoesno = #{shoesno}
+    ORDER BY o.sizes
+  </select>
 
+  <select id="option_color" resultType="String" parameterType="Integer">
+    SELECT distinct o.color
+    FROM shoes s
+    JOIN category_list cl ON s.shoesno = cl.shoesno
+    JOIN category c ON cl.categoryno = c.categoryno
+    JOIN options o ON s.shoesno = o.shoesno
+    WHERE s.shoesno = #{shoesno}
+  </select>
 </mapper>
 

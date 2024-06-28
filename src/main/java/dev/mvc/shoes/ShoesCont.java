@@ -25,6 +25,8 @@ import dev.mvc.paymentTotal.PaymentTotalProcInter;
 import dev.mvc.reportType.ReportTypeProcInter;
 import dev.mvc.reportType.ReportTypeVO;
 import dev.mvc.review.ReviewProcInter;
+import dev.mvc.shoesFile.ShoesFileProc;
+import dev.mvc.shoesFile.ShoesFileProcInter;
 import jakarta.servlet.http.HttpSession;
 
 @RequestMapping("/shoes")
@@ -57,11 +59,12 @@ public class ShoesCont {
   @Autowired
   @Qualifier("dev.mvc.paymentTotal.PaymentTotalProc")
   private PaymentTotalProcInter paymentTotalProc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.shoesFile.ShoesFileProc")
+  private ShoesFileProcInter shoesFileProc;
 
-  /** 페이지당 출력할 레코드 갯수, nowPage는 1부터 시작 */
   public int record_per_page = 5;
-
-  /** 블럭당 페이지 수, 하나의 블럭은 10개의 페이지로 구성됨 */
   public int page_per_block = 5;
 
   public ShoesCont() {
@@ -95,15 +98,17 @@ public class ShoesCont {
       @RequestParam(name = "categoryno", defaultValue = "0", required = false) Integer categoryno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-
     if (categoryno != 0) {
       CategoryVO categoryVO = categoryProc.category_select(categoryno);
       model.addAttribute("categoryVO", categoryVO);
-    }
-
+    } 
+    
     CategoryVO categoryVO = categoryProc.category_select(categoryno);
     model.addAttribute("categoryVO", categoryVO);
-
+    
+    model.addAttribute("shoesFileList", this.shoesFileProc.list());
+    
+    
     table_paging(model, categoryno, word, now_page);
 
     return "shoes/list";
@@ -127,7 +132,6 @@ public class ShoesCont {
       model.addAttribute("memberno", memberVO.getMemberno());
       model.addAttribute("nickname", memberVO.getNickname());
     }
-    
 
     ShoesAllVO shoesAllVO = this.shoesProc.read(shoesno);
     model.addAttribute("shoesAllVO", shoesAllVO);
@@ -152,9 +156,6 @@ public class ShoesCont {
     
     //kag0330 추가
     model.addAttribute("options", this.optionProc.optionByshoesno(shoesno));
-    for(OptionVO option : this.optionProc.optionByshoesno(shoesno)) {
-      System.out.println(option.toString());
-    }
 
     return "shoes/detail"; // /templates/shoes/read.html
 
