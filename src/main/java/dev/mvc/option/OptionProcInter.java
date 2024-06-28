@@ -21,6 +21,6 @@ public interface OptionProcInter {
   
   public ArrayList<Integer> option_sizes(int shoesno);
   
-  public ArrayList<String> option_color(int shoesno);
+  public ArrayList<OptionVO> option_coloramount(int shoesno, int sizes);
 
 }

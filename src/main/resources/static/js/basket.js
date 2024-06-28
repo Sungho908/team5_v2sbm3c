@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
           if (response.success) {
             alert('장바구니에 담았습니다.');
           } else {
-            alert('로그인 후 이용해주세요.');
+            alert('장바구니에 담는데 실패했습니다.');
             location.reload(); // 페이지 새로고침
           }
         })

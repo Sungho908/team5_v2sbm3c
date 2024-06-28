@@ -49,22 +49,17 @@
   </select>
 
   <select id="option_sizes" resultType="int" parameterType="Integer">
-  SELECT distinct o.sizes, o.amount
-    FROM shoes s
-    JOIN category_list cl ON s.shoesno = cl.shoesno
-    JOIN category c ON cl.categoryno = c.categoryno
-    JOIN options o ON s.shoesno = o.shoesno
-    WHERE s.shoesno = #{shoesno}
-    ORDER BY o.sizes
+    SELECT distinct sizes
+    FROM options
+    WHERE shoesno = #{shoesno}
+    ORDER BY sizes
   </select>
 
-  <select id="option_color" resultType="String" parameterType="Integer">
-    SELECT distinct o.color
-    FROM shoes s
-    JOIN category_list cl ON s.shoesno = cl.shoesno
-    JOIN category c ON cl.categoryno = c.categoryno
-    JOIN options o ON s.shoesno = o.shoesno
-    WHERE s.shoesno = #{shoesno}
+  <select id="option_coloramount" resultType="dev.mvc.option.OptionVO" parameterType="Map">
+    SELECT color, amount
+    FROM options
+    WHERE shoesno = #{shoesno}
+     AND sizes = #{sizes}
   </select>
 </mapper>
 

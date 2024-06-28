@@ -7,24 +7,16 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import dev.mvc.member.MemberProcInter;
-import dev.mvc.option.OptionProcInter;
-import dev.mvc.option.OptionVO;
 import dev.mvc.review.ReviewProcInter;
-import dev.mvc.shoes.ShoesAllVO;
 import dev.mvc.shoes.ShoesProcInter;
-import jakarta.servlet.http.HttpSession;
 
-@RequestMapping("/shoes")
+@RequestMapping("/options")
 @Controller
 public class OptionCont {
   @Autowired
@@ -51,6 +43,19 @@ public class OptionCont {
 
   public OptionCont() {
     System.out.println("-> ShoesCont created.");
+  }
+  
+  @PostMapping(value="option_color")
+  @ResponseBody
+  public Map<String, Object> option_color(@RequestBody Map<String, Object> map) {
+    int shoesno = (Integer) map.get("shoesno");
+    int sizes = (Integer) map.get("sizes");
+    
+    ArrayList<OptionVO> coloramount = this.optionProc.option_coloramount(shoesno, sizes);
+    Map<String, Object> response = new HashMap<>();
+    response.put("coloramount", coloramount);
+    response.put("success", true);
+    return response;
   }
 
   

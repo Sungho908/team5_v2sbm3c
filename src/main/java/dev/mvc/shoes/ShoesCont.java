@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import dev.mvc.category.CategoryProcInter;
 import dev.mvc.category.CategoryVO;
@@ -85,8 +86,8 @@ public class ShoesCont {
     if (categoryno != 0) {
       CategoryVO categoryVO = categoryProc.category_select(categoryno);
       model.addAttribute("categoryVO", categoryVO);
-    } 
-    
+    }
+
     CategoryVO categoryVO = categoryProc.category_select(categoryno);
     model.addAttribute("categoryVO", categoryVO);
 
@@ -106,24 +107,23 @@ public class ShoesCont {
    */
   @GetMapping(value = "/{shoesno}")
   public String details(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
+      @RequestParam(name = "sizes", required = false) Integer sizes,
       @RequestParam(name = "categoryno", defaultValue = "0", required = false) int categoryno) {
     // session에 들어있는 로그인 값
-    MemberVO memberVO = (MemberVO)session.getAttribute("login");
-    if(memberVO != null) {
+    MemberVO memberVO = (MemberVO) session.getAttribute("login");
+    if (memberVO != null) {
       model.addAttribute("memberno", memberVO.getMemberno());
       model.addAttribute("nickname", memberVO.getNickname());
     }
 
     ShoesAllVO shoesAllVO = this.shoesProc.read(shoesno);
     model.addAttribute("shoesAllVO", shoesAllVO);
-    
+
     System.out.println(shoesAllVO.toString());
 
-    ArrayList<Integer> sizes = this.optionProc.option_sizes(shoesno);
-    model.addAttribute("sizes", sizes);
+    ArrayList<Integer> size_list = this.optionProc.option_sizes(shoesno);
+    model.addAttribute("size_list", size_list);
 
-    ArrayList<String> color = this.optionProc.option_color(shoesno);
-    model.addAttribute("color", color);
 
     ArrayList<ShoesAllVO> review = this.reviewProc.review_list(shoesno);
     if (review.size() == 0) {
