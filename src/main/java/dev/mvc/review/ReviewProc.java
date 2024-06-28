@@ -130,23 +130,27 @@ public class ReviewProc implements ReviewProcInter {
   }
 
   @Override
-  public int list_search_count(String word) {
-    int cnt = this.reviewDAO.list_search_count(word);
+  public int list_search_count(int shoesno, String word) {
+    Map<String, Object> map = new HashMap<>();
+    map.put("shoesno", shoesno);
+    map.put("word", word);
+    int cnt = this.reviewDAO.list_search_count(map);
     return cnt;
   }
 
   @Override
-  public ArrayList<ReviewVO> list_search_paging(String word, int now_page, int record_per_page) {
+  public ArrayList<ShoesAllVO> list_search_paging(int shoesno, String word, int now_page, int record_per_page) {
     int begin_of_page = (now_page - 1) * record_per_page;
     int start_num = begin_of_page + 1;
 
     int end_num = begin_of_page + record_per_page;
 
     Map<String, Object> map = new HashMap<String, Object>();
+    map.put("shoesno", shoesno);
     map.put("word", word);
     map.put("start_num", start_num);
     map.put("end_num", end_num);
-    ArrayList<ReviewVO> list = this.reviewDAO.list_search_paging(map);
+    ArrayList<ShoesAllVO> list = this.reviewDAO.list_search_paging(map);
     return list;
   }
 

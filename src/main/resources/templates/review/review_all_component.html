@@ -1,5 +1,6 @@
-<div th:fragment="review_fragment">
+<div th:fragment="review_all_fragment">
   <link rel="stylesheet" href="/css/review/style.css">
+  <input type="hidden" id="shoesno" th:data-shoesno="${shoesno}">
   <h2 class="title">상품후기<span class="all">
       <a th:href="@{|/review/list/${shoesno}|}">
         상품 후기 모두보기

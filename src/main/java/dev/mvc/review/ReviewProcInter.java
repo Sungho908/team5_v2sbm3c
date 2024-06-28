@@ -24,9 +24,9 @@ public interface ReviewProcInter {
 
   public ArrayList<ShoesAllVO> myReview(int memberno);
 
-  public int list_search_count(String word);
+  public int list_search_count(int shoesno, String word);
 
-  public ArrayList<ReviewVO> list_search_paging(String word, int now_page, int record_per_page);
+  public ArrayList<ShoesAllVO> list_search_paging(int shoesno, String word, int now_page, int record_per_page);
 
   public ArrayList<ReviewVO> list();
 
