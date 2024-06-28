@@ -32,6 +32,12 @@
     background-image: url('./images/top_1920_300.jpg');
     margin-bottom: 0px;
   }
+  
+      .clearfix::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
 
   .top_menu_label {
     position: relative;

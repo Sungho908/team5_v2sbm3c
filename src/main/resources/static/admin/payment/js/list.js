@@ -26,7 +26,8 @@ function statussAdd() {
     csStatus.push(checkbox.nextElementSibling.textContent);
   });
   
-  return { paymentStatus, status, csStatus };
+  const order = document.querySelector('input[name^="btn-check-order"]:checked').value;
+  return { paymentStatus, status, csStatus, order };
 }
 
 /* 체크박스 change이벤트 호출되면 동작 */
@@ -68,7 +69,7 @@ function counting() {
 }
 
 function paymentList() {
-  const { paymentStatus, status, csStatus } = statussAdd();
+  const { paymentStatus, status, csStatus, order } = statussAdd();
   
   
   
@@ -83,6 +84,7 @@ function paymentList() {
       payment_statuss: paymentStatus,
       statuss: status,
       cs_statuss: csStatus,
+      order: order,
       path: window.location.pathname
     }),
   })

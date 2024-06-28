@@ -140,22 +140,23 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
 
   @Override
   public String paymentAjax(Map<String,Object> map) {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     StringBuffer str = new StringBuffer();
     
     String now_page_str =  map.get("now_page").toString();
     int now_page = now_page_str.isEmpty() ? 1 : Integer.parseInt(now_page_str);
+    
     System.out.println(map.toString());
-    System.out.println("now_page_str: " + now_page_str);
-    System.out.println("now_page: " + now_page);
  
     ArrayList<PaymentTotalVO> paymentTotalList =  this.listAdminPaging(map.get("word").toString(), now_page, PaymentTotalVO.RECORD_PER_PAGE, map);
     for(PaymentTotalVO paymentTotal : paymentTotalList) {
       str.append("<div>");
       str.append("  <button type=\"button\" class=\"collapsible\" onclick=\"fetchList(this, " + paymentTotal.getMemberno() + ");\">");
       str.append("  <div style=\"display: flex; justify-content: space-around;\">");
-      str.append("    <span class=\"color-white\" th:text=\"|회원번호: ${paymentTotal.memberno}|\">회원번호:" + paymentTotal.getMemberno() + "</span>");
-      str.append("    <span class=\"color-white\" th:text=\"|회원ID: ${paymentTotal.memberid}|\">" + paymentTotal.getMemberid() + "</span>");
-      str.append("    <span class=\"color-white\" th:text=\"|회원닉네임: ${paymentTotal.nickname}|\"> " + paymentTotal.getNickname() + " </span>");
+      str.append("    <span class=\"color-white\" >회원번호:" + paymentTotal.getMemberno() + "</span>");
+      str.append("    <span class=\"color-white\" >회원ID: " + paymentTotal.getMemberid() + "</span>");
+      str.append("    <span class=\"color-white\" >회원닉네임: " + paymentTotal.getNickname() + " </span>");
+      str.append("    <span class=\"color-white\" >마지막 주문일자: " + sdf.format(paymentTotal.getRdate()) + " </span>");
       str.append("  </div>");
       str.append("</button>");
       str.append("<div class=\"contents\" id=\"btnDiv\"></div>");
