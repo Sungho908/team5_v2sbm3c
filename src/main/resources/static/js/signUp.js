@@ -21,7 +21,11 @@ function checkId() {
         text.innerHTML = '이미 사용중인 아이디입니다.';
         text.style.color = 'red';
         boolean = false;
-      } else {
+      } else if(id.value.trim().length < 1){
+        text.innerHTML = '아이디를 입력해주세요.';
+        text.style.color = 'red';
+      }
+      else {
         text.innerHTML = '사용 가능한 아이디입니다.';
         text.style.color = 'blue';
         boolean = true;
@@ -207,46 +211,83 @@ function send() { // 회원 가입 처리
 
 window.onload = function() {
   document.querySelector('#id').addEventListener('keypress', (event) => {
-    // document.getElementById('passwd').addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
-      document.getElementById('btn_checkID').focus();
+      document.getElementById('pw1').focus();
     }
   });
 
-  document.querySelector('#passwd').addEventListener('keypress', (event) => {
-    // document.getElementById('passwd').addEventListener('keypress', (event) => {
+  document.querySelector('#pw1').addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
-      document.getElementById('passwd2').focus();
+      document.getElementById('pw2').focus();
     }
   });
 
-  document.querySelector('#passwd2').addEventListener('keypress', (event) => {
-    // document.getElementById('passwd').addEventListener('keypress', (event) => {
+  document.querySelector('#pw2').addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
-      document.getElementById('mname').focus();
+      document.getElementById('name').focus();
     }
   });
 
-  document.querySelector('#mname').addEventListener('keypress', (event) => {
-    // document.getElementById('passwd').addEventListener('keypress', (event) => {
+  document.querySelector('#name').addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
-      document.getElementById('tel').focus();
+      document.getElementById('nick').focus();
     }
   });
 
-  document.querySelector('#tel').addEventListener('keypress', (event) => {
-    // document.getElementById('passwd').addEventListener('keypress', (event) => {
+  document.querySelector('#nick').addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      document.getElementById('phone').focus();
+    }
+  });
+
+  document.querySelector('#phone').addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      document.getElementById('email').focus();
+    }
+  });
+  
+    document.querySelector('#email').addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      document.getElementById('year').focus();
+    }
+  });
+  
+    document.querySelector('#year').addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      document.getElementById('month').focus();
+    }
+  });
+  
+      document.querySelector('#month').addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      document.getElementById('day').focus();
+    }
+  });
+  
+      document.querySelector('#day').addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      document.getElementById('gender').focus();
+    }
+  });
+  
+        document.querySelector('#gender').addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      document.getElementById('file').focus();
+    }
+  });
+  
+        document.querySelector('#mf').addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
       document.getElementById('btn_DaumPostcode').focus();
     }
   });
-
-  document.querySelector('#address2').addEventListener('keypress', (event) => {
-    // document.getElementById('passwd').addEventListener('keypress', (event) => {
+  
+          document.querySelector('#addr2').addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
-      document.getElementById('btn_send').focus();
+      send();
     }
   });
+  
 
 
 }

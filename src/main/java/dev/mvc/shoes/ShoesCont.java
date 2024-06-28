@@ -25,6 +25,8 @@ import dev.mvc.paymentTotal.PaymentTotalProcInter;
 import dev.mvc.reportType.ReportTypeProcInter;
 import dev.mvc.reportType.ReportTypeVO;
 import dev.mvc.review.ReviewProcInter;
+import dev.mvc.shoesFile.ShoesFileProc;
+import dev.mvc.shoesFile.ShoesFileProcInter;
 import jakarta.servlet.http.HttpSession;
 
 @RequestMapping("/shoes")
@@ -57,6 +59,10 @@ public class ShoesCont {
   @Autowired
   @Qualifier("dev.mvc.paymentTotal.PaymentTotalProc")
   private PaymentTotalProcInter paymentTotalProc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.shoesFile.ShoesFileProc")
+  private ShoesFileProcInter shoesFileProc;
 
   /** 페이지당 출력할 레코드 갯수, nowPage는 1부터 시작 */
   public int record_per_page = 5;
@@ -103,7 +109,10 @@ public class ShoesCont {
 
     CategoryVO categoryVO = categoryProc.category_select(categoryno);
     model.addAttribute("categoryVO", categoryVO);
-
+    
+    model.addAttribute("shoesFileList", this.shoesFileProc.list());
+    
+    
     table_paging(model, categoryno, word, now_page);
 
     return "shoes/list";

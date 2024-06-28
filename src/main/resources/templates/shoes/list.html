@@ -18,8 +18,8 @@
   <div class="content_main">
     <div class="content_body">
       <div class="shoes" th:each="shoesVO, status:${list}">
-        <a th:href="@{|/shoes/${shoesVO.shoesno}|}">
-          <img src="/images/nike.jpg"><!-- 이미지 및 기타 정보 -->
+        <a style="width: 250px; height: 250px;" th:href="@{|/shoes/${shoesVO.shoesno}|}">
+          <img th:each="shoesFile : ${shoesFileList}" th:src="${shoesFile.shoesno == shoesVO.shoesno} ? @{|/file/storage/${shoesFile.src}|} : '/images/no_image_x400.png'"><!-- 이미지 및 기타 정보 -->
         </a>
         <p th:text="${shoesVO.title}"></p>
         <p th:text="'가격: ' + ${shoesVO.price} +'원 '"></p>
