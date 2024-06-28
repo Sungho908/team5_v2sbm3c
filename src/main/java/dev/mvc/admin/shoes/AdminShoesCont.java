@@ -23,7 +23,6 @@ import dev.mvc.member.MemberProcInter;
 import dev.mvc.option.OptionProcInter;
 import dev.mvc.option.OptionVO;
 import dev.mvc.review.ReviewProcInter;
-import dev.mvc.review.ReviewVO;
 import dev.mvc.shoes.ShoesProcInter;
 import dev.mvc.shoes.ShoesVO;
 import dev.mvc.tool.Tool;
@@ -129,9 +128,6 @@ public class AdminShoesCont {
 
     ArrayList<ShoesVO> menu = this.shoesProc.admin_list_all();
     model.addAttribute("menu", menu);
-
-    ArrayList<ReviewVO> reviews = this.reviewProc.list();
-    model.addAttribute("reviews", reviews);
 
     ArrayList<Integer> list = new ArrayList<>();
     ArrayList<CategoryVO> name_list = this.categoryProc.select_name(list);

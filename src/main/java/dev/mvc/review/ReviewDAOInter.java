@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import dev.mvc.shoes.ShoesAllVO;
-import dev.mvc.shoes.ShoesVO;
 
 public interface ReviewDAOInter {
 
@@ -57,8 +56,7 @@ public interface ReviewDAOInter {
    * @return ArrayList<ShoesAllVO>
    */
   public ArrayList<ShoesAllVO> myReview(int memberno);
-  
-  
+
   /**
    * 검색된 레코드 수 id="list_search_count" resultType="int" parameterType="String"
    * 
@@ -79,4 +77,5 @@ public interface ReviewDAOInter {
   public ArrayList<ReviewVO> list();
   
   public ReviewVO read(int reviewno);
+
 }

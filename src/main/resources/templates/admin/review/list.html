@@ -4,21 +4,7 @@
 <!-- layout.html 상속-->
 <div layout:fragment="content">
   <div class="title_line">
-    < </div>
-      <aside class="aside_right">
-        <a href="/">
-          <i class="fas fa-arrow-left"></i>
-          돌아가기
-        </a>
-        <span class="menu_devide">│</span>
-
-        <!-- 새로 고침 링크 -->
-        <a href="javascript: location.reload();">
-          <i class="fas fa-sync-alt"></i>
-          새로 고침
-        </a>
-      </aside>
-
+  </div>
       <div th:replace="~{admin/review/list_search_component::list_search_fragment}"></div>
       <div th:replace="~{admin/review/list_all_component::list_all_fragment}"></div>
   </div>

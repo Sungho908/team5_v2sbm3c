@@ -3,7 +3,6 @@ package dev.mvc.review;
 import java.util.ArrayList;
 
 import dev.mvc.shoes.ShoesAllVO;
-import dev.mvc.shoes.ShoesVO;
 
 public interface ReviewProcInter {
 
@@ -28,8 +27,5 @@ public interface ReviewProcInter {
 
   public ArrayList<ShoesAllVO> list_search_paging(int shoesno, String word, int now_page, int record_per_page);
 
-  public ArrayList<ReviewVO> list();
-
-  public ReviewVO read(int reviewno);
 
 }

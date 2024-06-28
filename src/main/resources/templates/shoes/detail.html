@@ -14,40 +14,151 @@
       </span>
       <input type="hidden" id="shoesno" th:data-shoesno="${shoesAllVO.shoesVO.shoesno}">
 
-      <h1 class="title" th:text="${shoesAllVO.shoesVO.title}"></h1>
+      <style>
+        #wrap {
+          display: flex;
+          align-items: flex-start;
+        }
+
+        /* 이미지 스타일 */
+        .product-image {
+          width: 300px;
+          /* 이미지의 너비 조정 */
+          margin-right: 20px;
+          /* 이미지와 상세 정보 사이 여백 */
+          height: auto;
+        }
+
+        /* 상세 정보 컨테이너 */
+        .product-details {
+          flex-grow: 1;
+          text-align: center;
+          /* 공간을 최대한 채우도록 설정 */
+        }
+
+        .size-title,
+        .color-title {
+          margin-top: 50px;
+          font-size: 25px;
+          text-align: center;
+        }
+
+        .product-description {
+          margin-top: 40px;
+          font-size: 25px;
+          white-space: pre-wrap;
+          /* 긴 텍스트 줄바꿈 처리 */
+        }
+
+        /* 설명 및 가격 스타일 */
+
+        .product-discount {}
+
+        .product-afterprice {
+          font-size: 25px;
+          margin-top: 40px;
+        }
+
+
+        .product-price {
+          text-decoration: line-through;
+          /* 가격에 취소선 추가 */
+          color: gray;
+          font-size: 30px;
+        }
+
+        /* 사이즈 및 색상 선택 스타일 */
+        .size-selection,
+        .color-selection {
+          text-align: center;
+          /* 가운데 정렬 */
+          margin-bottom: 20px;
+          /* 아래 여백 */
+        }
+
+        .size-select,
+        .color-select {
+          width: 50%;
+          text-align: center;
+          /* 폼 컨트롤 너비 조정 */
+          margin-top: 10px;
+          /* 위 여백 */
+          display: inline-block;
+          /* 인라인 요소로 표시하여 가운데 정렬 적용 */
+        }
+
+        /* 선택 옵션 스타일 */
+        .size-select select,
+        .color-select select {
+          width: 100%;
+          /* select 요소가 부모 요소의 너비를 100%로 채우도록 설정 */
+          padding: 8px;
+          /* 패딩 조정 */
+        }
+
+
+        .button-container {
+          text-align: center;
+          /* 버튼들을 가운데 정렬 */
+          display: flex;
+          margin-top: 20px;
+          /* 위 여백 */
+        }
+
+        .detail_btnl,
+        .detail_btnr {
+          padding: 10px 20px;
+          /* 버튼 패딩 설정 */
+          margin: 0 5px;
+          /* 버튼 사이 여백 */
+          width: 200px;
+          /* 버튼 너비 설정 */
+        }
+      </style>
+
       <div id="wrap" class="product">
-        <img src="/images/nike.jpg" alt="스니커즈1">
-        <div class="content">
-          <p th:text="'설명: ' +${shoesAllVO.shoesVO.contents}"></p>
-          <p th:text="'가격: ' + ${shoesAllVO.shoesVO.price}"></p>
-        </div>
-        <div class="content">
-          <h3 for="sizes" style="text-align: center;">SIZE</h3>
-          <p style="text-align: center; text-align: center;">[필수] 옵션을 선택해주세요</p>
+        <!-- 왼쪽: 이미지 -->
+        <img src="/images/nike.jpg" alt="스니커즈1" class="product-image">
 
-          <select name="sizes" id="sizes" class="form-control form-control-sm"
-            style="width: 50%; margin: 0 auto; margin-top: 20px; margin-bottom: 20px; text-align: center; ">
-            <option value="">사이즈를 선택하세요</option>
-            <option th:each="size : ${sizes}" th:value="${size}" th:text="${size} + (${size == 0} ? ' - 품절' : '')">
-            </option>
-          </select>
-          <br>
-          <h3 for="sizes" style="text-align: center;">색상</h3>
-          <p style="text-align: center; text-align: center;">[필수] 옵션을 선택해주세요</p>
+        <!-- 오른쪽: 상세 정보 -->
+        <div class="product-details">
+          <h1 class="title" th:text="${shoesAllVO.shoesVO.title}"></h1>
+          <p class="product-description" th:text="'설명 : ' + ${shoesAllVO.shoesVO.contents}"></p>
+          <span class="product-discount"
+            th:text="${#numbers.formatInteger(shoesAllVO.shoesVO.discount, 1, 'COMMA')}  + '%'"></span>
+          <span class="product-price"
+            th:text="${#numbers.formatInteger(shoesAllVO.shoesVO.price, 3, 'COMMA')} +'원 '"></span>
+          <p class="product-afterprice"
+            th:text="${#numbers.formatInteger(shoesAllVO.shoesVO.price - (shoesAllVO.shoesVO.price * shoesAllVO.shoesVO.discount / 100), 3, 'COMMA')}  + '원'">
+          </p>
 
-          <select name="color" id="color" class="form-control form-control-sm"
-            style="width: 50%; margin: 0 auto; margin-top: 20px; margin-bottom: 20px; text-align: center;">
-            <option value="">색상을 선택하세요</option>
-            <option th:each="color : ${color}" th:value="${color}" th:text="${color}"></option>
-          </select>
+          <!-- 사이즈 선택 -->
+          <div class="size-selection">
+            <p class="size-title">SIZE</p>
+            <select name="sizes" id="sizes" class="size-select">
+              <option value="">사이즈</option>
+              <option th:each="size : ${sizes}" th:value="${size}" th:text="${size} + (${size == 0} ? ' - 품절' : '')">
+              </option>
+            </select>
+          </div>
 
-          <div class="content">
+          <!-- 색상 선택 -->
+          <div class="color-selection">
+            <p class="color-title">색상</p>
+            <select name="color" id="color" class="color-select">
+              <option value="">색상을 선택하세요</option>
+              <option th:each="color : ${color}" th:value="${color}" th:text="${color}"></option>
+            </select>
+          </div>
+
+          <!-- 버튼들 -->
+          <div class="button-container">
             <button class="detail_btnl">장바구니</button>
             <button class="detail_btnr" onclick="send()">구매하기</button>
           </div>
-
         </div>
       </div>
+
 
       <div th:replace="~{review/review_component::review_fragment}"></div>
       <div th:replace="~{report/report_component::report_fragment}"></div>

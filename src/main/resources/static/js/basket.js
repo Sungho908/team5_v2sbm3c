@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // 수량 증가 및 감소 버튼들을 모두 선택합니다.
   var increaseButtons = document.querySelectorAll('.quantity-control .quantity-btn.increase');
   var decreaseButtons = document.querySelectorAll('.quantity-control .quantity-btn.decrease');
-  
+
   increaseButtons.forEach(function(button) {
     button.addEventListener('click', function() {
       increaseQuantity(button);
@@ -95,7 +95,8 @@ document.addEventListener('DOMContentLoaded', function() {
           if (response.success) {
             alert('장바구니에 담았습니다.');
           } else {
-            alert('장바구니에 제품을 추가하는데 실패했습니다.');
+            alert('로그인 후 이용해주세요.');
+            location.reload(); // 페이지 새로고침
           }
         })
         .catch(error => console.error('Error:', error));

@@ -142,12 +142,6 @@
     </association>
   </resultMap>
 
-  <select id="list" resultType="dev.mvc.review.ReviewVO">
-    SELECT reviewno, contents, rating, rdate
-    FROM review 
-    ORDER BY reviewno ASC
-  </select>
-
   <select id="read" parameterType="Integer">
     SELECT reviewno, contents, rating, rdate
     FROM review
