@@ -92,11 +92,30 @@ public class ReviewCont {
    */
   @GetMapping(value = "/list/{shoesno}")
   public String list(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
-      @RequestParam(name = "categoryno") int categoryno) {
+      @RequestParam(name = "word", defaultValue = "") String word,
+      @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
+    MemberVO memberVO = (MemberVO)session.getAttribute("login");
+    if(memberVO != null) {
+      model.addAttribute("memberno", memberVO.getMemberno());
+      model.addAttribute("nickname", memberVO.getNickname());
+    }
+    
+    ArrayList<ShoesAllVO> review = this.reviewProc.list_search_paging(shoesno, word, now_page, this.record_per_page);
+    if (review.size() == 0) {
+      model.addAttribute("no_review", true);
+    }else {
+      model.addAttribute("review", review);
+      
+      int search_count = this.reviewProc.list_search_count(shoesno, word);
+      String paging = this.reviewProc.pagingBox(now_page, "", "/review/list/"+shoesno, search_count, this.record_per_page,
+          this.page_per_block);
 
-    ArrayList<ReviewVO> list = this.reviewProc.review_list_all(shoesno);
-    model.addAttribute("list", list);
+      int no = search_count - ((now_page - 1) * this.record_per_page);
 
+      model.addAttribute("paging", paging);
+      model.addAttribute("now_page", now_page);
+      model.addAttribute("no", no);
+    }
     return "review/list";
   }
 

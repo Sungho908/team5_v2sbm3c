@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.mvc.shoes.ShoesDAOInter">
-  <insert id="admin_create" parameterType="dev.mvc.shoes.ShoesVO">
+
+  <insert id="admin_create" parameterType="Map">
     DECLARE
         v_shoesno NUMBER;
     BEGIN
-        INSERT INTO shoes(shoesno, memberno, title, brand, price, contents)
-        VALUES (SHOES_SEQ.nextval, #{memberno}, #{title}, #{brand}, #{price}, #{contents})
+        INSERT INTO shoes(shoesno, memberno, title, brand, price, contents, visible)
+        VALUES (SHOES_SEQ.nextval, #{shoesVO.memberno}, #{shoesVO.title}, #{shoesVO.brand}, #{shoesVO.price}, #{shoesVO.contents}, #{shoesVO.visible})
         RETURNING shoesno INTO v_shoesno;
+        
         INSERT INTO category_list (categorylistno, categoryno, shoesno)
-        VALUES (CATEGORY_LIST_SEQ.nextval, #{categoryno}, v_shoesno);
+        SELECT CATEGORY_LIST_SEQ.nextval, list.* FROM (
+    <foreach collection="categorylist" item="categoryno" separator="UNION ALL ">
+          SELECT #{categoryno} as categoryno,
+          v_shoesno as shoesno
+          from dual
+        </foreach>
+    ) list;
     END;
-    </insert>
+  </insert>
 
   <update id="admin_update" parameterType="dev.mvc.shoes.ShoesVO">
     UPDATE SHOES
@@ -55,9 +63,9 @@
 
 
   <select id="list_search_paging" resultType="dev.mvc.shoes.ShoesVO" parameterType="Map">
-    SELECT shoesno, title, brand, contents, price, visible
+    SELECT shoesno, title, brand, contents, price, visible, discount
     FROM (
-      SELECT s.shoesno AS shoesno, s.title AS title, s.brand AS brand, s.contents AS contents, s.price AS price, s.visible AS visible,
+      SELECT s.shoesno AS shoesno, s.title AS title, s.brand AS brand, s.contents AS contents, s.price AS price, s.visible AS visible, s.discount AS discount,
         ROW_NUMBER() OVER(
             ORDER BY
                 CASE
@@ -162,45 +170,6 @@
     SELECT count(*) as cnt FROM SHOES  WHERE SHOESNO = #{shoesno}
   </select>
 
-  <select id="option_paging" resultType="dev.mvc.option.OptionVO" parameterType="Map">
-    SELECT o.optionno, o.shoesno, o.sizes, o.amount, o.color, r
-    FROM (
-      SELECT optionno, shoesno, sizes, amount, color, rownum as r
-      FROM options
-      WHERE shoesno = #{shoesno}
-    ) o  
-  JOIN shoes s ON o.shoesno = s.shoesno
-  WHERE r &gt; = #{start_num} AND r &lt; = #{end_num}
-  </select>
-
-  <select id="option_search_count" resultType="int">
-    SELECT COUNT(*) as cnt
-    FROM options
-    WHERE shoesno = #{shoesno}
-    ORDER BY optionno ASC
-  </select>
-
-  <insert id="option_create" parameterType="dev.mvc.option.OptionVO">
-    INSERT INTO OPTIONS (OPTIONNO, AMOUNT, SIZES, COLOR, SHOESNO)
-    VALUES (OPTION_SEQ.nextval, #{amount}, #{sizes}, #{color}, #{shoesno})
-  </insert>
-
-  <update id="option_update" parameterType="dev.mvc.option.OptionVO">
-    UPDATE OPTIONS
-    SET SIZES = #{sizes}, AMOUNT = #{amount}, COLOR = #{color}
-    WHERE OPTIONNO = #{optionno}
-  </update>
-
-  <select id="shoes_option" resultType="dev.mvc.option.OptionVO" parameterType="Map">
-    SELECT OPTIONNO, SIZES, AMOUNT, COLOR, SHOESNO
-    FROM options 
-    WHERE shoesno =#{shoesno} AND optionno = #{optionno}
-  </select>
-
-  <delete id="option_delete" parameterType="Integer">
-    DELETE FROM OPTIONS WHERE OPTIONNO = #{optionno}
-  </delete>
-
   <update id="review_grade" parameterType="Integer">
     UPDATE shoes
     SET rating = (
@@ -217,4 +186,24 @@
     OR UPPER(brand) LIKE '%' || UPPER(#{word}) || '%'
   </select>
 
+  <!-- 인기순 -->
+  <select id="popularShoes" resultType="dev.mvc.shoes.ShoesVO">
+    SELECT 
+    s.shoesno AS shoesno,
+    s.title AS title,
+    COALESCE(COUNT(pd.payment_amount), 0) AS saleCount
+    FROM shoes s
+    LEFT JOIN options o ON o.shoesno = s.shoesno
+    LEFT JOIN payment_details pd ON pd.optionno = o.optionno
+    GROUP BY s.shoesno, s.title
+    ORDER BY saleCount DESC, shoesno
+  </select>
+
+  <select id="Shoes_reviews" resultType="dev.mvc.review.ReviewVO">
+        SELECT reviewno, contents, rating, rdate, shoesno
+        FROM review
+        WHERE shoesno = #{shoesno}
+        ORDER BY rdate DESC
+ </select>
+    
 </mapper>

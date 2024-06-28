@@ -64,10 +64,7 @@ public class ShoesCont {
   @Qualifier("dev.mvc.shoesFile.ShoesFileProc")
   private ShoesFileProcInter shoesFileProc;
 
-  /** 페이지당 출력할 레코드 갯수, nowPage는 1부터 시작 */
   public int record_per_page = 5;
-
-  /** 블럭당 페이지 수, 하나의 블럭은 10개의 페이지로 구성됨 */
   public int page_per_block = 5;
 
   public ShoesCont() {
@@ -101,12 +98,11 @@ public class ShoesCont {
       @RequestParam(name = "categoryno", defaultValue = "0", required = false) Integer categoryno,
       @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-
     if (categoryno != 0) {
       CategoryVO categoryVO = categoryProc.category_select(categoryno);
       model.addAttribute("categoryVO", categoryVO);
-    }
-
+    } 
+    
     CategoryVO categoryVO = categoryProc.category_select(categoryno);
     model.addAttribute("categoryVO", categoryVO);
     
@@ -136,7 +132,6 @@ public class ShoesCont {
       model.addAttribute("memberno", memberVO.getMemberno());
       model.addAttribute("nickname", memberVO.getNickname());
     }
-    
 
     ShoesAllVO shoesAllVO = this.shoesProc.read(shoesno);
     model.addAttribute("shoesAllVO", shoesAllVO);

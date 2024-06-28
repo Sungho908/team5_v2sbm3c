@@ -3,15 +3,16 @@ package dev.mvc.shoes;
 import java.util.ArrayList;
 
 import dev.mvc.option.OptionVO;
+import dev.mvc.review.ReviewVO;
 
 public interface ShoesProcInter {
   /**
-   * 등록 insert id="create" parameterType="dev.mvc.shoes.ShoesVO"
+   * 등록 insert id="create" parameterType="Map"
    * 
-   * @param shoesVO
+   * @param shoesVO, ArrayList<Integer>
    * @return 등록 성공 여부
    */
-  public int admin_create(ShoesVO shoesVO);
+  public int admin_create(ShoesVO shoesVO, ArrayList<Integer> categorylist);
 
   /**
    * 수정 update id="update" parameterType="dev.mvc.shoes.ShoesVO"
@@ -28,6 +29,7 @@ public interface ShoesProcInter {
    * @return 삭제 성공 여부
    */
   public int admin_delete(int shoesno);
+  
 
   /**
    * 검색된 레코드 수 id="list_search_count" resultType="int" parameterType="Map"
@@ -79,22 +81,11 @@ public interface ShoesProcInter {
   
   public int parent_count(int shoesno);
   
-  
-  // read했을때 옵션 리스트
-  public ArrayList<OptionVO> option_paging(int shoesno, String word, int now_page, int record_per_page);
-  
-  
-  public int option_search_count(int shoesno);
-  
-  public int option_create(OptionVO optionVO);
-  
-  // 신발 옵션 수정(사이즈, 재고 등)
-  public int option_update(OptionVO optionVO);
-  
-  public OptionVO shoes_option(int optionno, int shoesno); // 단일 read
-  
-  public int option_delete(int shoesno, int optionno);
-  
   public ArrayList<ShoesVO> inquiry_select(String word);
+
+
+  public ArrayList<ReviewVO> Shoes_reviews(int shoesno);
+  
+  
 }
   

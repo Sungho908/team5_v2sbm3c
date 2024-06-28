@@ -1,33 +1,45 @@
 <div th:fragment="list_all_fragment">
   <!-- <div th:replace=... -->
 
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th style="width: 15%;">신발 번호</th>
-          <th style="width: 20%;">제목</th>
-          <th style="width: 15%;">브랜드명</th>
-          <th style="width: 10%;">가격</th>
-          <th style="width: 30%;">설명</th>
-          <th style="width: 15%;">판매여부</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="shoesVO : ${list}">
-          <td th:text="${shoesVO.shoesno}"></td>
-          <td><a th:href="@{|/admin/shoes/admin_read/${shoesVO.shoesno}|}" style="display: block;"
-              th:text="${shoesVO.title}"></a></td>
-          <td th:text="${shoesVO.brand}"></td>
-          <td th:text="${shoesVO.price}"></td>
-          <td th:text="${shoesVO.contents}"></td>
-          <td th:text="${shoesVO.visible}"></td>
-        </tr>
-      </tbody>
-    </table>
+  <table class="table table-hover">
+    <colgroup>
+      <col style='width: 10%;' />
+      <col style='width: 22%;' />
+      <col style='width: 10%;' />
+      <col style='width: 10%;' />
+      <col style='width: 30%;' />
+      <col style='width: 6%;' />
+      <col style='width: 6%;' />
+      <col style='width: 6%;' />
+    </colgroup>
+    <thead>
+      <tr>
+        <th class="th_bs">신발 번호</th>
+        <th class="th_bs">제목</th>
+        <th class="th_bs">브랜드명</th>
+        <th class="th_bs">가격</th>
+        <th class="th_bs">설명</th>
+        <th class="th_bs">판매여부</th>
+        <th class="th_bs">댓글 보기</th>
+        <th class="th_bs">신발 삭제</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="shoesVO : ${list}">
+        <td class="td_bs" th:text="${shoesVO.shoesno}"></td>
+        <td class="td_bs"><a th:href="@{|/admin/shoes/admin_read/${shoesVO.shoesno}|}" style="display: block;"
+            th:text="${shoesVO.title}"></a></td>
+        <td class="td_bs" th:text="${shoesVO.brand}"></td>
+        <td class="td_bs" th:text="${shoesVO.price}"></td>
+        <td class="td_bs" th:text="${shoesVO.contents}"></td>
+        <td class="td_bs" th:text="${shoesVO.visible}"></td>
+        <td class="td_bs"><img src="/cate/images/update.png" class="icon"></td>
+        <td class="td_bs"><img src="/cate/images/delete.png" class="icon"></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="bottom_menu" th:utext="${paging}"></div>
 </div>
 
 
-<!-- 페이지 버튼 목록 출력 시작 -->
-<div class="bottom_menu" th:utext="${paging}"></div>
-<!-- 페이지 버튼 목록 출력 종료 -->
 </div>

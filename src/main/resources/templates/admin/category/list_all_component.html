@@ -24,8 +24,8 @@
         <td class="td_bs" th:text="${categoryVO.cnt}"></td>
         <td class="td_bs">
           <span th:text="${categoryVO.seq}" style="margin-right: 3px;"></span>              
-          <a th:href="@{|/admin/category/update/${categoryVO.categoryno}?word=${word}&now_page=${now_page}|}"><img src="/admin/category/images/update.png" class="icon"></a>
-          <a th:href="@{|/admin/category/delete/${categoryVO.categoryno}?word=${word}&now_page=${now_page}|}"><img src="/admin/category/images/delete.png" class="icon"></a>
+          <a th:href="@{|/admin/category/update/${categoryVO.categoryno}?word=${word}&now_page=${now_page}|}"><i class="fas fa-edit"></i></a>
+          <a th:href="@{|/admin/category/delete/${categoryVO.categoryno}?word=${word}&now_page=${now_page}|}"><i class="fas fa-trash-alt"></i></a>
         </td>
       </tr>
     </tbody>

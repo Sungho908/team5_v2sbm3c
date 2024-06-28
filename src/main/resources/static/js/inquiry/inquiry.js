@@ -47,10 +47,8 @@ document.addEventListener("DOMContentLoaded", function() {
   var search_closebtn = document.querySelector(".search-close-btn");
   var shoes_result = document.getElementById("shoes-result");
   var payment_result = document.getElementById("payment-result");
-  var other_result = document.getElementById("other-result");
   var shoesTable = document.querySelector("#shoes-table tbody");
   var paymentTable = document.querySelector("#payment-table tbody");
-  var otherTable = document.querySelector("#other-table tbody");
   var shoesno = document.getElementById("shoesno");
   var paymentdetailsno = document.getElementById("payment_details_no");
   selectShoes.addEventListener("click", function(event) {
