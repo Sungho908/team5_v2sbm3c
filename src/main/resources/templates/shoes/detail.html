@@ -224,7 +224,7 @@
       }
     });
 
-    amountInput.addEventListener('keyup', function () {
+    amountInput.addEventListener('change', function () {
       if (parseInt(amountInput.value) > parseInt(amountInput.max)) {
         amountInput.value = amountInput.max;
       }
@@ -244,7 +244,7 @@
       let amountInput = document.getElementById('amountInput');
       let optionSelect = document.getElementById('optionSelect');
       let selected = optionSelect.options[optionSelect.selectedIndex].value;
-      if (amountInput.value == null || amountInput.value == 0 || (amountInput.value > amountInput.max)) {
+      if (amountInput.value == null || amountInput.value == 0 || (amountInput.value < amountInput.max)) {
         amountInput.focus();
         return false;
       }
@@ -256,7 +256,7 @@
       basketList.push({
         optionno: selected,
         amount: parseInt(amountInput.value),
-        price: parseInt(price)
+        price: parseInt(price) * parseInt(amountInput.value)
       });
 
       fetch(window.location.pathname + '/payment', {
