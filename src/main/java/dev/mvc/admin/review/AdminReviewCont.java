@@ -40,7 +40,7 @@ public class AdminReviewCont {
 
   /** 리뷰 페이징 */
   private void review_table_paging(Model model, int shoesno, String word, int now_page) {
-    ArrayList<ShoesAllVO> list = this.reviewProc.list_search_paging(shoesno, word, now_page, this.record_per_page);
+    ArrayList<ShoesAllVO> list = this.reviewProc.list_search_paging(shoesno, word, "", now_page, this.record_per_page);
     model.addAttribute("list", list);
     model.addAttribute("shoesno", list.get(0).getShoesVO().getShoesno());
     

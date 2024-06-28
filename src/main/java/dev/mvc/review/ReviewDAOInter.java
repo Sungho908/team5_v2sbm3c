@@ -73,6 +73,7 @@ public interface ReviewDAOInter {
    */
   public ArrayList<ShoesAllVO> list_search_paging(Map<String, Object> map);
   
+  public double review_avg(int shoesno);
   
   public ArrayList<ReviewVO> list();
   

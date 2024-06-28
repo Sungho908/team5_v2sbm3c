@@ -126,11 +126,12 @@ public class ShoesCont {
     model.addAttribute("color", color);
 
     ArrayList<ShoesAllVO> review = this.reviewProc.review_list(shoesno);
+    model.addAttribute("rating", this.reviewProc.review_avg(shoesno));
     if (review.size() == 0) {
       model.addAttribute("no_review", true);
     }
-    model.addAttribute("review", review);
 
+    model.addAttribute("review", review);
     ArrayList<ReportTypeVO> reportType = this.reportTypeProc.search_type();
     model.addAttribute("reportType", reportType);
 

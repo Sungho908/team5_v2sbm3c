@@ -1,6 +1,6 @@
 <div th:fragment="review_fragment">
   <link rel="stylesheet" href="/css/review/style.css">
-  <h2 class="title">상품후기<span class="all">
+  <h2 class="title">상품후기 <span class="title" th:text="'(' + ${#numbers.formatDecimal(rating, 1, 1)} + '점)'"></span><span class="all">
       <a th:href="@{|/review/list/${shoesno}|}">
         상품 후기 모두보기
       </a>
@@ -10,7 +10,7 @@
             d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
         </svg></i>
     </span>
-  </h2>
+  
   <div class="no_review" th:if="${no_review}">
     후기가 없습니다. 후기를 작성해주세요.
   </div>
