@@ -32,22 +32,54 @@
         <label>내용</label>
         <textarea name='content' required="required" class="form-control" rows="12" style='width: 100%;' th:field="*{noticeVO.contents}"> </textarea>
       </div>
-      <div>
+      
 
       <div>
         <label>이미지</label>
-        
         <input type='file' class="form-control" name='fileSelect' id='fileSelect' value='' placeholder="파일 선택">
       </div>
+      
+      
       <div>
         <label>패스워드</label>
         <input type='password' name='passwd' value='1234' required="required" class="form-control" style='width: 50%;'>
+      </div>
+      
        <div class="content_body_bottom">
           <button type="submit" class="btn btn-secondary btn-sm">등록</button>
           <button type="button" class="btn btn-secondary btn-sm"
             th:attr="onclick=|location.href='/admin/notice/list?now_page=1'|">취소</button>
-        </div>
-
+      </div>
+      
+      <button type="button" onclick="see1()">see1</button>
+      <button type="button" onclick="see2()">see2</button>
+      
+      <div>
+        <div id="editor"></div>
+        <script>
+          const { Editor } = toastui;
+          const { colorSyntax } = Editor.plugin;
+          
+          const editor = new toastui.Editor({
+            el: document.querySelector('#editor'),
+            height: 'auto',
+            initialEditType: 'wysiwyg',
+            previewStyle: 'vertical',
+            language: 'ko',
+            plugins: [colorSyntax]
+          });
+          
+        function see1() {
+          console.log("1");
+            console.log(editor.getHTML());
+        };
+        
+        function see2() {
+          console.log("2");
+            console.log(editor.getMarkdown());
+        };
+        </script>
+      </div>
     </form>
   </div>
 </body>

@@ -3,6 +3,7 @@ package dev.mvc.paymentTotal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -51,11 +52,20 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
       date = -date;
     }
     Date today = new Date();
-    Date dates = Tool.addDays(today, date);
+    Date startDate = Tool.addDays(today, date);
+    
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(startDate);
+    cal.set(Calendar.HOUR_OF_DAY, 0);
+    cal.set(Calendar.MINUTE, 0);
+    cal.set(Calendar.SECOND, 0);
+    cal.set(Calendar.MILLISECOND, 0);
+    startDate = cal.getTime();
+    
 
     HashMap<String, Object> map = new HashMap<String, Object>();
     map.put("memberno", memberno);
-    map.put("startDate", dates);
+    map.put("startDate", startDate);
     map.put("endDate", today);
     map.put("search", search);
     
@@ -145,8 +155,6 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
     
     String now_page_str =  map.get("now_page").toString();
     int now_page = now_page_str.isEmpty() ? 1 : Integer.parseInt(now_page_str);
-    
-    System.out.println(map.toString());
  
     ArrayList<PaymentTotalVO> paymentTotalList =  this.listAdminPaging(map.get("word").toString(), now_page, PaymentTotalVO.RECORD_PER_PAGE, map);
     for(PaymentTotalVO paymentTotal : paymentTotalList) {
@@ -368,12 +376,9 @@ public class PaymentTotalProc implements PaymentTotalProcInter {
   @Override
   @Transactional
   public boolean create(Map<String, Object> map) {
-    System.out.println(map.toString());
     List<Map<String,Object>> basketList = (List<Map<String, Object>>) map.get("basket");
     int total_price = basketList.stream().mapToInt(item->(int)item.get("price")).sum();
-    
-    System.out.println(basketList);
-    System.out.println(total_price);
+
     
     map.put("total_price", total_price);
     map.put("delivery", (total_price >= 100000 ?  0 : 2500) );
