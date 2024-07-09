@@ -7,9 +7,10 @@
     VALUES (OPTION_SEQ.nextval, #{sizes}, #{amount}, #{color}, #{shoesno})
   </insert>
 
-  <select id="option_list" resultType="dev.mvc.option.OptionVO" parameterType="Integer">
-    SELECT optionno, sizes, amount, color, shoesno 
-    FROM options 
+  <select id="option_list" resultType="dev.mvc.option.OptionVO"
+    parameterType="Integer">
+    SELECT optionno, sizes, amount, color, shoesno
+    FROM options
     WHERE shoesno = #{shoesno}
   </select>
 
@@ -32,13 +33,14 @@
   </select>
 
 
-  <select id="option_paging" resultType="dev.mvc.option.OptionVO" parameterType="Map">
+  <select id="option_paging" resultType="dev.mvc.option.OptionVO"
+    parameterType="Map">
     SELECT o.optionno, o.shoesno, o.sizes, o.amount, o.color, o.r
     FROM (
-      SELECT optionno, shoesno, sizes, amount, color,
-           ROW_NUMBER() OVER (ORDER BY sizes DESC) AS r
-      FROM options
-      WHERE shoesno = #{shoesno}
+    SELECT optionno, shoesno, sizes, amount, color,
+    ROW_NUMBER() OVER (ORDER BY sizes DESC) AS r
+    FROM options
+    WHERE shoesno = #{shoesno}
     ) o
     JOIN shoes s ON o.shoesno = s.shoesno
     WHERE o.r &gt; = #{start_num} AND o.r &lt; = #{end_num}
@@ -55,11 +57,12 @@
     ORDER BY sizes
   </select>
 
-  <select id="option_coloramount" resultType="dev.mvc.option.OptionVO" parameterType="Map">
+  <select id="option_coloramount" resultType="dev.mvc.option.OptionVO"
+    parameterType="Map">
     SELECT color, amount
     FROM options
     WHERE shoesno = #{shoesno}
-     AND sizes = #{sizes}
+    AND sizes = #{sizes}
   </select>
 </mapper>
 

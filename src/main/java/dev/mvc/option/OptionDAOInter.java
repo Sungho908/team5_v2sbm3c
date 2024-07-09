@@ -20,4 +20,6 @@ public interface OptionDAOInter {
   public ArrayList<Integer> option_sizes(int shoesno);
   
   public ArrayList<OptionVO> option_coloramount(Map<String, Object> map);
+
+
 }

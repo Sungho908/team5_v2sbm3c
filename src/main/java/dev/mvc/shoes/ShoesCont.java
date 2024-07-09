@@ -17,6 +17,7 @@ import dev.mvc.category.CategoryVO;
 import dev.mvc.member.MemberProcInter;
 import dev.mvc.member.MemberVO;
 import dev.mvc.option.OptionProcInter;
+import dev.mvc.option.OptionVO;
 import dev.mvc.reportType.ReportTypeProcInter;
 import dev.mvc.reportType.ReportTypeVO;
 import dev.mvc.review.ReviewProcInter;
@@ -97,6 +98,57 @@ public class ShoesCont {
   }
 
   /**
+   * sale 신발 리스트
+   * 
+   * @param model
+   * @param shoesno 조회할 카테고리 번호
+   * @return
+   */
+  @GetMapping(value = "/sale_list")
+  public String sale_list(HttpSession session, Model model,
+      @RequestParam(name = "categoryno", defaultValue = "0", required = false) Integer categoryno) {
+
+    ArrayList<ShoesVO> list = shoesProc.Shoes_discount();
+    model.addAttribute("list", list);
+
+    return "shoes/list";
+  }
+
+  /**
+   * 남성 리스트
+   * 
+   * @param model
+   * @param shoesno 조회할 카테고리 번호
+   * @return
+   */
+  @GetMapping(value = "/man_list")
+  public String man_list(HttpSession session, Model model,
+      @RequestParam(name = "categoryno", defaultValue = "0", required = false) Integer categoryno) {
+
+    ArrayList<CategoryVO> list = shoesProc.Shoes_man(categoryno);
+    model.addAttribute("list", list);
+
+    return "shoes/list";
+  }
+
+  /**
+   * sale 여성 리스트
+   * 
+   * @param model
+   * @param shoesno 조회할 카테고리 번호
+   * @return
+   */
+  @GetMapping(value = "/girl_list")
+  public String girl_list(HttpSession session, Model model,
+      @RequestParam(name = "categoryno", defaultValue = "0", required = false) Integer categoryno) {
+
+    ArrayList<CategoryVO> list = shoesProc.Shoes_girl(categoryno);
+    model.addAttribute("list", list);
+
+    return "shoes/list";
+  }
+
+  /**
    * 제품 상세
    * 
    * @param session
@@ -123,8 +175,7 @@ public class ShoesCont {
 
     ArrayList<Integer> size_list = this.optionProc.option_sizes(shoesno);
     model.addAttribute("size_list", size_list);
-
-
+    
     ArrayList<ShoesAllVO> review = this.reviewProc.review_list(shoesno);
     if (review.size() == 0) {
       model.addAttribute("no_review", true);
@@ -135,23 +186,6 @@ public class ShoesCont {
     model.addAttribute("reportType", reportType);
 
     return "shoes/detail"; // /templates/shoes/read.html
-
-  }
-
-  /**
-   * 브랜드 목록
-   * 
-   * @param session
-   * @param model
-   * @param word
-   * @param now_page
-   * @return
-   */
-  @GetMapping(value = "/brand")
-  public String details(HttpSession session, Model model) {
-
-    return "shoes/brand"; // /templates/shoes/read.html
-
   }
 
 }
