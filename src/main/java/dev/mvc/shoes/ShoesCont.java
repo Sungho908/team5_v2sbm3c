@@ -188,4 +188,18 @@ public class ShoesCont {
     return "shoes/detail"; // /templates/shoes/read.html
   }
 
+  
+  /**
+   * 이용안내
+   * 
+   * @param 
+   * @param 
+   * @return
+   */
+  @GetMapping(value = "/guide")
+  public String guide(HttpSession session, Model model) {
+
+
+    return "shoes/guide";
+  }
 }
