@@ -21,7 +21,9 @@ import dev.mvc.member.MemberProcInter;
 import dev.mvc.member.MemberVO;
 import dev.mvc.option.OptionProcInter;
 import dev.mvc.option.OptionVO;
+
 import dev.mvc.paymentTotal.PaymentTotalProcInter;
+
 import dev.mvc.reportType.ReportTypeProcInter;
 import dev.mvc.reportType.ReportTypeVO;
 import dev.mvc.review.ReviewProcInter;
@@ -101,8 +103,8 @@ public class ShoesCont {
     if (categoryno != 0) {
       CategoryVO categoryVO = categoryProc.category_select(categoryno);
       model.addAttribute("categoryVO", categoryVO);
-    } 
-    
+    }
+
     CategoryVO categoryVO = categoryProc.category_select(categoryno);
     model.addAttribute("categoryVO", categoryVO);
     
@@ -110,6 +112,57 @@ public class ShoesCont {
     
     
     table_paging(model, categoryno, word, now_page);
+
+    return "shoes/list";
+  }
+
+  /**
+   * sale 신발 리스트
+   * 
+   * @param model
+   * @param shoesno 조회할 카테고리 번호
+   * @return
+   */
+  @GetMapping(value = "/sale_list")
+  public String sale_list(HttpSession session, Model model,
+      @RequestParam(name = "categoryno", defaultValue = "0", required = false) Integer categoryno) {
+
+    ArrayList<ShoesVO> list = shoesProc.Shoes_discount();
+    model.addAttribute("list", list);
+
+    return "shoes/list";
+  }
+
+  /**
+   * 남성 리스트
+   * 
+   * @param model
+   * @param shoesno 조회할 카테고리 번호
+   * @return
+   */
+  @GetMapping(value = "/man_list")
+  public String man_list(HttpSession session, Model model,
+      @RequestParam(name = "categoryno", defaultValue = "0", required = false) Integer categoryno) {
+
+    ArrayList<CategoryVO> list = shoesProc.Shoes_man(categoryno);
+    model.addAttribute("list", list);
+
+    return "shoes/list";
+  }
+
+  /**
+   * sale 여성 리스트
+   * 
+   * @param model
+   * @param shoesno 조회할 카테고리 번호
+   * @return
+   */
+  @GetMapping(value = "/girl_list")
+  public String girl_list(HttpSession session, Model model,
+      @RequestParam(name = "categoryno", defaultValue = "0", required = false) Integer categoryno) {
+
+    ArrayList<CategoryVO> list = shoesProc.Shoes_girl(categoryno);
+    model.addAttribute("list", list);
 
     return "shoes/list";
   }
@@ -125,10 +178,11 @@ public class ShoesCont {
    */
   @GetMapping(value = "/{shoesno}")
   public String details(HttpSession session, Model model, @PathVariable("shoesno") Integer shoesno,
+      @RequestParam(name = "sizes", required = false) Integer sizes,
       @RequestParam(name = "categoryno", defaultValue = "0", required = false) int categoryno) {
     // session에 들어있는 로그인 값
-    MemberVO memberVO = (MemberVO)session.getAttribute("login");
-    if(memberVO != null) {
+    MemberVO memberVO = (MemberVO) session.getAttribute("login");
+    if (memberVO != null) {
       model.addAttribute("memberno", memberVO.getMemberno());
       model.addAttribute("nickname", memberVO.getNickname());
     }
@@ -136,15 +190,19 @@ public class ShoesCont {
     ShoesAllVO shoesAllVO = this.shoesProc.read(shoesno);
     model.addAttribute("shoesAllVO", shoesAllVO);
     
-    System.out.println(shoesAllVO.toString());
     
-    
-    ArrayList<Integer> sizes = this.optionProc.option_sizes(shoesno);
-    model.addAttribute("sizes", sizes);
+//    ArrayList<Integer> sizes = this.optionProc.option_sizes(shoesno);
+//    model.addAttribute("sizes", sizes);
 
     ArrayList<String> color = this.optionProc.option_color(shoesno);
     model.addAttribute("color", color);
 
+    System.out.println(shoesAllVO.toString());
+
+
+    ArrayList<Integer> size_list = this.optionProc.option_sizes(shoesno);
+    model.addAttribute("size_list", size_list);
+    
     ArrayList<ShoesAllVO> review = this.reviewProc.review_list(shoesno);
     if (review.size() == 0) {
       model.addAttribute("no_review", true);
@@ -158,26 +216,23 @@ public class ShoesCont {
     model.addAttribute("options", this.optionProc.optionByshoesno(shoesno));
 
     return "shoes/detail"; // /templates/shoes/read.html
-
-  }
-
-  /**
-   * 브랜드 목록
-   * 
-   * @param session
-   * @param model
-   * @param word
-   * @param now_page
-   * @return
-   */
-  @GetMapping(value = "/brand")
-  public String details(HttpSession session, Model model) {
-
-    return "shoes/brand"; // /templates/shoes/read.html
-
   }
 
   
+  /**
+   * 이용안내
+   * 
+   * @param 
+   * @param 
+   * @return
+   */
+  @GetMapping(value = "/guide")
+  public String guide(HttpSession session, Model model) {
+
+
+    return "shoes/guide";
+  }
+
   @ResponseBody
   @PostMapping("{shoesno}/payment")
   public boolean shoespayment(@PathVariable("shoesno")int shoesno, @RequestBody Map<String, Object> map) {

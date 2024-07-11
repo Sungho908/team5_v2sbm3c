@@ -7,9 +7,10 @@
     VALUES (OPTION_SEQ.nextval, #{sizes}, #{amount}, #{color}, #{shoesno})
   </insert>
 
-  <select id="option_list" resultType="dev.mvc.option.OptionVO" parameterType="Integer">
-    SELECT optionno, sizes, amount, color, shoesno 
-    FROM options 
+  <select id="option_list" resultType="dev.mvc.option.OptionVO"
+    parameterType="Integer">
+    SELECT optionno, sizes, amount, color, shoesno
+    FROM options
     WHERE shoesno = #{shoesno}
   </select>
 
@@ -38,13 +39,14 @@
   </select>
 
 
-  <select id="option_paging" resultType="dev.mvc.option.OptionVO" parameterType="Map">
+  <select id="option_paging" resultType="dev.mvc.option.OptionVO"
+    parameterType="Map">
     SELECT o.optionno, o.shoesno, o.sizes, o.amount, o.color, o.r
     FROM (
-      SELECT optionno, shoesno, sizes, amount, color,
-           ROW_NUMBER() OVER (ORDER BY sizes DESC) AS r
-      FROM options
-      WHERE shoesno = #{shoesno}
+    SELECT optionno, shoesno, sizes, amount, color,
+    ROW_NUMBER() OVER (ORDER BY sizes DESC) AS r
+    FROM options
+    WHERE shoesno = #{shoesno}
     ) o
     JOIN shoes s ON o.shoesno = s.shoesno
     WHERE o.r &gt; = #{start_num} AND o.r &lt; = #{end_num}
@@ -73,22 +75,18 @@
   </select>
 
   <select id="option_sizes" resultType="int" parameterType="Integer">
-  SELECT distinct o.sizes, o.amount
-    FROM shoes s
-    JOIN category_list cl ON s.shoesno = cl.shoesno
-    JOIN category c ON cl.categoryno = c.categoryno
-    JOIN options o ON s.shoesno = o.shoesno
-    WHERE s.shoesno = #{shoesno}
-    ORDER BY o.sizes
+    SELECT distinct sizes
+    FROM options
+    WHERE shoesno = #{shoesno}
+    ORDER BY sizes
   </select>
 
-  <select id="option_color" resultType="String" parameterType="Integer">
-    SELECT distinct o.color
-    FROM shoes s
-    JOIN category_list cl ON s.shoesno = cl.shoesno
-    JOIN category c ON cl.categoryno = c.categoryno
-    JOIN options o ON s.shoesno = o.shoesno
-    WHERE s.shoesno = #{shoesno}
+  <select id="option_coloramount" resultType="dev.mvc.option.OptionVO"
+    parameterType="Map">
+    SELECT color, amount
+    FROM options
+    WHERE shoesno = #{shoesno}
+    AND sizes = #{sizes}
   </select>
 </mapper>
 
