@@ -219,16 +219,16 @@
   }
 
   /* 이미지와 텍스트를 담는 content 요소의 스타일 */
-  .content {
-    /* content 요소를 오른쪽으로 띄웁니다. */
-    width: 50%;
-    /* 부모 요소의 절반 크기로 설정합니다. */
-    text-align: left;
-    /* 텍스트를 왼쪽 정렬합니다. */
-  }
-  .content p {
-    font-size: 20px;
-  }
+ .content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin: 10px auto;
+            text-align: center;
+            align-items: center;
+            margin-top: 20px;
+            justify-content: center;
+        }
   
   
  .product img {
@@ -341,10 +341,6 @@
     font-style: italic;
   }
 
-  .content {
-    margin-top: 5px;
-    font-size: 14px;
-  }
 
   .date {
     margin-top: 3px;
@@ -1038,6 +1034,7 @@
     text-align: center;
     align-items: center;
     margin-top: 20px;
+    justify-content: center;
   }
 
   .basket_body {
