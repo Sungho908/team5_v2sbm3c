@@ -3,6 +3,7 @@ package dev.mvc.shoes;
 import java.util.ArrayList;
 import java.util.Map;
 
+import dev.mvc.category.CategoryVO;
 import dev.mvc.option.OptionVO;
 import dev.mvc.review.ReviewVO;
 
@@ -80,6 +81,11 @@ public interface ShoesDAOInter {
   public ArrayList<ShoesVO> inquiry_select(String word);
 
   public ArrayList<ReviewVO> Shoes_reviews(int shoesno);
+
+  public ArrayList<ShoesVO> Shoes_discount();
   
+  public ArrayList<CategoryVO> Shoes_man(int categoryno);
+  
+  public ArrayList<CategoryVO> Shoes_girl(int categoryno);
   
 }

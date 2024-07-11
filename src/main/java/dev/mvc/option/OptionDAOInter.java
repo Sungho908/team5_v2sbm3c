@@ -21,10 +21,12 @@ public interface OptionDAOInter {
   public ArrayList<OptionVO> option_paging(Map<String, Object> map);
   
   public ArrayList<Integer> option_sizes(int shoesno);
-  
+
   public ArrayList<String> option_color(int shoesno);
 
   /**id="optionByshoesno" parameterType="int" resultType="dev.mvc.option.OptionVO"*/
   public ArrayList<OptionVO> optionByshoesno(int shoesno);
+
+  public ArrayList<OptionVO> option_coloramount(Map<String, Object> map);
 
 }

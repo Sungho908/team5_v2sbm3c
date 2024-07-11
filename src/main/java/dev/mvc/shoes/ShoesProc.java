@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import dev.mvc.category.CategoryVO;
 import dev.mvc.option.OptionVO;
 import dev.mvc.review.ReviewVO;
 
@@ -190,4 +191,24 @@ public class ShoesProc implements ShoesProcInter {
     ArrayList<ReviewVO> list = this.shoesDAO.Shoes_reviews(shoesno);
     return list;
   }
+
+  @Override
+  public ArrayList<ShoesVO> Shoes_discount() {
+    ArrayList<ShoesVO> list = this.shoesDAO.Shoes_discount();
+    return list;
+  }
+
+  @Override
+  public ArrayList<CategoryVO> Shoes_man(int categoryno) {
+    ArrayList<CategoryVO> list = this.shoesDAO.Shoes_man(categoryno);
+    return list;
+  }
+
+  @Override
+  public ArrayList<CategoryVO> Shoes_girl(int categoryno) {
+    ArrayList<CategoryVO> list = this.shoesDAO.Shoes_girl(categoryno);
+    return list;
+  }
+  
+  
 }
