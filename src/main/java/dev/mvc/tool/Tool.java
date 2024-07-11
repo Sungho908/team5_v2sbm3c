@@ -22,6 +22,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -529,7 +530,7 @@ public class Tool {
       return relativePath; // 파일이 없거나 사이즈가 0이면 저장하지 않음
     }
 
-    String extFilename = getFileExtension(originalFileName);
+    String extension = getFileExtension(originalFileName);
 
     try {
       byte[] fileBytes = multipartFile.getBytes();
@@ -537,7 +538,7 @@ public class Tool {
       System.out.println(checksum);
 
       // Check for existing files with the same checksum
-      File existingFile = findFileByChecksum(Tool.getUploadDir(), extFilename, checksum);
+      File existingFile = findFileByChecksum(Tool.getUploadDir(), extension, checksum);
       if (existingFile != null) {
         System.out.println("-> 같은 체크섬을 가진 파일이 이미 존재합니다: " + existingFile.getName());
         // 반환 경로를 절대 경로에서 상대 경로로 변환
@@ -549,15 +550,13 @@ public class Tool {
         return relativePath;
       }
 
-      String extension = extFilename.substring(1); // Remove the dot from the extension
-
       // Create directory based on the file extension
       File directory = new File(Tool.getUploadDir(), extension);
       if (!directory.exists()) {
         directory.mkdirs();
       }
 
-      File newFile = new File(directory, checksum + extFilename);
+      File newFile = new File(directory, checksum + "." + extension);
 
       String serverFullPath = newFile.getAbsolutePath();
 
@@ -583,7 +582,7 @@ public class Tool {
     if (extIndex == -1) {
       return ""; // 확장자가 없으면 빈 문자열 반환
     }
-    return fileName.substring(extIndex).toLowerCase(); // 확장자를 소문자로 변환하여 반환
+    return fileName.substring(extIndex + 1).toLowerCase(); // 확장자를 소문자로 변환하여 반환
   }
 
   private static String calculateChecksum(byte[] fileBytes) {
@@ -600,23 +599,21 @@ public class Tool {
     }
   }
 
-  private static File findFileByChecksum(String directory, String ext, String checksum) {
-    String path = "";
-    if (File.separator.equals("\\")) {
-      path = directory + "\\" + ext.substring(1);
-    } else {
-      path = directory + "/" + ext.substring(1);
-    }
-    File dir = new File(path);
+  private static File findFileByChecksum(String directory, String extension, String checksum) {
+    // 경로 설정 시 확장자 앞의 점을 제거
+    String path = directory + File.separator + extension;
 
+    File dir = new File(path);
     if (!dir.exists() || !dir.isDirectory()) {
       return null;
     }
 
     File[] files = dir.listFiles((dir1, name) -> {
       int extIndex = name.lastIndexOf(".");
+      if (extIndex == -1)
+        return false;
       String nameWithoutExt = name.substring(0, extIndex);
-      return nameWithoutExt.startsWith(checksum) && (nameWithoutExt.length() == checksum.length());
+      return nameWithoutExt.equals(checksum);
     });
 
     // 해당 파일이 존재하면 첫 번째 파일을 반환, 그렇지 않으면 null 반환
@@ -626,13 +623,13 @@ public class Tool {
 
     return null;
   }
-  
+
   //날짜에 특정 일수를 더하거나 빼는 메서드
-   public static Date addDays(Date date, int days) {
-     Calendar calendar = Calendar.getInstance();
-     calendar.setTime(date);
-     calendar.add(Calendar.DAY_OF_MONTH, days);
-     return calendar.getTime();
-   }
+  public static Date addDays(Date date, int days) {
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(date);
+    calendar.add(Calendar.DAY_OF_MONTH, days);
+    return calendar.getTime();
+  }
 
 }

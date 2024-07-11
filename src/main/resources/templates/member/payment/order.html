@@ -81,9 +81,23 @@
       li {
         height: 2rem;
       }
+      
+      .orderlist{
+        margin: 0px auto; 
+        text-align: -webkit-center;
+        width: 80%;
+      }
+      
+      @media(max-width:1060px){
+        .orderlist{
+          margin: 0px;
+          text-align: -webkit-center;
+        }
+      }
+      
     </style>
 
-    <div style="margin: 0 auto; text-align: -webkit-center;">
+    <div class="orderlist">
       <div th:replace="~{fragment/infoSidebarFragment::infoSidebarFragment}"></div>
       <div class="main-container">
         <div class="title-payment">주문내역</div>

@@ -15,7 +15,7 @@
     margin: 0px;
     /* top right bottom left */
     padding: 0px;
-    color: #555555;
+/*     color: #555555; */
   }
 
   .container_main {
@@ -31,6 +31,12 @@
     height: 200px;
     background-image: url('./images/top_1920_300.jpg');
     margin-bottom: 0px;
+  }
+  
+      .clearfix::after {
+    content: '';
+    display: block;
+    clear: both;
   }
 
   .top_menu_label {
@@ -624,13 +630,13 @@
     position: relative;
   }
 
-  .aside_right {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    display: flex;
-    align-items: center;
-  }
+/*   .aside_right { */
+/*     position: absolute; */
+/*     right: 10px; */
+/*     top: 10px; */
+/*     display: flex; */
+/*     align-items: center; */
+/*   } */
 
   .menu_devide {
     margin: 0 5px;

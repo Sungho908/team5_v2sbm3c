@@ -34,19 +34,18 @@
           조회수 : <span style="font-size: 1em;" th:text="${noticememberfileVO.views }"></span>
           </span>
           <div class='menu_line'></div>
-          <div style="white-space: pre-wrap;"><span th:text="${noticememberfileVO.contents}"></span></div>
+          <div style="white-space: pre-wrap;"><span th:utext="${noticememberfileVO.contents}"></span></div>
         </div>
       </li>
       <!-- 
       <li class="li_none" th:text="|검색어(키워드): ${noticememberfileVO.word }|">
       </li>
       -->
-      <li class="li_none" th:if="${noticememberfileVO.sizes > 0}">
-        <div>
-          <!-- 다운로드 기능 미구현 -->
+      <li class="li_none" th:if="${not #lists.isEmpty(noticememberfileVO.noticeFileVOs)}">
+        <div th:each="file :${noticememberfileVO.noticeFileVOs}">
           첨부 파일: <a
-            th:href='@{|/download?dir=/file/storage/&filename=${noticememberfileVO.src}&downname=${noticememberfileVO.name}|}'
-            th:text='|${noticememberfileVO.name}|'></a> <span th:text="|(${noticememberfileVO.sizes} kb)|"></span>
+            th:href='@{|/download?dir=/file/storage/&filename=${file.src}&downname=${file.name}|}'
+            th:text='|${file.name}|'></a> <span th:text="|(${@ThymeleafUtils.formatByteStr(file.sizes)})|"></span>
         </div>
       </li>
     </ul>

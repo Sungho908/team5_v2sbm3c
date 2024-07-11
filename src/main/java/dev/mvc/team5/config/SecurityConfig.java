@@ -23,6 +23,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import dev.mvc.loginHistory.LoginHistoryProcInter;
 import dev.mvc.member.MemberProc;
 import dev.mvc.member.MemberProcInter;
+import dev.mvc.member.MemberRole;
 import dev.mvc.member.MemberVO;
 
 import jakarta.servlet.ServletException;
@@ -49,8 +50,9 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain (HttpSecurity http) throws Exception{
 	    return http.csrf(csrf ->csrf.disable())
 	        .authorizeHttpRequests(requests -> requests
-	            //.requestMatchers("/admin/**").hasAuthority(MemberRole.MASTER.name())
-	            //.requestMatchers("/admin/**").hasAuthority(MemberRole.ADMIN.name())
+//	            .requestMatchers("/admin/**").hasAnyAuthority(MemberRole.MASTER.name(),MemberRole.ADMIN.name())
+//	            .requestMatchers("/admin/**").hasAuthority(MemberRole.MASTER.name())
+//	            .requestMatchers("/admin/**").hasAuthority(MemberRole.ADMIN.name())
 	            //.requestMatchers("/business/**").hasAuthority(MemberRole.BUSINESS.name())
 	            .requestMatchers("/member/**").authenticated()
 	            .requestMatchers("/delivery/**").authenticated()

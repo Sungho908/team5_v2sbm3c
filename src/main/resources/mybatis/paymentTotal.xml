@@ -152,7 +152,7 @@
           m.nickname,
           p.paymentno,
           p.rdate,
-          ROW_NUMBER() OVER (PARTITION BY m.memberno ORDER BY p.rdate DESC) AS rn
+          ROW_NUMBER() OVER (PARTITION BY m.memberno ORDER BY p.rdate desc) AS rn
         FROM
           member m
           INNER JOIN payment p ON m.memberno = p.memberno
@@ -197,14 +197,14 @@
         nickname,
         paymentno,
         rdate,
-        ROW_NUMBER() OVER (ORDER BY rdate DESC) AS rownum_
+        ROW_NUMBER() OVER (ORDER BY rdate ${order}) AS rownum_
       FROM
         PaymentRank
       WHERE
         rn = 1
     )
     WHERE rownum_ BETWEEN #{start_num} AND #{end_num}
-    ORDER BY rdate DESC
+    ORDER BY rdate ${order}
   </select>
 
 

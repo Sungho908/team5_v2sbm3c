@@ -218,7 +218,7 @@
           <select class="color-select" id="optionSelect">
             <option selected>옵션을 선택해주세요.</option>
             <option th:each="option :${options}" th:disabled="${option.amount <= 0}" th:value="${option.optionno}">
-              <th:block th:utext="${@StringUtils.formatnbsp(
+              <th:block th:utext="${@ThymeleafUtils.formatnbsp(
                                    optionStat.count + '.    ' + 
                                    '크기: ' + option.sizes + '    ' +
                                    '색상: ' + option.color + '    ' +

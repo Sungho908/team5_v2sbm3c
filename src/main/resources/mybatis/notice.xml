@@ -2,18 +2,38 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.mvc.notice.NoticeDAOInter">
+
+  <resultMap id="NoticeMemberFileResultMap" type="dev.mvc.notice.NoticeMemberFileVO">
+    <id property="noticeno" column="noticeno"/>
+    <result property="title" column="title"/>
+    <result property="contents" column="contents"/>
+    <result property="rdate" column="rdate"/>
+    <result property="views" column="views"/>
+    <result property="nickname" column="nickname"/>
+    <collection property="noticeFileVOs" ofType="dev.mvc.noticeFile.NoticeFileVO" javaType="ArrayList">
+      <id property="notice_file_no" column="notice_file_no"/>
+      <result property="name" column="name"/>
+      <result property="sizes" column="sizes"/>
+      <result property="ex" column="ex"/>
+      <result property="src" column="src"/>
+    </collection>
+  </resultMap>
+
+
   <!-- 공지 생성 -->
-  <insert id="create" parameterType="dev.mvc.noticeFile.NoticeFileVO">
+  <insert id="create" parameterType="Map">
     DECLARE
         v_noticeno NUMBER;
     BEGIN
         INSERT INTO notice (noticeno, title, contents, rdate, memberno)
-        VALUES (NOTICE_SEQ.nextval, #{noticeVO.title}, #{noticeVO.contents}, SYSDATE, 1)
+        VALUES (NOTICE_SEQ.nextval, #{title}, #{contents}, SYSDATE, 1)
         RETURNING noticeno INTO v_noticeno;
-    <if test="name != null and name != ''">
-        INSERT INTO notice_file (notice_file_no, name, sizes, ex, src, noticeno)
-        VALUES (NOTICE_FILE_SEQ.nextval, #{name}, #{sizes}, #{ex}, #{src}, v_noticeno);
-        </if>
+    <if test="files != null">
+	    <foreach collection="files" item="file">
+	      INSERT INTO notice_file (notice_file_no, name, sizes, ex, src, noticeno)
+	      VALUES (NOTICE_FILE_SEQ.nextval, #{file.name}, #{file.sizes}, #{file.ex}, #{file.src}, v_noticeno);
+	    </foreach>
+    </if> 
     END;
   </insert>
 
@@ -36,25 +56,32 @@
   </select>
 
   <!-- 페이징 -->
-  <select id="list_search_paging" resultType="dev.mvc.notice.NoticeMemberFileVO" parameterType="Map">
-    SELECT n.noticeno, n.title, n.contents, n.rdate, n.views, m.nickname, nf.notice_file_no, nf.name, nf.sizes, nf.ex, nf.src, r
-        FROM (
-            SELECT noticeno, title, contents, rdate, views, memberno, rownum as r
-            FROM notice
-        ) n
-        JOIN member m ON n.memberno = m.memberno
-        LEFT JOIN notice_file nf ON n.noticeno = nf.noticeno
-    <if test="word != null and word != ''">
-    WHERE 
-      (
-        UPPER(n.title) LIKE '%' || UPPER(#{word}) || '%' 
-        OR UPPER(n.contents) LIKE '%' || UPPER(#{word}) || '%' 
-        OR UPPER(m.nickname) LIKE '%' || UPPER(#{word}) || '%' 
-      )
-    </if>
-    AND
-        r &gt; = #{start_num} AND r &lt; = #{end_num}
-    ORDER BY n.rdate desc, noticeno desc
+  <select id="list_search_paging" resultMap="NoticeMemberFileResultMap" parameterType="Map">
+		WITH notice_with_rownum AS (
+		  SELECT n.noticeno, n.title, n.contents, n.rdate, n.views, 
+		         m.nickname,
+		         ROW_NUMBER() OVER (ORDER BY n.rdate DESC) as r
+		  FROM notice n
+		  INNER JOIN member m ON n.memberno = m.memberno
+		  <if test="word != null and word != ''">
+		    WHERE (
+		      UPPER(n.title) LIKE '%' || UPPER(#{word}) || '%' 
+		      OR UPPER(n.contents) LIKE '%' || UPPER(#{word}) || '%' 
+		      OR UPPER(m.nickname) LIKE '%' || UPPER(#{word}) || '%' 
+		    )
+		  </if>
+		),
+		distinct_notices AS (
+		  SELECT noticeno, title, contents, rdate, views, nickname, r
+		  FROM notice_with_rownum
+		  WHERE r &gt;= #{start_num} AND r &lt;= #{end_num}
+		)
+		SELECT dn.noticeno, dn.title, dn.contents, dn.rdate, dn.views, 
+		       dn.nickname, 
+		       nf.notice_file_no, nf.name, nf.sizes, nf.ex, nf.src
+		FROM distinct_notices dn
+		LEFT JOIN notice_file nf ON dn.noticeno = nf.noticeno
+		ORDER BY dn.r
   </select>
 
   <!-- 공지사항의 파일 유무 확인 -->
@@ -65,23 +92,13 @@
   </select>
 
   <!-- 공지사항 상세 -->
-  <select id="read" resultType="dev.mvc.notice.NoticeMemberFileVO" parameterType="Map">
-    <if test="count == 0">
-        SELECT n.noticeno, m.memberno, n.title, n.contents, n.rdate, n.views, m.nickname
-        FROM notice n
-        JOIN member m 
-        ON n.memberno = m.memberno
-        WHERE n.noticeno = #{noticeno}
-    </if>
-    <if test="count != 0">
-        SELECT n.noticeno, m.memberno, nf.notice_file_no, n.title, n.contents, n.rdate, n.views, m.nickname, nf.notice_file_no, nf.name, nf.sizes, nf.ex, nf.src
-        FROM notice n
-        JOIN member m 
-        ON n.memberno = m.memberno
-        JOIN notice_file nf
-        ON n.noticeno = nf.noticeno
-        WHERE n.noticeno = #{noticeno}
-    </if>
+  <select id="read" resultMap="NoticeMemberFileResultMap" parameterType="int">
+	  SELECT n.noticeno, m.memberno, nf.notice_file_no, n.title, n.contents, n.rdate, n.views, m.nickname, nf.notice_file_no, nf.name, nf.sizes, nf.ex, nf.src
+	  FROM notice n
+	  JOIN member m 
+	  ON n.memberno = m.memberno
+	  LEFT JOIN notice_file nf ON n.noticeno = nf.noticeno
+	  WHERE n.noticeno = #{noticeno}
   </select>
 
   <!-- 공지사항 조회수 1 상승 -->
@@ -100,30 +117,16 @@
 
   <!-- 공지사항 수정 -->
   <update id="update" parameterType="dev.mvc.notice.NoticeMemberFileVO">
-    DECLARE
-        v_noticeno NUMBER;
-    BEGIN
-        UPDATE notice 
-        SET title = #{title}, 
-        contents = #{contents}
-        WHERE noticeno = #{noticeno};
-    <if test="name != null and name != ''">
-        UPDATE notice_file 
-        SET name = #{name}, 
-        sizes = #{sizes}, 
-        ex = #{ex}, 
-        src = #{src} 
-        WHERE noticeno = #{noticeno};
-        </if>
-    END;
+	  UPDATE notice 
+	  SET title = #{title}, 
+	  contents = #{contents}
+	  WHERE noticeno = #{noticeno}
   </update>
+ 
 
   <delete id="delete" parameterType="Integer">
     DELETE FROM notice WHERE noticeno = #{notice}
   </delete>
 
-  <delete id="delete_file" parameterType="Integer">
-    DELETE FROM notice_file WHERE noticeno = #{notice}
-  </delete>
 
 </mapper>

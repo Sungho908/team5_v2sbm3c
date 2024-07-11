@@ -230,3 +230,102 @@ commit;
 
 
 
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SELECT noticeno, title, contents, rdate, views, 
+       nickname, 
+       notice_file_no, name, sizes, ex, src, r
+FROM (
+  SELECT n.noticeno, n.title, n.contents, n.rdate, n.views, n.memberno,
+         m.nickname,
+         nf.notice_file_no, nf.name, nf.sizes, nf.ex, nf.src,
+         ROW_NUMBER() OVER (ORDER BY n.rdate DESC) as r
+  FROM notice n
+  INNER JOIN member m ON n.memberno = m.memberno
+  LEFT JOIN notice_file nf ON n.noticeno = nf.noticeno
+--   <if test="word != null and word != ''">
+--   WHERE 
+--     (
+--       UPPER(n.title) LIKE '%' || UPPER(#{word}) || '%' 
+--       OR UPPER(n.contents) LIKE '%' || UPPER(#{word}) || '%' 
+--       OR UPPER(m.nickname) LIKE '%' || UPPER(#{word}) || '%' 
+--     )
+--   </if>
+) subquery
+WHERE r >= 1 AND r <= 5 ;
+
+
+
+
+WITH notice_with_rownum AS (
+  SELECT n.noticeno, n.title, n.contents, n.rdate, n.views, 
+         m.nickname,
+         ROW_NUMBER() OVER (ORDER BY n.rdate DESC) as r
+  FROM notice n
+  INNER JOIN member m ON n.memberno = m.memberno
+--  <if test="word != null and word != ''">
+--    WHERE (
+--      UPPER(n.title) LIKE '%' || UPPER(#{word}) || '%' 
+--      OR UPPER(n.contents) LIKE '%' || UPPER(#{word}) || '%' 
+--      OR UPPER(m.nickname) LIKE '%' || UPPER(#{word}) || '%' 
+--    )
+--  </if>
+),
+distinct_notices AS (
+  SELECT noticeno, title, contents, rdate, views, nickname, r
+  FROM notice_with_rownum
+  WHERE r >= 1 AND r <= 5
+)
+SELECT dn.noticeno, dn.title, dn.contents, dn.rdate, dn.views, 
+       dn.nickname, 
+       nf.notice_file_no, nf.name, nf.sizes, nf.ex, nf.src
+FROM distinct_notices dn
+LEFT JOIN notice_file nf ON dn.noticeno = nf.noticeno
+ORDER BY dn.r;
+--------------------------------------------------------------------------------------
+SELECT n.noticeno, m.memberno, nf.notice_file_no, n.title, n.contents, n.rdate, n.views, m.nickname, nf.notice_file_no, nf.name, nf.sizes, nf.ex, nf.src
+FROM notice n
+JOIN member m 
+ON n.memberno = m.memberno
+LEFT JOIN notice_file nf
+ON n.noticeno = nf.noticeno
+WHERE n.noticeno = 18
+
+
+
+-------------------------------------------------
+  <insert id="create" parameterType="Map">
+    DECLARE
+        v_noticeno NUMBER;
+    BEGIN
+        INSERT INTO notice (noticeno, title, contents, rdate, memberno)
+        VALUES (NOTICE_SEQ.nextval, #{title}, #{contents}, SYSDATE, 1)
+        RETURNING noticeno INTO v_noticeno;
+    <if test="files != null">
+	    <foreach collection="files" item="file">
+	      INSERT INTO notice_file (notice_file_no, name, sizes, ex, src, noticeno)
+	      VALUES (NOTICE_FILE_SEQ.nextval, #{file.name}, #{file.sizes}, #{file.ex}, #{file.src}, v_noticeno);
+	    </foreach>
+    </if> 
+    END;
+  </insert>
+  -----------------------------------------
+
+  <update id="update" parameterType="Map">
+    UPDATE notice 
+    SET title = #{title}, 
+      contents = #{contents}
+    WHERE noticeno = #{noticeno};
+    <if test="files != null">
+      <foreach collection="files" item="file">
+        INSERT INTO notice_file (notice_file_no, name, sizes, ex, src, noticeno)
+        VALUES (NOTICE_FILE_SEQ.nextval, #{file.name}, #{file.sizes}, #{file.ex}, #{file.src}, #{noticeno});
+      </if>
+    END;
+  </update>
+
+
+commit;

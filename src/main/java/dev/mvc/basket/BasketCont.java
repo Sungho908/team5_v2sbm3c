@@ -101,6 +101,7 @@ public class BasketCont {
   @ResponseBody
   @PostMapping("basket_list/payment")
   public boolean basket_list_create(@RequestBody Map<String, Object> map) {
+    System.out.println("basketmap: " + map.toString());
     if(!this.paymentTotalProc.create(map)) {
         return false;
     }
@@ -155,6 +156,8 @@ public class BasketCont {
     int memberno = memberVO.getMemberno();
     int basketno = (Integer) map.get("basketno");
     int amount = (Integer) map.get("amount");
+    
+    System.out.println("amount: " + amount);
 
     int result = basketProc.update(amount, memberno, basketno);
 
