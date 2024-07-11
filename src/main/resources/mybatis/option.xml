@@ -19,6 +19,12 @@
     SET AMOUNT = #{amount}
     WHERE optionno = #{optionno}
   </update>
+  
+  <update id="option_update_amount" parameterType="Map">
+    UPDATE OPTIONS
+    SET amount = amount - #{amount}
+    WHERE OPTIONNO = #{optionno}
+  </update>
 
   <delete id="option_delete" parameterType="Integer">
     DELETE FROM OPTIONS WHERE OPTIONNO = #{optionno}
@@ -48,6 +54,24 @@
 
   <select id="parent_count" parameterType="Integer">
     SELECT COUNT(*) FROM options WHERE shoesno = #{shoesno}
+  </select>
+  
+  <select id="optionByshoesno" parameterType="int" resultType="dev.mvc.option.OptionVO">
+    SELECT DISTINCT
+      o.optionno,
+      o.sizes,
+      o.color,
+      o.amount
+      
+    FROM 
+      shoes s
+      INNER JOIN category_list cl ON s.shoesno = cl.shoesno
+      INNER JOIN category c ON cl.categoryno = c.categoryno
+      INNER JOIN options o ON s.shoesno = o.shoesno
+    WHERE 
+      s.shoesno = #{shoesno}
+    ORDER BY 
+      o.sizes
   </select>
 
   <select id="option_sizes" resultType="int" parameterType="Integer">

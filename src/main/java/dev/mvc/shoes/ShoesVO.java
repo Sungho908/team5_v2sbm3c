@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter @Setter
+@Getter @Setter @ToString
 public class ShoesVO {
   /** 신발 번호 */
   private Integer shoesno = 0;

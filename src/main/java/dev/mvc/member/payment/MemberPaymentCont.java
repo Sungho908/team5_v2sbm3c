@@ -1,4 +1,4 @@
-package dev.mvc.member.payment;
+   package dev.mvc.member.payment;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,6 +54,20 @@ public class MemberPaymentCont {
     return "member/payment/order";
   }
   
+  @GetMapping("csorder")
+  public String csorder(HttpSession session, Model model, 
+                      @RequestParam(required = false, defaultValue = "7", name = "dates")Integer dates,
+                      @RequestParam(required = false, name="search")String search ) {
+    MemberVO memberVO = (MemberVO) session.getAttribute("login");
+    ArrayList<PaymentTotalVO> list = this.paymentTotalProc.cslist(memberVO.getMemberno(), dates, search);
+    System.out.println(list.toString());
+    model.addAttribute("cnt", list.size());
+    model.addAttribute("startDates",Tool.addDays(new Date(),-(dates)));
+    model.addAttribute("paymentsList", list);
+    
+    return "member/payment/csorder";
+  }
+  
   
   @ResponseBody
   @PostMapping("delete")
@@ -63,5 +77,15 @@ public class MemberPaymentCont {
     }
     
     return ResponseEntity.ok("삭제 성공");
+  }
+  
+  @ResponseBody
+  @PostMapping("cancel")
+  public ResponseEntity<String> cancel(@RequestParam("no")int paymentno){
+    if(this.paymentProc.cancel(paymentno) == 0) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("주문내역을 찾을 수 없음");
+    }
+    
+    return ResponseEntity.ok("취소 성공");
   }
 }

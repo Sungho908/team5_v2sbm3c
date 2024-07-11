@@ -6,6 +6,15 @@ import lombok.ToString;
 
 @Getter @Setter @ToString
 public class PaymentDetailsOptionVO {
+  private Integer payment_details_no;
+  private Integer payment_amount;
+  private Integer paymentno;
+  
+  private Integer optionno;
+  private Integer sizes;
+  private Integer amount;
+  private String color;
+  
   private Integer shoesno;
   private String title;
   private String brand;
@@ -15,14 +24,9 @@ public class PaymentDetailsOptionVO {
   private String contents;
   private char visible;
   
-  private Integer payment_details_no;
-  private Integer payment_amount;
+  private String subname;
   
-  
-  private Integer optionno;
-  private Integer sizes;
-  private Integer amount;
-  private String color;
+  private Integer categoryno;
   
   private Integer shoes_file_no;
   private String name;

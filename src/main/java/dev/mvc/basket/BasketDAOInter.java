@@ -10,6 +10,8 @@ public interface BasketDAOInter {
 
   public ArrayList<ShoesAllVO> list(Map<String, Object> map);
   
+  public Map<String, Object> read(Map<String, Object> map);
+  
   
   public int create(Map<String, Object> map);
   

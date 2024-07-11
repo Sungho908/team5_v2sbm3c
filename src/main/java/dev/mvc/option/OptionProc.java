@@ -81,5 +81,8 @@ public class OptionProc implements OptionProcInter {
     return color;
   }
 
-
+  @Override
+  public ArrayList<OptionVO> optionByshoesno(int shoesno) {
+    return this.optionDAO.optionByshoesno(shoesno);
+  }
 }

@@ -30,11 +30,11 @@ window.onload = function() {
   document.querySelector('#id').addEventListener('keypress', (event) => {
     // document.getElementById('passwd').addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
-      document.getElementById('passwd').focus();
+      document.getElementById('pw1').focus();
     }
   });
 
-  document.querySelector('#passwd').addEventListener('keypress', (event) => {
+  document.querySelector('#pw1').addEventListener('keypress', (event) => {
     // document.getElementById('passwd').addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
       send();

@@ -96,7 +96,8 @@
         <input type='file' class="form-control" required placeholder="파일 선택" th:field="*{mf}">
       </div>
       
-
+      <button type="button" id="btn_DaumPostcode" onclick="DaumPostcode()" class="btn btn-primary btn-sm">우편번호 찾기</button>
+      
       <div class="col-2">
         <label>우편 번호</label> 
         <input type='text' id='zipcode' class="form-control form-control-sm" placeholder="우편번호" th:field="*{zipcode}" disabled>
@@ -113,7 +114,7 @@
         <label>상세 주소</label> 
         <input type='text' id='addr2' class="form-control form-control-sm" placeholder="상세 주소" th:field="*{addr2}">
       </div>
-      <button type="button" id="btn_DaumPostcode" onclick="DaumPostcode()" class="btn btn-primary btn-sm">우편번호 찾기</button>
+      
       
       
       <!--/* ------------------------------ DAUM 우편번호 API 시작 ------------------------------ */-->
@@ -125,8 +126,8 @@
       <!--/* ------------------------------ DAUM 우편번호 API 종료 ------------------------------ */-->
       
       <div class="content_body_bottom">
-        <button type="button" class="btn-secondary" onclick="send()">가입</button>
-        <button type="button" onclick="location.href='/'" class="btn-secondary">취소</button>
+        <button type="button" class="btn btn-secondary" onclick="send()">가입</button>
+        <button type="button" onclick="location.href='/'" class="btn btn-secondary">취소</button>
       </div>
     </form>
     

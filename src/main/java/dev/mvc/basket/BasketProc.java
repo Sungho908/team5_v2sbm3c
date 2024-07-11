@@ -28,15 +28,28 @@ public class BasketProc implements BasketProcInter {
     ArrayList<ShoesAllVO> list = this.basketDAO.list(map);
     return list;
   }
+  
+  @Override
+  public Map<String, Object> read(Map<String, Object> map) {
+    Map<String, Object> result = this.basketDAO.read(map);
+    System.out.println(map.toString());
+    if(result == null || result.isEmpty()) {
+      return null;
+    }
+    
+    return this.basketDAO.read(map);
+  }
 
   @Override
-  public int create(int memberno, String color, int sizes) {
+  public int create(int memberno, String color, int sizes, int amount) {
     Map<String, Object> map = new HashMap<>();
     map.put("memberno", memberno);
     map.put("color", color);
     map.put("sizes", sizes);
+    map.put("amount", amount);
     
     int cnt = this.basketDAO.create(map);
+    System.out.println("cnt: "+cnt);
     return cnt;
   }
 
@@ -51,7 +64,7 @@ public class BasketProc implements BasketProcInter {
   }
 
   @Override
-  public int delete(int memberno, int basketno) {
+  public int delete(Integer memberno, Integer basketno) {
     Map<String, Object> map = new HashMap<>();
     
     map.put("memberno", memberno);

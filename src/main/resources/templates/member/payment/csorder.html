@@ -86,21 +86,21 @@
     <div style="margin: 0 auto; text-align: -webkit-center;">
       <div th:replace="~{fragment/infoSidebarFragment::infoSidebarFragment}"></div>
       <div class="main-container">
-        <div class="title-payment">주문내역</div>
+        <div class="title-payment">취소/반품/교환/환불내역</div>
         <div class="dateDiv-main clearfix">
           <div style="float: left;">
             <div class="dateDiv-btn" th:with="dates = ${not #strings.isEmpty(param.dates) ? param.dates : '7'}">
-              <button onclick="location.href='/member/payment/order?dates=0'"
+              <button onclick="location.href='/member/payment/csorder?dates=0'"
                 th:style="${dates.toString() == '0'} ? 'background-color: #aaa;' : 'background-color: #fff;' ">오늘</button>
-              <button onclick="location.href='/member/payment/order?dates=7'"
+              <button onclick="location.href='/member/payment/csorder?dates=7'"
                 th:style="${dates.toString() == '7'} ? 'background-color: #aaa;' : 'background-color: #fff;' ">1주일</button>
-              <button onclick="location.href='/member/payment/order?dates=30'"
+              <button onclick="location.href='/member/payment/csorder?dates=30'"
                 th:style="${dates.toString() == '30'} ? 'background-color: #aaa;' : 'background-color: #fff;' ">1개월</button>
-              <button onclick="location.href='/member/payment/order?dates=90'"
+              <button onclick="location.href='/member/payment/csorder?dates=90'"
                 th:style="${dates.toString() == '90'} ? 'background-color: #aaa;' : 'background-color: #fff;' ">3개월</button>
-              <button onclick="location.href='/member/payment/order?dates=180'"
+              <button onclick="location.href='/member/payment/csorder?dates=180'"
                 th:style="${dates.toString() == '180'} ? 'background-color: #aaa;' : 'background-color: #fff;' ">6개월</button>
-              <button onclick="location.href='/member/payment/order?dates=360'"
+              <button onclick="location.href='/member/payment/csorder?dates=360'"
                 th:style="${dates.toString() == '360'} ? 'background-color: #aaa;' : 'background-color: #fff;' ">12개월</button>
             </div>
             <div class="dateDiv-text" th:text="|• ${#dates.format(startDates,'yyyy-MM-dd')} ~ ${#dates.format(#dates.createToday(),'yyyy-MM-dd')}|"> •</div>
@@ -111,7 +111,7 @@
               <span th:text="|조회된 항목 수 (${cnt})|">조회된 항목 수</span>
             </div>
             <div style="border: 1px solid #bbb;">
-              <form th:action="@{/member/payment/order(dates=${param.dates})}" method="get" id="search-frm">
+              <form th:action="@{/member/payment/csorder(dates=${param.dates})}" method="get" id="search-frm">
                 <input style="border: 0px;" type="text" id="search-input" name="search" th:value="${param.search}">
                 <input type="hidden" name="dates" th:value="${param.dates}">
                 <img src="/images/search_48dp_FILL0_wght400_GRAD0_opsz48.svg" onclick="submit()" style="cursor: pointer;">
@@ -186,9 +186,9 @@
               <!-- 주문상태 -->
               <td style="width: 30px; text-align:center">
                 <div>
-                  <span style="font-size: 0.8rem;"
-                    th:text="${list.payment_status == '입금완료(수동)' or list.payment_status == '입금완료(자동)' ? '입금완료' : list.payment_status}"></span><br>
-                  <span th:text="${list.status}">주문상태/CS상태</span>
+                  <span style="font-size: 0.8rem;" th:text="${list.payment_status == '입금완료(수동)' or list.payment_status == '입금완료(자동)' ? '입금완료' : list.payment_status}"></span><br>
+                  <span th:text="${list.status}">주문상태</span><br><br>
+                  <span th:text="${list.cs_status}">CS상태</span>
                 </div>
               </td>
             </tr>
@@ -201,7 +201,7 @@
                     <a href="javascript:void(0);" class="deletepayment" style="color: #416de9; font-size: 12px;">주문내역삭제▶</a>
                   </div>
                   <div>
-                    <button class="btn btn-danger" th:if="${list.status == '상품준비중'}" onclick="cancel(event)">취소하기</button>
+                    
                     <button class="btn btn-danger">구매후기</button>
                   </div>
                 </div>

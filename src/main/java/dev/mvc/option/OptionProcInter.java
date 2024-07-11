@@ -20,7 +20,12 @@ public interface OptionProcInter {
   public int option_search_count(int shoesno);
   
   public ArrayList<Integer> option_sizes(int shoesno);
+ 
+  public ArrayList<String> option_color(int shoesno);
   
+  /**id="optionByshoesno" parameterType="int" resultType="dev.mvc.option.OptionVO"*/
+  public ArrayList<OptionVO> optionByshoesno(int shoesno);
+
   public ArrayList<OptionVO> option_coloramount(int shoesno, int sizes);
 
 }
