@@ -88,5 +88,14 @@
     WHERE shoesno = #{shoesno}
     AND sizes = #{sizes}
   </select>
+  
+    <select id="option_color" resultType="String" parameterType="Integer">
+    SELECT distinct o.color
+    FROM shoes s
+    JOIN category_list cl ON s.shoesno = cl.shoesno
+    JOIN category c ON cl.categoryno = c.categoryno
+    JOIN options o ON s.shoesno = o.shoesno
+    WHERE s.shoesno = #{shoesno}
+  </select>
 </mapper>
 

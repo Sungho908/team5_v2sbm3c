@@ -24,7 +24,7 @@
                 <button class="quantity-btn increase" onclick="increaseQuantity()">+</button>
               </div>
               <p class="item-total">금액: <span class="total"
-                  th:text="${ShoesAllVO.shoesVO.price * ShoesAllVO.basketVO.amount}"></span>원</p>
+                  th:text="${#numbers.formatInteger((ShoesAllVO.shoesVO.price * (100 - ShoesAllVO.shoesVO.discount) / 100) * ShoesAllVO.basketVO.amount, 3, 'COMMA')}"></span>원</p>
             </div>
           </div>
           <button class="basket_btn">장바구니 취소</button>
@@ -42,11 +42,16 @@
     function extractData() {
       let basketElements = document.querySelectorAll('.item-details');
       let basketList = [];
+      let priceStr = "";
+      let price = 0;
       
       basketElements.forEach((item) => {
+        priceStr = item.querySelector('.total').innerText;
+        price = parseInt(priceStr.match(/\d/g).join(''), 10);
+        
         basketList.push({
           optionno: item.querySelector('.optionno').value,
-          price: parseInt(item.querySelector('.total').innerText),
+          price: price,
           amount: parseInt(item.querySelector('.quantity').innerText), // 변경된 수량을 가져옴
         });
       });

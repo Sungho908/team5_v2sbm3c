@@ -76,6 +76,11 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('옵션을 선택해주세요.');
         return false;
       }
+      
+      if(memberno == null){
+        alert('로그인 해주세요.');
+        return false;
+      }
       // 장바구니 추가 요청 보내기
       fetch('/basket/create', {
         method: 'POST',
