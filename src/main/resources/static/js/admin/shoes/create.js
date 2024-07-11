@@ -170,7 +170,7 @@ function subCategoryList(mainCategory) {
           return response.json();
         })
         .then(data => {
-
+          
           subCategory.innerHTML = '';
           data.subname_list.forEach(list => {
             var option = document.createElement('option');

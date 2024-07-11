@@ -41,13 +41,15 @@
         <span th:text="'리뷰번호: ' + ${list.reviewVO.reviewno}" style="font-size: 20px;"></span>
       </div>
       <input type="hidden" th:value="${shoesno}" class="shoesno">
+      <input type="hidden" th:value="${word}" class="word">
       <div class="rating">
         <!-- 숫자 평점 -->
         <span th:each="star : ${#numbers.sequence(1, 5)}">
           <span th:if="${star le list.reviewVO.rating}" style="color: yellow; font-size: 25px;">&#9733;</span>
           <span th:unless="${star le list.reviewVO.rating}" style="font-size: 25px;">&#9734;</span>
         </span>
-        <span class="review-date" th:text="${#dates.format(list.reviewVO.rdate, 'yyyy-MM-dd')}" style="font-size: 17px;"></span>
+        <span class="review-date" th:text="${#dates.format(list.reviewVO.rdate, 'yyyy-MM-dd')}"
+          style="font-size: 17px;"></span>
       </div>
       <!-- 내용 영역-->
       <div class="review-content-container">
@@ -68,10 +70,10 @@
       등록된 리뷰가 없습니다.
     </div>
   </div>
-  
+
   <div class="bottom_menu" th:utext="${paging}"></div>
-  
-  
+
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       var deletebtn = document.querySelectorAll('.delete-btn');
@@ -111,7 +113,8 @@
         });
       });
     });
+
   </script>
-  
-  
+
+
 </div>
