@@ -9,14 +9,12 @@ document.addEventListener("DOMContentLoaded", function() {
   var dropdownTrigger4 = document.getElementById("navbarDropdown4");
   var dropdownTrigger5 = document.getElementById("navbarDropdown5");
   var dropdownTrigger6 = document.getElementById("navbarDropdown6");
-  var dropdownTrigger7 = document.getElementById("navbarDropdown7");
   var dropdownMenu1 = dropdownTrigger1.nextElementSibling;
   var dropdownMenu2 = dropdownTrigger2.nextElementSibling;
   var dropdownMenu3 = dropdownTrigger3.nextElementSibling;
   var dropdownMenu4 = dropdownTrigger4.nextElementSibling;
   var dropdownMenu5 = dropdownTrigger5.nextElementSibling;
   var dropdownMenu6 = dropdownTrigger6.nextElementSibling;
-  var dropdownMenu7 = dropdownTrigger7.nextElementSibling;
 
 
   //---------------------------------------------------------------------
@@ -116,22 +114,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
   dropdownMenu6.addEventListener("mouseleave", function() {
     dropdownMenu6.classList.remove("show");
-  });
-  //---------------------------------------------------------------------
-  dropdownTrigger7.addEventListener("mouseenter", function() {
-    dropdownMenu7.classList.add("show");
-  });
-
-  dropdownTrigger7.addEventListener("mouseleave", function() {
-    dropdownMenu7.classList.remove("show");
-  });
-
-  dropdownMenu7.addEventListener("mouseenter", function() {
-    dropdownMenu7.classList.add("show");
-  });
-
-  dropdownMenu7.addEventListener("mouseleave", function() {
-    dropdownMenu7.classList.remove("show");
   });
   //---------------------------------------------------------------------
 
