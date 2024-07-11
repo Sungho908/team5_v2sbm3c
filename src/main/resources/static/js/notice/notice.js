@@ -27,6 +27,8 @@ document.addEventListener("DOMContentLoaded", function() {
           }
         })
         .catch(error => console.error('Error:', error));
+        
+        button.innerHTML = "<img src='/images/progress.gif' style='width: 30%;'>";
     });
   });
 

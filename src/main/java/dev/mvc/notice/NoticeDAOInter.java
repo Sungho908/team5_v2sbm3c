@@ -8,7 +8,7 @@ import dev.mvc.noticeFile.NoticeFileVO;
 public interface NoticeDAOInter {
 
   /** 공지사항 생성 */
-  public int create(NoticeFileVO noticefileVO);
+  public int create(Map<String,Object> map);
   
   /** 공지사항 목록 */
   public ArrayList<NoticeMemberVO> list_all();
@@ -23,7 +23,7 @@ public interface NoticeDAOInter {
   public int file_count(int noticeno);
   
   /** 공지사항 상세 */
-  public NoticeMemberFileVO read(Map<String, Object> map);
+  public NoticeMemberFileVO read(int noticeno);
   
   /** 공지사항 조회수 증가 */
   public int increased_views(int noticeno);
@@ -32,12 +32,14 @@ public interface NoticeDAOInter {
   public int views(int noticeno);
   
   /** 공지사항 수정 */
-  public int update(NoticeMemberFileVO noticememberfileVO);
+  public int update(Map<String, Object> map);
   
   /** 공지사항 삭제 */
   public int delete(int noticeno);
   
   /** 공지사항-파일 삭제 */
   public int delete_file(int noticeno);
+  
+  public int insert_notice_file(Map<String,Object> map);
   
 }

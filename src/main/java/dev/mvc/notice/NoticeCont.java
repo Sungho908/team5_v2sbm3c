@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import dev.mvc.tool.Tool;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -32,12 +34,13 @@ public class NoticeCont {
   /** 블럭당 페이지 수, 하나의 블럭은 5개의 페이지로 구성됨 */
   public int page_per_block = 5;
 
-  private void table_paging(Model model, String word, int now_page) {
+  private void table_paging(HttpServletRequest request, Model model, String word, int now_page) {
+    String path = request.getServletPath();
     ArrayList<NoticeMemberFileVO> list = this.noticeProc.list_search_paging(word, now_page, this.record_per_page);
     model.addAttribute("list", list);
 
     int search_count = this.noticeProc.list_search_count(word);
-    String paging = this.noticeProc.pagingBox(now_page, word, "/admin/notice/list", search_count, this.record_per_page,
+    String paging = this.noticeProc.pagingBox(now_page, word, path, search_count, this.record_per_page,
         this.page_per_block);
 
     int no = search_count - ((now_page - 1) * this.record_per_page);
@@ -51,11 +54,11 @@ public class NoticeCont {
 
   /** 공지 목록 */
   @GetMapping(value = "/list")
-  public String notice(HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
+  public String notice(HttpServletRequest request, HttpSession session, Model model, @RequestParam(name = "word", defaultValue = "") String word,
       @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
     word = Tool.checkNull(word).trim();
 
-    table_paging(model, word, now_page);
+    table_paging(request, model, word, now_page);
 
     return "notice/list";
   }

@@ -34,27 +34,32 @@
           <col style='width: 10%;' />
           <col style='width: 10%;' />
         </colgroup>
-        <tbody th:each="noticememberfileVO, status:${list}">
+        <tbody th:each="noticeTotal, status:${list}">
           <tr>
             <td class="td_bs" th:text="|${(now_page-1) * 5 + status.index + 1}|"></td>
-            <td class="td_bs" th:text="${noticememberfileVO.title}"></td>
-            <td class="td_bs" th:text="${#dates.format(noticememberfileVO.rdate, 'yy/MM/dd')}"></td>
-            <td class="td_bs" id="views" th:text="${noticememberfileVO.views}"></td>
-            <td class="td_bs zoom">+</td>
-            <input type="hidden" id="noticeno" name="noticeno" th:value="${noticememberfileVO.noticeno}">
+            <td class="td_bs" th:text="${noticeTotal.title}"></td>
+            <td class="td_bs" th:text="${#dates.format(noticeTotal.rdate, 'yy/MM/dd')}"></td>
+            <td class="td_bs" id="views" th:text="${noticeTotal.views}"></td>
+            <td class="td_bs zoom" style="text-align: center;">+</td>
+            <input type="hidden" id="noticeno" name="noticeno" th:value="${noticeTotal.noticeno}">
           </tr>
           <tr class="contents">
             <td colspan="5" style="padding:10px 20% 10px 20%;">
-              <span th:text="${noticememberfileVO.contents}"></span><br>
-              <span th:if="${noticememberfileVO.sizes > 0}">
-                첨부 파일: <a
-                  th:href='@{|/download?dir=/notice/storage&filename=${noticememberfileVO.src}&downname=${noticememberfileVO.name}|}'
-                  th:text='|${noticememberfileVO.name}|'></a> <span th:text="|(${noticememberfileVO.sizes} kb)|"></span>
-              </span>
+              <div style="white-space: pre-wrap;">
+                <span  th:utext="${noticeTotal.contents}">.</span><br>  
+              </div>
+                
+              <div th:each="file : ${noticeTotal.noticeFileVOs}">
+                <th:block th:if="${not #lists.isEmpty(file)}">
+                첨부 파일: <a th:href='@{|/download?dir=/file/storage&filename=${file.src}&downname=${file.name}|}'
+                              th:text='|${file.name}|'></a> <span th:text="|${@ThymeleafUtils.formatByteStr(file.sizes)}|"></span>
+                </th:block>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
+      <div class="bottom_menu" th:utext="${paging}"></div>
     </div>
   </div>
 

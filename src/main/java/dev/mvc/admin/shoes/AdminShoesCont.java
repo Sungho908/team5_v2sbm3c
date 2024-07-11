@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import dev.mvc.category.CategoryProcInter;
 import dev.mvc.category.CategoryVO;
 import dev.mvc.member.MemberProcInter;
+import dev.mvc.member.MemberVO;
 import dev.mvc.option.OptionProcInter;
 import dev.mvc.option.OptionVO;
 import dev.mvc.review.ReviewProcInter;
@@ -172,6 +173,8 @@ public class AdminShoesCont {
   public Map<String, Object> create_process(HttpSession session, Model model, @RequestBody Map<String, Object> map) {
 
     ArrayList<Integer> categorylist = (ArrayList<Integer>) map.get("subcategorylist");
+    
+    MemberVO memberVO = (MemberVO)session.getAttribute("login");
 
     String title = (String) map.get("title");
     String brand = (String) map.get("brand");
@@ -181,6 +184,7 @@ public class AdminShoesCont {
 
     ShoesVO shoesVO = new ShoesVO();
     shoesVO.setMemberno(1); // 로그인으로 수정
+//    shoesVO.setMemberno(memberVO.getMemberno()); // 로그인으로 수정
     shoesVO.setTitle(title);
     shoesVO.setBrand(brand);
     shoesVO.setPrice(price);

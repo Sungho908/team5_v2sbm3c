@@ -2,22 +2,46 @@ package dev.mvc.notice;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import dev.mvc.noticeFile.NoticeFileDAOInter;
 import dev.mvc.noticeFile.NoticeFileVO;
+import dev.mvc.tool.Tool;
 
 @Service("dev.mvc.notice.NoticeProc")
-public class NoticeProc implements NoticeProcInter{
+public class NoticeProc implements NoticeProcInter {
 
   @Autowired
   private NoticeDAOInter noticeDAO;
   
+  @Autowired
+  private NoticeFileDAOInter noticeFileDAO;
+
   @Override
-  public int create(NoticeFileVO noticefileVO) {
-    int cnt = this.noticeDAO.create(noticefileVO);
+  public int create(Map<String, Object> map) {
+    if (map.get("files") != null) {
+      MultipartFile[] files = (MultipartFile[]) map.get("files");
+
+      List<Map<String, Object>> fileList = new ArrayList<>();
+      for (MultipartFile mf : files) {
+        Map<String, Object> fileMap = new HashMap<>();
+        String file = mf.getOriginalFilename();  
+        fileMap.put("name", file);
+        fileMap.put("ex", Tool.getFileExtension(file));
+        fileMap.put("sizes", mf.getSize());
+        fileMap.put("src", Tool.saveFileSpring(mf));
+        fileList.add(fileMap);
+      }
+      map.put("files", fileList);
+    }
+
+    int cnt = this.noticeDAO.create(map);
     return cnt;
   }
 
@@ -32,29 +56,25 @@ public class NoticeProc implements NoticeProcInter{
     int cnt = this.noticeDAO.file_count(noticeno);
     return cnt;
   }
-  
+
   @Override
   public int increased_views(int noticeno) {
     int cnt = this.noticeDAO.increased_views(noticeno);
     return cnt;
   }
-  
+
   @Override
   public int views(int noticeno) {
     int views = this.noticeDAO.views(noticeno);
     return views;
   }
-  
+
   @Override
-  public NoticeMemberFileVO read(int count, int noticeno) {
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("count", count);
-    map.put("noticeno", noticeno);
-    
-    NoticeMemberFileVO noticememberfileVO = this.noticeDAO.read(map);
+  public NoticeMemberFileVO read(int noticeno) {
+    NoticeMemberFileVO noticememberfileVO = this.noticeDAO.read(noticeno);
     return noticememberfileVO;
   }
-  
+
   @Override
   public int list_search_count(String word) {
     int cnt = this.noticeDAO.list_search_count(word);
@@ -75,14 +95,48 @@ public class NoticeProc implements NoticeProcInter{
     map.put("end_num", end_num);
 
     ArrayList<NoticeMemberFileVO> list = this.noticeDAO.list_search_paging(map);
-    
+
     return list;
   }
 
   @Override
-  public int update(NoticeMemberFileVO noticememberfileVO) {
-    int cnt = this.noticeDAO.update(noticememberfileVO);
-    return cnt;
+  @Transactional
+  public boolean update(Map<String, Object> map) {
+    int noticeno = (int) map.get("noticeno");
+    ArrayList<NoticeFileVO> originfiles = this.noticeFileDAO.findByNoticeno(noticeno);
+    Integer[] deletefiles = (Integer[]) map.get("deletefiles");
+    MultipartFile[] mpfs = (MultipartFile[]) map.get("files");
+    
+    if(this.noticeDAO.update(map) == 0)
+      return false;
+    
+    if (mpfs != null) {
+      for (MultipartFile mf : mpfs) {
+        System.out.println(mf.getOriginalFilename());
+        System.out.println(mf.getSize());
+        NoticeFileVO nfVO = new NoticeFileVO();
+        String file = mf.getOriginalFilename();  
+        nfVO.setName(file);
+        nfVO.setEx(Tool.getFileExtension(file));
+        nfVO.setSizes(mf.getSize());
+        nfVO.setSrc(Tool.saveFileSpring(mf));
+        nfVO.setNoticeno(noticeno);
+        
+        if(!originfiles.contains(nfVO)) {
+          if(this.noticeFileDAO.create(nfVO) == 0)
+            return false;
+        }
+      }
+    }
+    
+    if(deletefiles != null) {
+      for(int deletefileno : deletefiles) {
+        if(this.noticeFileDAO.deleteByNoticefileno(deletefileno) == 0)
+          return false;
+      }
+    }
+    
+    return true;
   }
 
   @Override
@@ -90,7 +144,7 @@ public class NoticeProc implements NoticeProcInter{
     int cnt = this.noticeDAO.delete(noticeno);
     return cnt;
   }
-  
+
   @Override
   public int delete_file(int noticeno) {
     int cnt = this.noticeDAO.delete_file(noticeno);
@@ -98,8 +152,12 @@ public class NoticeProc implements NoticeProcInter{
   }
   
   @Override
-  public String pagingBox(int now_page, String word, String list_file, int search_count, int record_per_page,
-      int page_per_block) {
+  public int insert_notice_file(Map<String,Object> map) {
+    return this.noticeDAO.insert_notice_file(map);
+  }
+
+  @Override
+  public String pagingBox(int now_page, String word, String list_file, int search_count, int record_per_page, int page_per_block) {
     int total_page = (int) (Math.ceil((double) search_count / record_per_page));
     int total_grp = (int) (Math.ceil((double) total_page / page_per_block));
     int now_grp = (int) (Math.ceil((double) now_page / page_per_block));
@@ -137,8 +195,7 @@ public class NoticeProc implements NoticeProcInter{
 
     int _now_page = (now_grp - 1) * page_per_block;
     if (now_grp >= 2) {
-      str.append("<span class='span_box_1'><A href='" + list_file + "?word=" + word + "&now_page=" + _now_page
-          + "'>이전</A></span>");
+      str.append("<span class='span_box_1'><A href='" + list_file + "?word=" + word + "&now_page=" + _now_page + "'>이전</A></span>");
     }
 
     for (int i = start_page; i <= end_page; i++) {
@@ -149,15 +206,13 @@ public class NoticeProc implements NoticeProcInter{
       if (now_page == i) {
         str.append("<span class='span_box_2'>" + i + "</span>");
       } else {
-        str.append("<span class='span_box_1'><A href='" + list_file + "?word=" + word + "&now_page=" + i + "'>" + i
-            + "</A></span>");
+        str.append("<span class='span_box_1'><A href='" + list_file + "?word=" + word + "&now_page=" + i + "'>" + i + "</A></span>");
       }
     }
 
     _now_page = (now_grp * page_per_block) + 1; // 최대 페이지수 + 1
     if (now_grp < total_grp) {
-      str.append("<span class='span_box_1'><A href='" + list_file + "?word=" + word + "&now_page=" + _now_page
-          + "'>다음</A></span>");
+      str.append("<span class='span_box_1'><A href='" + list_file + "?word=" + word + "&now_page=" + _now_page + "'>다음</A></span>");
     }
     str.append("</DIV>");
 
