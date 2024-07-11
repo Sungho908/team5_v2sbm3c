@@ -191,8 +191,8 @@ public class ShoesCont {
     model.addAttribute("shoesAllVO", shoesAllVO);
     
     
-    ArrayList<Integer> sizes = this.optionProc.option_sizes(shoesno);
-    model.addAttribute("sizes", sizes);
+//    ArrayList<Integer> sizes = this.optionProc.option_sizes(shoesno);
+//    model.addAttribute("sizes", sizes);
 
     ArrayList<String> color = this.optionProc.option_color(shoesno);
     model.addAttribute("color", color);

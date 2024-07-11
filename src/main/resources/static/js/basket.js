@@ -76,8 +76,6 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('옵션을 선택해주세요.');
         return false;
       }
-      alert(size)
-      alert(color)
       // 장바구니 추가 요청 보내기
       fetch('/basket/create', {
         method: 'POST',
