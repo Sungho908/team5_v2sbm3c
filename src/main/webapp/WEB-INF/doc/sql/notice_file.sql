@@ -18,3 +18,8 @@ COMMENT ON COLUMN NOTICE_FILE.SIZE is '첨부파일 크기';
 COMMENT ON COLUMN NOTICE_FILE.EX is '확장자명';
 COMMENT ON COLUMN NOTICE_FILE.SRC is '첨부파일 주소';
 COMMENT ON COLUMN NOTICE_FILE.NOTICENO is '공지사항 번호';
+
+
+SELECT notice_file_no, name, sizes, ex, src, noticeno
+FORM notice_file
+WHERE noticeno = 14;

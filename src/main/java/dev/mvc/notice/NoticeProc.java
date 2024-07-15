@@ -140,9 +140,13 @@ public class NoticeProc implements NoticeProcInter {
   }
 
   @Override
+  @Transactional
   public int delete(int noticeno) {
-    int cnt = this.noticeDAO.delete(noticeno);
-    return cnt;
+    if(this.noticeFileDAO.deleteByNoticeno(noticeno) == 0)
+      return 0;
+    if(this.noticeDAO.delete(noticeno) == 0)
+      return 0;
+    return 1;
   }
 
   @Override

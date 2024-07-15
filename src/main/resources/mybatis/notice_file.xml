@@ -8,7 +8,7 @@
 	</insert>
 
 
-	<delete id="delete_By_noticeno" parameterType="int">
+	<delete id="deleteByNoticeno" parameterType="int">
 		DELETE FROM notice_file WHERE noticeno = #{notice}
 	</delete>
 

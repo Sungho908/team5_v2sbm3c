@@ -169,7 +169,6 @@ public class AdminNoticeCont {
      * model.addAttribute("menu", menu);
      */
 
-    int count = this.noticeProc.file_count(noticeno);
     NoticeMemberFileVO noticememberfileVO = this.noticeProc.read(noticeno);
     model.addAttribute("noticememberfileVO", noticememberfileVO);
     table_paging(model, word, now_page);
@@ -180,10 +179,7 @@ public class AdminNoticeCont {
   /** 카테고리 삭제 */
   @PostMapping(value = "/delete")
   public String delete_process(HttpSession session, Model model, @RequestParam("noticeno") Integer noticeno, @RequestParam(name = "word", defaultValue = "") String word, @RequestParam(name = "now_page", defaultValue = "1") int now_page) {
-
-    this.noticeProc.delete_file(noticeno);
     this.noticeProc.delete(noticeno);
-
     return "redirect:/admin/notice/list?now_page=1";
   }
 }
