@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", function() {
     inquiry.addEventListener("click", function(event) {
       event.preventDefault();
 
-      var shoestitle = inquiry.closest("tbody").querySelector(".shoestitle").value;
-      payment_details_no = inquiry.closest("tbody").querySelector(".payment_details_no").value;
+      var shoestitle = inquiry.closest("tbody").querySelector(".shoestitle").innerHTML;
+      payment_details_no = inquiry.closest("tbody").querySelector(".payment_details_no").innerHTML;
       shoesname.textContent = '문의 신발 : ' + shoestitle;
 
       popup.style.display = "block"; // 팝업 표시

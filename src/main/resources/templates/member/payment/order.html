@@ -181,11 +181,12 @@
                     </a>
                   </div>
                   <div>
-                    <a style="position: relative; font-size: 1.3rem;" th:href="@{|/shoes/${pdo.shoesno}|}" th:text="${pdo.title}">상품명</a>
+                    <a style="position: relative; font-size: 1.3rem;" th:href="@{|/shoes/${pdo.shoesno}|}" th:text="${pdo.title}" class="shoestitle">상품명</a>
                     <ul style="list-style-type: none; padding: 0px;">
                       <li th:text="|색상 / ${pdo.color} / ${#numbers.formatInteger(pdo.price, 3, 'COMMA')}원 / ${pdo.payment_amount}개|">
                         색상/가격/수량</li>
                       <li th:text="|수량 │ ${pdo.payment_amount}개 / 주문번호 ${pdo.payment_details_no}|">수량 | 주문번호 |</li>
+                      <li style="display: none;" class="payment_details_no" th:text="${pdo.payment_details_no}"></li>
                     </ul>
                   </div>
                 </div>
@@ -210,7 +211,7 @@
               <td colspan="3">
                 <div style="display: flex; justify-content: space-between; margin: 0px 10px 0px 10px; height: 30px; align-items: center;">
                   <div>
-                    <a th:href="@{|/member/inquiry/paymentinquiry/${list.paymentno}|}"
+                    <a th:href="@{|/member/inquiry/paymentinquiry/${list.paymentno}|}" class="paymentinquiry"
                       style="color: #416de9; font-size: 12px; margin-right:10px;">문의하기▶</a>
                     <a href="javascript:void(0);" class="deletepayment" style="color: #416de9; font-size: 12px;">주문내역삭제▶</a>
                   </div>
